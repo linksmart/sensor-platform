@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.fhg.fit.sensorplatform</groupId>
+	<artifactId>Sensorplatform</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+    <name>Sensorplatform</name>
+    <description>Software for an extendible platform used for aggregating and transfering sensor data.</description>
+    <inceptionYear>2016</inceptionYear>
+
+	<properties>
+		<jdk.version>1.8</jdk.version>
+		<source.level>1.8</source.level>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	</properties>
+
+	<dependencies>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeScope>compile</includeScope>
+							<outputDirectory>${project.build.directory}/resources</outputDirectory>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copyServer</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${project.artifactId}</artifactId>
+									<version>${project.version}</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.build.directory}/resources</outputDirectory>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<stripVersion>true</stripVersion>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<developers>
+		<developer>
+			<id>daniel.pyka</id>
+			<name>Daniel Pyka</name>
+			<email>daniel.pyka@fit.fraunhofer.de</email>
+			<organization>Fraunhofer FIT</organization>
+			<organizationUrl>http://www.fit.fraunhofer.de</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Gustavo Aragón</name>
+			<email>gustavo.alejandro.aragon.cabrera@fit.fraunhofer.de</email>
+			<organization>Fraunhofer FIT</organization>
+			<organizationUrl>http://www.fit.fraunhofer.de</organizationUrl>
+			<roles>
+				<role>Project manager</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Anja Linnemann</name>
+			<email>anja.linnemann@fit.fraunhofer.de</email>
+			<organization>Fraunhofer FIT</organization>
+			<organizationUrl>http://www.fit.fraunhofer.de</organizationUrl>
+			<roles>
+				<role>Project manager</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Bastian Steinbock</name>
+			<email>bastian.steinbock@fit.fraunhofer.de</email>
+			<organization>Fraunhofer FIT</organization>
+			<organizationUrl>http://www.fit.fraunhofer.de</organizationUrl>
+			<roles>
+				<role>Project manager</role>
+			</roles>
+		</contributor>
+	</contributors>
+
+	<licenses>
+		<license>
+			<name>TODO</name>
+			<url>TODO</url>
+		</license>
+	</licenses>
+</project>

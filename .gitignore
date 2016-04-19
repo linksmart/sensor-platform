@@ -1,0 +1,13 @@
+# maven
+**/*.jar
+**/*.class
+**/target
+**/bin
+
+# intellij
+**/*.iml
+**/.idea
+
+# eclipse
+
+
