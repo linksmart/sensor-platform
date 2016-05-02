@@ -7,9 +7,9 @@
 	<artifactId>Sensorplatform</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-    <name>Sensorplatform</name>
-    <description>Software for an extendible platform used for aggregating and transfering sensor data.</description>
-    <inceptionYear>2016</inceptionYear>
+	<name>Sensorplatform</name>
+	<description>Software for an extendible platform used for aggregating and transfering sensor data.</description>
+	<inceptionYear>2016</inceptionYear>
 
 	<properties>
 		<jdk.version>1.8</jdk.version>
@@ -19,7 +19,21 @@
 	</properties>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>net.sf.expectit</groupId>
+			<artifactId>expectit-core</artifactId>
+			<version>0.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+				<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.21</version>
+		</dependency>
 	</dependencies>
 
 	<build>
