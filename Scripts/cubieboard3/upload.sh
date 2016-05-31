@@ -9,7 +9,7 @@ targetdirectory='/home/linaro/Sensorplatform/bin'
 #echo "Executing: ${run}"
 #$run
 
-cd Sensorplatform/target/resources
+cd ../../Sensorplatform/target/resources
 run="scp *.jar ${remoteloginname}@${remotehost}:${targetdirectory}"
 echo "Executing: ${run}"
 $run

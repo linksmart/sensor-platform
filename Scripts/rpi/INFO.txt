@@ -1,0 +1,3 @@
+Raspbian Jessie/ Raspbian Jessie Lite
+10.05.2016
+Kernel version 4.4

@@ -20,19 +20,30 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.sf.expectit</groupId>
-			<artifactId>expectit-core</artifactId>
-			<version>0.8.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.21</version>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.21</version>
+		</dependency>
+
+		<!-- Parts of the eclipse kura OSGI framework for Bluetooth LE. -->
+		<dependency>
+			<groupId>kura</groupId>
+			<artifactId>org.eclipse.kura.api</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/../LocalTestRepo/org.eclipse.kura.api-1.0.7.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>kura</groupId>
+			<artifactId>org.eclipse.kura.linux.bluetooth</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/../LocalTestRepo/org.eclipse.kura.linux.bluetooth-1.0.3.jar</systemPath>
 		</dependency>
 	</dependencies>
 
