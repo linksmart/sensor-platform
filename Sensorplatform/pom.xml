@@ -16,6 +16,7 @@
 		<source.level>1.8</source.level>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -29,22 +30,17 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.21</version>
 		</dependency>
-
+		<dependency>
+			<groupId>net.sf.expectit</groupId>
+			<artifactId>expectit-core</artifactId>
+			<version>0.8.1</version>
+		</dependency>
 		<!-- Parts of the eclipse kura OSGI framework for Bluetooth LE. -->
-		<dependency>
-			<groupId>kura</groupId>
-			<artifactId>org.eclipse.kura.api</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/../LocalTestRepo/org.eclipse.kura.api-1.0.7.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>kura</groupId>
-			<artifactId>org.eclipse.kura.linux.bluetooth</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/../LocalTestRepo/org.eclipse.kura.linux.bluetooth-1.0.3.jar</systemPath>
-		</dependency>
+		<!-- >dependency> <groupId>kura</groupId> <artifactId>org.eclipse.kura.api</artifactId> 
+			<version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/../LocalTestRepo/org.eclipse.kura.api-1.0.7.jar</systemPath> 
+			</dependency> <dependency> <groupId>kura</groupId> <artifactId>org.eclipse.kura.linux.bluetooth</artifactId> 
+			<version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/../LocalTestRepo/org.eclipse.kura.linux.bluetooth-1.0.3.jar</systemPath> 
+			</dependency -->
 	</dependencies>
 
 	<build>
@@ -68,7 +64,7 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>copyServer</id>
+						<id>copy-application</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>copy</goal>
