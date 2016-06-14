@@ -11,9 +11,11 @@ public class Permissions {
   public static final String GENERIC_PERMISSION_INDICATE = "0x20";
   public static final String GENERIC_PERMISSION_AUTHENTICATED_SIGNED_WRITES = "0x40";
   public static final String GENERIC_PERMISSION_EXTENDED_PROPERTIES = "0x80";
-  
+
   public static final String FAROS_PERMISSION_UKNOWN_1 = "0x0a";
   public static final String FAROS_PERMISSION_UKNOWN_2 = "0x30";
   public static final String FAROS_PERMISSION_UKNOWN_3 = "0x0e";
   public static final String FAROS_PERMISSION_UKNOWN_4 = "0x32";
+
+  public static final String POLAR_PERMISSION_UKNOWN_1 = "0x28";
 }
