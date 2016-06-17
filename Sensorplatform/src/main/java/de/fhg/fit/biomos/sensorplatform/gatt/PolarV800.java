@@ -3,8 +3,9 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 import java.util.UUID;
 
 /**
- * Polar V800 is the wrist watch, H7 is the heart rate monitor. Long press
- * "back" to make the watch discoverable for a few seconds.
+ * The Polar V800 is the wrist watch! Long press "back" to make the watch
+ * discoverable for a few seconds. For the Sensorplatform there seems to be no
+ * use of the Polar wrist watch.
  *
  * @author Daniel Pyka
  *

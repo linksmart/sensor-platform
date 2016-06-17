@@ -26,6 +26,32 @@ public class Main {
     //
   }
 
+  public void setupFromConfig() {
+    // TODO
+  }
+
+  public void scan() {
+    try {
+      HcitoolImpl hcitool = new HcitoolImpl();
+      hcitool.collectLocalDeviceAndAddress();
+      hcitool.scan();
+      hcitool.exit();
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void lescan() {
+    try {
+      HcitoolImpl hcitool = new HcitoolImpl();
+      hcitool.collectLocalDeviceAndAddress();
+      hcitool.lescan(5);
+      hcitool.exit();
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
   public void run() throws IOException, InterruptedException {
     HcitoolImpl hcitool = new HcitoolImpl();
     hcitool.collectLocalDeviceAndAddress();

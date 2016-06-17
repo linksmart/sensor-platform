@@ -1,5 +1,10 @@
 package de.fhg.fit.biomos.sensorplatform.gatt;
 
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
 public class Permissions {
 
   // characteristics properties

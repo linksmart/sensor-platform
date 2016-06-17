@@ -2,8 +2,15 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 
 import java.util.UUID;
 
-// @formatter:off
+/**
+ * This sensor provides measurements for the following parameters: Temperature,
+ * humidity, pressure, acceleration (movement, 3 axis) and ambient light.
+ *
+ * @author Daniel Pyka
+ *
+ */
 public class TIsensorTag2650 {
+  //@formatter:off
 
   // primary services
   public static final UUID GENERIC_ACCESS = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb");
@@ -21,7 +28,6 @@ public class TIsensorTag2650 {
   public static final UUID i = UUID.fromString("f000ac00-0451-4000-b000-000000000000");
   public static final UUID UUID_SENSORTAG_CONNECTION_CONTROL = UUID.fromString("f000ccc0-0451-4000-b000-000000000000");
   public static final UUID UUID_OVER_THE_AIR_UPDATE = UUID.fromString("f000ffc0-0451-4000-b000-000000000000");
-  // end primary services
 
   // characteristics
   public static final UUID UUID_DEVICENAME = UUID.fromString("00002a00-0000-1000-8000-00805f9b34fb"); //  53 65 6e 73 6f 72 54 61 67 20 32 2e 30 (SensorTag 2.0)
@@ -138,7 +144,5 @@ public class TIsensorTag2650 {
   public static final String HANDLE_OAD_IMAGE_BLOCK = "0x0067";
   public static final String HANDLE_OAD_IMAGE_BLOCK_NOTIFICATION = "0x0068";
 
-  //
-
+  //@formatter:on
 }
-// @formatter:on
