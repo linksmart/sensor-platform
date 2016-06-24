@@ -3,8 +3,9 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 import java.util.UUID;
 
 /**
- * Heart Rate Monitor from TomTom. Requires gatttool -t random -b
- * F4:2C:87:24:12:09 -I to connect?!
+ * Heart Rate Monitor from TomTom. Seems to be the same hardware as Adidas HRM.
+ * Used UUIDs and handles are identical for both devices. Requires gatttool -t
+ * random -b F4:2C:87:24:12:09 -I to connect?!
  *
  * @author Daniel Pyka
  *

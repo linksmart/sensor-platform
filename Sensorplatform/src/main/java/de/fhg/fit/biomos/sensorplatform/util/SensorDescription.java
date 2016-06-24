@@ -11,23 +11,27 @@ public class SensorDescription {
   private SensorType type;
   private String name;
   private String bdAddress;
+  private AddressType addressType;
 
-  public SensorDescription(SensorType type, String name, String bdAddress) {
+  public SensorDescription(SensorType type, String name, String bdAddress, AddressType addressType) {
     this.type = type;
     this.name = name;
     this.bdAddress = bdAddress;
+    this.addressType = addressType;
   }
 
-  public SensorDescription(String name, String bdAddress) {
+  public SensorDescription(String name, String bdAddress, AddressType addressType) {
     this.type = SensorType.UNDEFINED;
     this.name = name;
     this.bdAddress = bdAddress;
+    this.addressType = addressType;
   }
 
-  public SensorDescription(SensorType type, String bdAddress) {
+  public SensorDescription(SensorType type, String bdAddress, AddressType addressType) {
     this.type = type;
     this.name = "unknown";
     this.bdAddress = bdAddress;
+    this.addressType = addressType;
   }
 
   public SensorType getType() {
@@ -54,8 +58,17 @@ public class SensorDescription {
     this.bdAddress = bdAddress;
   }
 
+  public AddressType getAddressType() {
+    return this.addressType;
+  }
+
+  public void setAddressType(AddressType addressType) {
+    this.addressType = addressType;
+  }
+
   @Override
   public String toString() {
-    return "{\"type\":\"" + this.type + "\",\"name\":\"" + this.name + "\",\"bdaddress\":\"" + this.bdAddress + "\"}";
+    return "{\"type\":\"" + this.type + "\",\"name\":\"" + this.name + "\",\"bdaddress\":\"" + this.bdAddress + "\",\"addresstype\":\"" + this.addressType
+        + "\"}";
   }
 }

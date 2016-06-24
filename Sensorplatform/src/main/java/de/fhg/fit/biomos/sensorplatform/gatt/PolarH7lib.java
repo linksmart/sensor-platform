@@ -3,21 +3,18 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 import java.util.UUID;
 
 /**
- * Polar H7 is the heart rate monitor for the chest strap. The functionality is
- * stand alone from the wrist watch. Skin contact with both electrodes to enable
- * the device for a few seconds. The device indicates skin contact and will shut
- * down automatically after several seconds without skin contact.
+ * Polar H7 is the heart rate monitor for the chest strap. The functionality is stand alone from the wrist watch. Skin contact with both electrodes to enable
+ * the device for a few seconds. The device indicates skin contact and will shut down automatically after several seconds without skin contact.
  *
  * @author Daniel Pyka
  *
  */
-public class PolarH7 {
+public abstract class PolarH7lib {
   //@formatter:off
 
-  // 00:22:D0:AA:1F:B1
+  public static final String DEFAULT_BDADDRESS = "00:22:D0:AA:1F:B1";
 
   // primary
-
   public static final UUID GENERIC_ATTRIBUTE = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb");
   public static final UUID GENERIC_ACCESS = UUID.fromString("00001801-0000-1000-8000-00805f9b34fb");
   public static final UUID HEART_RATE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");

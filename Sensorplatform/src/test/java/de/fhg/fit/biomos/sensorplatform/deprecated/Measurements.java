@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.data;
+package de.fhg.fit.biomos.sensorplatform.deprecated;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

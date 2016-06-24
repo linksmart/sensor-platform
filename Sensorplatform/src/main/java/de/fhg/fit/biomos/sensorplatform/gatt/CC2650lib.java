@@ -3,14 +3,18 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 import java.util.UUID;
 
 /**
- * This sensor provides measurements for the following parameters: Temperature,
- * humidity, pressure, acceleration (movement, 3 axis) and ambient light.
+ * <b>Texas Instruments SensorTag CC650</b></br>
+ * This sensor provides measurements for the following parameters: Temperature, humidity, pressure, acceleration (movement, 3 axis) and ambient light. Press
+ * both buttons on the sides to activate it for several minutes. The LED will flash in a fixed interval during this time. Afterwards, the SensorTag returns to
+ * power saving mode again.
  *
  * @author Daniel Pyka
  *
  */
-public class TIsensorTag2650 {
+public abstract class CC2650lib {
   //@formatter:off
+
+  public static final String DEFAULT_BDADDRESS = "A0:E6:F8:B6:37:05";
 
   // primary services
   public static final UUID GENERIC_ACCESS = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb");
@@ -24,8 +28,8 @@ public class TIsensorTag2650 {
 
   public static final UUID KEYS_STATUS = UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb");
 
-  public static final UUID h = UUID.fromString("f000aa64-0451-4000-b000-000000000000");
-  public static final UUID i = UUID.fromString("f000ac00-0451-4000-b000-000000000000");
+  public static final UUID IO_SERVICE = UUID.fromString("f000aa64-0451-4000-b000-000000000000");
+  public static final UUID REGISTER_SERVICE = UUID.fromString("f000ac00-0451-4000-b000-000000000000");
   public static final UUID UUID_SENSORTAG_CONNECTION_CONTROL = UUID.fromString("f000ccc0-0451-4000-b000-000000000000");
   public static final UUID UUID_OVER_THE_AIR_UPDATE = UUID.fromString("f000ffc0-0451-4000-b000-000000000000");
 
@@ -46,9 +50,9 @@ public class TIsensorTag2650 {
   public static final UUID UUID_IEEE_11073_20601_REGULATORY_CERTIFICATION_DATA_LIST = UUID.fromString("00002a2a-0000-1000-8000-00805f9b34fb"); // FE 00 65 78 70 65 72 69 6d 65 6e 74 61 6c (FE 00 experimental)
   public static final UUID UUID_PNP_ID = UUID.fromString("00002a50-0000-1000-8000-00805f9b34fb"); // 01 0d 00 00 00 10 01
 
-  public static final UUID UUID_TEMPERATURE_VALUE = UUID.fromString("f000aa01-0451-4000-b000-000000000000");
-  public static final UUID UUID_TEMPERATURE_ENABLE = UUID.fromString("f000aa02-0451-4000-b000-000000000000");
-  public static final UUID UUID_TEMPERATURE_PERIOD = UUID.fromString("f000aa03-0451-4000-b000-000000000000");
+  public static final UUID UUID_IR_TEMPERATURE_VALUE = UUID.fromString("f000aa01-0451-4000-b000-000000000000");
+  public static final UUID UUID_IR_TEMPERATURE_ENABLE = UUID.fromString("f000aa02-0451-4000-b000-000000000000");
+  public static final UUID UUID_IR_TEMPERATURE_PERIOD = UUID.fromString("f000aa03-0451-4000-b000-000000000000");
 
   public static final UUID UUID_HUMIDITY_VALUE = UUID.fromString("f000aa21-0451-4000-b000-000000000000");
   public static final UUID UUID_HUMIDITY_ENABLE = UUID.fromString("f000aa22-0451-4000-b000-000000000000");
@@ -98,10 +102,10 @@ public class TIsensorTag2650 {
   public static final String HANDLE_IEEE_11073_20601_REGULATORY_CERTIFICATION_DATA_LIST = "0x001c"; // FE 00 65 78 70 65 72 69 6d 65 6e 74 61 6c (FE 00 experimental)
   public static final String HANDLE_PNP_ID = "0x001e"; // 01 0d 00 00 00 10 01
 
-  public static final String HANDLE_TEMPERATURE_VALUE = "0x0021";
-  public static final String HANDLE_TEMPERATURE_NOTIFICATION = "0x0022"; // write 01:00 to enable, 00:00 to disable
-  public static final String HANDLE_TEMPERATURE_ENABLE = "0x0024";
-  public static final String HANDLE_TEMPERATURE_PERIOD = "0x0026";
+  public static final String HANDLE_IR_TEMPERATURE_VALUE = "0x0021";
+  public static final String HANDLE_IR_TEMPERATURE_NOTIFICATION = "0x0022"; // write 01:00 to enable, 00:00 to disable
+  public static final String HANDLE_IR_TEMPERATURE_ENABLE = "0x0024";
+  public static final String HANDLE_IR_TEMPERATURE_PERIOD = "0x0026";
 
   public static final String HANDLE_HUMIDITY_VALUE = "0x0029";
   public static final String HANDLE_HUMIDITY_NOTIFICATION  = "0x002a";
@@ -139,10 +143,20 @@ public class TIsensorTag2650 {
   public static final String HANDLE_REQUEST_CONNECTION_PARAMETERS = "0x005e";
   public static final String HANDLE_DISCONNECT_REQUEST = "0x0060";
 
-  public static final String HANDLE_OAD_IMAGE_IDENTIFY = "0x0063";
-  public static final String HANDLE_OAD_IMAGE_IDENTIFIY_NOTIFICATION = "0x0064";
-  public static final String HANDLE_OAD_IMAGE_BLOCK = "0x0067";
-  public static final String HANDLE_OAD_IMAGE_BLOCK_NOTIFICATION = "0x0068";
+  public static final String HANDLE_LOAD_IMAGE_IDENTIFY = "0x0063";
+  public static final String HANDLE_LOAD_IMAGE_IDENTIFIY_NOTIFICATION = "0x0064";
+  public static final String HANDLE_LOAD_IMAGE_BLOCK = "0x0067";
+  public static final String HANDLE_LOAD_IMAGE_BLOCK_NOTIFICATION = "0x0068";
+
+  public static final String INTERVAL_IR_TEMPERATURE_300MS_MIN = "1E";
+  public static final String INTERVAL_IR_TEMPERATURE_1000MS_DEFAULT = "64";
+  public static final String INTERVAL_IR_TEMPERATURE_2550MS_MAX = "FF";
+
+  public static final String INTERVAL_HUMIDITY_100MS_MIN = "0A";
+  public static final String INTERVAL_HUMIDITY_1000_DEFAULT = "64";
+  public static final String INTERVAL_HUMIDITY_2550_MAX = "FF";
+
+  // Resolution 10 ms. Range 100 ms (0x0A) to 2.55 sec (0xFF). Default 1 second (0x64).
 
   //@formatter:on
 }

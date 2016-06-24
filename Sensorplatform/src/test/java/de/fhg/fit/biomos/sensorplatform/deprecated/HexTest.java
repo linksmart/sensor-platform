@@ -11,15 +11,16 @@ public class HexTest {
   private static final byte SKIN_CONTACT_DETECTED = 1 << 1;
   private static final byte ENERGY_EXPENDED = 1 << 3;
 
-  private static final Pattern PATTERN_HRM = Pattern.compile("(\\w{2}\\s\\w{2})+");
+  private static final Pattern PATTERN_RR = Pattern.compile("(\\w{2}\\s\\w{2})+");
 
   // some tests for HRM data interpretation from gatttool
   public static void main(String[] args) {
 
-    String data = "16 46 74 03 4A 03 55 03";
+    // String data = "16 46 74 03 4A 03 55 03";
     // String data = "04 46 74 03 4A 03 55 03";
     // String data = "06 46 74 03 4A 03 55 03";
     // String data = "17 00 46 74 03 4A 03 55 03";
+    String data = "16 00 4c 14 03 01";
     byte config = Byte.parseByte(data.substring(0, 2), 16);
     int heartrate = 0;
     String rrintervals = "";
@@ -67,7 +68,7 @@ public class HexTest {
       System.out.println("no energy expended data");
     }
 
-    Matcher m = PATTERN_HRM.matcher(rrintervals);
+    Matcher m = PATTERN_RR.matcher(rrintervals);
     int i = 1;
     while (m.find()) {
       String tmp = m.group(0);
@@ -75,9 +76,6 @@ public class HexTest {
       tmp = tmp.substring(3);
       System.out.println("rr-interval " + i++ + ": " + Integer.parseInt(tmp, 16) + " bpm/ms");
     }
-
-    // System.out.println(config);
-
   }
 
 }
