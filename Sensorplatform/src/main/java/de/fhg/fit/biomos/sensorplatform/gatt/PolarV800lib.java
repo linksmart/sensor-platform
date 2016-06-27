@@ -3,14 +3,12 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 import java.util.UUID;
 
 /**
- * The Polar V800 is the wrist watch! Long press "back" to make the watch
- * discoverable for a few seconds. For the Sensorplatform there seems to be no
- * use of the Polar wrist watch.
+ * The Polar V800 is the wrist watch! Long press "back" to make the watch discoverable for a few seconds. The watch measures the pulse.
  *
  * @author Daniel Pyka
  *
  */
-public class PolarV800 {
+public abstract class PolarV800lib {
   //@formatter:off
 
   // 00:22:D0:A7:0A:46

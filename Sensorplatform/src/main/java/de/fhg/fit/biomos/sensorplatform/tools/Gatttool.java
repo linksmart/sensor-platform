@@ -7,20 +7,14 @@ package de.fhg.fit.biomos.sensorplatform.tools;
  * @author Daniel Pyka
  *
  */
-public interface Gatttool {
+public interface Gatttool extends Runnable {
 
-  /**
-   * Open an instance of gatttool in the bash process and connect to a sensor.
-   */
-  public void setup();
+  public void connect();
 
   public void enableLogging();
 
   public void disableLogging();
 
-  /**
-   * Disconnect from the sensor, exit gatttool and shell gracefully.
-   */
-  public void closeGracefully();
+  public void disconnectAndExit();
 
 }

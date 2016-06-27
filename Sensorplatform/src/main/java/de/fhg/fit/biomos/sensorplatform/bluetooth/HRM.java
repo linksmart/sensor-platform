@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * @author Daniel Pyka
  *
  */
-public class HRM {
+public abstract class HRM {
   public static final byte UINT16 = 1;
   public static final byte RR_INTERVAL_AVAILABLE = 1 << 4;
   public static final byte SKIN_CONTACT_SUPPORTED = 1 << 2;

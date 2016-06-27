@@ -3,17 +3,14 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 import java.util.UUID;
 
 /**
- * Three channel heart rate sensor. Instead of the standard Bluetooth
- * specification, it uses BlueRadios serial port (BRSP) which is complicated to
- * implement. General data (e.g. device name) is available through standard
- * specification. In the resource folder there is an example program for
- * android, how to use BRSP. Due to heavy reliance on the Android framework,
- * this solution is not easily applicable to the Sensorplatform.
+ * Three channel heart rate sensor. Instead of the standard Bluetooth specification, it uses BlueRadios serial port (BRSP) which is complicated to implement.
+ * General data (e.g. device name) is available through standard specification. In the resource folder there is an example program for android, how to use BRSP.
+ * Due to heavy reliance on the Android framework, this solution is not easily applicable to the Sensorplatform.
  *
  * @author Daniel Pyka
  *
  */
-public class FarosEmotion360Gatt {
+public abstract class FarosEmotion360Gatt {
   //@formatter:off
 
   // EC:FE:7E:15:D5:EB

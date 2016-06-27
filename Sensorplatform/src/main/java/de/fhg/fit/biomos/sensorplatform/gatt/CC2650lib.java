@@ -156,7 +156,5 @@ public abstract class CC2650lib {
   public static final String INTERVAL_HUMIDITY_1000_DEFAULT = "64";
   public static final String INTERVAL_HUMIDITY_2550_MAX = "FF";
 
-  // Resolution 10 ms. Range 100 ms (0x0A) to 2.55 sec (0xFF). Default 1 second (0x64).
-
   //@formatter:on
 }

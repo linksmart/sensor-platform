@@ -1,11 +1,11 @@
-package de.fhg.fit.biomos.sensorplatform.gatt;
+package de.fhg.fit.biomos.sensorplatform.bluetooth;
 
 /**
  *
  * @author Daniel Pyka
  *
  */
-public class Permissions {
+public abstract class Permissions {
 
   // characteristics properties
   public static final String GENERIC_PERMISSION_BROADCAST = "0x01";

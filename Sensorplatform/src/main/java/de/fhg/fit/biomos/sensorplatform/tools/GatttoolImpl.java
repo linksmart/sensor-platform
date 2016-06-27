@@ -23,13 +23,12 @@ public class GatttoolImpl implements Gatttool {
 
   private static final Logger LOG = LoggerFactory.getLogger(GatttoolImpl.class);
 
-  public static final String[] BASH = { "/bin/bash", "-i" };
-  public static final String GATTTTOOL_INTERACTIVE_PUBLIC = "gatttool -I -t public -b ";
-  public static final String GATTTTOOL_INTERACTIVE_RANDOM = "gatttool -I -t random -b ";
-  public static final String CMD_EXIT = "exit";
-  public static final String CMD_QUIT = "quit";
-  public static final String CMD_CONNECT = "connect";
-  public static final String CMD_DISCONNECT = "disconnect";
+  private static final String GATTTTOOL_INTERACTIVE_PUBLIC = "gatttool -I -t public -b ";
+  private static final String GATTTTOOL_INTERACTIVE_RANDOM = "gatttool -I -t random -b ";
+  private static final String CMD_EXIT = "exit";
+  private static final String CMD_QUIT = "quit";
+  private static final String CMD_CONNECT = "connect";
+  private static final String CMD_DISCONNECT = "disconnect";
   public static final String CMD_PRIMARY = "primary";
   public static final String CMD_INCLUDED = "included";
   public static final String CMD_CHARACTERISTICS = "characteristics";
@@ -48,70 +47,59 @@ public class GatttoolImpl implements Gatttool {
 
   private static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
 
-  private Process process = null;
+  private static final Runtime rt = Runtime.getRuntime();
+
   private BufferedWriter bw = null;
   private BufferedReader br = null;
-  private Thread input = null;
 
-  private Sensor sensor;
+  private final Sensor sensor;
 
-  public GatttoolImpl(Sensor sensor) {
+  public GatttoolImpl(Sensor sensor, boolean randomBDaddress) {
     this.sensor = sensor;
+
     try {
-      this.process = Runtime.getRuntime().exec(BASH);
-      this.bw = new BufferedWriter(new OutputStreamWriter(GatttoolImpl.this.process.getOutputStream()));
-      this.br = new BufferedReader(new InputStreamReader(GatttoolImpl.this.process.getInputStream()));
-      LOG.info("new bash process created");
+      Process process = null;
+      if (randomBDaddress) {
+        process = rt.exec(GatttoolImpl.GATTTTOOL_INTERACTIVE_RANDOM + this.sensor.getBdaddress());
+      } else {
+        process = rt.exec(GatttoolImpl.GATTTTOOL_INTERACTIVE_PUBLIC + this.sensor.getBdaddress());
+      }
+      this.bw = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+      this.br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      LOG.info("gatttool process for " + this.sensor.getBdaddress() + " created");
     } catch (IOException e) {
       e.printStackTrace();
       return;
     }
-
-    this.input = new Thread() {
-      @Override
-      public void run() {
-        try {
-          String line = null;
-          while ((line = GatttoolImpl.this.br.readLine()) != null) {
-            // System.out.println(line); // extreme debugging
-            Matcher m = NOTIFICATION_DATA.matcher(line);
-            if (m.find()) {
-              GatttoolImpl.this.sensor.processSensorData(m.group(1), m.group(2));
-            }
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    };
-    this.input.start();
   }
 
   @Override
-  public void setup() {
+  public void run() {
     try {
-      openGatttool();
-      Thread.sleep(1000);
-      connectGatttool();
-      Thread.sleep(1000);
-    } catch (IOException | InterruptedException e) {
+      String line = null;
+      while ((line = GatttoolImpl.this.br.readLine()) != null) {
+        // System.out.println(line); // extreme debugging
+        Matcher m = NOTIFICATION_DATA.matcher(line);
+        if (m.find()) {
+          GatttoolImpl.this.sensor.processSensorData(m.group(1), m.group(2));
+        }
+      }
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void openGatttool() throws IOException {
-    LOG.info("create gatttool");
-    LOG.info("target: " + this.sensor.getBdaddress());
-    this.bw.write(GATTTTOOL_INTERACTIVE_PUBLIC + this.sensor.getBdaddress());
-    this.bw.newLine();
-    this.bw.flush();
-  }
-
-  private void connectGatttool() throws IOException, InterruptedException {
-    LOG.info("connect");
-    this.bw.write(CMD_CONNECT);
-    this.bw.newLine();
-    this.bw.flush();
+  @Override
+  public void connect() {
+    try {
+      LOG.info("connect");
+      this.bw.write(CMD_CONNECT);
+      this.bw.newLine();
+      this.bw.flush();
+      Thread.sleep(1000);
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -124,43 +112,25 @@ public class GatttoolImpl implements Gatttool {
   @Override
   public void disableLogging() {
     this.sensor.disableLogging();
-    this.sensor.hook(null);
+    this.sensor.unhook();
     LOG.info(this.sensor.getName() + " unhooked");
   }
 
   @Override
-  public void closeGracefully() {
+  public void disconnectAndExit() {
     try {
-      disconnect();
-      Thread.sleep(500);
-      exitGatttool();
-      Thread.sleep(500);
-      exitBash();
-      Thread.sleep(500);
+      this.bw.write(CMD_DISCONNECT);
+      this.bw.newLine();
+      this.bw.flush();
+      LOG.info("disconnect from " + this.sensor.getName());
+      Thread.sleep(1000);
+      this.bw.write(CMD_EXIT);
+      this.bw.newLine();
+      this.bw.flush();
+      LOG.info("exit gatttool");
     } catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
   }
 
-  private void disconnect() throws IOException {
-    this.bw.write(CMD_DISCONNECT);
-    this.bw.newLine();
-    this.bw.flush();
-    LOG.info("disconnect from sensor");
-  }
-
-  private void exitGatttool() throws IOException {
-    this.bw.write(CMD_QUIT);
-    this.bw.newLine();
-    this.bw.flush();
-    LOG.info("exit gatttool");
-  }
-
-  private void exitBash() throws IOException {
-    this.bw.write(CMD_EXIT);
-    this.bw.newLine();
-    this.bw.flush();
-    this.bw.close();
-    LOG.info("exit bash");
-  }
 }

@@ -36,4 +36,8 @@ public abstract class Sensor implements SensorCommands {
     this.bw = bw;
   }
 
+  public void unhook() {
+    this.bw = null;
+  }
+
 }

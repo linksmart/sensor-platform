@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.bluetooth.HRM;
 import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
+import de.fhg.fit.biomos.sensorplatform.main.Main;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 
 /**
@@ -30,8 +31,8 @@ public class PolarH7 extends Sensor {
 
   private PrintWriter heartRateWriter = null;
   private PrintWriter rrintervalWriter = null;
-  private static final File heartrateFile = new File("heartrate.log");
-  private static final File rrintervalFile = new File("rrinterval.log");
+  private static final File heartrateFile = new File(Main.logDirectory, "heartrate.log");
+  private static final File rrintervalFile = new File(Main.logDirectory, "rrinterval.log");
 
   public PolarH7(String name, String bdaddress) {
     super(name, bdaddress);
@@ -126,7 +127,7 @@ public class PolarH7 extends Sensor {
           String tmp = matcher.group(0);
           tmp = tmp + tmp.substring(0, 2);
           tmp = tmp.substring(3);
-          String rrinterval = Integer.parseInt(tmp, 16) + " bpm/ms";
+          String rrinterval = formatter.format(Calendar.getInstance().getTime()) + " " + Integer.parseInt(tmp, 16) + " bpm/ms";
           System.out.println(rrinterval);
           this.rrintervalWriter.println(rrinterval);
         }
