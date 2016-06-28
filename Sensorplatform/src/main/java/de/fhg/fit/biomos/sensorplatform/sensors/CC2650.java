@@ -14,9 +14,13 @@ import org.slf4j.LoggerFactory;
 import de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib;
 import de.fhg.fit.biomos.sensorplatform.main.Main;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
+import de.fhg.fit.biomos.sensorplatform.util.SensorName;
+import de.fhg.fit.biomos.sensorplatform.util.SensorType;
 
 /**
- * @see {@link de.fhg.fit.biomos.sensorplatform.sensors.SensorCommands}
+ * @see <a href="http://processors.wiki.ti.com/index.php/CC2650_SensorTag_User's_Guide">CC2650 SensorTag User's Guide</a>
  *
  * @author Daniel Pyka
  *
@@ -25,28 +29,49 @@ public class CC2650 extends Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(CC2650.class);
 
-  private static final SimpleDateFormat formatter = new SimpleDateFormat("H:mm:ss:SSS");
+  private static final SimpleDateFormat formatter = new SimpleDateFormat(Main.timestampFormat);
 
-  private PrintWriter pw = null;
-  private static final File temperatureFile = new File(Main.logDirectory, "temperature.log");
+  private final File irTempFile;
+  private final File humidityFile;
 
-  public CC2650(String name, String bdaddress) {
-    super(name, bdaddress);
+  private PrintWriter irTempWriter = null;
+  private PrintWriter humWriter = null;
+
+  private final SensorConfiguration sensorConfiguration;
+
+  public CC2650(SensorName name, String bdAddress, AddressType addressType, SensorType sensorType, SensorConfiguration sensorConfiguration) {
+    super(name, bdAddress, addressType, sensorType);
+    this.sensorConfiguration = sensorConfiguration;
+    this.irTempFile = new File(new File(new File(Main.sensorsDataDirectory, this.name.name()), "irtemperature"), "irtemperature.log");
+    this.humidityFile = new File(new File(new File(Main.sensorsDataDirectory, this.name.name()), "humidity"), "humidity.log");
+    if (this.irTempFile.exists()) {
+      this.irTempFile.delete();
+    } else {
+      this.irTempFile.getParentFile().mkdirs();
+    }
+    if (this.humidityFile.exists()) {
+      this.humidityFile.delete();
+    } else {
+      this.humidityFile.getParentFile().mkdirs();
+    }
     try {
-      if (temperatureFile.exists()) {
-        temperatureFile.delete();
-        LOG.info("delete old log file");
-      }
-      this.pw = new PrintWriter(temperatureFile, "UTF-8");
-      this.pw.println("# " + name);
-      LOG.info("use log file: " + temperatureFile);
+      this.irTempWriter = new PrintWriter(this.irTempFile, "UTF-8");
+      this.irTempWriter.println("# " + name);
+      LOG.info("using log file: " + this.irTempFile);
+    } catch (FileNotFoundException | UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
+    try {
+      this.humWriter = new PrintWriter(this.humidityFile, "UTF-8");
+      this.humWriter.println("# " + name);
+      LOG.info("using log file: " + this.humidityFile);
     } catch (FileNotFoundException | UnsupportedEncodingException e) {
       e.printStackTrace();
     }
   }
 
-  private void enableTemperatureLogging(String intervalTwoHexCharacters) throws IOException {
-    this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + intervalTwoHexCharacters);
+  private void enableTemperatureLogging() throws IOException {
+    this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + this.sensorConfiguration.getSetting("irtemperature"));
     this.bw.newLine();
     this.bw.flush();
     this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_ENABLE + " " + GatttoolImpl.ENABLE_MEASUREMENT);
@@ -71,8 +96,8 @@ public class CC2650 extends Sensor {
     LOG.info("disable temperature logging");
   }
 
-  private void enableHumidityLogging(String intervalTwoHexCharacters) throws IOException {
-    this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + intervalTwoHexCharacters);
+  private void enableHumidityLogging() throws IOException {
+    this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + this.sensorConfiguration.getSetting("humidity"));
     this.bw.newLine();
     this.bw.flush();
     this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_ENABLE + " " + GatttoolImpl.ENABLE_MEASUREMENT);
@@ -100,8 +125,8 @@ public class CC2650 extends Sensor {
   @Override
   public void enableLogging() {
     try {
-      enableTemperatureLogging(CC2650lib.INTERVAL_IR_TEMPERATURE_1000MS_DEFAULT);
-      enableHumidityLogging(CC2650lib.INTERVAL_HUMIDITY_1000_DEFAULT);
+      enableTemperatureLogging();
+      enableHumidityLogging();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -116,8 +141,10 @@ public class CC2650 extends Sensor {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    this.pw.flush();
-    this.pw.close();
+    this.irTempWriter.flush();
+    this.irTempWriter.close();
+    this.humWriter.flush();
+    this.humWriter.close();
   }
 
   /**
@@ -212,10 +239,10 @@ public class CC2650 extends Sensor {
     switch (handle) {
       case CC2650lib.HANDLE_IR_TEMPERATURE_VALUE:
         value = formatter.format(Calendar.getInstance().getTime()) + " " + getIRtemperatureFromTemperatureSensor(data);
-        this.pw.println(value);
+        this.irTempWriter.println(value);
         System.out.println(value);
         value = formatter.format(Calendar.getInstance().getTime()) + " " + getDieTemperatureFromTemperatureSensor(data);
-        this.pw.println(value);
+        this.irTempWriter.println(value);
         System.out.println(value);
         break;
       case CC2650lib.HANDLE_PRESSURE_VALUE:
@@ -230,8 +257,10 @@ public class CC2650 extends Sensor {
         break;
       case CC2650lib.HANDLE_HUMIDITY_VALUE:
         value = formatter.format(Calendar.getInstance().getTime()) + " " + getTemperatureFromHumiditySensor(data);
+        this.humWriter.println(value);
         System.out.println(value);
         value = formatter.format(Calendar.getInstance().getTime()) + " " + getRelativeHumidty(data);
+        this.humWriter.println(value);
         System.out.println(value);
         break;
       case CC2650lib.HANDLE_MOVEMENT_VALUE:

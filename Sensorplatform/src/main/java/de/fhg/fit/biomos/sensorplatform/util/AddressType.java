@@ -2,7 +2,7 @@ package de.fhg.fit.biomos.sensorplatform.util;
 
 /**
  * Used for gatttool as additional parameter. See gatttool -h
- * 
+ *
  * @author Daniel Pyka
  *
  */

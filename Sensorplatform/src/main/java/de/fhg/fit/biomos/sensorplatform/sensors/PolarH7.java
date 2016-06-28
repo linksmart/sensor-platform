@@ -16,6 +16,9 @@ import de.fhg.fit.biomos.sensorplatform.bluetooth.HRM;
 import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
 import de.fhg.fit.biomos.sensorplatform.main.Main;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.SensorName;
+import de.fhg.fit.biomos.sensorplatform.util.SensorType;
 
 /**
  * @see {@link de.fhg.fit.biomos.sensorplatform.sensors.SensorCommands}
@@ -27,34 +30,38 @@ public class PolarH7 extends Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(PolarH7.class);
 
-  private static final SimpleDateFormat formatter = new SimpleDateFormat("H:mm:ss:SSS");
+  private static final SimpleDateFormat formatter = new SimpleDateFormat(Main.timestampFormat);
 
-  private PrintWriter heartRateWriter = null;
-  private PrintWriter rrintervalWriter = null;
-  private static final File heartrateFile = new File(Main.logDirectory, "heartrate.log");
-  private static final File rrintervalFile = new File(Main.logDirectory, "rrinterval.log");
+  private PrintWriter hrmWriter = null;
+  private PrintWriter rrWriter = null;
+  private final File hrmFile;
+  private final File rrFile;
 
-  public PolarH7(String name, String bdaddress) {
-    super(name, bdaddress);
+  public PolarH7(SensorName name, String bdAddress, AddressType addressType, SensorType sensorType) {
+    super(name, bdAddress, addressType, sensorType);
+    this.hrmFile = new File(new File(new File(Main.sensorsDataDirectory, this.name.name()), "HRM"), "heartrate.log");
+    this.rrFile = new File(new File(new File(Main.sensorsDataDirectory, this.name.name()), "RR"), "rrinterval.log");
+    if (this.hrmFile.exists()) {
+      this.hrmFile.delete();
+    } else {
+      this.hrmFile.getParentFile().mkdirs();
+    }
+    if (this.rrFile.exists()) {
+      this.rrFile.delete();
+    } else {
+      this.rrFile.getParentFile().mkdirs();
+    }
     try {
-      if (heartrateFile.exists()) {
-        heartrateFile.delete();
-        LOG.info("delete old log file");
-      }
-      this.heartRateWriter = new PrintWriter(heartrateFile, "UTF-8");
-      this.heartRateWriter.println("# " + name);
-      LOG.info("use log file: " + heartrateFile);
+      this.hrmWriter = new PrintWriter(this.hrmFile, "UTF-8");
+      this.hrmWriter.println("# " + name);
+      LOG.info("using log file: " + this.hrmFile);
     } catch (FileNotFoundException | UnsupportedEncodingException e) {
       e.printStackTrace();
     }
     try {
-      if (rrintervalFile.exists()) {
-        rrintervalFile.delete();
-        LOG.info("delete old log file");
-      }
-      this.rrintervalWriter = new PrintWriter(rrintervalFile, "UTF-8");
-      this.rrintervalWriter.println("# " + name);
-      LOG.info("use log file: " + rrintervalFile);
+      this.rrWriter = new PrintWriter(this.rrFile, "UTF-8");
+      this.rrWriter.println("# " + name);
+      LOG.info("using log file: " + this.rrFile);
     } catch (FileNotFoundException | UnsupportedEncodingException e) {
       e.printStackTrace();
     }
@@ -90,8 +97,8 @@ public class PolarH7 extends Sensor {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    this.heartRateWriter.close();
-    this.rrintervalWriter.close();
+    this.hrmWriter.close();
+    this.rrWriter.close();
   }
 
   @Override
@@ -114,7 +121,7 @@ public class PolarH7 extends Sensor {
       }
       String hrm = formatter.format(Calendar.getInstance().getTime()) + " " + heartrate + " Hz";
       System.out.println(hrm);
-      this.heartRateWriter.println(hrm);
+      this.hrmWriter.println(hrm);
 
       if ((config & HRM.SKIN_CONTACT_SUPPORTED) == HRM.SKIN_CONTACT_SUPPORTED) {
         if (!((config & HRM.SKIN_CONTACT_DETECTED) == HRM.SKIN_CONTACT_DETECTED)) {
@@ -129,7 +136,7 @@ public class PolarH7 extends Sensor {
           tmp = tmp.substring(3);
           String rrinterval = formatter.format(Calendar.getInstance().getTime()) + " " + Integer.parseInt(tmp, 16) + " bpm/ms";
           System.out.println(rrinterval);
-          this.rrintervalWriter.println(rrinterval);
+          this.rrWriter.println(rrinterval);
         }
       }
     } else {

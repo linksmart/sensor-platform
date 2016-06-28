@@ -1,15 +1,15 @@
 package de.fhg.fit.biomos.sensorplatform.main;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib;
-import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
-import de.fhg.fit.biomos.sensorplatform.sensors.CC2650;
-import de.fhg.fit.biomos.sensorplatform.sensors.PolarH7;
 import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
+import de.fhg.fit.biomos.sensorplatform.sensors.SensorFactory;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 
@@ -20,29 +20,56 @@ public class Main {
 
   private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
-  public static final File logDirectory = new File("/home/pi/Sensorplatform/logs");
+  private static String propertiesFilename = "Sensorplatform.properties";
+
+  public static File sensorsDataDirectory = null;
+  public static String timestampFormat = null;
+
+  private static final Properties properties = new Properties();
 
   public static void main(String[] args) {
-    LOG.info("start");
-    new Main().run();
-    LOG.info("end");
+    new Main().start();
   }
 
+  /**
+   * TODO dependency injection for properties
+   */
   public Main() {
-    //
-  }
-
-  public void setupFromConfig() {
-    // TODO
-  }
-
-  public void run() {
     try {
-      Sensor cc2650 = new CC2650("SensorTagCC2650", CC2650lib.DEFAULT_BDADDRESS);
-      Sensor polarH7 = new PolarH7("Polar H7", PolarH7lib.DEFAULT_BDADDRESS);
+      properties.load(ClassLoader.getSystemResourceAsStream(propertiesFilename));
+    } catch (IOException e) {
+      LOG.error("cannot load properties");
+      System.exit(1);
+    }
 
-      Gatttool gatt1 = new GatttoolImpl(cc2650, false);
-      Gatttool gatt2 = new GatttoolImpl(polarH7, false);
+    LOG.info("version is " + properties.getProperty("version"));
+    timestampFormat = properties.getProperty("ditg.webinterface.timestamp.format");
+    LOG.info("timestamp format is " + timestampFormat);
+    sensorsDataDirectory = new File(properties.getProperty("sensors.data.directory"));
+    LOG.info("data directory is " + sensorsDataDirectory.getAbsolutePath());
+    if (!sensorsDataDirectory.exists()) {
+      sensorsDataDirectory.mkdir();
+      LOG.info("directory created");
+    }
+  }
+
+  private void start() {
+    SensorFactory sensorFactory = new SensorFactory(properties.getProperty("sensors.description.file"));
+
+    List<Sensor> sensors = sensorFactory.createSensorsFromConfigurationFile();
+
+    // for (Sensor sensor : sensors) {
+    // System.out.println(sensor);
+    // }
+
+    try {
+      // Sensor cc2650 = new CC2650(SensorName.CC2650, CC2650lib.DEFAULT_BDADDRESS, AddressType.PUBLIC, SensorType.GENERALPURPOSE, new SensorConfiguration()
+      // .addSetting("irtemperature", CC2650lib.INTERVAL_IR_TEMPERATURE_1000MS_DEFAULT).addSetting("humidity", CC2650lib.INTERVAL_HUMIDITY_1000MS_DEFAULT));
+
+      // Sensor polarH7 = new PolarH7(SensorName.PolarH7, PolarH7lib.DEFAULT_BDADDRESS, AddressType.PUBLIC, SensorType.HRM);
+
+      Gatttool gatt1 = new GatttoolImpl(sensors.get(1));
+      Gatttool gatt2 = new GatttoolImpl(sensors.get(0));
 
       Thread t1 = new Thread(gatt1);
       Thread t2 = new Thread(gatt2);
@@ -53,7 +80,7 @@ public class Main {
       gatt2.connect();
       gatt1.enableLogging();
       gatt2.enableLogging();
-      Thread.sleep(10000);
+      Thread.sleep(5000);
       gatt1.disableLogging();
       gatt2.disableLogging();
       gatt1.disconnectAndExit();

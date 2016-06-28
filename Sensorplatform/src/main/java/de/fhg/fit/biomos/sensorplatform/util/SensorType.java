@@ -6,7 +6,7 @@ package de.fhg.fit.biomos.sensorplatform.util;
  *
  */
 public enum SensorType {
-  HRM("heartrate"), SPO2("spo2"), MULTI("multi"), STEPCOUNTER("stepcounter"), UNDEFINED("undefined");
+  HRM("HRM"), SPO2("SpO2"), GENERALPURPOSE("generalpurpose"), STEPCOUNTER("stepcounter"), UNDEFINED("undefined");
 
   private final String name;
 

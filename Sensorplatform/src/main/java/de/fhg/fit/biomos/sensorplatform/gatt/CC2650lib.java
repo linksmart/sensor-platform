@@ -8,6 +8,8 @@ import java.util.UUID;
  * both buttons on the sides to activate it for several minutes. The LED will flash in a fixed interval during this time. Afterwards, the SensorTag returns to
  * power saving mode again.
  *
+ * @see <a href="http://processors.wiki.ti.com/index.php/CC2650_SensorTag_User's_Guide">CC2650 SensorTag User's Guide</a>
+ *
  * @author Daniel Pyka
  *
  */
@@ -152,9 +154,22 @@ public abstract class CC2650lib {
   public static final String INTERVAL_IR_TEMPERATURE_1000MS_DEFAULT = "64";
   public static final String INTERVAL_IR_TEMPERATURE_2550MS_MAX = "FF";
 
+  public static final String INTERVAL_MOVEMENT_300MS_MIN = "0A";
+  public static final String INTERVAL_MOVEMENT_1000MS_DEFAULT = "64";
+  public static final String INTERVAL_MOVEMENT_2550MS_MAX = "FF";
+
   public static final String INTERVAL_HUMIDITY_100MS_MIN = "0A";
-  public static final String INTERVAL_HUMIDITY_1000_DEFAULT = "64";
-  public static final String INTERVAL_HUMIDITY_2550_MAX = "FF";
+  public static final String INTERVAL_HUMIDITY_1000MS_DEFAULT = "64";
+  public static final String INTERVAL_HUMIDITY_2550MS_MAX = "FF";
+
+  public static final String INTERVAL_PRESSURE_100MS_MIN = "0A";
+  public static final String INTERVAL_PRESSURE_1000MS_DEFAULT = "64";
+  public static final String INTERVAL_PRESSURE_2550MS_MAX = "FF";
+
+  public static final String INTERVAL_AMBIENTLIGHT_100MS_MIN = "0A";
+  public static final String INTERVAL_AMBIENTLIGHT_800MS_DEFAULT = "50";
+  public static final String INTERVAL_AMBIENTLIGHT_2550MS_MAX = "FF";
+
 
   //@formatter:on
 }
