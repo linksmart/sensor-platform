@@ -2,16 +2,12 @@ package de.fhg.fit.biomos.sensorplatform.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
-import de.fhg.fit.biomos.sensorplatform.sensors.SensorFactory;
-import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
-import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
+import de.fhg.fit.biomos.sensorplatform.web.DITGhttpUploader;
 
 /**
  * @author Daniel Pyka
@@ -44,7 +40,7 @@ public class Main {
 
     LOG.info("version is " + properties.getProperty("version"));
     timestampFormat = properties.getProperty("ditg.webinterface.timestamp.format");
-    LOG.info("timestamp format is " + timestampFormat);
+    LOG.info("time stamp pattern " + timestampFormat);
     sensorsDataDirectory = new File(properties.getProperty("sensors.data.directory"));
     LOG.info("data directory is " + sensorsDataDirectory.getAbsolutePath());
     if (!sensorsDataDirectory.exists()) {
@@ -54,9 +50,13 @@ public class Main {
   }
 
   private void start() {
-    SensorFactory sensorFactory = new SensorFactory(properties.getProperty("sensors.description.file"));
+    DITGhttpUploader ditg = new DITGhttpUploader(properties);
+    ditg.login();
+    ditg.sendData("A0:E6:F8:B6:37:05", "HeartRate", "90", "bpm");
+    ditg.downloadData();
+    // SensorFactory sensorFactory = new SensorFactory(properties.getProperty("sensors.description.file"));
 
-    List<Sensor> sensors = sensorFactory.createSensorsFromConfigurationFile();
+    // List<Sensor> sensors = sensorFactory.createSensorsFromConfigurationFile();
 
     // for (Sensor sensor : sensors) {
     // System.out.println(sensor);
@@ -68,23 +68,23 @@ public class Main {
 
       // Sensor polarH7 = new PolarH7(SensorName.PolarH7, PolarH7lib.DEFAULT_BDADDRESS, AddressType.PUBLIC, SensorType.HRM);
 
-      Gatttool gatt1 = new GatttoolImpl(sensors.get(1));
-      Gatttool gatt2 = new GatttoolImpl(sensors.get(0));
-
-      Thread t1 = new Thread(gatt1);
-      Thread t2 = new Thread(gatt2);
-      t1.start();
-      t2.start();
-
-      gatt1.connect();
-      gatt2.connect();
-      gatt1.enableLogging();
-      gatt2.enableLogging();
-      Thread.sleep(5000);
-      gatt1.disableLogging();
-      gatt2.disableLogging();
-      gatt1.disconnectAndExit();
-      gatt2.disconnectAndExit();
+      // Gatttool gatt1 = new GatttoolImpl(sensors.get(1));
+      // Gatttool gatt2 = new GatttoolImpl(sensors.get(0));
+      //
+      // Thread t1 = new Thread(gatt1);
+      // Thread t2 = new Thread(gatt2);
+      // t1.start();
+      // t2.start();
+      //
+      // gatt1.connect();
+      // gatt2.connect();
+      // gatt1.enableLogging();
+      // gatt2.enableLogging();
+      // Thread.sleep(5000);
+      // gatt1.disableLogging();
+      // gatt2.disableLogging();
+      // gatt1.disconnectAndExit();
+      // gatt2.disconnectAndExit();
     } catch (Exception e) {
       e.printStackTrace();
     }

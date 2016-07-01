@@ -9,6 +9,6 @@ public interface HttpUploader {
 
   public void login();
 
-  public void send();
+  public void sendData(String bdAddress, String quantityType, String value, String unit);
 
 }
