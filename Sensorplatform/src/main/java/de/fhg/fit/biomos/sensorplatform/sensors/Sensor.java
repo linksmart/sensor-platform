@@ -1,6 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.BufferedWriter;
+import java.util.Properties;
 
 import org.json.JSONObject;
 
@@ -16,6 +17,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorType;
  */
 public abstract class Sensor implements SensorCommands {
 
+  protected final Properties properties;
   protected final SensorName name;
   protected final String bdAddress;
   protected final AddressType addressType;
@@ -23,7 +25,8 @@ public abstract class Sensor implements SensorCommands {
 
   protected BufferedWriter bw = null;
 
-  public Sensor(SensorName name, String bdAddress, AddressType addressType, SensorType sensorType) {
+  public Sensor(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorType sensorType) {
+    this.properties = properties;
     this.name = name;
     this.bdAddress = bdAddress;
     this.addressType = addressType;

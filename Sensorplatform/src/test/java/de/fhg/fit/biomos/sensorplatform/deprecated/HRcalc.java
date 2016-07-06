@@ -3,7 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.deprecated;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HexTest {
+public class HRcalc {
 
   private static final byte UINT16 = 1;
   private static final byte RR_INTERVAL_AVAILABLE = 1 << 4;

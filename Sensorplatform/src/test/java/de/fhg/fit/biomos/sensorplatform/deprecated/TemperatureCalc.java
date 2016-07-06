@@ -1,6 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.deprecated;
 
-public class TemperatureTest {
+public class TemperatureCalc {
 
   public static void main(String[] args) {
     // String data = "54 0a c8 0d";

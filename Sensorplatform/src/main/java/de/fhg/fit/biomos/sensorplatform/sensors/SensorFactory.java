@@ -3,6 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.sensors;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,9 +20,12 @@ public class SensorFactory {
 
   private static final Logger LOG = LoggerFactory.getLogger(SensorFactory.class);
 
+  private final Properties properties;
   private final JSONArray sensorsConfiguration;
 
-  public SensorFactory(String sensorsDescriptionFile) {
+  public SensorFactory(Properties properties) {
+    this.properties = properties;
+    String sensorsDescriptionFile = this.properties.getProperty("sensors.description.file");
     JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(sensorsDescriptionFile));
     this.sensorsConfiguration = new JSONArray(tokener);
     LOG.info("sensor configuration file " + sensorsDescriptionFile);
@@ -39,7 +43,7 @@ public class SensorFactory {
       Sensor sensor = null;
       switch (name) {
         case PolarH7:
-          sensor = new PolarH7(name, bdAddress, addressType, sensorType);
+          sensor = new PolarH7(this.properties, name, bdAddress, addressType, sensorType);
           break;
         case AdidasHRM:
           break;
@@ -54,7 +58,7 @@ public class SensorFactory {
             sensorConfiguration.addSetting(key, sensorConfig.getString(key));
           }
 
-          sensor = new CC2650(name, bdAddress, addressType, sensorType, sensorConfiguration);
+          sensor = new CC2650(this.properties, name, bdAddress, addressType, sensorType, sensorConfiguration);
           break;
         default:
           break;

@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Properties;
 import java.util.regex.Matcher;
 
 import org.slf4j.Logger;
@@ -14,11 +15,12 @@ import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.bluetooth.HRM;
 import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
-import de.fhg.fit.biomos.sensorplatform.main.Main;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 import de.fhg.fit.biomos.sensorplatform.util.SensorType;
+import de.fhg.fit.biomos.sensorplatform.web.DITGhttpUploader;
+import de.fhg.fit.biomos.sensorplatform.web.HttpUploader;
 
 /**
  * @see {@link de.fhg.fit.biomos.sensorplatform.sensors.SensorCommands}
@@ -30,17 +32,23 @@ public class PolarH7 extends Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(PolarH7.class);
 
-  private static final SimpleDateFormat formatter = new SimpleDateFormat(Main.timestampFormat);
+  private final SimpleDateFormat formatter;
 
   private PrintWriter hrmWriter = null;
   private PrintWriter rrWriter = null;
   private final File hrmFile;
   private final File rrFile;
 
-  public PolarH7(SensorName name, String bdAddress, AddressType addressType, SensorType sensorType) {
-    super(name, bdAddress, addressType, sensorType);
-    this.hrmFile = new File(new File(new File(Main.sensorsDataDirectory, this.name.name()), "HRM"), "heartrate.log");
-    this.rrFile = new File(new File(new File(Main.sensorsDataDirectory, this.name.name()), "RR"), "rrinterval.log");
+  private final HttpUploader uploader;
+
+  public PolarH7(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorType sensorType) {
+    super(properties, name, bdAddress, addressType, sensorType);
+
+    this.formatter = new SimpleDateFormat(properties.getProperty("ditg.webinterface.timestamp.format"));
+
+    this.hrmFile = new File(new File(new File(properties.getProperty("sensors.data.directory"), this.name.name()), "HRM"), "heartrate.log");
+    this.rrFile = new File(new File(new File(properties.getProperty("sensors.data.directory"), this.name.name()), "RR"), "rrinterval.log");
+
     if (this.hrmFile.exists()) {
       this.hrmFile.delete();
     } else {
@@ -51,6 +59,7 @@ public class PolarH7 extends Sensor {
     } else {
       this.rrFile.getParentFile().mkdirs();
     }
+
     try {
       this.hrmWriter = new PrintWriter(this.hrmFile, "UTF-8");
       this.hrmWriter.println("# " + name);
@@ -65,6 +74,10 @@ public class PolarH7 extends Sensor {
     } catch (FileNotFoundException | UnsupportedEncodingException e) {
       e.printStackTrace();
     }
+
+    // TODO what about mulitple web interfaces -> reflection?
+    this.uploader = new DITGhttpUploader(properties);
+    this.uploader.login();
   }
 
   private void enableHeartRatelogging() throws IOException {
@@ -119,9 +132,10 @@ public class PolarH7 extends Sensor {
           matcher = HRM.PATTERN_RR_DATA.matcher(data.substring(6));
         }
       }
-      String hrm = formatter.format(Calendar.getInstance().getTime()) + " " + heartrate + " Hz";
+      String hrm = this.formatter.format(Calendar.getInstance().getTime()) + " " + heartrate + " Hz";
       System.out.println(hrm);
       this.hrmWriter.println(hrm);
+      // this.uploader.sendData(this.bdAddress, "HeartRate", hrm, "bpm");
 
       if ((config & HRM.SKIN_CONTACT_SUPPORTED) == HRM.SKIN_CONTACT_SUPPORTED) {
         if (!((config & HRM.SKIN_CONTACT_DETECTED) == HRM.SKIN_CONTACT_DETECTED)) {
@@ -134,7 +148,7 @@ public class PolarH7 extends Sensor {
           String tmp = matcher.group(0);
           tmp = tmp + tmp.substring(0, 2);
           tmp = tmp.substring(3);
-          String rrinterval = formatter.format(Calendar.getInstance().getTime()) + " " + Integer.parseInt(tmp, 16) + " bpm/ms";
+          String rrinterval = this.formatter.format(Calendar.getInstance().getTime()) + " " + Integer.parseInt(tmp, 16) + " bpm/ms";
           System.out.println(rrinterval);
           this.rrWriter.println(rrinterval);
         }

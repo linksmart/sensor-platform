@@ -1,6 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.deprecated;
 
-public class HumidityTest {
+public class HumidityCalc {
 
   public static void main(String[] args) {
     float scale = 0.03125F;

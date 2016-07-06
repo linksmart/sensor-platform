@@ -8,8 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -147,14 +145,18 @@ public class DITGhttpUploader implements HttpUploader {
       os.write(makeJSON(bdAddress, quantityType, value, unit).toString().getBytes());
       os.close();
 
-      if (httpsURLConnection.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
-        LOG.info("sample transmission successful");
-      } else {
-        LOG.error("transmission failed, error code: " + httpsURLConnection.getResponseCode());
-        Map<String, List<String>> headerFields = httpsURLConnection.getHeaderFields();
-        for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
-          System.out.println(entry.getKey() + ":" + entry.getValue());
-        }
+      switch (httpsURLConnection.getResponseCode()) {
+        case HttpURLConnection.HTTP_CREATED:
+          LOG.info("sample transmission successful");
+          break;
+        case HttpURLConnection.HTTP_UNAUTHORIZED:
+          LOG.error("transmission unauthorized - attempting to log in again");
+          login();
+          // TODO we lose at least one sample here, what about latency?
+          break;
+        default:
+          LOG.error("transmission failed, error code: " + httpsURLConnection.getResponseCode());
+          break;
       }
     } catch (IOException e) {
       e.printStackTrace();

@@ -25,4 +25,8 @@ public class SensorConfiguration {
     return this.intervals.get(measurementType);
   }
 
+  public boolean containsSetting(String measurementType) {
+    return this.intervals.containsKey(measurementType);
+  }
+
 }
