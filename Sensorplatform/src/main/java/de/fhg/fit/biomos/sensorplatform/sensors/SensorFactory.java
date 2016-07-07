@@ -25,7 +25,7 @@ public class SensorFactory {
 
   public SensorFactory(Properties properties) {
     this.properties = properties;
-    String sensorsDescriptionFile = this.properties.getProperty("sensors.description.file");
+    String sensorsDescriptionFile = this.properties.getProperty("sensor.description.file");
     JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(sensorsDescriptionFile));
     this.sensorsConfiguration = new JSONArray(tokener);
     LOG.info("sensor configuration file " + sensorsDescriptionFile);

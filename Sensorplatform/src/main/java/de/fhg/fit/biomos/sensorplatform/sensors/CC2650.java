@@ -1,16 +1,15 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib;
+import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
@@ -27,101 +26,18 @@ public class CC2650 extends Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(CC2650.class);
 
-  private final SimpleDateFormat formatter;
-
-  private final File irTempFile;
-  private final File humidityFile;
-  private final File ambientlightFile;
-  private final File pressureFile;
-  private final File movementFile;
-
-  private PrintWriter irTempWriter = null;
-  private PrintWriter humWriter = null;
-  private PrintWriter ambientlightWriter = null;
-  private PrintWriter pressureWriter = null;
-  private PrintWriter movementWriter = null;
-
   private final SensorConfiguration sensorConfiguration;
+
+  Map<String, SampleLogger> sampleLoggers = new HashMap<String, SampleLogger>();
 
   public CC2650(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorType sensorType,
       SensorConfiguration sensorConfiguration) {
     super(properties, name, bdAddress, addressType, sensorType);
 
-    this.formatter = new SimpleDateFormat(properties.getProperty("ditg.webinterface.timestamp.format"));
-
     this.sensorConfiguration = sensorConfiguration;
-
-    this.irTempFile = new File(new File(new File(properties.getProperty("sensors.data.directory"), this.name.name()), "irtemperature"), "irtemperature.log");
-    this.humidityFile = new File(new File(new File(properties.getProperty("sensors.data.directory"), this.name.name()), "humidity"), "humidity.log");
-    this.ambientlightFile = new File(new File(new File(properties.getProperty("sensors.data.directory"), this.name.name()), "ambientlight"),
-        "ambientlight.log");
-    this.pressureFile = new File(new File(new File(properties.getProperty("sensors.data.directory"), this.name.name()), "pressure"), "pressure.log");
-    this.movementFile = new File(new File(new File(properties.getProperty("sensors.data.directory"), this.name.name()), "movement"), "movement.log");
-
-    if (this.irTempFile.exists()) {
-      this.irTempFile.delete();
-    } else {
-      this.irTempFile.getParentFile().mkdirs();
-    }
-    if (this.humidityFile.exists()) {
-      this.humidityFile.delete();
-    } else {
-      this.humidityFile.getParentFile().mkdirs();
-    }
-    if (this.ambientlightFile.exists()) {
-      this.ambientlightFile.delete();
-    } else {
-      this.ambientlightFile.getParentFile().mkdirs();
-    }
-    if (this.pressureFile.exists()) {
-      this.pressureFile.delete();
-    } else {
-      this.pressureFile.getParentFile().mkdirs();
-    }
-    if (this.movementFile.exists()) {
-      this.movementFile.delete();
-    } else {
-      this.movementFile.getParentFile().mkdirs();
-    }
-
-    try {
-      this.irTempWriter = new PrintWriter(this.irTempFile, "UTF-8");
-      this.irTempWriter.println("# " + name);
-      LOG.info("using log file: " + this.irTempFile);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    try {
-      this.humWriter = new PrintWriter(this.humidityFile, "UTF-8");
-      this.humWriter.println("# " + name);
-      LOG.info("using log file: " + this.humidityFile);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    try {
-      this.ambientlightWriter = new PrintWriter(this.ambientlightFile, "UTF-8");
-      this.ambientlightWriter.println("# " + name);
-      LOG.info("using log file: " + this.ambientlightFile);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    try {
-      this.pressureWriter = new PrintWriter(this.pressureFile, "UTF-8");
-      this.pressureWriter.println("# " + name);
-      LOG.info("using log file: " + this.pressureFile);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    try {
-      this.movementWriter = new PrintWriter(this.movementFile, "UTF-8");
-      this.movementWriter.println("# " + name);
-      LOG.info("using log file: " + this.movementFile);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
-  private void enableTemperatureLogging() {
+  private void enableTemperatureNotification() {
     try {
       this.bw
           .write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + this.sensorConfiguration.getSetting("irtemperature"));
@@ -133,13 +49,13 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + GatttoolImpl.ENABLE_NOTIFICATION);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("enable temperature logging");
+      LOG.info("enable temperature notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void disableTemperatureLogging() {
+  private void disableTemperatureNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
       this.bw.newLine();
@@ -150,13 +66,13 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + CC2650lib.INTERVAL_IR_TEMPERATURE_1000MS_DEFAULT);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("disable temperature logging");
+      LOG.info("disable temperature notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void enableHumidityLogging() {
+  private void enableHumidityNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + this.sensorConfiguration.getSetting("humidity"));
       this.bw.newLine();
@@ -167,13 +83,13 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_NOTIFICATION + " " + GatttoolImpl.ENABLE_NOTIFICATION);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("enable humidity logging");
+      LOG.info("enable humidity notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void disableHumidityLogging() {
+  private void disableHumidityNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
       this.bw.newLine();
@@ -184,13 +100,13 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + CC2650lib.INTERVAL_HUMIDITY_1000MS_DEFAULT);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("disable humidity logging");
+      LOG.info("disable humidity notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void enableLightLogging() {
+  private void enableLightNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + this.sensorConfiguration.getSetting("light"));
       this.bw.newLine();
@@ -201,13 +117,13 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + GatttoolImpl.ENABLE_NOTIFICATION);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("enable ambientlight logging");
+      LOG.info("enable ambientlight notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void disableLightLogging() {
+  private void disableLightNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
       this.bw.newLine();
@@ -218,13 +134,13 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + CC2650lib.INTERVAL_AMBIENTLIGHT_800MS_DEFAULT);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("disable ambientlight logging");
+      LOG.info("disable ambientlight notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void enablePressureLogging() {
+  private void enablePressureNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + this.sensorConfiguration.getSetting("pressure"));
       this.bw.newLine();
@@ -235,13 +151,13 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_PRESSURE_NOTIFICATION + " " + GatttoolImpl.ENABLE_NOTIFICATION);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("enable pressure logging");
+      LOG.info("enable pressure notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void disablePressureLogging() {
+  private void disablePressureNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_PRESSURE_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
       this.bw.newLine();
@@ -252,7 +168,7 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + CC2650lib.INTERVAL_PRESSURE_1000MS_DEFAULT);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("disable pressure logging");
+      LOG.info("disable pressure notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -261,7 +177,7 @@ public class CC2650 extends Sensor {
   /**
    * TODO Fixed acceleration range at -8, +8 G
    */
-  private void enableMovementLogging() {
+  private void enableMovementNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + this.sensorConfiguration.getSetting("movement"));
       this.bw.newLine();
@@ -272,13 +188,13 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_MOVEMENT_NOTIFICATION + " " + GatttoolImpl.ENABLE_NOTIFICATION);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("enable movement logging");
+      LOG.info("enable movement notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void disableMovementLogging() {
+  private void disableMovementNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_MOVEMENT_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
       this.bw.newLine();
@@ -289,7 +205,7 @@ public class CC2650 extends Sensor {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + CC2650lib.INTERVAL_MOVEMENT_1000MS_DEFAULT);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("disable movement logging");
+      LOG.info("disable movement notification");
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -298,39 +214,53 @@ public class CC2650 extends Sensor {
   @Override
   public void enableLogging() {
     if (this.sensorConfiguration.containsSetting("irtemperature")) {
-      enableTemperatureLogging();
+      setupFileLogger("irtemperature");
+      enableTemperatureNotification();
     }
     if (this.sensorConfiguration.containsSetting("humidity")) {
-      enableHumidityLogging();
+      setupFileLogger("humidity");
+      enableHumidityNotification();
     }
     if (this.sensorConfiguration.containsSetting("ambientlight")) {
-      enableLightLogging();
+      setupFileLogger("ambientlight");
+      enableLightNotification();
     }
     if (this.sensorConfiguration.containsSetting("pressure")) {
-      enablePressureLogging();
+      setupFileLogger("pressure");
+      enablePressureNotification();
     }
     if (this.sensorConfiguration.containsSetting("movement")) {
-      enableMovementLogging();
+      setupFileLogger("movement");
+      enableMovementNotification();
     }
   }
 
   @Override
   public void disableLogging() {
-    disableTemperatureLogging();
-    disableHumidityLogging();
-    disableLightLogging();
-    disablePressureLogging();
-    disableMovementLogging();
-    this.irTempWriter.flush();
-    this.irTempWriter.close();
-    this.humWriter.flush();
-    this.humWriter.close();
-    this.ambientlightWriter.flush();
-    this.ambientlightWriter.close();
-    this.pressureWriter.flush();
-    this.pressureWriter.close();
-    this.movementWriter.flush();
-    this.movementWriter.close();
+    if (this.sensorConfiguration.containsSetting("irtemperature")) {
+      disableTemperatureNotification();
+      this.sampleLoggers.get("irtemperature").close();
+    }
+    if (this.sensorConfiguration.containsSetting("humidity")) {
+      disableHumidityNotification();
+      this.sampleLoggers.get("humidity").close();
+    }
+    if (this.sensorConfiguration.containsSetting("ambientlight")) {
+      disableLightNotification();
+      this.sampleLoggers.get("ambientlight").close();
+    }
+    if (this.sensorConfiguration.containsSetting("pressure")) {
+      disablePressureNotification();
+      this.sampleLoggers.get("pressure").close();
+    }
+    if (this.sensorConfiguration.containsSetting("movement")) {
+      disableMovementNotification();
+      this.sampleLoggers.get("movement").close();
+    }
+  }
+
+  private void setupFileLogger(String measure) {
+    this.sampleLoggers.put(measure, new SampleLogger(this.properties, measure, this.name.name()));
   }
 
   /**
@@ -462,7 +392,7 @@ public class CC2650 extends Sensor {
 
   /**
    * May need calibration before using the values.
-   * 
+   *
    * @param data
    * @return Magnetism in uT (micro Tesla), range +-4900
    */
@@ -478,47 +408,36 @@ public class CC2650 extends Sensor {
   public void processSensorData(String handle, String data) {
     data = data.replace(" ", "");
     String value;
-    String timestamp = this.formatter.format(Calendar.getInstance().getTime());
     switch (handle) {
       case CC2650lib.HANDLE_IR_TEMPERATURE_VALUE:
-        value = timestamp + " " + getIRtemperatureFromTemperatureSensor(data);
-        this.irTempWriter.println(value);
-        System.out.println(value);
-        value = timestamp + " " + getDieTemperatureFromTemperatureSensor(data);
-        this.irTempWriter.println(value);
-        System.out.println(value);
+        value = getIRtemperatureFromTemperatureSensor(data);
+        this.sampleLoggers.get("irtemperature").write(value);
+        value = getDieTemperatureFromTemperatureSensor(data);
+        this.sampleLoggers.get("irtemperature").write(value);
         break;
       case CC2650lib.HANDLE_PRESSURE_VALUE:
-        value = timestamp + " " + getTemperatureFromBarometricPressureSensor(data);
-        this.pressureWriter.println(value);
-        System.out.println(value);
-        value = timestamp + " " + getPressure(data);
-        this.pressureWriter.println(value);
-        System.out.println(value);
+        value = getTemperatureFromBarometricPressureSensor(data);
+        this.sampleLoggers.get("pressure").write(value);
+        value = getPressure(data);
+        this.sampleLoggers.get("pressure").write(value);
         break;
       case CC2650lib.HANDLE_AMBIENTLIGHT_VALUE:
-        value = timestamp + " " + getAmbientLight(data);
-        this.ambientlightWriter.println(value);
-        System.out.println(value);
+        value = getAmbientLight(data);
+        this.sampleLoggers.get("ambientlight").write(value);
         break;
       case CC2650lib.HANDLE_HUMIDITY_VALUE:
-        value = timestamp + " " + getTemperatureFromHumiditySensor(data);
-        this.humWriter.println(value);
-        System.out.println(value);
-        value = timestamp + " " + getRelativeHumidty(data);
-        this.humWriter.println(value);
-        System.out.println(value);
+        value = getTemperatureFromHumiditySensor(data);
+        this.sampleLoggers.get("humidity").write(value);
+        value = getRelativeHumidty(data);
+        this.sampleLoggers.get("humidity").write(value);
         break;
       case CC2650lib.HANDLE_MOVEMENT_VALUE:
-        value = timestamp + " " + getRotation(data);
-        this.movementWriter.println(value);
-        System.out.println(value);
-        value = timestamp + " " + getAcceleration(data);
-        this.movementWriter.println(value);
-        System.out.println(value);
-        value = timestamp + " " + getMagnetism(data);
-        this.movementWriter.println(value);
-        System.out.println(value);
+        value = getRotation(data);
+        this.sampleLoggers.get("movement").write(value);
+        value = getAcceleration(data);
+        this.sampleLoggers.get("movement").write(value);
+        value = getMagnetism(data);
+        this.sampleLoggers.get("movement").write(value);
         break;
       default:
         LOG.error("unexpected handle notification " + handle + " : " + data);

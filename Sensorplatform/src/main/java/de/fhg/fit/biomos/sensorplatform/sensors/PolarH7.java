@@ -1,12 +1,8 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 
@@ -15,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.bluetooth.HRM;
 import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
+import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
@@ -32,92 +29,57 @@ public class PolarH7 extends Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(PolarH7.class);
 
-  private final SimpleDateFormat formatter;
-
-  private PrintWriter hrmWriter = null;
-  private PrintWriter rrWriter = null;
-  private final File hrmFile;
-  private final File rrFile;
+  Map<String, SampleLogger> sampleLoggers = new HashMap<String, SampleLogger>();
 
   private final HttpUploader uploader;
 
   public PolarH7(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorType sensorType) {
     super(properties, name, bdAddress, addressType, sensorType);
 
-    this.formatter = new SimpleDateFormat(properties.getProperty("ditg.webinterface.timestamp.format"));
-
-    this.hrmFile = new File(new File(new File(properties.getProperty("sensors.data.directory"), this.name.name()), "HRM"), "heartrate.log");
-    this.rrFile = new File(new File(new File(properties.getProperty("sensors.data.directory"), this.name.name()), "RR"), "rrinterval.log");
-
-    if (this.hrmFile.exists()) {
-      this.hrmFile.delete();
-    } else {
-      this.hrmFile.getParentFile().mkdirs();
-    }
-    if (this.rrFile.exists()) {
-      this.rrFile.delete();
-    } else {
-      this.rrFile.getParentFile().mkdirs();
-    }
-
-    try {
-      this.hrmWriter = new PrintWriter(this.hrmFile, "UTF-8");
-      this.hrmWriter.println("# " + name);
-      LOG.info("using log file: " + this.hrmFile);
-    } catch (FileNotFoundException | UnsupportedEncodingException e) {
-      e.printStackTrace();
-    }
-    try {
-      this.rrWriter = new PrintWriter(this.rrFile, "UTF-8");
-      this.rrWriter.println("# " + name);
-      LOG.info("using log file: " + this.rrFile);
-    } catch (FileNotFoundException | UnsupportedEncodingException e) {
-      e.printStackTrace();
-    }
-
     // TODO what about mulitple web interfaces -> reflection?
     this.uploader = new DITGhttpUploader(properties);
     this.uploader.login();
   }
 
-  private void enableHeartRatelogging() throws IOException {
-    this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + GatttoolImpl.ENABLE_NOTIFICATION);
-    this.bw.newLine();
-    this.bw.flush();
-    LOG.info("enable heart rate logging");
+  private void enableHeartRateNotification() {
+    try {
+      this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + GatttoolImpl.ENABLE_NOTIFICATION);
+      this.bw.newLine();
+      this.bw.flush();
+      LOG.info("enable heart rate notification");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
-  private void disableHeartRateLogging() throws IOException {
-    this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
-    this.bw.newLine();
-    this.bw.flush();
-    LOG.info("disable heart rate logging");
+  private void disableHeartRateNotification() {
+    try {
+      this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
+      this.bw.newLine();
+      this.bw.flush();
+      LOG.info("disable heart rate notification");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
   public void enableLogging() {
-    try {
-      enableHeartRatelogging();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    this.sampleLoggers.put("hrm", new SampleLogger(this.properties, "hrm", this.name.name()));
+    this.sampleLoggers.put("rr", new SampleLogger(this.properties, "rr", this.name.name()));
+    enableHeartRateNotification();
   }
 
   @Override
   public void disableLogging() {
-    try {
-      disableHeartRateLogging();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    this.hrmWriter.close();
-    this.rrWriter.close();
+    disableHeartRateNotification();
+    this.sampleLoggers.get("hrm").close();
+    this.sampleLoggers.get("rr").close();
   }
 
   @Override
   public void processSensorData(String handle, String data) {
     if (handle.equals(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT)) {
-      String timestamp = this.formatter.format(Calendar.getInstance().getTime());
       byte config = Byte.parseByte(data.substring(0, 2), 16);
       int heartrate = 0;
       Matcher matcher = null;
@@ -133,9 +95,8 @@ public class PolarH7 extends Sensor {
           matcher = HRM.PATTERN_RR_DATA.matcher(data.substring(6));
         }
       }
-      String hrm = timestamp + " " + heartrate + " Hz";
-      System.out.println(hrm);
-      this.hrmWriter.println(hrm);
+      String hrm = heartrate + " Hz";
+      this.sampleLoggers.get("hrm").write(hrm);
       // this.uploader.sendData(this.bdAddress, "HeartRate", hrm, "bpm");
 
       if ((config & HRM.SKIN_CONTACT_SUPPORTED) == HRM.SKIN_CONTACT_SUPPORTED) {
@@ -149,13 +110,12 @@ public class PolarH7 extends Sensor {
           String tmp = matcher.group(0);
           tmp = tmp + tmp.substring(0, 2);
           tmp = tmp.substring(3);
-          String rrinterval = timestamp + " " + Integer.parseInt(tmp, 16) + " bpm/ms";
-          System.out.println(rrinterval);
-          this.rrWriter.println(rrinterval);
+          String rrinterval = Integer.parseInt(tmp, 16) + " bpm/ms";
+          this.sampleLoggers.get("rr").write(rrinterval);
         }
       }
     } else {
-      LOG.error("unexpected handle notification: " + handle);
+      LOG.error("unexpected handle notification " + handle + " : " + data);
     }
   }
 
