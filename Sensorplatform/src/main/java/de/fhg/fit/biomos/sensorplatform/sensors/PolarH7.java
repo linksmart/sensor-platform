@@ -117,6 +117,7 @@ public class PolarH7 extends Sensor {
   @Override
   public void processSensorData(String handle, String data) {
     if (handle.equals(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT)) {
+      String timestamp = this.formatter.format(Calendar.getInstance().getTime());
       byte config = Byte.parseByte(data.substring(0, 2), 16);
       int heartrate = 0;
       Matcher matcher = null;
@@ -132,14 +133,14 @@ public class PolarH7 extends Sensor {
           matcher = HRM.PATTERN_RR_DATA.matcher(data.substring(6));
         }
       }
-      String hrm = this.formatter.format(Calendar.getInstance().getTime()) + " " + heartrate + " Hz";
+      String hrm = timestamp + " " + heartrate + " Hz";
       System.out.println(hrm);
       this.hrmWriter.println(hrm);
       // this.uploader.sendData(this.bdAddress, "HeartRate", hrm, "bpm");
 
       if ((config & HRM.SKIN_CONTACT_SUPPORTED) == HRM.SKIN_CONTACT_SUPPORTED) {
         if (!((config & HRM.SKIN_CONTACT_DETECTED) == HRM.SKIN_CONTACT_DETECTED)) {
-          LOG.warn("no skin contact");
+          LOG.warn("no skin contact!");
         }
       }
 
@@ -148,7 +149,7 @@ public class PolarH7 extends Sensor {
           String tmp = matcher.group(0);
           tmp = tmp + tmp.substring(0, 2);
           tmp = tmp.substring(3);
-          String rrinterval = this.formatter.format(Calendar.getInstance().getTime()) + " " + Integer.parseInt(tmp, 16) + " bpm/ms";
+          String rrinterval = timestamp + " " + Integer.parseInt(tmp, 16) + " bpm/ms";
           System.out.println(rrinterval);
           this.rrWriter.println(rrinterval);
         }

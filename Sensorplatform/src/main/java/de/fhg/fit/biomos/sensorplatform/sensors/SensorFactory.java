@@ -47,6 +47,8 @@ public class SensorFactory {
           break;
         case AdidasHRM:
           break;
+        case TomTomHRM:
+          break;
         case PolarV800:
           break;
         case CC2650:

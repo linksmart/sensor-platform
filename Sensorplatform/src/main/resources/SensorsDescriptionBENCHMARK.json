@@ -15,9 +15,9 @@
 	"sensortype": "GENERALPURPOSE",
 	"configuration": {
 		"irtemperature": "1E",
-		"movement": "0A",
 		"humidity": "0A",
 		"pressure": "0A",
-		"ambientlight": "0A"
+		"ambientlight": "0A",
+		"movement": "0A"
 	}
 }]

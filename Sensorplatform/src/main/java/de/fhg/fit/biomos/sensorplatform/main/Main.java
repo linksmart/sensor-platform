@@ -56,7 +56,6 @@ public class Main {
 
       List<Sensor> sensorList = sensorFactory.createSensorsFromConfigurationFile();
       List<Gatttool> gatttoolList = new ArrayList<Gatttool>();
-      // List<Thread> threads = new ArrayList<Thread>();
 
       for (Sensor sensor : sensorList) {
         System.out.println(sensor);
@@ -71,7 +70,7 @@ public class Main {
         gatttool.enableLogging();
       }
 
-      Thread.sleep(5000);
+      Thread.sleep(7000);
 
       for (Gatttool gatttool : gatttoolList) {
         gatttool.disableLogging();

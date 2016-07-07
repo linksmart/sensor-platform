@@ -124,6 +124,15 @@ public abstract class CC2650lib {
   public static final String HANDLE_MOVEMENT_ENABLE = "0x003c";
   public static final String HANDLE_MOVEMENT_PERIOD = "0x003e";
 
+  public static final String VALUE_MOVEMENT_ACTIVATE_ALL_2G = "7f:00";
+  public static final String VALUE_MOVEMENT_DEACTIVATE_ALL_2G = "00:00";
+  public static final String VALUE_MOVEMENT_ACTIVATE_ALL_4G = "7f:01";
+  public static final String VALUE_MOVEMENT_DEACTIVATE_ALL_4G = "00:01";
+  public static final String VALUE_MOVEMENT_ACTIVATE_ALL_8G = "7f:02";
+  public static final String VALUE_MOVEMENT_DEACTIVATE_ALL_8G = "00:02";
+  public static final String VALUE_MOVEMENT_ACTIVATE_ALL_16G = "7f:03";
+  public static final String VALUE_MOVEMENT_DEACTIVATE_ALL_16G = "00:03";
+
   public static final String HANDLE_AMBIENTLIGHT_VALUE = "0x0041";
   public static final String HANDLE_AMBIENTLIGHT_NOTIFICATION = "0x0042";
   public static final String HANDLE_AMBIENTLIGHT_ENABLE = "0x0044";

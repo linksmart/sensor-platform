@@ -7,6 +7,7 @@
 		"irtemperature": "64",
 		"humidity": "64",
 		"ambientlight": "50",
-		"pressure": "64"
+		"pressure": "64",
+		"movement": "64"
 	}
 }]
