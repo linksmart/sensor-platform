@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.util.SensorType;
 
 /**
  * @see {@link de.fhg.fit.biomos.sensorplatform.sensors.SensorCommands}
@@ -21,16 +20,14 @@ public abstract class Sensor implements SensorCommands {
   protected final SensorName name;
   protected final String bdAddress;
   protected final AddressType addressType;
-  protected final SensorType sensorType;
 
   protected BufferedWriter bw = null;
 
-  public Sensor(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorType sensorType) {
+  public Sensor(Properties properties, SensorName name, String bdAddress, AddressType addressType) {
     this.properties = properties;
     this.name = name;
     this.bdAddress = bdAddress;
     this.addressType = addressType;
-    this.sensorType = sensorType;
   }
 
   public SensorName getName() {
@@ -43,10 +40,6 @@ public abstract class Sensor implements SensorCommands {
 
   public AddressType getAddressType() {
     return this.addressType;
-  }
-
-  public SensorType getSensorType() {
-    return this.sensorType;
   }
 
   /**
@@ -64,8 +57,7 @@ public abstract class Sensor implements SensorCommands {
 
   @Override
   public String toString() {
-    return new JSONObject().put("name", this.name).put("bdaddress", this.bdAddress).put("addresstype", this.addressType).put("sensortype", this.sensorType)
-        .toString();
+    return new JSONObject().put("name", this.name).put("bdaddress", this.bdAddress).put("addresstype", this.addressType).toString();
   }
 
 }

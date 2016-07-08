@@ -14,8 +14,12 @@ import org.slf4j.LoggerFactory;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.util.SensorType;
 
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
 public class SensorFactory {
 
   private static final Logger LOG = LoggerFactory.getLogger(SensorFactory.class);
@@ -38,12 +42,11 @@ public class SensorFactory {
       SensorName name = SensorName.valueOf(sensorDescription.getString("name"));
       String bdAddress = sensorDescription.getString("bdaddress");
       AddressType addressType = AddressType.valueOf(sensorDescription.getString("addresstype"));
-      SensorType sensorType = SensorType.valueOf(sensorDescription.getString("sensortype"));
 
       Sensor sensor = null;
       switch (name) {
         case PolarH7:
-          sensor = new PolarH7(this.properties, name, bdAddress, addressType, sensorType);
+          sensor = new PolarH7(this.properties, name, bdAddress, addressType);
           break;
         case AdidasHRM:
           break;
@@ -60,7 +63,7 @@ public class SensorFactory {
             sensorConfiguration.addSetting(key, sensorConfig.getString(key));
           }
 
-          sensor = new CC2650(this.properties, name, bdAddress, addressType, sensorType, sensorConfiguration);
+          sensor = new CC2650(this.properties, name, bdAddress, addressType, sensorConfiguration);
           break;
         default:
           break;

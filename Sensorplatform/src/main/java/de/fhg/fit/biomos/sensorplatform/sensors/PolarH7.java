@@ -15,9 +15,6 @@ import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.util.SensorType;
-import de.fhg.fit.biomos.sensorplatform.web.DITGhttpUploader;
-import de.fhg.fit.biomos.sensorplatform.web.HttpUploader;
 
 /**
  * @see {@link de.fhg.fit.biomos.sensorplatform.sensors.SensorCommands}
@@ -31,14 +28,14 @@ public class PolarH7 extends Sensor {
 
   Map<String, SampleLogger> sampleLoggers = new HashMap<String, SampleLogger>();
 
-  private final HttpUploader uploader;
+  // private final HttpUploader uploader;
 
-  public PolarH7(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorType sensorType) {
-    super(properties, name, bdAddress, addressType, sensorType);
+  public PolarH7(Properties properties, SensorName name, String bdAddress, AddressType addressType) {
+    super(properties, name, bdAddress, addressType);
 
     // TODO what about mulitple web interfaces -> reflection?
-    this.uploader = new DITGhttpUploader(properties);
-    this.uploader.login();
+    // this.uploader = new DITGhttpUploader(properties);
+    // this.uploader.login();
   }
 
   private void enableHeartRateNotification() {
@@ -64,14 +61,14 @@ public class PolarH7 extends Sensor {
   }
 
   @Override
-  public void enableLogging() {
+  public void enableNotification() {
     this.sampleLoggers.put("hrm", new SampleLogger(this.properties, "hrm", this.name.name()));
     this.sampleLoggers.put("rr", new SampleLogger(this.properties, "rr", this.name.name()));
     enableHeartRateNotification();
   }
 
   @Override
-  public void disableLogging() {
+  public void disableNotification() {
     disableHeartRateNotification();
     this.sampleLoggers.get("hrm").close();
     this.sampleLoggers.get("rr").close();

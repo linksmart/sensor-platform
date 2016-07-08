@@ -14,7 +14,6 @@ import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.util.SensorType;
 
 /**
  * @see <a href="http://processors.wiki.ti.com/index.php/CC2650_SensorTag_User's_Guide">CC2650 SensorTag User's Guide</a>
@@ -30,9 +29,8 @@ public class CC2650 extends Sensor {
 
   Map<String, SampleLogger> sampleLoggers = new HashMap<String, SampleLogger>();
 
-  public CC2650(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorType sensorType,
-      SensorConfiguration sensorConfiguration) {
-    super(properties, name, bdAddress, addressType, sensorType);
+  public CC2650(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorConfiguration sensorConfiguration) {
+    super(properties, name, bdAddress, addressType);
 
     this.sensorConfiguration = sensorConfiguration;
   }
@@ -212,7 +210,7 @@ public class CC2650 extends Sensor {
   }
 
   @Override
-  public void enableLogging() {
+  public void enableNotification() {
     if (this.sensorConfiguration.containsSetting("irtemperature")) {
       setupFileLogger("irtemperature");
       enableTemperatureNotification();
@@ -236,7 +234,7 @@ public class CC2650 extends Sensor {
   }
 
   @Override
-  public void disableLogging() {
+  public void disableNotification() {
     if (this.sensorConfiguration.containsSetting("irtemperature")) {
       disableTemperatureNotification();
       this.sampleLoggers.get("irtemperature").close();
@@ -266,7 +264,7 @@ public class CC2650 extends Sensor {
   /**
    *
    * @param data
-   * @return Temperature in degrees Celsius °C
+   * @return Temperature in degrees Celsius (°C)
    */
   private String getIRtemperatureFromTemperatureSensor(String data) {
     String valHex = data.substring(0, 4);
@@ -281,7 +279,7 @@ public class CC2650 extends Sensor {
   /**
    *
    * @param data
-   * @return Temperature in degrees Celsius °C
+   * @return Temperature in degrees Celsius (°C)
    */
   private String getDieTemperatureFromTemperatureSensor(String data) {
     String valHex = data.substring(4, 8);
@@ -297,7 +295,7 @@ public class CC2650 extends Sensor {
    * The conversion and adjustment calculations is done in firmware of the sensor.
    *
    * @param data
-   * @return Temperature in degrees Celsius °C
+   * @return Temperature in degrees Celsius (°C)
    */
   private String getTemperatureFromBarometricPressureSensor(String data) {
     int rawTemp = Integer.parseInt(data.substring(4, 6) + data.substring(2, 4) + data.substring(0, 2), 16);
@@ -320,7 +318,7 @@ public class CC2650 extends Sensor {
   /**
    *
    * @param data
-   * @return Temperature in degrees Celsius °C
+   * @return Temperature in degrees Celsius (°C)
    */
   private String getTemperatureFromHumiditySensor(String data) {
     String val = data.substring(0, 4);

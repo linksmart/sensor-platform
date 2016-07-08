@@ -2,17 +2,10 @@ package de.fhg.fit.biomos.sensorplatform.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
-import de.fhg.fit.biomos.sensorplatform.sensors.SensorFactory;
-import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
-import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 
 /**
  * @author Daniel Pyka
@@ -52,30 +45,13 @@ public class Main {
 
   private void start() {
     try {
-      SensorFactory sensorFactory = new SensorFactory(this.properties);
+      Controller controller = new Controller(this.properties);
+      controller.startup();
 
-      List<Sensor> sensorList = sensorFactory.createSensorsFromConfigurationFile();
-      List<Gatttool> gatttoolList = new ArrayList<Gatttool>();
+      Thread.sleep(10000);
 
-      for (Sensor sensor : sensorList) {
-        System.out.println(sensor);
-        GatttoolImpl gatttool = new GatttoolImpl(sensor);
-        gatttoolList.add(gatttool);
+      controller.shutdown();
 
-        new Thread(gatttool).start();
-        gatttool.connect();
-      }
-
-      for (Gatttool gatttool : gatttoolList) {
-        gatttool.enableLogging();
-      }
-
-      Thread.sleep(5000);
-
-      for (Gatttool gatttool : gatttoolList) {
-        gatttool.disableLogging();
-        gatttool.disconnectAndExit();
-      }
     } catch (Exception e) {
       e.printStackTrace();
     }

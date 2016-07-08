@@ -1,18 +1,15 @@
 [{
 	"name": "PolarH7",
 	"bdaddress": "00:22:D0:AA:1F:B1",
-	"addresstype": "PUBLIC",
-	"sensortype": "HRM"
+	"addresstype": "PUBLIC"
 }, {
 	"name": "TomTomHRM",
 	"bdaddress": "F4:2C:87:24:12:09",
-	"addresstype": "PUBLIC",
-	"sensortype": "HRM"
+	"addresstype": "PUBLIC"
 }, {
 	"name": "CC2650",
 	"bdaddress": "A0:E6:F8:B6:37:05",
 	"addresstype": "PUBLIC",
-	"sensortype": "GENERALPURPOSE",
 	"configuration": {
 		"irtemperature": "1E",
 		"humidity": "0A",

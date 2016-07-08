@@ -112,12 +112,12 @@ public class GatttoolImpl implements Gatttool {
   public void enableLogging() {
     this.sensor.hook(this.bw);
     LOG.info(this.sensor.getName() + " hooked");
-    this.sensor.enableLogging();
+    this.sensor.enableNotification();
   }
 
   @Override
   public void disableLogging() {
-    this.sensor.disableLogging();
+    this.sensor.disableNotification();
     this.sensor.unhook();
     LOG.info(this.sensor.getName() + " unhooked");
   }

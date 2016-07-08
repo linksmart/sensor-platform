@@ -8,9 +8,9 @@ package de.fhg.fit.biomos.sensorplatform.sensors;
  */
 public interface SensorCommands {
 
-  void enableLogging();
+  void enableNotification();
 
-  void disableLogging();
+  void disableNotification();
 
   void processSensorData(String handle, String data);
 
