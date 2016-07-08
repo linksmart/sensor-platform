@@ -1,5 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.tools;
 
+import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
+
 /**
  * Controller class for gatttool command line tool. You may use multiple instances of it at once.<br />
  * Gatttool is an interactive(!) tool for Bluetooth Low Energy funtions.
@@ -9,7 +11,7 @@ package de.fhg.fit.biomos.sensorplatform.tools;
  */
 public interface Gatttool extends Runnable {
 
-  public void connect();
+  public void connect() throws BluetoothGattException;
 
   public void enableLogging();
 

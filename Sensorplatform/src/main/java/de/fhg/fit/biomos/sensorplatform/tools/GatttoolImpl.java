@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
+import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
 
 /**
  * @see {@link de.fhg.fit.biomos.sensorplatform.tools.Gatttool}
@@ -23,11 +24,7 @@ public class GatttoolImpl implements Gatttool {
 
   private static final Logger LOG = LoggerFactory.getLogger(GatttoolImpl.class);
 
-  private enum STATE {
-    CONNECTED, DISCONNECTED
-  };
-
-  private STATE state = STATE.DISCONNECTED;
+  private static final int CONNECTING_TIMEOUT_MS = 10000;
 
   private static final String GATTTTOOL_INTERACTIVE = "gatttool -I -t ";
   private static final String CMD_EXIT = "exit";
@@ -50,6 +47,12 @@ public class GatttoolImpl implements Gatttool {
   public static final String DISABLE_NOTIFICATION = "00:00";
 
   private static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
+
+  private enum STATE {
+    CONNECTED, DISCONNECTED
+  };
+
+  private STATE state = STATE.DISCONNECTED;
 
   private BufferedWriter bw = null;
   private BufferedReader br = null;
@@ -93,16 +96,28 @@ public class GatttoolImpl implements Gatttool {
   }
 
   @Override
-  public void connect() {
+  public void connect() throws BluetoothGattException {
     try {
       this.bw.write(CMD_CONNECT);
       this.bw.newLine();
       this.bw.flush();
-      // TODO add timeout
-      while (this.state == STATE.DISCONNECTED) {
-        Thread.sleep(50);
+      LOG.info("Attempting to connect to " + this.sensor.getBdaddress());
+      LOG.info("Up to 10 seconds blocking call");
+
+      long startTime = System.currentTimeMillis();
+      while (false || (System.currentTimeMillis() - startTime) < CONNECTING_TIMEOUT_MS) { // 10 seconds blocking connect attempt
+        if (this.state == STATE.CONNECTED) {
+          LOG.info("connected");
+          return;
+        } else {
+          Thread.sleep(50); // wait for incoming messages in the other thread
+        }
       }
-      LOG.info("connected");
+
+      if (this.state == STATE.DISCONNECTED) {
+        throw new BluetoothGattException("Cannot connect to bluetooth device " + this.sensor.getBdaddress());
+      }
+
     } catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
@@ -131,7 +146,7 @@ public class GatttoolImpl implements Gatttool {
       while (this.state == STATE.CONNECTED) {
         Thread.sleep(50);
       }
-      LOG.info("disconnected from " + this.sensor.getName());
+      LOG.info("disconnected from " + this.sensor.getBdaddress());
       this.bw.write(CMD_EXIT);
       this.bw.newLine();
       this.bw.flush();

@@ -11,6 +11,7 @@ import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.sensors.SensorFactory;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
 import de.fhg.fit.biomos.sensorplatform.util.LEDstate;
 
 /**
@@ -26,34 +27,35 @@ public class Controller {
 
   private final List<Gatttool> gatttoolList = new ArrayList<Gatttool>();
 
-  private final List<Sensor> sensorList;
-
   private final LEDcontrol ledcontrol;
 
   public Controller(Properties properties) {
     this.properties = properties;
-
-    SensorFactory sensorFactory = new SensorFactory(this.properties);
-    this.sensorList = sensorFactory.createSensorsFromConfigurationFile();
-
     this.ledcontrol = new LEDcontrol(properties);
   }
 
   public void startup() {
-    for (Sensor sensor : this.sensorList) {
-      System.out.println(sensor);
+    SensorFactory sensorFactory = new SensorFactory(this.properties);
+
+    for (Sensor sensor : sensorFactory.createSensorsFromConfigurationFile()) {
+      System.out.println("Sensor: " + sensor);
       GatttoolImpl gatttool = new GatttoolImpl(sensor);
       this.gatttoolList.add(gatttool);
 
       new Thread(gatttool).start();
-      gatttool.connect();
+      try {
+        gatttool.connect();
+      } catch (BluetoothGattException e) {
+        LOG.error(e.getMessage());
+        gatttool.disconnectAndExit();
+        LOG.info("Invalid gatttool removed from list: " + this.gatttoolList.remove(gatttool));
+      }
     }
-    LOG.info("gatttool(s) connected");
 
     for (Gatttool gatttool : this.gatttoolList) {
       gatttool.enableLogging();
     }
-    LOG.info("logging enabled");
+
     this.ledcontrol.setLED(LEDstate.HEARTBEAT);
   }
 
