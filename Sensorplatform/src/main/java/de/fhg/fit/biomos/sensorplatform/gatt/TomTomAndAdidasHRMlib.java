@@ -11,7 +11,8 @@ import java.util.UUID;
 public abstract class TomTomAndAdidasHRMlib {
   //@formatter:off
 
-  // F4:2C:87:24:12:09 name is HRM (Ver0.4)
+  public static final String DEFAULT_BDADDRESS_ADIDAS = "CB:A2:4A:FE:0F:DA";
+  public static final String DEFAULT_BDADDRESS_TOMTOM = "F4:2C:87:24:12:09";
 
   // primary
   public static final UUID GENERIC_ATTRIBUTE = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb");

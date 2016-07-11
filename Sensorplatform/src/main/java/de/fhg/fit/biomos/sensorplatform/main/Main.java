@@ -33,9 +33,14 @@ public class Main {
       LOG.error("cannot load properties");
       System.exit(1);
     }
+    // download samples
+    // DITGhttpUploader ditGhttpUploader = new DITGhttpUploader(this.properties);
+    // ditGhttpUploader.login();
+    // ditGhttpUploader.downloadData();
+    // System.exit(0);
 
     LOG.info("version is " + this.properties.getProperty("version"));
-    File sensorsDataDirectory = new File(this.properties.getProperty("sensors.data.directory"));
+    File sensorsDataDirectory = new File(this.properties.getProperty("sensor.data.directory"));
     LOG.info("data directory is " + sensorsDataDirectory.getAbsolutePath());
     if (!sensorsDataDirectory.exists()) {
       sensorsDataDirectory.mkdir();
@@ -48,7 +53,7 @@ public class Main {
       Controller controller = new Controller(this.properties);
       controller.startup();
 
-      Thread.sleep(10000);
+      Thread.sleep(new Integer(this.properties.getProperty("sensorplatform.uptime.seconds")) * 1000);
 
       controller.shutdown();
 

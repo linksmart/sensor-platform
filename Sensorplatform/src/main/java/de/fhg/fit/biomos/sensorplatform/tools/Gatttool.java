@@ -11,7 +11,7 @@ import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
  */
 public interface Gatttool extends Runnable {
 
-  public void connect() throws BluetoothGattException;
+  public void connect(int timeout) throws BluetoothGattException;
 
   public void enableLogging();
 

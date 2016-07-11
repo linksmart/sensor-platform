@@ -10,6 +10,17 @@ import java.util.HashMap;
  */
 public class SensorConfiguration {
 
+  // key definitions for sensor description json file
+  public static final String IRTEMPERATURE = "irtemperature";
+  public static final String HUMIDITY = "humidity";
+  public static final String AMBIENTLIGHT = "ambientlight";
+  public static final String PRESSURE = "pressure";
+  public static final String MOVEMENT = "movement";
+  public static final String HEARTRATE = "hrm";
+  public static final String RRINTERVAL = "rr";
+  public static final String ONLINEMODE = "onlinemode";
+  public static final String WEBINTERFACE = "webinterface";
+
   HashMap<String, String> intervals = new HashMap<String, String>();
 
   public SensorConfiguration() {

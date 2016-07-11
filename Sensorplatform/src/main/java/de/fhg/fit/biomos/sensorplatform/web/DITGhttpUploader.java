@@ -30,6 +30,7 @@ public class DITGhttpUploader implements HttpUploader {
 
   private final String userName;
   private final String password;
+  private final String userAgent;
 
   private final String loginAddress;
   private final String dataAddress;
@@ -45,6 +46,9 @@ public class DITGhttpUploader implements HttpUploader {
     LOG.info("username: " + this.userName);
     this.password = properties.getProperty("ditg.webinterface.password");
     LOG.info("password: " + this.password);
+    this.userAgent = properties.getProperty("http.useragent.boardname") + " " + System.getProperty("os.name") + " " + System.getProperty("os.arch") + " "
+        + System.getProperty("os.version");
+    LOG.info("user agent: " + this.userAgent);
 
     this.loginAddress = properties.getProperty("ditg.webinterface.login.url");
     LOG.info("login address: " + this.loginAddress);
@@ -74,6 +78,7 @@ public class DITGhttpUploader implements HttpUploader {
     httpsURLConnection.setDoOutput(true);
     httpsURLConnection.setRequestMethod("POST");
     httpsURLConnection.setReadTimeout(0);
+    httpsURLConnection.setRequestProperty("User-Agent", this.userAgent);
     httpsURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf8");
     return httpsURLConnection;
   }
@@ -84,6 +89,7 @@ public class DITGhttpUploader implements HttpUploader {
     httpsURLConnection.setDoOutput(false);
     httpsURLConnection.setRequestMethod("GET");
     httpsURLConnection.setReadTimeout(0);
+    httpsURLConnection.setRequestProperty("User-Agent", this.userAgent);
     httpsURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf8");
     return httpsURLConnection;
   }

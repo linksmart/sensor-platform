@@ -12,6 +12,6 @@ public interface SensorCommands {
 
   void disableNotification();
 
-  void processSensorData(String handle, String data);
+  void processSensorData(String handle, String rawHexValues);
 
 }

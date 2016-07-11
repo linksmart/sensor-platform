@@ -6,12 +6,4 @@
 		"onlinemode": "false",
 		"webinterface": "ditg"
 	}
-}, {
-	"name": "CC2650",
-	"bdaddress": "A0:E6:F8:B6:37:05",
-	"addresstype": "PUBLIC",
-	"configuration": {
-		"irtemperature": "64",
-		"humidity": "64"
-	}
 }]

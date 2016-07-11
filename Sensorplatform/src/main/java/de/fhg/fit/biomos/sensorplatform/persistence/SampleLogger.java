@@ -28,7 +28,7 @@ public class SampleLogger {
     this.properties = properties;
     this.formatter = new SimpleDateFormat(properties.getProperty("ditg.webinterface.timestamp.format"));
 
-    File file = new File(new File(new File(this.properties.getProperty("sensors.data.directory"), sensorName), measure), measure + ".txt");
+    File file = new File(new File(new File(this.properties.getProperty("sensor.data.directory"), sensorName), measure), measure + ".txt");
 
     if (file.exists()) {
       file.delete();

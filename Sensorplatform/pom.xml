@@ -15,8 +15,9 @@
         <profile>
             <id>raspberrypi3</id>
             <properties>
+                <http.useragent.boardname>Sensorplatform RaspberryPi3</http.useragent.boardname>
                 <led.control.script>/home/pi/ledcontrol.sh</led.control.script>
-                <sensor.description.file>SensorDescriptionPOLAR.json</sensor.description.file>
+                <sensor.description.file>SensorDescriptionPOLARH7.json</sensor.description.file>
             </properties>
         </profile>
         <profile>
@@ -24,6 +25,7 @@
             <properties>
             <!-- example -->
             <!-- >led.control.file>/home/linaro/ledcontrol.sh</led.control.file -->
+                <http.useragent.boardname>Sensorplatform Cubietruck3</http.useragent.boardname>
                 <sensor.description.file>SensorDescriptionPOLAR.json</sensor.description.file>
             </properties>
         </profile>

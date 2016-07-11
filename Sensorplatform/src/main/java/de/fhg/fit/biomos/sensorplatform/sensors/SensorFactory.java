@@ -43,26 +43,28 @@ public class SensorFactory {
       String bdAddress = sensorDescription.getString("bdaddress");
       AddressType addressType = AddressType.valueOf(sensorDescription.getString("addresstype"));
 
+      JSONObject sensorConfig = sensorDescription.getJSONObject("configuration");
+      SensorConfiguration sensorConfiguration = new SensorConfiguration();
+
+      for (Iterator<String> iter = sensorConfig.keys(); iter.hasNext();) {
+        String key = iter.next();
+        sensorConfiguration.addSetting(key, sensorConfig.getString(key));
+      }
+
       Sensor sensor = null;
       switch (name) {
         case PolarH7:
-          sensor = new PolarH7(this.properties, name, bdAddress, addressType);
+          sensor = new PolarH7(this.properties, name, bdAddress, addressType, sensorConfiguration);
           break;
         case AdidasHRM:
+          sensor = new TomTomAdidas(this.properties, name, bdAddress, addressType, sensorConfiguration);
           break;
         case TomTomHRM:
+          sensor = new TomTomAdidas(this.properties, name, bdAddress, addressType, sensorConfiguration);
           break;
         case PolarV800:
           break;
         case CC2650:
-          JSONObject sensorConfig = sensorDescription.getJSONObject("configuration");
-          SensorConfiguration sensorConfiguration = new SensorConfiguration();
-
-          for (Iterator<String> iter = sensorConfig.keys(); iter.hasNext();) {
-            String key = iter.next();
-            sensorConfiguration.addSetting(key, sensorConfig.getString(key));
-          }
-
           sensor = new CC2650(this.properties, name, bdAddress, addressType, sensorConfiguration);
           break;
         default:

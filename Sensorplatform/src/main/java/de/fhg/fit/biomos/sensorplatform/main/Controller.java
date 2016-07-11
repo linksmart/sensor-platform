@@ -44,7 +44,7 @@ public class Controller {
 
       new Thread(gatttool).start();
       try {
-        gatttool.connect();
+        gatttool.connect(new Integer(this.properties.getProperty("sensor.connect.timeout.seconds")));
       } catch (BluetoothGattException e) {
         LOG.error(e.getMessage());
         gatttool.disconnectAndExit();

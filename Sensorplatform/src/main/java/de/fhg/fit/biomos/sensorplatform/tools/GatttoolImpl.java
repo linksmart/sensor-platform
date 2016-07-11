@@ -24,8 +24,6 @@ public class GatttoolImpl implements Gatttool {
 
   private static final Logger LOG = LoggerFactory.getLogger(GatttoolImpl.class);
 
-  private static final int CONNECTING_TIMEOUT_MS = 10000;
-
   private static final String GATTTTOOL_INTERACTIVE = "gatttool -I -t ";
   private static final String CMD_EXIT = "exit";
   private static final String CMD_CONNECT = "connect";
@@ -96,16 +94,15 @@ public class GatttoolImpl implements Gatttool {
   }
 
   @Override
-  public void connect() throws BluetoothGattException {
+  public void connect(int timeout) throws BluetoothGattException {
     try {
       this.bw.write(CMD_CONNECT);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("Attempting to connect to " + this.sensor.getBdaddress());
-      LOG.info("Up to 10 seconds blocking call");
+      LOG.info("Attempting to connect to " + this.sensor.getBdaddress() + "for " + timeout + "s");
 
       long startTime = System.currentTimeMillis();
-      while (false || (System.currentTimeMillis() - startTime) < CONNECTING_TIMEOUT_MS) { // 10 seconds blocking connect attempt
+      while (false || (System.currentTimeMillis() - startTime) < timeout * 1000) {
         if (this.state == STATE.CONNECTED) {
           LOG.info("connected");
           return;
