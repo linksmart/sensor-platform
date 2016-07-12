@@ -16,6 +16,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
+ * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory.
  *
  * @author Daniel Pyka
  *
@@ -35,6 +36,11 @@ public class SensorFactory {
     LOG.info("sensor configuration file " + sensorsConfigurationFile);
   }
 
+  /**
+   * Creates sensors from a configuration file provided by the maven build process or an "external" file.
+   *
+   * @return List&lt;Sensor&gt; List of sensors the sensorplatform shall work with
+   */
   public List<Sensor> createSensorsFromConfigurationFile() {
     List<Sensor> sensorList = new ArrayList<Sensor>();
     for (int i = 0; i < this.sensorsConfiguration.length(); i++) {
@@ -68,9 +74,13 @@ public class SensorFactory {
           sensor = new CC2650(this.properties, name, bdAddress, addressType, sensorConfiguration);
           break;
         default:
+          LOG.error("unknown sensor name " + name);
           break;
       }
-      sensorList.add(sensor);
+
+      if (sensor != null) {
+        sensorList.add(sensor);
+      }
     }
     return sensorList;
   }

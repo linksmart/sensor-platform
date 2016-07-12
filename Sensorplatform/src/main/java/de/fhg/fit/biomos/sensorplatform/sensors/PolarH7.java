@@ -20,7 +20,7 @@ import de.fhg.fit.biomos.sensorplatform.web.DITGhttpUploader;
 import de.fhg.fit.biomos.sensorplatform.web.HttpUploader;
 
 /**
- * @see {@link de.fhg.fit.biomos.sensorplatform.sensors.SensorCommands}
+ * @see {@link de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib}
  *
  * @author Daniel Pyka
  *
@@ -51,6 +51,10 @@ public class PolarH7 extends Sensor {
     }
   }
 
+  /**
+   * Enable heart rate notification of the sensor. Notification period is fixed at 1/s . The measurement does not need to be activated explicitly as in the
+   * SensorTag. Measurement contains the heart rate and optional one or more rr-intervals (if detected).
+   */
   private void enableHeartRateNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + GatttoolImpl.ENABLE_NOTIFICATION);
@@ -62,6 +66,9 @@ public class PolarH7 extends Sensor {
     }
   }
 
+  /**
+   * Disable heart rate notification of the sensor.
+   */
   private void disableHeartRateNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);

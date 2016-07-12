@@ -25,7 +25,8 @@ public class LEDcontrol {
   }
 
   /**
-   * Set a blinking pattern for the LED.
+   * Set a blinking pattern for the LED. "Blink" is standard after booting complete. "Heartbeat" displays the user that the sensorplatform is connected to
+   * sensors and is working correctly.
    *
    * @param ledstate
    */

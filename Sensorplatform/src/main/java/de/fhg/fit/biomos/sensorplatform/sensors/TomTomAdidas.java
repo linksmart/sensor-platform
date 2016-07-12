@@ -16,6 +16,7 @@ import de.fhg.fit.biomos.sensorplatform.web.DITGhttpUploader;
 import de.fhg.fit.biomos.sensorplatform.web.HttpUploader;
 
 /**
+ * @see {@link de.fhg.fit.biomos.sensorplatform.gatt.TomTomAndAdidasHRMlib}
  *
  * @author Daniel Pyka
  *
@@ -48,6 +49,10 @@ public class TomTomAdidas extends Sensor {
     }
   }
 
+  /**
+   * Enable heart rate notification of the sensor. Notification period is fixed at 1/s . The measurement does not need to be activated explicitly as in the
+   * SensorTag. This sensor only measures the heart rate, no rr-interval.
+   */
   private void enableHeartRateNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + TomTomAndAdidasHRMlib.HANDLE_HEART_RATE_NOTIFICATION + " " + GatttoolImpl.ENABLE_NOTIFICATION);

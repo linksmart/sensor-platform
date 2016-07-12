@@ -3,10 +3,10 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 import java.util.UUID;
 
 /**
- * <b>Texas Instruments SensorTag CC650</b></br>
- * This sensor provides measurements for the following parameters: Temperature, humidity, pressure, acceleration (movement, 3 axis) and ambient light. Press
- * both buttons on the sides to activate it for several minutes. The LED will flash in a fixed interval during this time. Afterwards, the SensorTag returns to
- * power saving mode again.
+ * Texas Instruments SensorTag CC650</br>
+ * This sensor provides measurements for the following parameters: temperature, humidity, ambientlight, pressure, and movement. Press both buttons on the sides
+ * to wake it up from standby mode for several minutes. The LED will blink in a fixed interval during this time. Afterwards, the SensorTag returns to power
+ * saving mode again. The LED does not blink if any device is connected the SensorTag.
  *
  * @see <a href="http://processors.wiki.ti.com/index.php/CC2650_SensorTag_User's_Guide">CC2650 SensorTag User's Guide</a>
  *

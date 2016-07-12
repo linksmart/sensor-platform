@@ -1,7 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.util;
 
 /**
- * Enum defines specific key words which are used as input parameters for the shell script for controlling the onboard LED.
+ * Defines specific key words which are used as input parameters for the shell script for controlling the onboard LED.
  *
  * @see {@link de.fhg.fit.biomos.sensorplatform.main.LEDcontrol}
  *

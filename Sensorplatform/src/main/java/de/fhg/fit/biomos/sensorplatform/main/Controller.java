@@ -15,6 +15,7 @@ import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
 import de.fhg.fit.biomos.sensorplatform.util.LEDstate;
 
 /**
+ * This class defines the control flow of the sensorplatform.
  *
  * @author Daniel Pyka
  *
@@ -34,6 +35,9 @@ public class Controller {
     this.ledcontrol = new LEDcontrol(properties);
   }
 
+  /**
+   * Initialise all components and activate sensor measurements.
+   */
   public void startup() {
     SensorFactory sensorFactory = new SensorFactory(this.properties);
 
@@ -59,6 +63,10 @@ public class Controller {
     this.ledcontrol.setLED(LEDstate.HEARTBEAT);
   }
 
+  /**
+   * Shut down sub-processes and threads of the sensorplatform <b>gracefully</b>. This avoids zombie gatttool processes which may prevent sensors from returning
+   * to standby mode and other <b>bad</b> things!
+   */
   public void shutdown() {
     for (Gatttool gatttool : this.gatttoolList) {
       gatttool.disableLogging();

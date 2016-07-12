@@ -11,7 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Simple class for logging sensor values to a file.
+ * 
  * @author Daniel Pyka
  *
  */
@@ -45,13 +46,22 @@ public class SampleLogger {
     }
   }
 
+  /**
+   * Write a line to the log file. Adds timestamp to the value. Always flushes the stream to persist the data.<br>
+   * TODO format is fucked up currently and it is difficult to further work with it. Think about structure
+   *
+   * @param value
+   */
   public void write(String value) {
     String timestamp = this.formatter.format(Calendar.getInstance().getTime());
     this.pw.println(timestamp + " " + value);
     this.pw.flush();
-    System.out.println(timestamp + " " + value);
+    System.out.println(timestamp + " " + value); // extreme debugging
   }
 
+  /**
+   * Close the stream to the log file gracefully.
+   */
   public void close() {
     this.pw.flush();
     this.pw.close();

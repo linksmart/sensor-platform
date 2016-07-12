@@ -3,7 +3,10 @@ package de.fhg.fit.biomos.sensorplatform.util;
 import java.util.HashMap;
 
 /**
- * Contains information about a specific value (e.g. temperature) and it's sampling frequency. Interval is specified in milliseconds.
+ * Contains information about:<br>
+ * <b>1)</b> A specific measurement (e.g. heart rate) and it's notification period. Interval is specified in milliseconds (hexadecimal!).<br>
+ * <b>2)</b> Online mode: Specifies if the sensor should upload it's data to a webinterface and specifies which webinterface.
+ *
  *
  * @author Daniel Pyka
  *
@@ -24,20 +27,40 @@ public class SensorConfiguration {
   HashMap<String, String> intervals = new HashMap<String, String>();
 
   public SensorConfiguration() {
-    //
+    // default
   }
 
-  public SensorConfiguration addSetting(String measurementType, String interval) {
-    this.intervals.put(measurementType, interval);
-    return this;
+  /**
+   * Adds a pair of measurement and notification peroid to the internal hashmap.
+   *
+   * @param measurementType
+   *          e.g. irtemperature
+   * @param interval
+   *          e.g. 64 (hexadecimal)
+   */
+  public void addSetting(String measurement, String notificationPeroid) {
+    this.intervals.put(measurement, notificationPeroid);
   }
 
-  public String getSetting(String measurementType) {
-    return this.intervals.get(measurementType);
+  /**
+   * Get the notification period for a specific measurement.
+   *
+   * @param measurementType
+   * @return String hexadecimal value in milliseconds.
+   */
+  public String getSetting(String measurement) {
+    return this.intervals.get(measurement);
   }
 
-  public boolean containsSetting(String measurementType) {
-    return this.intervals.containsKey(measurementType);
+  /**
+   * Checks if the interna map contains a specific measurement as key.
+   *
+   * @param measurement
+   *          e.g irtemperature
+   * @return true if the map contains the key, false otherwise.
+   */
+  public boolean containsSetting(String measurement) {
+    return this.intervals.containsKey(measurement);
   }
 
 }

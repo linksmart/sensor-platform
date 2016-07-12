@@ -18,6 +18,8 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 /**
  * @see <a href="http://processors.wiki.ti.com/index.php/CC2650_SensorTag_User's_Guide">CC2650 SensorTag User's Guide</a>
  *
+ * @see {@link de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib}
+ *
  * @author Daniel Pyka
  *
  */
@@ -35,6 +37,9 @@ public class CC2650 extends Sensor {
     this.sensorConfiguration = sensorConfiguration;
   }
 
+  /**
+   * Enable temperature sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
+   */
   private void enableTemperatureNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " "
@@ -53,6 +58,9 @@ public class CC2650 extends Sensor {
     }
   }
 
+  /**
+   * Disable temperature sensor measurement, notification and reset the notification peroid to the default value.
+   */
   private void disableTemperatureNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
@@ -70,6 +78,9 @@ public class CC2650 extends Sensor {
     }
   }
 
+  /**
+   * Enable humidity sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
+   */
   private void enableHumidityNotification() {
     try {
       this.bw.write(
@@ -88,6 +99,9 @@ public class CC2650 extends Sensor {
     }
   }
 
+  /**
+   * Disable humidity sensor measurement, notification and reset the notification peroid to the default value.
+   */
   private void disableHumidityNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
@@ -105,7 +119,10 @@ public class CC2650 extends Sensor {
     }
   }
 
-  private void enableLightNotification() {
+  /**
+   * Enable ambientlight sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
+   */
+  private void enableAmbientlightNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " "
           + this.sensorConfiguration.getSetting(SensorConfiguration.AMBIENTLIGHT));
@@ -123,7 +140,10 @@ public class CC2650 extends Sensor {
     }
   }
 
-  private void disableLightNotification() {
+  /**
+   * Disable ambientlight sensor measurement, notification and reset the notification peroid to the default value.
+   */
+  private void disableAmbientlightNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
       this.bw.newLine();
@@ -140,6 +160,9 @@ public class CC2650 extends Sensor {
     }
   }
 
+  /**
+   * Enable pressure sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
+   */
   private void enablePressureNotification() {
     try {
       this.bw.write(
@@ -158,6 +181,9 @@ public class CC2650 extends Sensor {
     }
   }
 
+  /**
+   * Disable pressure sensor measurement, notification and reset the notification peroid to the default value.
+   */
   private void disablePressureNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_PRESSURE_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
@@ -176,6 +202,8 @@ public class CC2650 extends Sensor {
   }
 
   /**
+   * Enable movement sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
+   *
    * TODO Fixed acceleration range at -8, +8 G
    */
   private void enableMovementNotification() {
@@ -196,6 +224,9 @@ public class CC2650 extends Sensor {
     }
   }
 
+  /**
+   * Disable movement sensor measurement, notification and reset the notification peroid to the default value.
+   */
   private void disableMovementNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_MOVEMENT_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
@@ -225,7 +256,7 @@ public class CC2650 extends Sensor {
     }
     if (this.sensorConfiguration.containsSetting(SensorConfiguration.AMBIENTLIGHT)) {
       this.sampleLoggers.put(SensorConfiguration.AMBIENTLIGHT, new SampleLogger(this.properties, SensorConfiguration.AMBIENTLIGHT, this.name.name()));
-      enableLightNotification();
+      enableAmbientlightNotification();
     }
     if (this.sensorConfiguration.containsSetting(SensorConfiguration.PRESSURE)) {
       this.sampleLoggers.put(SensorConfiguration.PRESSURE, new SampleLogger(this.properties, SensorConfiguration.PRESSURE, this.name.name()));
@@ -248,7 +279,7 @@ public class CC2650 extends Sensor {
       this.sampleLoggers.get(SensorConfiguration.HUMIDITY).close();
     }
     if (this.sensorConfiguration.containsSetting(SensorConfiguration.AMBIENTLIGHT)) {
-      disableLightNotification();
+      disableAmbientlightNotification();
       this.sampleLoggers.get(SensorConfiguration.AMBIENTLIGHT).close();
     }
     if (this.sensorConfiguration.containsSetting(SensorConfiguration.PRESSURE)) {
@@ -262,7 +293,6 @@ public class CC2650 extends Sensor {
   }
 
   /**
-   *
    * @param data
    * @return Temperature in degrees Celsius (°C)
    */
@@ -275,7 +305,6 @@ public class CC2650 extends Sensor {
   }
 
   /**
-   *
    * @param data
    * @return Temperature in degrees Celsius (°C)
    */
@@ -392,7 +421,7 @@ public class CC2650 extends Sensor {
     return "Magnetism X:" + magX + "uT Y:" + magY + "uT Z:" + magZ + "uT";
   }
 
-  // TODO split different measurement types from one sensor to different files
+  // TODO split different measurement types from one sensor to different files. Remove duplicated measures like temperature?
   @Override
   public void processSensorData(String handle, String rawHexValues) {
     rawHexValues = rawHexValues.replace(" ", "");

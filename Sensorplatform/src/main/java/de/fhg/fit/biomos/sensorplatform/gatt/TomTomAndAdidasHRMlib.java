@@ -3,7 +3,9 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 import java.util.UUID;
 
 /**
- * Heart Rate Monitor from TomTom. Seems to be the same hardware as Adidas HRM. Used UUIDs and handles are identical for both devices.
+ * Heart Rate Monitor from TomTom. Seems to be the same hardware as Adidas HRM. Used UUIDs and handles are identical for both devices. Skin contact with both
+ * electrodes to enable the device for a few seconds. The device indicates skin contact and will shut down automatically after several seconds without skin
+ * contact.
  *
  * @author Daniel Pyka
  *

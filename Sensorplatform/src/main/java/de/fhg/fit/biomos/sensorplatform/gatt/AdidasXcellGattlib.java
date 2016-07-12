@@ -1,5 +1,11 @@
 package de.fhg.fit.biomos.sensorplatform.gatt;
 
+/**
+ * Unclear if we will support this device.
+ * 
+ * @author Daniel Pyka
+ *
+ */
 public abstract class AdidasXcellGattlib {
 
   // gatttool -I
