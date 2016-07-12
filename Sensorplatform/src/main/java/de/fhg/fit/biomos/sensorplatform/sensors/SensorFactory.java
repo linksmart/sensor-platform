@@ -29,10 +29,10 @@ public class SensorFactory {
 
   public SensorFactory(Properties properties) {
     this.properties = properties;
-    String sensorsDescriptionFile = this.properties.getProperty("sensor.description.file");
-    JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(sensorsDescriptionFile));
+    String sensorsConfigurationFile = this.properties.getProperty("sensor.configuration.file");
+    JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(sensorsConfigurationFile));
     this.sensorsConfiguration = new JSONArray(tokener);
-    LOG.info("sensor configuration file " + sensorsDescriptionFile);
+    LOG.info("sensor configuration file " + sensorsConfigurationFile);
   }
 
   public List<Sensor> createSensorsFromConfigurationFile() {

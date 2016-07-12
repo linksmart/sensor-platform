@@ -6,8 +6,7 @@ public class AmbientLightCalc {
     String data = "f4 59";
 
     data = data.replace(" ", "");
-    String val = data.substring(0, 4);
-    val = (val + val.substring(0, 2)).substring(2, 6);
+    String val = data.substring(2, 4) + data.substring(0, 2);
 
     int raw = Integer.parseInt(val, 16);
 

@@ -1,4 +1,0 @@
-Raspbian Jessie
-10.05.2016
-Kernel version 4.4
-Bluez version 5.40

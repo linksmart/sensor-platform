@@ -267,13 +267,11 @@ public class CC2650 extends Sensor {
    * @return Temperature in degrees Celsius (°C)
    */
   private String getIRtemperatureFromTemperatureSensor(String data) {
-    String valHex = data.substring(0, 4);
-    valHex = (valHex + valHex.substring(0, 2)).substring(2, 6);
+    int raw = (Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16)) >>> 2;
 
-    int val = (Integer.parseInt(valHex, 16)) >>> 2;
-    float object = Math.round(val * 0.03125f * 10) / 10.0f;
+    float objectTemperature = Math.round(raw * 0.03125f * 10) / 10.0f;
 
-    return "Object temperature (IR): " + object + "°C";
+    return "Object temperature (IR): " + objectTemperature + "°C";
   }
 
   /**
@@ -282,13 +280,11 @@ public class CC2650 extends Sensor {
    * @return Temperature in degrees Celsius (°C)
    */
   private String getDieTemperatureFromTemperatureSensor(String data) {
-    String valHex = data.substring(4, 8);
-    valHex = (valHex + valHex.substring(0, 2)).substring(2, 6);
+    int raw = (Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16)) >>> 2;
 
-    int val = (Integer.parseInt(valHex, 16)) >>> 2;
-    float ambience = Math.round(val * 0.03125f * 10) / 10.0f;
+    float dieTemperature = Math.round(raw * 0.03125f * 10) / 10.0f;
 
-    return "Die temperature: " + ambience + "°C";
+    return "Die temperature: " + dieTemperature + "°C";
   }
 
   /**
@@ -298,9 +294,9 @@ public class CC2650 extends Sensor {
    * @return Temperature in degrees Celsius (°C)
    */
   private String getTemperatureFromBarometricPressureSensor(String data) {
-    int rawTemp = Integer.parseInt(data.substring(4, 6) + data.substring(2, 4) + data.substring(0, 2), 16);
-    float temp = rawTemp / 100.0f;
-    return "Temperature (press): " + temp + "°C";
+    int raw = Integer.parseInt(data.substring(4, 6) + data.substring(2, 4) + data.substring(0, 2), 16);
+    float temperature = raw / 100.0f;
+    return "Temperature (press): " + temperature + "°C";
   }
 
   /**
@@ -310,9 +306,9 @@ public class CC2650 extends Sensor {
    * @return Pressure in hectopascal (hPa)
    */
   private String getPressure(String data) {
-    int rawPress = Integer.parseInt(data.substring(10, 12) + data.substring(8, 10) + data.substring(6, 8), 16);
-    float press = rawPress / 100.0f;
-    return "Pressure: " + press + "hPa";
+    int raw = Integer.parseInt(data.substring(10, 12) + data.substring(8, 10) + data.substring(6, 8), 16);
+    float pressure = raw / 100.0f;
+    return "Pressure: " + pressure + "hPa";
   }
 
   /**
@@ -321,12 +317,11 @@ public class CC2650 extends Sensor {
    * @return Temperature in degrees Celsius (°C)
    */
   private String getTemperatureFromHumiditySensor(String data) {
-    String val = data.substring(0, 4);
-    val = (val + val.substring(0, 2)).substring(2, 6);
+    int raw = Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16);
 
-    float temp = Math.round(((((float) Integer.parseInt(val, 16)) / 65536) * 165 - 40) * 10) / 10.0f;
+    float temperature = Math.round((((float) raw / 65536) * 165 - 40) * 10) / 10.0f;
 
-    return "Temperature (hum): " + temp + "°C";
+    return "Temperature (hum): " + temperature + "°C";
   }
 
   /**
@@ -335,12 +330,11 @@ public class CC2650 extends Sensor {
    * @return Relative Humidity (%RH)
    */
   private String getRelativeHumidty(String data) {
-    String val = data.substring(4, 8);
-    val = (val + val.substring(0, 2)).substring(2, 6);
+    int raw = Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16);
 
-    float hum = Math.round(((((float) Integer.parseInt(val, 16)) / 65536) * 100) * 10) / 10.0f;
+    float humidity = Math.round((((float) raw / 65536) * 100) * 10) / 10.0f;
 
-    return "Relative humidity: " + hum + "%RH";
+    return "Relative humidity: " + humidity + "%RH";
   }
 
   /**
@@ -349,17 +343,14 @@ public class CC2650 extends Sensor {
    * @return Light intensity in LUX
    */
   private String getAmbientLight(String data) {
-    String val = data.substring(0, 4);
-    val = (val + val.substring(0, 2)).substring(2, 6);
-
-    int raw = Integer.parseInt(val, 16);
+    int raw = Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16);
 
     int m = raw & 0x0FFF;
     int e = (raw & 0xF000) >>> 12;
 
-    float light = (float) (m * (0.01 * Math.pow(2.0, e)));
+    float ambientlight = (float) (m * (0.01 * Math.pow(2.0, e)));
 
-    return "Ambientlight: " + light + "lx";
+    return "Ambientlight: " + ambientlight + "lx";
   }
 
   /**

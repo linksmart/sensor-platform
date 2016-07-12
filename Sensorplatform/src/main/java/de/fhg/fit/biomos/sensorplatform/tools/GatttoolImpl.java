@@ -99,7 +99,7 @@ public class GatttoolImpl implements Gatttool {
       this.bw.write(CMD_CONNECT);
       this.bw.newLine();
       this.bw.flush();
-      LOG.info("Attempting to connect to " + this.sensor.getBdaddress() + "for " + timeout + "s");
+      LOG.info("Attempting to connect to " + this.sensor.getBdaddress() + " for " + timeout + "s");
 
       long startTime = System.currentTimeMillis();
       while (false || (System.currentTimeMillis() - startTime) < timeout * 1000) {
