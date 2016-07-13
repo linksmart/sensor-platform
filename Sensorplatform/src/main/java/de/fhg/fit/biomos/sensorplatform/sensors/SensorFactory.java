@@ -1,7 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -30,7 +29,7 @@ public class SensorFactory {
 
   public SensorFactory(Properties properties) {
     this.properties = properties;
-    String sensorsConfigurationFile = this.properties.getProperty("sensor.configuration.file");
+    String sensorsConfigurationFile = this.properties.getProperty("default.sensor.configuration.file");
     JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(sensorsConfigurationFile));
     this.sensorsConfiguration = new JSONArray(tokener);
     LOG.info("sensor configuration file " + sensorsConfigurationFile);
@@ -45,17 +44,11 @@ public class SensorFactory {
     List<Sensor> sensorList = new ArrayList<Sensor>();
     for (int i = 0; i < this.sensorsConfiguration.length(); i++) {
       JSONObject sensorDescription = this.sensorsConfiguration.getJSONObject(i);
-      SensorName name = SensorName.valueOf(sensorDescription.getString("name"));
-      String bdAddress = sensorDescription.getString("bdaddress");
-      AddressType addressType = AddressType.valueOf(sensorDescription.getString("addresstype"));
+      SensorName name = SensorName.valueOf(sensorDescription.getString(SensorConfiguration.NAME));
+      String bdAddress = sensorDescription.getString(SensorConfiguration.BDADDRESS);
+      AddressType addressType = AddressType.valueOf(sensorDescription.getString(SensorConfiguration.ADDRESSTYPE));
 
-      JSONObject sensorConfig = sensorDescription.getJSONObject("configuration");
-      SensorConfiguration sensorConfiguration = new SensorConfiguration();
-
-      for (Iterator<String> iter = sensorConfig.keys(); iter.hasNext();) {
-        String key = iter.next();
-        sensorConfiguration.addSetting(key, sensorConfig.getString(key));
-      }
+      JSONObject sensorConfiguration = sensorDescription.getJSONObject(SensorConfiguration.CONFIGURATION);
 
       Sensor sensor = null;
       switch (name) {

@@ -3,34 +3,53 @@
 	"bdaddress": "00:22:D0:AA:1F:B1",
 	"addresstype": "PUBLIC",
 	"configuration": {
-		"onlinemode": "false",
-		"webinterface": "ditg"
+		"logging": {
+			"console": true,
+			"file": true,
+			"webinterface": "ditg"
+		},
+		"measures": {}
 	}
 }, {
 	"name": "AdidasHRM",
 	"bdaddress": "CB:A2:4A:FE:0F:DA",
 	"addresstype": "RANDOM",
 	"configuration": {
-		"onlinemode": "false",
-		"webinterface": "ditg"
+		"logging": {
+			"console": true,
+			"file": true,
+			"webinterface": "ditg"
+		},
+		"measures": {}
 	}
 }, {
 	"name": "TomTomHRM",
 	"bdaddress": "F4:2C:87:24:12:09",
 	"addresstype": "RANDOM",
 	"configuration": {
-		"onlinemode": "false",
-		"webinterface": "ditg"
+		"logging": {
+			"console": true,
+			"file": true,
+			"webinterface": "ditg"
+		},
+		"measures": {}
 	}
 }, {
 	"name": "CC2650",
 	"bdaddress": "A0:E6:F8:B6:37:05",
 	"addresstype": "PUBLIC",
 	"configuration": {
-		"irtemperature": "1E",
-		"humidity": "0A",
-		"pressure": "0A",
-		"ambientlight": "0A",
-		"movement": "0A"
+		"logging": {
+			"console": true,
+			"file": true,
+			"webinterface": ""
+		},
+		"measures": {
+			"irtemperature": "64",
+			"humidity": "64",
+			"ambientlight": "50",
+			"pressure": "64",
+			"movement": "64"
+		}
 	}
 }]

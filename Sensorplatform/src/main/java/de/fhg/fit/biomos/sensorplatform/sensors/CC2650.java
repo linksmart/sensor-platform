@@ -1,10 +1,13 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +15,8 @@ import de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib;
 import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
+import de.fhg.fit.biomos.sensorplatform.util.Unit;
 
 /**
  * @see <a href="http://processors.wiki.ti.com/index.php/CC2650_SensorTag_User's_Guide">CC2650 SensorTag User's Guide</a>
@@ -27,14 +30,16 @@ public class CC2650 extends Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(CC2650.class);
 
-  private final SensorConfiguration sensorConfiguration;
+  public static final String IRTEMPERATURE = "irtemperature";
+  public static final String HUMIDITY = "humidity";
+  public static final String AMBIENTLIGHT = "ambientlight";
+  public static final String PRESSURE = "pressure";
+  public static final String MOVEMENT = "movement";
 
   Map<String, SampleLogger> sampleLoggers = new HashMap<String, SampleLogger>();
 
-  public CC2650(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorConfiguration sensorConfiguration) {
-    super(properties, name, bdAddress, addressType);
-
-    this.sensorConfiguration = sensorConfiguration;
+  public CC2650(Properties properties, SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
+    super(properties, name, bdAddress, addressType, sensorConfiguration);
   }
 
   /**
@@ -42,8 +47,7 @@ public class CC2650 extends Sensor {
    */
   private void enableTemperatureNotification() {
     try {
-      this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " "
-          + this.sensorConfiguration.getSetting(SensorConfiguration.IRTEMPERATURE));
+      this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + this.measuresConfiguration.getString(IRTEMPERATURE));
       this.bw.newLine();
       this.bw.flush();
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_IR_TEMPERATURE_ENABLE + " " + GatttoolImpl.ENABLE_MEASUREMENT);
@@ -83,8 +87,7 @@ public class CC2650 extends Sensor {
    */
   private void enableHumidityNotification() {
     try {
-      this.bw.write(
-          GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + this.sensorConfiguration.getSetting(SensorConfiguration.HUMIDITY));
+      this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + this.measuresConfiguration.getString(HUMIDITY));
       this.bw.newLine();
       this.bw.flush();
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_HUMIDITY_ENABLE + " " + GatttoolImpl.ENABLE_MEASUREMENT);
@@ -124,8 +127,7 @@ public class CC2650 extends Sensor {
    */
   private void enableAmbientlightNotification() {
     try {
-      this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " "
-          + this.sensorConfiguration.getSetting(SensorConfiguration.AMBIENTLIGHT));
+      this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + this.measuresConfiguration.getString(AMBIENTLIGHT));
       this.bw.newLine();
       this.bw.flush();
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_AMBIENTLIGHT_ENABLE + " " + GatttoolImpl.ENABLE_MEASUREMENT);
@@ -165,8 +167,7 @@ public class CC2650 extends Sensor {
    */
   private void enablePressureNotification() {
     try {
-      this.bw.write(
-          GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + this.sensorConfiguration.getSetting(SensorConfiguration.PRESSURE));
+      this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + this.measuresConfiguration.getString(PRESSURE));
       this.bw.newLine();
       this.bw.flush();
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_PRESSURE_ENABLE + " " + GatttoolImpl.ENABLE_MEASUREMENT);
@@ -208,8 +209,7 @@ public class CC2650 extends Sensor {
    */
   private void enableMovementNotification() {
     try {
-      this.bw.write(
-          GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + this.sensorConfiguration.getSetting(SensorConfiguration.MOVEMENT));
+      this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + this.measuresConfiguration.getString(MOVEMENT));
       this.bw.newLine();
       this.bw.flush();
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + CC2650lib.HANDLE_MOVEMENT_ENABLE + " " + CC2650lib.VALUE_MOVEMENT_ACTIVATE_ALL_16G);
@@ -246,49 +246,69 @@ public class CC2650 extends Sensor {
 
   @Override
   public void enableNotification() {
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.IRTEMPERATURE)) {
-      this.sampleLoggers.put(SensorConfiguration.IRTEMPERATURE, new SampleLogger(this.properties, SensorConfiguration.IRTEMPERATURE, this.name.name()));
+    if (this.measuresConfiguration.has(IRTEMPERATURE)) {
+      if (this.fileLogging) {
+        this.sampleLoggers.put(IRTEMPERATURE, new SampleLogger(IRTEMPERATURE, this.name.name()));
+        this.sampleLoggers.get(IRTEMPERATURE).addDescriptionLine("Infrared temperature [" + Unit.DEGREES_CELSIUS + "]");
+        this.sampleLoggers.get(IRTEMPERATURE).addDescriptionLine("Die temperature [" + Unit.DEGREES_CELSIUS + "]");
+      }
       enableTemperatureNotification();
     }
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.HUMIDITY)) {
-      this.sampleLoggers.put(SensorConfiguration.HUMIDITY, new SampleLogger(this.properties, SensorConfiguration.HUMIDITY, this.name.name()));
+    if (this.measuresConfiguration.has(HUMIDITY)) {
+      if (this.fileLogging) {
+        this.sampleLoggers.put(HUMIDITY, new SampleLogger(HUMIDITY, this.name.name()));
+        this.sampleLoggers.get(HUMIDITY).addDescriptionLine("Temperature [" + Unit.DEGREES_CELSIUS + "]");
+        this.sampleLoggers.get(HUMIDITY).addDescriptionLine("Humidity [" + Unit.PERCENT_RELATIVE_HUMIDITY + "]");
+      }
       enableHumidityNotification();
     }
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.AMBIENTLIGHT)) {
-      this.sampleLoggers.put(SensorConfiguration.AMBIENTLIGHT, new SampleLogger(this.properties, SensorConfiguration.AMBIENTLIGHT, this.name.name()));
+    if (this.measuresConfiguration.has(AMBIENTLIGHT)) {
+      if (this.fileLogging) {
+        this.sampleLoggers.put(AMBIENTLIGHT, new SampleLogger(AMBIENTLIGHT, this.name.name()));
+        this.sampleLoggers.get(AMBIENTLIGHT).addDescriptionLine("Ambient light [" + Unit.LUX + "]");
+      }
       enableAmbientlightNotification();
     }
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.PRESSURE)) {
-      this.sampleLoggers.put(SensorConfiguration.PRESSURE, new SampleLogger(this.properties, SensorConfiguration.PRESSURE, this.name.name()));
+    if (this.measuresConfiguration.has(PRESSURE)) {
+      if (this.fileLogging) {
+        this.sampleLoggers.put(PRESSURE, new SampleLogger(PRESSURE, this.name.name()));
+        this.sampleLoggers.get(PRESSURE).addDescriptionLine("Temperature [" + Unit.DEGREES_CELSIUS + "]");
+        this.sampleLoggers.get(PRESSURE).addDescriptionLine("Pressure [" + Unit.HEKTOPASCAL + "]");
+      }
       enablePressureNotification();
     }
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.MOVEMENT)) {
-      this.sampleLoggers.put(SensorConfiguration.MOVEMENT, new SampleLogger(this.properties, SensorConfiguration.MOVEMENT, this.name.name()));
+    if (this.measuresConfiguration.has(MOVEMENT)) {
+      if (this.fileLogging) {
+        this.sampleLoggers.put(MOVEMENT, new SampleLogger(MOVEMENT, this.name.name()));
+        this.sampleLoggers.get(MOVEMENT).addDescriptionLine("Rotation X Y Z [" + Unit.DEGREES_PER_SECOND + "]");
+        this.sampleLoggers.get(MOVEMENT).addDescriptionLine("Acceleration X Y Z [" + Unit.G_FORCE + "]");
+        this.sampleLoggers.get(MOVEMENT).addDescriptionLine("Magnetism X Y Z [" + Unit.MICROTESLA + "]");
+      }
       enableMovementNotification();
     }
   }
 
   @Override
   public void disableNotification() {
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.IRTEMPERATURE)) {
+    if (this.measuresConfiguration.has(IRTEMPERATURE)) {
       disableTemperatureNotification();
-      this.sampleLoggers.get(SensorConfiguration.IRTEMPERATURE).close();
     }
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.HUMIDITY)) {
+    if (this.measuresConfiguration.has(HUMIDITY)) {
       disableHumidityNotification();
-      this.sampleLoggers.get(SensorConfiguration.HUMIDITY).close();
+
     }
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.AMBIENTLIGHT)) {
+    if (this.measuresConfiguration.has(AMBIENTLIGHT)) {
       disableAmbientlightNotification();
-      this.sampleLoggers.get(SensorConfiguration.AMBIENTLIGHT).close();
+
     }
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.PRESSURE)) {
+    if (this.measuresConfiguration.has(PRESSURE)) {
       disablePressureNotification();
-      this.sampleLoggers.get(SensorConfiguration.PRESSURE).close();
     }
-    if (this.sensorConfiguration.containsSetting(SensorConfiguration.MOVEMENT)) {
+    if (this.measuresConfiguration.has(MOVEMENT)) {
       disableMovementNotification();
-      this.sampleLoggers.get(SensorConfiguration.MOVEMENT).close();
+    }
+    for (Entry<String, SampleLogger> entry : this.sampleLoggers.entrySet()) {
+      entry.getValue().close();
     }
   }
 
@@ -296,24 +316,18 @@ public class CC2650 extends Sensor {
    * @param data
    * @return Temperature in degrees Celsius (°C)
    */
-  private String getIRtemperatureFromTemperatureSensor(String data) {
+  private float getIRtemperatureFromTemperatureSensor(String data) {
     int raw = (Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16)) >>> 2;
-
-    float objectTemperature = Math.round(raw * 0.03125f * 10) / 10.0f;
-
-    return "Object temperature (IR): " + objectTemperature + "°C";
+    return Math.round(raw * 0.03125f * 10) / 10.0f;
   }
 
   /**
    * @param data
    * @return Temperature in degrees Celsius (°C)
    */
-  private String getDieTemperatureFromTemperatureSensor(String data) {
+  private float getDieTemperatureFromTemperatureSensor(String data) {
     int raw = (Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16)) >>> 2;
-
-    float dieTemperature = Math.round(raw * 0.03125f * 10) / 10.0f;
-
-    return "Die temperature: " + dieTemperature + "°C";
+    return Math.round(raw * 0.03125f * 10) / 10.0f;
   }
 
   /**
@@ -322,10 +336,9 @@ public class CC2650 extends Sensor {
    * @param data
    * @return Temperature in degrees Celsius (°C)
    */
-  private String getTemperatureFromBarometricPressureSensor(String data) {
+  private float getTemperatureFromBarometricPressureSensor(String data) {
     int raw = Integer.parseInt(data.substring(4, 6) + data.substring(2, 4) + data.substring(0, 2), 16);
-    float temperature = raw / 100.0f;
-    return "Temperature (press): " + temperature + "°C";
+    return raw / 100.0f;
   }
 
   /**
@@ -334,10 +347,9 @@ public class CC2650 extends Sensor {
    * @param data
    * @return Pressure in hectopascal (hPa)
    */
-  private String getPressure(String data) {
+  private float getPressure(String data) {
     int raw = Integer.parseInt(data.substring(10, 12) + data.substring(8, 10) + data.substring(6, 8), 16);
-    float pressure = raw / 100.0f;
-    return "Pressure: " + pressure + "hPa";
+    return raw / 100.0f;
   }
 
   /**
@@ -345,12 +357,9 @@ public class CC2650 extends Sensor {
    * @param data
    * @return Temperature in degrees Celsius (°C)
    */
-  private String getTemperatureFromHumiditySensor(String data) {
+  private float getTemperatureFromHumiditySensor(String data) {
     int raw = Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16);
-
-    float temperature = Math.round((((float) raw / 65536) * 165 - 40) * 10) / 10.0f;
-
-    return "Temperature (hum): " + temperature + "°C";
+    return Math.round((((float) raw / 65536) * 165 - 40) * 10) / 10.0f;
   }
 
   /**
@@ -358,12 +367,9 @@ public class CC2650 extends Sensor {
    * @param data
    * @return Relative Humidity (%RH)
    */
-  private String getRelativeHumidty(String data) {
+  private float getRelativeHumidty(String data) {
     int raw = Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16);
-
-    float humidity = Math.round((((float) raw / 65536) * 100) * 10) / 10.0f;
-
-    return "Relative humidity: " + humidity + "%RH";
+    return Math.round((((float) raw / 65536) * 100) * 10) / 10.0f;
   }
 
   /**
@@ -371,15 +377,11 @@ public class CC2650 extends Sensor {
    * @param data
    * @return Light intensity in LUX
    */
-  private String getAmbientLight(String data) {
+  private float getAmbientLight(String data) {
     int raw = Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16);
-
     int m = raw & 0x0FFF;
     int e = (raw & 0xF000) >>> 12;
-
-    float ambientlight = (float) (m * (0.01 * Math.pow(2.0, e)));
-
-    return "Ambientlight: " + ambientlight + "lx";
+    return (float) (m * (0.01 * Math.pow(2.0, e)));
   }
 
   /**
@@ -392,7 +394,7 @@ public class CC2650 extends Sensor {
     float rotationX = Math.round((Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16) * 1.0f) / (65536 / 500) * 100) / 100.0f;
     float rotationY = Math.round((Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16) * 1.0f) / (65536 / 500) * 100) / 100.0f;
     float rotationZ = Math.round((Integer.parseInt(data.substring(10, 12) + data.substring(8, 10), 16) * 1.0f) / (65536 / 500) * 100) / 100.0f;
-    return "Rotation X:" + rotationX + "deg/s Y:" + rotationY + "deg/s Z:" + rotationZ + "deg/s";
+    return "X:" + rotationX + " Y:" + rotationY + " Z:" + rotationZ;
   }
 
   /**
@@ -405,7 +407,7 @@ public class CC2650 extends Sensor {
     float accX = Math.round((Integer.parseInt(data.substring(14, 16) + data.substring(12, 14), 16) * 1.0f) / (32768 / 16) * 100) / 100.0f;
     float accY = Math.round((Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16) * 1.0f) / (32768 / 16) * 100) / 100.0f;
     float accZ = Math.round((Integer.parseInt(data.substring(22, 24) + data.substring(20, 22), 16) * 1.0f) / (32768 / 16) * 100) / 100.0f;
-    return "Acceleration X:" + accX + "G Y:" + accY + "G Z:" + accZ + "G";
+    return "X:" + accX + " Y:" + accY + " Z:" + accZ;
   }
 
   /**
@@ -418,33 +420,64 @@ public class CC2650 extends Sensor {
     int magX = Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16);
     int magY = Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16);
     int magZ = Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
-    return "Magnetism X:" + magX + "uT Y:" + magY + "uT Z:" + magZ + "uT";
+    return "X:" + magX + " Y:" + magY + " Z:" + magZ;
   }
 
   // TODO split different measurement types from one sensor to different files. Remove duplicated measures like temperature?
   @Override
   public void processSensorData(String handle, String rawHexValues) {
     rawHexValues = rawHexValues.replace(" ", "");
+    String timestamp = this.formatter.format(Calendar.getInstance().getTime());
     switch (handle) {
       case CC2650lib.HANDLE_IR_TEMPERATURE_VALUE:
-        this.sampleLoggers.get(SensorConfiguration.IRTEMPERATURE).write(getIRtemperatureFromTemperatureSensor(rawHexValues));
-        this.sampleLoggers.get(SensorConfiguration.IRTEMPERATURE).write(getDieTemperatureFromTemperatureSensor(rawHexValues));
+        float objectTemperature = getIRtemperatureFromTemperatureSensor(rawHexValues);
+        float dieTemperature = getDieTemperatureFromTemperatureSensor(rawHexValues);
+        if (this.fileLogging) {
+          this.sampleLoggers.get(IRTEMPERATURE).write(timestamp, objectTemperature + " " + dieTemperature);
+        }
+        if (this.consoleLogging) {
+          System.out.println(timestamp + " " + objectTemperature + " " + dieTemperature);
+        }
         break;
       case CC2650lib.HANDLE_PRESSURE_VALUE:
-        this.sampleLoggers.get(SensorConfiguration.PRESSURE).write(getTemperatureFromBarometricPressureSensor(rawHexValues));
-        this.sampleLoggers.get(SensorConfiguration.PRESSURE).write(getPressure(rawHexValues));
+        float temperatureBaro = getTemperatureFromBarometricPressureSensor(rawHexValues);
+        float pressure = getPressure(rawHexValues);
+        if (this.fileLogging) {
+          this.sampleLoggers.get(PRESSURE).write(timestamp, temperatureBaro + " " + pressure);
+        }
+        if (this.consoleLogging) {
+          System.out.println(timestamp + " " + temperatureBaro + " " + pressure);
+        }
         break;
       case CC2650lib.HANDLE_AMBIENTLIGHT_VALUE:
-        this.sampleLoggers.get(SensorConfiguration.AMBIENTLIGHT).write(getAmbientLight(rawHexValues));
+        float ambientlight = getAmbientLight(rawHexValues);
+        if (this.fileLogging) {
+          this.sampleLoggers.get(AMBIENTLIGHT).write(timestamp, Float.toString(ambientlight));
+        }
+        if (this.consoleLogging) {
+          System.out.println(timestamp + " " + ambientlight);
+        }
         break;
       case CC2650lib.HANDLE_HUMIDITY_VALUE:
-        this.sampleLoggers.get(SensorConfiguration.HUMIDITY).write(getTemperatureFromHumiditySensor(rawHexValues));
-        this.sampleLoggers.get(SensorConfiguration.HUMIDITY).write(getRelativeHumidty(rawHexValues));
+        float temperatureHum = getTemperatureFromHumiditySensor(rawHexValues);
+        float humidity = getRelativeHumidty(rawHexValues);
+        if (this.fileLogging) {
+          this.sampleLoggers.get(HUMIDITY).write(timestamp, temperatureHum + " " + humidity);
+        }
+        if (this.consoleLogging) {
+          System.out.println(timestamp + " " + temperatureHum + " " + humidity);
+        }
         break;
       case CC2650lib.HANDLE_MOVEMENT_VALUE:
-        this.sampleLoggers.get(SensorConfiguration.MOVEMENT).write(getRotation(rawHexValues));
-        this.sampleLoggers.get(SensorConfiguration.MOVEMENT).write(getAcceleration(rawHexValues));
-        this.sampleLoggers.get(SensorConfiguration.MOVEMENT).write(getMagnetism(rawHexValues));
+        String rotation = getRotation(rawHexValues);
+        String acceleration = getAcceleration(rawHexValues);
+        String magnetism = getMagnetism(rawHexValues);
+        if (this.fileLogging) {
+          this.sampleLoggers.get(MOVEMENT).write(timestamp, rotation + " " + acceleration + " " + magnetism);
+        }
+        if (this.consoleLogging) {
+          System.out.println(timestamp + " " + rotation + " " + acceleration + " " + magnetism);
+        }
         break;
       default:
         LOG.error("unexpected handle notification " + handle + " : " + rawHexValues);

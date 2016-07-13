@@ -1,8 +1,10 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Properties;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,10 +12,10 @@ import de.fhg.fit.biomos.sensorplatform.gatt.TomTomAndAdidasHRMlib;
 import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.web.DITGhttpUploader;
-import de.fhg.fit.biomos.sensorplatform.web.HttpUploader;
+import de.fhg.fit.biomos.sensorplatform.util.Unit;
+import de.fhg.fit.biomos.sensorplatform.web.DITGuploader;
+import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
  * @see {@link de.fhg.fit.biomos.sensorplatform.gatt.TomTomAndAdidasHRMlib}
@@ -29,23 +31,23 @@ public class TomTomAdidas extends Sensor {
 
   private SampleLogger sampleLogger = null;
 
-  private final boolean onlineMode;
-  private HttpUploader uploader;
+  private Uploader uploader;
 
-  private final SensorConfiguration sensorConfiguration;
+  public TomTomAdidas(Properties properties, SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
+    super(properties, name, bdAddress, addressType, sensorConfiguration);
 
-  public TomTomAdidas(Properties properties, SensorName name, String bdAddress, AddressType addressType, SensorConfiguration sensorConfiguration) {
-    super(properties, name, bdAddress, addressType);
-
-    this.sensorConfiguration = sensorConfiguration;
-
-    this.onlineMode = new Boolean(this.sensorConfiguration.getSetting(SensorConfiguration.ONLINEMODE));
-    LOG.info("online mode: " + this.onlineMode);
-
-    // TODO make more dynamic?
-    if (this.onlineMode && sensorConfiguration.getSetting(SensorConfiguration.WEBINTERFACE).equals("ditg")) {
-      this.uploader = new DITGhttpUploader(properties);
-      this.uploader.login();
+    // Modifiy in case of different webinterfaces
+    switch (this.webinterface) {
+      case "ditg":
+        this.uploader = new DITGuploader(properties);
+        this.uploader.login();
+        break;
+      case "":
+        LOG.info("No webinterface specified");
+        break;
+      default:
+        LOG.error("Unknown webinterface name: " + this.webinterface);
+        break;
     }
   }
 
@@ -77,7 +79,8 @@ public class TomTomAdidas extends Sensor {
 
   @Override
   public void enableNotification() {
-    this.sampleLogger = new SampleLogger(this.properties, HEARTRATE, this.name.name());
+    this.sampleLogger = new SampleLogger(HEARTRATE, this.name.name());
+    this.sampleLogger.addDescriptionLine("Heartrate [" + Unit.BPM + "]");
     enableHeartRateNotification();
   }
 
@@ -90,6 +93,7 @@ public class TomTomAdidas extends Sensor {
   @Override
   public void processSensorData(String handle, String rawHexValues) {
     if (handle.equals(TomTomAndAdidasHRMlib.HANDLE_HEART_RATE_MEASUREMENT)) {
+      String timestamp = this.formatter.format(Calendar.getInstance().getTime());
       // byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
       // int heartrate = 0;
 
@@ -103,18 +107,20 @@ public class TomTomAdidas extends Sensor {
       // heartrate = Integer.parseInt(rawHexValues.substring(3, 5), 16);
       // }
 
-      int heartrate = Integer.parseInt(rawHexValues.substring(3, 5), 16);
+      String heartrate = Integer.toString(Integer.parseInt(rawHexValues.substring(3, 5), 16));
 
-      String hrm = heartrate + " Hz";
-      this.sampleLogger.write(hrm);
-
-      if (this.onlineMode) {
-        this.uploader.sendData(this.bdAddress, "HeartRate", hrm, "bpm");
+      if (this.fileLogging) {
+        this.sampleLogger.write(timestamp, heartrate);
+      }
+      if (this.consoleLogging) {
+        System.out.println(timestamp + " " + heartrate);
+      }
+      if (this.uploader != null) {
+        this.uploader.sendData(this.bdAddress, "HeartRate", heartrate, "bpm");
       }
     } else {
-      LOG.error("unexpected handle notification " + handle + " : " + rawHexValues);
+      LOG.error("unexpected handle notification " + handle + " " + rawHexValues);
     }
-
   }
 
 }

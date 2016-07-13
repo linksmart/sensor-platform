@@ -72,9 +72,7 @@ public class HRcalc {
     int i = 1;
     while (m.find()) {
       String tmp = m.group(0);
-      tmp = tmp + tmp.substring(0, 2);
-      tmp = tmp.substring(3);
-      System.out.println("rr-interval " + i++ + ": " + Integer.parseInt(tmp, 16) + " bpm/ms");
+      System.out.println("rr-interval " + i++ + ": " + Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16) + " bpm/ms");
     }
   }
 

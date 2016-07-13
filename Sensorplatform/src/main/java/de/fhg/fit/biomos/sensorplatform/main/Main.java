@@ -1,6 +1,5 @@
 package de.fhg.fit.biomos.sensorplatform.main;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -26,7 +25,6 @@ public class Main {
    * TODO dependency injection for properties
    */
   public Main() {
-
     try {
       this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFilename));
     } catch (IOException e) {
@@ -40,12 +38,6 @@ public class Main {
     // System.exit(0);
 
     LOG.info("version is " + this.properties.getProperty("version"));
-    File sensorsDataDirectory = new File(this.properties.getProperty("sensor.data.directory"));
-    LOG.info("data directory is " + sensorsDataDirectory.getAbsolutePath());
-    if (!sensorsDataDirectory.exists()) {
-      sensorsDataDirectory.mkdir();
-      LOG.info("data directory created");
-    }
   }
 
   private void start() {

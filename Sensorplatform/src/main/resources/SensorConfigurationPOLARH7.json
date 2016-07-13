@@ -3,7 +3,11 @@
 	"bdaddress": "00:22:D0:AA:1F:B1",
 	"addresstype": "PUBLIC",
 	"configuration": {
-		"onlinemode": "true",
-		"webinterface": "ditg"
+		"logging": {
+			"console": true,
+			"file": true,
+			"webinterface": "ditg"
+		},
+		"measures": {}
 	}
 }]

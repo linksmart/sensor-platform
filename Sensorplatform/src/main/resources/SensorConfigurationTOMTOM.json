@@ -3,7 +3,11 @@
 	"bdaddress": "F4:2C:87:24:12:09",
 	"addresstype": "RANDOM",
 	"configuration": {
-		"onlinemode": "false",
-		"webinterface": "ditg"
+		"logging": {
+			"console": true,
+			"file": true,
+			"webinterface": "ditg"
+		},
+		"measures": {}
 	}
 }]

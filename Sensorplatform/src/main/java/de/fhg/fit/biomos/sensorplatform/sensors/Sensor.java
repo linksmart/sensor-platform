@@ -1,11 +1,13 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.BufferedWriter;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import org.json.JSONObject;
 
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
@@ -19,17 +21,33 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 public abstract class Sensor implements SensorCommands {
 
   protected final Properties properties;
+
   protected final SensorName name;
   protected final String bdAddress;
   protected final AddressType addressType;
+  protected final boolean consoleLogging;
+  protected final boolean fileLogging;
+  protected final String webinterface;
+  protected final JSONObject measuresConfiguration;
 
   protected BufferedWriter bw = null;
 
-  public Sensor(Properties properties, SensorName name, String bdAddress, AddressType addressType) {
+  protected final SimpleDateFormat formatter;
+
+  public Sensor(Properties properties, SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
     this.properties = properties;
     this.name = name;
     this.bdAddress = bdAddress;
     this.addressType = addressType;
+
+    JSONObject loggingConfiguration = sensorConfiguration.getJSONObject(SensorConfiguration.LOGGING);
+    this.consoleLogging = loggingConfiguration.getBoolean(SensorConfiguration.CONSOLE);
+    this.fileLogging = loggingConfiguration.getBoolean(SensorConfiguration.FILE);
+    this.webinterface = loggingConfiguration.getString(SensorConfiguration.WEBINTERFACE);
+
+    this.measuresConfiguration = sensorConfiguration.getJSONObject(SensorConfiguration.MEASURES);
+
+    this.formatter = new SimpleDateFormat(properties.getProperty("ditg.webinterface.timestamp.format"));
   }
 
   public SensorName getName() {

@@ -22,9 +22,9 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Pyka
  *
  */
-public class DITGhttpUploader implements HttpUploader {
+public class DITGuploader implements Uploader {
 
-  private static final Logger LOG = LoggerFactory.getLogger(DITGhttpUploader.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DITGuploader.class);
 
   private final SimpleDateFormat formatter;
 
@@ -38,7 +38,7 @@ public class DITGhttpUploader implements HttpUploader {
 
   private String authorizationToken = "";
 
-  public DITGhttpUploader(Properties properties) {
+  public DITGuploader(Properties properties) {
     this.formatter = new SimpleDateFormat(properties.getProperty("ditg.webinterface.timestamp.format"));
     LOG.info("time stamp pattern: " + this.formatter.toPattern());
 
