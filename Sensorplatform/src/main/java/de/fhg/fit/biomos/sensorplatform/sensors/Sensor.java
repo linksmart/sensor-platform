@@ -1,9 +1,11 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.BufferedWriter;
-import java.text.SimpleDateFormat;
 import java.util.Properties;
 
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONObject;
 
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
@@ -32,7 +34,7 @@ public abstract class Sensor implements SensorCommands {
 
   protected BufferedWriter bw = null;
 
-  protected final SimpleDateFormat formatter;
+  protected final DateTimeFormatter dtf;
 
   public Sensor(Properties properties, SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
     this.properties = properties;
@@ -47,7 +49,7 @@ public abstract class Sensor implements SensorCommands {
 
     this.measuresConfiguration = sensorConfiguration.getJSONObject(SensorConfiguration.MEASURES);
 
-    this.formatter = new SimpleDateFormat(properties.getProperty("ditg.webinterface.timestamp.format"));
+    this.dtf = DateTimeFormat.forPattern(properties.getProperty("logfile.timestamp.format")).withZone(DateTimeZone.UTC);
   }
 
   public SensorName getName() {

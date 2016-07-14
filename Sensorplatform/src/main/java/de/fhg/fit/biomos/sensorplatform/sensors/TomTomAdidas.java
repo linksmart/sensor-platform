@@ -1,9 +1,9 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Properties;
 
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +93,7 @@ public class TomTomAdidas extends Sensor {
   @Override
   public void processSensorData(String handle, String rawHexValues) {
     if (handle.equals(TomTomAndAdidasHRMlib.HANDLE_HEART_RATE_MEASUREMENT)) {
-      String timestamp = this.formatter.format(Calendar.getInstance().getTime());
+      String timestamp = this.dtf.print(new DateTime());
       // byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
       // int heartrate = 0;
 

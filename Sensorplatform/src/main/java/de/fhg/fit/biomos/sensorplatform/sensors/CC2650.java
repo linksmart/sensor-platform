@@ -1,12 +1,12 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -427,7 +427,7 @@ public class CC2650 extends Sensor {
   @Override
   public void processSensorData(String handle, String rawHexValues) {
     rawHexValues = rawHexValues.replace(" ", "");
-    String timestamp = this.formatter.format(Calendar.getInstance().getTime());
+    String timestamp = this.dtf.print(new DateTime());
     switch (handle) {
       case CC2650lib.HANDLE_IR_TEMPERATURE_VALUE:
         float objectTemperature = getIRtemperatureFromTemperatureSensor(rawHexValues);

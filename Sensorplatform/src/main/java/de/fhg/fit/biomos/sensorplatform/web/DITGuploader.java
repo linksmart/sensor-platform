@@ -6,12 +6,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Properties;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -26,7 +28,7 @@ public class DITGuploader implements Uploader {
 
   private static final Logger LOG = LoggerFactory.getLogger(DITGuploader.class);
 
-  private final SimpleDateFormat formatter;
+  private final DateTimeFormatter dtf;
 
   private final String userName;
   private final String password;
@@ -39,8 +41,8 @@ public class DITGuploader implements Uploader {
   private String authorizationToken = "";
 
   public DITGuploader(Properties properties) {
-    this.formatter = new SimpleDateFormat(properties.getProperty("ditg.webinterface.timestamp.format"));
-    LOG.info("time stamp pattern: " + this.formatter.toPattern());
+    this.dtf = DateTimeFormat.forPattern(properties.getProperty("ditg.webinterface.timestamp.format")).withZone(DateTimeZone.UTC);
+    LOG.info("timestamp pattern: " + properties.getProperty("ditg.webinterface.timestamp.format"));
 
     this.userName = properties.getProperty("ditg.webinterface.username");
     LOG.info("username: " + this.userName);
@@ -65,7 +67,7 @@ public class DITGuploader implements Uploader {
     o.put("quantityType", quantityType);
     o.put("value", value);
     o.put("unit", unit);
-    String format = this.formatter.format(Calendar.getInstance().getTime());
+    String format = this.dtf.print(new DateTime());
     o.put("startDate", format);
     o.put("endDate", format);
     o.put("metadata", new JSONObject().put("device", bdAddress));

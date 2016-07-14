@@ -2,13 +2,13 @@ package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,7 +110,7 @@ public class PolarH7 extends Sensor {
   @Override
   public void processSensorData(String handle, String rawHexValues) {
     if (handle.equals(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT)) {
-      String timestamp = this.formatter.format(Calendar.getInstance().getTime());
+      String timestamp = this.dtf.print(new DateTime());
       byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
       Matcher rrData = null;
 
