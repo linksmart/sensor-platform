@@ -6,8 +6,6 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.web.DITGuploader;
-
 /**
  * @author Daniel Pyka
  */
@@ -34,10 +32,10 @@ public class Main {
       System.exit(1);
     }
     // download samples
-    DITGuploader ditGhttpUploader = new DITGuploader(this.properties);
-    ditGhttpUploader.login();
-    ditGhttpUploader.downloadData();
-    System.exit(0);
+    // DITGuploader ditGhttpUploader = new DITGuploader(this.properties);
+    // ditGhttpUploader.login();
+    // ditGhttpUploader.downloadData();
+    // System.exit(0);
 
     LOG.info("version is " + this.properties.getProperty("version"));
   }

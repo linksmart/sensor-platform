@@ -43,7 +43,7 @@ public abstract class PolarH7lib {
 
   public static final UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
   public static final String HANDLE_HEART_RATE_MEASUREMENT = "0x0012";
-  public static final String HANDLE_HEART_RATE_NOTIFICATION = "0x0013"; // write 01:00 to enable
+  public static final String HANDLE_HEART_RATE_NOTIFICATION = "0x0013";
 
   public static final UUID UUID_BODY_SENSOR_LOCATION = UUID.fromString("00002a38-0000-1000-8000-00805f9b34fb");
   public static final String HANDLE_BODY_SENSOR_LOCATION = "0x0015";

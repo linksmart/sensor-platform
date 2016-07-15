@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Communication class for the DITG webinterface. It basically provides a REST interface for logging in, which returns a cookie for authorisation and another
+ * REST interface for sending samples.
  *
  * @author Daniel Pyka
  *
@@ -27,6 +29,9 @@ import org.slf4j.LoggerFactory;
 public class DITGuploader implements Uploader {
 
   private static final Logger LOG = LoggerFactory.getLogger(DITGuploader.class);
+
+  private static final String QUANTITY_TYPE = "HeartRate";
+  private static final String BPM = "bpm";
 
   private final DateTimeFormatter dtf;
 
@@ -60,13 +65,22 @@ public class DITGuploader implements Uploader {
     LOG.info("download address: " + this.dataDownloadAddress);
   }
 
-  private JSONObject makeJSON(String bdAddress, String quantityType, String value, String unit) {
+  /**
+   * Enrich the sample with some additional data which is required for the DITG webinterface.
+   *
+   * @param bdAddress
+   *          Bluetooth device address of the sensor
+   * @param heartRate
+   *          e.g. 60
+   * @return JSONObject the whole POST content for the https connection
+   */
+  private JSONObject createPOSTcontent(String bdAddress, int heartRate) {
     JSONObject o = new JSONObject();
     o.put("type", "sample");
     o.put("sampleType", "quantity");
-    o.put("quantityType", quantityType);
-    o.put("value", value);
-    o.put("unit", unit);
+    o.put("quantityType", QUANTITY_TYPE);
+    o.put("value", heartRate);
+    o.put("unit", BPM);
     String format = this.dtf.print(new DateTime());
     o.put("startDate", format);
     o.put("endDate", format);
@@ -74,7 +88,15 @@ public class DITGuploader implements Uploader {
     return o;
   }
 
-  private HttpsURLConnection httpsPostRequest(String url) throws IOException {
+  /**
+   * Create a new https connection as POST to the given url.
+   *
+   * @param url
+   *          the webinterface to connect to
+   * @return HttpsURLConnection object
+   * @throws IOException
+   */
+  private HttpsURLConnection newhttpsPostRequest(String url) throws IOException {
     HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(url).openConnection();
     httpsURLConnection.setDoInput(true);
     httpsURLConnection.setDoOutput(true);
@@ -85,7 +107,15 @@ public class DITGuploader implements Uploader {
     return httpsURLConnection;
   }
 
-  private HttpsURLConnection httpsGetRequest(String url) throws IOException {
+  /**
+   * Only for testing! Required for downloading samples.
+   *
+   * @param url
+   *          the webinterface to connect to
+   * @return HttpsURLConnection object
+   * @throws IOException
+   */
+  private HttpsURLConnection newhttpsGetRequest(String url) throws IOException {
     HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(url).openConnection();
     httpsURLConnection.setDoInput(true);
     httpsURLConnection.setDoOutput(false);
@@ -96,9 +126,13 @@ public class DITGuploader implements Uploader {
     return httpsURLConnection;
   }
 
+  /**
+   * Only for testing! Download samples needs authorisation, too. Got some troubles using a REST-client. Therefor this piece of code is added by hand.
+   */
+  @Deprecated
   public void downloadData() {
     try {
-      HttpsURLConnection httpsURLConnection = httpsGetRequest(this.dataDownloadAddress);
+      HttpsURLConnection httpsURLConnection = newhttpsGetRequest(this.dataDownloadAddress);
       httpsURLConnection.setRequestProperty("Authorization", this.authorizationToken);
 
       BufferedReader br = new BufferedReader(new InputStreamReader(httpsURLConnection.getInputStream()));
@@ -118,7 +152,7 @@ public class DITGuploader implements Uploader {
   @Override
   public void login() {
     try {
-      HttpsURLConnection httpsURLConnection = httpsPostRequest(this.loginAddress);
+      HttpsURLConnection httpsURLConnection = newhttpsPostRequest(this.loginAddress);
 
       OutputStream os = httpsURLConnection.getOutputStream();
       JSONObject content = new JSONObject();
@@ -145,12 +179,12 @@ public class DITGuploader implements Uploader {
   @Override
   public void sendData(String bdAddress, String quantityType, String value, String unit) {
     try {
-      HttpsURLConnection httpsURLConnection = httpsPostRequest(this.dataAddress);
+      HttpsURLConnection httpsURLConnection = newhttpsPostRequest(this.dataAddress);
 
       httpsURLConnection.setRequestProperty("Authorization", this.authorizationToken);
 
       OutputStream os = httpsURLConnection.getOutputStream();
-      os.write(makeJSON(bdAddress, quantityType, value, unit).toString().getBytes());
+      os.write(createPOSTcontent(bdAddress, Integer.valueOf(value)).toString().getBytes());
       os.close();
 
       switch (httpsURLConnection.getResponseCode()) {

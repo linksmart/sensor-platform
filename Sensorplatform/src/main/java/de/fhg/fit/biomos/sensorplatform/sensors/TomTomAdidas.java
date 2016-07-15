@@ -23,7 +23,7 @@ import de.fhg.fit.biomos.sensorplatform.web.Uploader;
  * @author Daniel Pyka
  *
  */
-public class TomTomAdidas extends Sensor {
+public class TomTomAdidas extends HeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(TomTomAdidas.class);
 
@@ -66,6 +66,9 @@ public class TomTomAdidas extends Sensor {
     }
   }
 
+  /**
+   * Disable heart rate notification of the sensor.
+   */
   private void disableHeartRateNotification() {
     try {
       this.bw.write(GatttoolImpl.CMD_CHAR_WRITE_CMD + " " + TomTomAndAdidasHRMlib.HANDLE_HEART_RATE_NOTIFICATION + " " + GatttoolImpl.DISABLE_NOTIFICATION);
@@ -94,20 +97,8 @@ public class TomTomAdidas extends Sensor {
   public void processSensorData(String handle, String rawHexValues) {
     if (handle.equals(TomTomAndAdidasHRMlib.HANDLE_HEART_RATE_MEASUREMENT)) {
       String timestamp = this.dtf.print(new DateTime());
-      // byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
-      // int heartrate = 0;
 
-      // we know, that...
-      // 1. hrm value is always 8bit from from TomTom/Adidas
-      // 2. there is no rr data available
-      // so we do not need to check the whole configuration byte
-      // if ((config & HRM.UINT16) == HRM.UINT16) {
-      // heartrate = Integer.parseInt(rawHexValues.substring(3, 8).replace(" ", ""), 16);
-      // } else {
-      // heartrate = Integer.parseInt(rawHexValues.substring(3, 5), 16);
-      // }
-
-      String heartrate = Integer.toString(Integer.parseInt(rawHexValues.substring(3, 5), 16));
+      String heartrate = Integer.toString(getHeartRate8Bit(rawHexValues));
 
       if (this.fileLogging) {
         this.sampleLogger.write(timestamp, heartrate);

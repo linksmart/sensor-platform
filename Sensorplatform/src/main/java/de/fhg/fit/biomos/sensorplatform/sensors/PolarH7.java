@@ -1,23 +1,21 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.regex.Matcher;
 
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.bluetooth.HRM;
 import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
 import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.InvalidSensorDataException;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 import de.fhg.fit.biomos.sensorplatform.util.Unit;
 import de.fhg.fit.biomos.sensorplatform.web.DITGuploader;
@@ -29,7 +27,7 @@ import de.fhg.fit.biomos.sensorplatform.web.Uploader;
  * @author Daniel Pyka
  *
  */
-public class PolarH7 extends Sensor {
+public class PolarH7 extends HeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(PolarH7.class);
 
@@ -111,61 +109,42 @@ public class PolarH7 extends Sensor {
   public void processSensorData(String handle, String rawHexValues) {
     if (handle.equals(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT)) {
       String timestamp = this.dtf.print(new DateTime());
-      byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
-      Matcher rrData = null;
-
-      // we know, that hrm value is always 8bit from PolarH7
-      // so we do not need to check the whole configuration byte
-      // if ((config & HRM.UINT16) == HRM.UINT16) {
-      // heartrate = Integer.parseInt(rawHexValues.substring(3, 8).replace(" ", ""), 16);
-      // if ((config & HRM.RR_INTERVAL_AVAILABLE) == HRM.RR_INTERVAL_AVAILABLE) {
-      // matcher = HRM.PATTERN_RR_DATA.matcher(rawHexValues.substring(9));
-      // }
-      // } else {
-      // heartrate = Integer.parseInt(rawHexValues.substring(3, 5), 16);
-      // if ((config & HRM.RR_INTERVAL_AVAILABLE) == HRM.RR_INTERVAL_AVAILABLE) {
-      // matcher = HRM.PATTERN_RR_DATA.matcher(rawHexValues.substring(6));
-      // }
-      // }
-
-      String heartrate = Integer.toString(Integer.parseInt(rawHexValues.substring(3, 5), 16));
+      String heartRate = Integer.toString(getHeartRate8Bit(rawHexValues));
 
       if (this.fileLogging) {
-        this.sampleLoggers.get(HEARTRATE).write(timestamp, heartrate);
+        this.sampleLoggers.get(HEARTRATE).write(timestamp, heartRate);
       }
       if (this.consoleLogging) {
-        System.out.println(timestamp + " " + heartrate);
+        System.out.println(timestamp + " " + heartRate);
       }
       if (this.uploader != null) {
-        this.uploader.sendData(this.bdAddress, "HeartRate", heartrate, "bpm");
+        this.uploader.sendData(this.bdAddress, "HeartRate", heartRate, "bpm");
       }
 
-      if ((config & HRM.SKIN_CONTACT_SUPPORTED) == HRM.SKIN_CONTACT_SUPPORTED) {
-        if (!((config & HRM.SKIN_CONTACT_DETECTED) == HRM.SKIN_CONTACT_DETECTED)) {
+      try {
+        if (!isSkinContactDetected(rawHexValues)) {
           LOG.warn("no skin contact!");
         }
+      } catch (InvalidSensorDataException e) {
+        LOG.error(e.getMessage());
       }
 
-      if ((config & HRM.RR_INTERVAL_AVAILABLE) == HRM.RR_INTERVAL_AVAILABLE) {
-        rrData = HRM.PATTERN_RR_DATA.matcher(rawHexValues.substring(6));
-      }
-
-      if (rrData != null) {
-        List<Integer> rrintervals = new ArrayList<Integer>();
-        while (rrData.find()) {
-          String tmp = rrData.group(0);
-          rrintervals.add(Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16));
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Integer rrinterval : rrintervals) {
-          sb.append(rrinterval.toString() + " ");
-        }
-        String rrvalues = sb.toString().trim();
-        if (this.fileLogging) {
-          this.sampleLoggers.get(RRINTERVAL).write(timestamp, rrvalues);
-        }
-        if (this.consoleLogging) {
-          System.out.println(timestamp + " " + rrvalues);
+      if (isRRintervalDataAvailable(rawHexValues)) {
+        try {
+          List<Integer> rrintervals = getRRintervalsWith8BitHeartRateData(rawHexValues);
+          StringBuilder sb = new StringBuilder();
+          for (Integer rrinterval : rrintervals) {
+            sb.append(rrinterval.toString() + " ");
+          }
+          String rrvalues = sb.toString().trim(); // remove space suffix
+          if (this.fileLogging) {
+            this.sampleLoggers.get(RRINTERVAL).write(timestamp, rrvalues);
+          }
+          if (this.consoleLogging) {
+            System.out.println(timestamp + " " + rrvalues);
+          }
+        } catch (InvalidSensorDataException e) {
+          LOG.error(e.getMessage());
         }
         // TODO upload rr intervals somewhere too
       }
