@@ -10,9 +10,10 @@ import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.biomos.sensorplatform.sensors.polar.PolarH7;
-import de.fhg.biomos.sensorplatform.sensors.sensortag.CC2650;
-import de.fhg.biomos.sensorplatform.sensors.tomtom.TomTomAdidasHRM;
+import de.fhg.biomos.sensorplatform.sensors.PolarH7;
+import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
+import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
+import de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM;
 import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
@@ -60,10 +61,10 @@ public class SensorFactory {
           sensor = new PolarH7(this.properties, name, bdAddress, addressType, sensorConfiguration);
           break;
         case AdidasHRM:
-          sensor = new TomTomAdidasHRM(this.properties, name, bdAddress, addressType, sensorConfiguration);
+          sensor = new AdidasMiCoachHRM(this.properties, name, bdAddress, addressType, sensorConfiguration);
           break;
         case TomTomHRM:
-          sensor = new TomTomAdidasHRM(this.properties, name, bdAddress, addressType, sensorConfiguration);
+          sensor = new TomTomHRM(this.properties, name, bdAddress, addressType, sensorConfiguration);
           break;
         case PolarV800:
           break;

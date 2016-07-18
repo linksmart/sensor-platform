@@ -18,7 +18,23 @@
         </dependency>
         <dependency>
             <groupId>de.fhg.fit.biomos</groupId>
-            <artifactId>SensorplatformSensors</artifactId>
+            <artifactId>SensorplatformSensor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.fhg.fit.biomos</groupId>
+            <artifactId>SensorTagCC2650</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.fhg.fit.biomos</groupId>
+            <artifactId>PolarH7</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.fhg.fit.biomos</groupId>
+            <artifactId>TomTomHRM</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.fhg.fit.biomos</groupId>
+            <artifactId>AdidasMiCoachHRM</artifactId>
         </dependency>
         <dependency>
             <groupId>de.fhg.fit.biomos</groupId>

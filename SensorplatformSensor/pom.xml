@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.fhg.fit.biomos</groupId>
+        <artifactId>SensorplatformParent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <relativePath>../SensorplatformParent</relativePath>
+    </parent>
+    <artifactId>SensorplatformSensor</artifactId>
+    <name>SensorplatformSensor</name>
+    <description>Project for all sensors which are supported by the sensorplatform.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.fhg.fit.biomos</groupId>
+            <artifactId>SensorplatformShared</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+        </plugins>
+    </build>
+
+</project>

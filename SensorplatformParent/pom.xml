@@ -48,7 +48,11 @@
 
     <modules>
         <module>../SensorplatformShared</module>
-        <module>../SensorplatformSensors</module>
+        <module>../SensorplatformSensor</module>
+        <module>../SensorTagCC2650</module>
+        <module>../PolarH7</module>
+        <module>../TomTomHRM</module>
+        <module>../AdidasMiCoachHRM</module>
         <module>../SensorplatformServer</module>
         <module>../SensorplatformApp</module>
     </modules>
@@ -62,7 +66,27 @@
             </dependency>
             <dependency>
                 <groupId>de.fhg.fit.biomos</groupId>
-                <artifactId>SensorplatformSensors</artifactId>
+                <artifactId>SensorplatformSensor</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.fhg.fit.biomos</groupId>
+                <artifactId>SensorTagCC2650</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.fhg.fit.biomos</groupId>
+                <artifactId>PolarH7</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.fhg.fit.biomos</groupId>
+                <artifactId>TomTomHRM</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.fhg.fit.biomos</groupId>
+                <artifactId>AdidasMiCoachHRM</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
