@@ -47,7 +47,6 @@
     </properties>
 
     <modules>
-        <module>../SensorplatformShared</module>
         <module>../SensorplatformSensor</module>
         <module>../SensorTagCC2650</module>
         <module>../PolarH7</module>
@@ -59,11 +58,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>de.fhg.fit.biomos</groupId>
-                <artifactId>SensorplatformShared</artifactId>
-                <version>${project.version}</version>
-            </dependency>
             <dependency>
                 <groupId>de.fhg.fit.biomos</groupId>
                 <artifactId>SensorplatformSensor</artifactId>

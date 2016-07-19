@@ -26,12 +26,9 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Pyka
  *
  */
-public class DITGuploader implements Uploader {
+public class TeLiProUploader implements Uploader {
 
-  private static final Logger LOG = LoggerFactory.getLogger(DITGuploader.class);
-
-  private static final String QUANTITY_TYPE = "HeartRate";
-  private static final String BPM = "bpm";
+  private static final Logger LOG = LoggerFactory.getLogger(TeLiProUploader.class);
 
   private final DateTimeFormatter dtf;
 
@@ -45,23 +42,23 @@ public class DITGuploader implements Uploader {
 
   private String authorizationToken = "";
 
-  public DITGuploader(Properties properties) {
-    this.dtf = DateTimeFormat.forPattern(properties.getProperty("ditg.webinterface.timestamp.format")).withZone(DateTimeZone.UTC);
-    LOG.info("timestamp pattern: " + properties.getProperty("ditg.webinterface.timestamp.format"));
+  public TeLiProUploader(Properties properties) {
+    this.dtf = DateTimeFormat.forPattern(properties.getProperty("telipro.webinterface.timestamp.format")).withZone(DateTimeZone.UTC);
+    LOG.info("timestamp pattern: " + properties.getProperty("telipro.webinterface.timestamp.format"));
 
-    this.userName = properties.getProperty("ditg.webinterface.username");
+    this.userName = properties.getProperty("telipro.webinterface.username");
     LOG.info("username: " + this.userName);
-    this.password = properties.getProperty("ditg.webinterface.password");
+    this.password = properties.getProperty("telipro.webinterface.password");
     LOG.info("password: " + this.password);
     this.userAgent = properties.getProperty("http.useragent.boardname") + " " + System.getProperty("os.name") + " " + System.getProperty("os.arch") + " "
         + System.getProperty("os.version");
     LOG.info("user agent: " + this.userAgent);
 
-    this.loginAddress = properties.getProperty("ditg.webinterface.login.url");
+    this.loginAddress = properties.getProperty("telipro.webinterface.login.url");
     LOG.info("login address: " + this.loginAddress);
-    this.dataAddress = properties.getProperty("ditg.webinterface.data.url");
+    this.dataAddress = properties.getProperty("telipro.webinterface.data.url");
     LOG.info("data address: " + this.dataAddress);
-    this.dataDownloadAddress = properties.getProperty("ditg.webinterface.data.download.url");
+    this.dataDownloadAddress = properties.getProperty("telipro.webinterface.data.download.url");
     LOG.info("download address: " + this.dataDownloadAddress);
   }
 
@@ -78,9 +75,9 @@ public class DITGuploader implements Uploader {
     JSONObject o = new JSONObject();
     o.put("type", "sample");
     o.put("sampleType", "quantity");
-    o.put("quantityType", QUANTITY_TYPE);
+    o.put("quantityType", "HeartRate");
     o.put("value", heartRate);
-    o.put("unit", BPM);
+    o.put("unit", "bpm");
     String format = this.dtf.print(new DateTime());
     o.put("startDate", format);
     o.put("endDate", format);
@@ -177,14 +174,14 @@ public class DITGuploader implements Uploader {
   }
 
   @Override
-  public void sendData(String bdAddress, String quantityType, String value, String unit) {
+  public void sendData(String bdAddress, int value) {
     try {
       HttpsURLConnection httpsURLConnection = newhttpsPostRequest(this.dataAddress);
 
       httpsURLConnection.setRequestProperty("Authorization", this.authorizationToken);
 
       OutputStream os = httpsURLConnection.getOutputStream();
-      os.write(createPOSTcontent(bdAddress, Integer.valueOf(value)).toString().getBytes());
+      os.write(createPOSTcontent(bdAddress, value).toString().getBytes());
       os.close();
 
       switch (httpsURLConnection.getResponseCode()) {

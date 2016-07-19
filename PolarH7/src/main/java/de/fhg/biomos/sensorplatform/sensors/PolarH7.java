@@ -1,25 +1,17 @@
 package de.fhg.biomos.sensorplatform.sensors;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
-import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.biomos.sensorplatform.gatt.PolarH7lib;
-import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
+import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensors.HeartRateSensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.InvalidSensorDataException;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.util.Unit;
-import de.fhg.fit.biomos.sensorplatform.web.DITGuploader;
-import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
  * @see {@link de.fhg.biomos.sensorplatform.gatt.PolarH7lib}
@@ -31,34 +23,16 @@ public class PolarH7 extends HeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(PolarH7.class);
 
-  private static final String HEARTRATE = "hrm";
-  private static final String RRINTERVAL = "rr";
-
-  Map<String, SampleLogger> sampleLoggers = new HashMap<String, SampleLogger>();
-
-  private Uploader uploader;
-
-  public PolarH7(Properties properties, SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
-    super(properties, name, bdAddress, addressType, sensorConfiguration);
-
-    // Modifiy in case of different webinterfaces
-    switch (this.webinterface) {
-      case "ditg":
-        this.uploader = new DITGuploader(properties);
-        this.uploader.login();
-        break;
-      case "":
-        LOG.info("No webinterface specified");
-        break;
-      default:
-        LOG.error("Unknown webinterface name: " + this.webinterface);
-        break;
-    }
+  public PolarH7(SensorName name, String bdAddress, AddressType addressType, String timestampFormat, JSONObject sensorConfiguration) {
+    super(name, bdAddress, addressType, timestampFormat, sensorConfiguration);
   }
 
   /**
    * Enable heart rate notification of the sensor. Notification period is fixed at 1/s . The measurement does not need to be activated explicitly as in the
    * SensorTag. Measurement contains the heart rate and optional one or more rr-intervals (if detected).
+   *
+   * @param charWriteCmd
+   * @param enableNotification
    */
   private void enableHeartRateNotification(String charWriteCmd, String enableNotification) {
     try {
@@ -73,6 +47,9 @@ public class PolarH7 extends HeartRateSensor {
 
   /**
    * Disable heart rate notification of the sensor.
+   *
+   * @param charWriteCmd
+   * @param disableNotification
    */
   private void disableHeartRateNotification(String charWriteCmd, String disableNotification) {
     try {
@@ -86,71 +63,26 @@ public class PolarH7 extends HeartRateSensor {
   }
 
   @Override
-  public void enableNotification(String charWriteCmd, String enableNotification) {
-    if (this.fileLogging) {
-      this.sampleLoggers.put(HEARTRATE, new SampleLogger(HEARTRATE, this.name.name()));
-      this.sampleLoggers.get(HEARTRATE).addDescriptionLine("Heartrate [" + Unit.BPM + "]");
-      this.sampleLoggers.put(RRINTERVAL, new SampleLogger(RRINTERVAL, this.name.name()));
-      this.sampleLoggers.get(RRINTERVAL).addDescriptionLine("RR-Interval [" + Unit.BPMMS + "]");
-    }
+  public void enableNotification(BufferedWriter bw, String charWriteCmd, String enableNotification) {
+    this.bw = bw;
     enableHeartRateNotification(charWriteCmd, enableNotification);
   }
 
   @Override
   public void disableNotification(String charWriteCmd, String diableNotification) {
     disableHeartRateNotification(charWriteCmd, diableNotification);
-    if (this.fileLogging) {
-      this.sampleLoggers.get(HEARTRATE).close();
-      this.sampleLoggers.get(RRINTERVAL).close();
-    }
+    this.bw = null;
   }
 
-  @Override
-  public void processSensorData(String handle, String rawHexValues) {
-    if (handle.equals(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT)) {
-      String timestamp = this.dtf.print(new DateTime());
-      String heartRate = Integer.toString(getHeartRate8Bit(rawHexValues));
-
-      if (this.fileLogging) {
-        this.sampleLoggers.get(HEARTRATE).write(timestamp, heartRate);
-      }
-      if (this.consoleLogging) {
-        System.out.println(timestamp + " " + heartRate);
-      }
-      if (this.uploader != null) {
-        this.uploader.sendData(this.bdAddress, "HeartRate", heartRate, "bpm");
-      }
-
-      try {
-        if (!isSkinContactDetected(rawHexValues)) {
-          LOG.warn("no skin contact!");
-        }
-      } catch (InvalidSensorDataException e) {
-        LOG.error(e.getMessage());
-      }
-
-      if (isRRintervalDataAvailable(rawHexValues)) {
-        try {
-          List<Integer> rrintervals = getRRintervalsWith8BitHeartRateData(rawHexValues);
-          StringBuilder sb = new StringBuilder();
-          for (Integer rrinterval : rrintervals) {
-            sb.append(rrinterval.toString() + " ");
-          }
-          String rrvalues = sb.toString().trim(); // remove space suffix
-          if (this.fileLogging) {
-            this.sampleLoggers.get(RRINTERVAL).write(timestamp, rrvalues);
-          }
-          if (this.consoleLogging) {
-            System.out.println(timestamp + " " + rrvalues);
-          }
-        } catch (InvalidSensorDataException e) {
-          LOG.error(e.getMessage());
-        }
-        // TODO upload rr intervals somewhere too
-      }
-    } else {
-      LOG.error("unexpected handle notification " + handle + " : " + rawHexValues);
-    }
+  /**
+   * Calculate all values given.
+   *
+   * @param handle
+   * @param rawHexValues
+   * @return
+   */
+  public HeartRateSample calculateHeartRateData(String handle, String rawHexValues) {
+    return calculateHeartRateData(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT, handle, rawHexValues);
   }
 
 }

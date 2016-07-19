@@ -48,8 +48,8 @@ public class SampleLogger {
    *
    * @param value
    */
-  public void write(String timestamp, String value) {
-    this.pw.println(timestamp + " " + value);
+  public void writeLine(String line) {
+    this.pw.println(line);
     this.pw.flush();
   }
 

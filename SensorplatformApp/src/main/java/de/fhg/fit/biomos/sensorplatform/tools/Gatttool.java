@@ -1,5 +1,8 @@
 package de.fhg.fit.biomos.sensorplatform.tools;
 
+import java.io.BufferedWriter;
+
+import de.fhg.fit.biomos.sensorplatform.control.SensorNotificationDataObserver;
 import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
 
 /**
@@ -11,12 +14,18 @@ import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
  */
 public interface Gatttool extends Runnable {
 
+  public void addObs(SensorNotificationDataObserver sndo);
+
+  public void removeObs();
+
+  BufferedWriter getStreamToSensor();
+
   public void connect(int timeout) throws BluetoothGattException;
 
-  public void enableLogging();
+  public void disconnectBlocking();
 
-  public void disableLogging();
+  public void disconnect();
 
-  public void disconnectAndExit();
+  public void exitGatttool();
 
 }

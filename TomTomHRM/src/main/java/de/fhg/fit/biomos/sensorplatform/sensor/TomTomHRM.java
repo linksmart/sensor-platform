@@ -1,21 +1,17 @@
 package de.fhg.fit.biomos.sensorplatform.sensor;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Properties;
 
-import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib;
-import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
+import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensors.HeartRateSensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.util.Unit;
-import de.fhg.fit.biomos.sensorplatform.web.DITGuploader;
-import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
  * @see {@link de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib}
@@ -27,28 +23,8 @@ public class TomTomHRM extends HeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(TomTomHRM.class);
 
-  private static final String HEARTRATE = "hrm";
-
-  private SampleLogger sampleLogger = null;
-
-  private Uploader uploader;
-
-  public TomTomHRM(Properties properties, SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
-    super(properties, name, bdAddress, addressType, sensorConfiguration);
-
-    // Modifiy in case of different webinterfaces
-    switch (this.webinterface) {
-      case "ditg":
-        this.uploader = new DITGuploader(properties);
-        this.uploader.login();
-        break;
-      case "":
-        LOG.info("No webinterface specified");
-        break;
-      default:
-        LOG.error("Unknown webinterface name: " + this.webinterface);
-        break;
-    }
+  public TomTomHRM(SensorName name, String bdAddress, AddressType addressType, String timestampFormat, JSONObject sensorConfiguration) {
+    super(name, bdAddress, addressType, timestampFormat, sensorConfiguration);
   }
 
   /**
@@ -81,37 +57,26 @@ public class TomTomHRM extends HeartRateSensor {
   }
 
   @Override
-  public void enableNotification(String charWriteCmd, String enableNotification) {
-    this.sampleLogger = new SampleLogger(HEARTRATE, this.name.name());
-    this.sampleLogger.addDescriptionLine("Heartrate [" + Unit.BPM + "]");
+  public void enableNotification(BufferedWriter bw, String charWriteCmd, String enableNotification) {
+    this.bw = bw;
     enableHeartRateNotification(charWriteCmd, enableNotification);
   }
 
   @Override
   public void disableNotification(String charWriteCmd, String disableNotification) {
     disableHeartRateNotification(charWriteCmd, disableNotification);
-    this.sampleLogger.close();
+    this.bw = null;
   }
 
-  @Override
-  public void processSensorData(String handle, String rawHexValues) {
-    if (handle.equals(TomTomHRMlib.HANDLE_HEART_RATE_MEASUREMENT)) {
-      String timestamp = this.dtf.print(new DateTime());
-
-      String heartrate = Integer.toString(getHeartRate8Bit(rawHexValues));
-
-      if (this.fileLogging) {
-        this.sampleLogger.write(timestamp, heartrate);
-      }
-      if (this.consoleLogging) {
-        System.out.println(timestamp + " " + heartrate);
-      }
-      if (this.uploader != null) {
-        this.uploader.sendData(this.bdAddress, "HeartRate", heartrate, "bpm");
-      }
-    } else {
-      LOG.error("unexpected handle notification " + handle + " " + rawHexValues);
-    }
+  /**
+   * Calculate all values given.
+   *
+   * @param handle
+   * @param rawHexValues
+   * @return
+   */
+  public HeartRateSample calculateHeartRateData(String handle, String rawHexValues) {
+    return calculateHeartRateData(TomTomHRMlib.HANDLE_HEART_RATE_MEASUREMENT, handle, rawHexValues);
   }
 
 }

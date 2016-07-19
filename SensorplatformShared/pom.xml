@@ -9,7 +9,7 @@
     </parent>
     <artifactId>SensorplatformShared</artifactId>
     <name>SensorplatformShared</name>
-    <description>Resources which have to be available in multiple modules.</description>
+    <description>Resources which have to be available in the SensorplatformSensor and SensorplatformApp project.</description>
 
     <dependencies>
         <dependency>

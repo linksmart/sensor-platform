@@ -2,12 +2,6 @@
 	"name": "AdidasHRM",
 	"bdaddress": "CB:A2:4A:FE:0F:DA",
 	"addresstype": "RANDOM",
-	"configuration": {
-		"logging": {
-			"console": true,
-			"file": true,
-			"webinterface": "ditg"
-		},
-		"measures": {}
-	}
+	"webinterface": "telipro",
+	"settings": {}
 }]

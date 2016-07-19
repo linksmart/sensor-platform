@@ -1,7 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.sensors;
 
 import java.io.BufferedWriter;
-import java.util.Properties;
 
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -9,7 +8,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONObject;
 
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.SensorConfiguration;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
@@ -22,34 +20,24 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  */
 public abstract class Sensor implements SensorCommands {
 
-  protected final Properties properties;
-
   protected final SensorName name;
   protected final String bdAddress;
   protected final AddressType addressType;
-  protected final boolean consoleLogging;
-  protected final boolean fileLogging;
-  protected final String webinterface;
-  protected final JSONObject measuresConfiguration;
+
+  protected final JSONObject settings;
 
   protected BufferedWriter bw = null;
 
   protected final DateTimeFormatter dtf;
 
-  public Sensor(Properties properties, SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
-    this.properties = properties;
+  public Sensor(SensorName name, String bdAddress, AddressType addressType, String timestampFormat, JSONObject settings) {
     this.name = name;
     this.bdAddress = bdAddress;
     this.addressType = addressType;
 
-    JSONObject loggingConfiguration = sensorConfiguration.getJSONObject(SensorConfiguration.LOGGING);
-    this.consoleLogging = loggingConfiguration.getBoolean(SensorConfiguration.CONSOLE);
-    this.fileLogging = loggingConfiguration.getBoolean(SensorConfiguration.FILE);
-    this.webinterface = loggingConfiguration.getString(SensorConfiguration.WEBINTERFACE);
+    this.settings = settings;
 
-    this.measuresConfiguration = sensorConfiguration.getJSONObject(SensorConfiguration.MEASURES);
-
-    this.dtf = DateTimeFormat.forPattern(properties.getProperty("logfile.timestamp.format")).withZone(DateTimeZone.UTC);
+    this.dtf = DateTimeFormat.forPattern(timestampFormat).withZone(DateTimeZone.UTC);
   }
 
   public SensorName getName() {
@@ -64,20 +52,8 @@ public abstract class Sensor implements SensorCommands {
     return this.addressType;
   }
 
-  /**
-   * Link the specific sensor to the input stream of a gatttool process to send commands to the physical sensor.
-   *
-   * @param bw
-   */
-  public void hook(BufferedWriter bw) {
-    this.bw = bw;
-  }
-
-  /**
-   * Disconnect the sensor object from the input stream of the gatttool process. This is not required, but keeps the workflow clean!
-   */
-  public void unhook() {
-    this.bw = null;
+  public JSONObject getSettings() {
+    return this.settings;
   }
 
   @Override

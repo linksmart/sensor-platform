@@ -2,30 +2,18 @@
 	"name": "PolarH7",
 	"bdaddress": "00:22:D0:AA:1F:B1",
 	"addresstype": "PUBLIC",
-	"configuration": {
-		"logging": {
-			"console": true,
-			"file": true,
-			"webinterface": ""
-		},
-		"measures": {}
-	}
+	"webinterface": "",
+	"settings": {}
 }, {
 	"name": "CC2650",
 	"bdaddress": "A0:E6:F8:B6:37:05",
 	"addresstype": "PUBLIC",
-	"configuration": {
-		"logging": {
-			"console": true,
-			"file": true,
-			"webinterface": ""
-		},
-		"measures": {
-			"irtemperature": "64",
-			"humidity": "64",
-			"ambientlight": "50",
-			"pressure": "64",
-			"movement": "64"
-		}
+	"webinterface": "",
+	"settings": {
+		"irtemperature": "64",
+		"humidity": "64",
+		"ambientlight": "50",
+		"pressure": "64",
+		"movement": "64"
 	}
 }]

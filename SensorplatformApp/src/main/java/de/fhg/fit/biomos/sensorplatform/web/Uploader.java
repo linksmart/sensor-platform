@@ -28,6 +28,6 @@ public interface Uploader {
    * @param unit
    *          e.g. bpm
    */
-  public void sendData(String bdAddress, String quantityType, String value, String unit);
+  public void sendData(String bdAddress, int value);
 
 }

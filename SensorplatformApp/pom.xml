@@ -14,10 +14,6 @@
     <dependencies>
         <dependency>
             <groupId>de.fhg.fit.biomos</groupId>
-            <artifactId>SensorplatformShared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.fhg.fit.biomos</groupId>
             <artifactId>SensorplatformSensor</artifactId>
         </dependency>
         <dependency>

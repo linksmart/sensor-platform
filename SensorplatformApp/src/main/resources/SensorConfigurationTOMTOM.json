@@ -2,12 +2,6 @@
 	"name": "TomTomHRM",
 	"bdaddress": "F4:2C:87:24:12:09",
 	"addresstype": "RANDOM",
-	"configuration": {
-		"logging": {
-			"console": true,
-			"file": true,
-			"webinterface": "ditg"
-		},
-		"measures": {}
-	}
+	"webinterface": "telipro",
+	"settings": {}
 }]

@@ -11,7 +11,9 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
+import de.fhg.fit.biomos.sensorplatform.control.ObservableSensorNotificationData;
+import de.fhg.fit.biomos.sensorplatform.control.SensorNotificationDataObserver;
+import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
 
 /**
@@ -20,7 +22,7 @@ import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
  * @author Daniel Pyka
  *
  */
-public class GatttoolImpl implements Gatttool {
+public class GatttoolImpl extends ObservableSensorNotificationData implements Gatttool {
 
   private static final Logger LOG = LoggerFactory.getLogger(GatttoolImpl.class);
 
@@ -50,21 +52,23 @@ public class GatttoolImpl implements Gatttool {
 
   private STATE state = STATE.DISCONNECTED;
 
-  private BufferedWriter bw = null;
-  private BufferedReader br = null;
+  private BufferedWriter streamToSensor = null;
+  private BufferedReader streamFromSensor = null;
 
-  private final Sensor sensor;
+  private final AddressType addressType;
+  private final String bdAddress;
 
-  public GatttoolImpl(Sensor sensor) {
-    this.sensor = sensor;
+  public GatttoolImpl(AddressType addressType, String bdAddress) {
+    this.addressType = addressType;
+    this.bdAddress = bdAddress;
     this.state = STATE.DISCONNECTED;
 
     try {
       Process process = null;
-      process = Runtime.getRuntime().exec(GATTTTOOL_INTERACTIVE + this.sensor.getAddressType() + " -b " + this.sensor.getBdaddress());
-      this.bw = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-      this.br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      LOG.info("gatttool process for " + this.sensor.getBdaddress() + " created");
+      process = Runtime.getRuntime().exec(GATTTTOOL_INTERACTIVE + this.addressType.toString() + " -b " + bdAddress);
+      this.streamToSensor = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+      this.streamFromSensor = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      LOG.info("gatttool process for " + bdAddress + " created");
     } catch (IOException e) {
       e.printStackTrace();
       return;
@@ -72,14 +76,29 @@ public class GatttoolImpl implements Gatttool {
   }
 
   @Override
+  public BufferedWriter getStreamToSensor() {
+    return this.streamToSensor;
+  }
+
+  @Override
+  public void addObs(SensorNotificationDataObserver sndo) {
+    setObserver(sndo);
+  }
+
+  @Override
+  public void removeObs() {
+    deleteObserver();
+  }
+
+  @Override
   public void run() {
     try {
       String line = null;
-      while ((line = GatttoolImpl.this.br.readLine()) != null) {
+      while ((line = GatttoolImpl.this.streamFromSensor.readLine()) != null) {
         // System.out.println(line); // extreme debugging
         Matcher m = NOTIFICATION_DATA.matcher(line);
         if (m.find()) {
-          GatttoolImpl.this.sensor.processSensorData(m.group(1), m.group(2));
+          notifyObserver(m.group(1), m.group(2));
         } else if (line.contains("successful")) {
           this.state = STATE.CONNECTED;
         } else if (line.contains("disconnect")) {
@@ -94,10 +113,10 @@ public class GatttoolImpl implements Gatttool {
   @Override
   public void connect(int timeout) throws BluetoothGattException {
     try {
-      this.bw.write(CMD_CONNECT);
-      this.bw.newLine();
-      this.bw.flush();
-      LOG.info("Attempting to connect to " + this.sensor.getBdaddress() + " for " + timeout + "s");
+      this.streamToSensor.write(CMD_CONNECT);
+      this.streamToSensor.newLine();
+      this.streamToSensor.flush();
+      LOG.info("Attempting to connect to " + this.bdAddress + " for " + timeout + "s");
 
       long startTime = System.currentTimeMillis();
       while (false || (System.currentTimeMillis() - startTime) < timeout * 1000) {
@@ -110,7 +129,7 @@ public class GatttoolImpl implements Gatttool {
       }
 
       if (this.state == STATE.DISCONNECTED) {
-        throw new BluetoothGattException("Cannot connect to bluetooth device " + this.sensor.getBdaddress());
+        throw new BluetoothGattException("Cannot connect to bluetooth device " + this.bdAddress);
       }
 
     } catch (IOException | InterruptedException e) {
@@ -119,34 +138,40 @@ public class GatttoolImpl implements Gatttool {
   }
 
   @Override
-  public void enableLogging() {
-    this.sensor.hook(this.bw);
-    LOG.info(this.sensor.getName() + " hooked");
-    this.sensor.enableNotification(CMD_CHAR_WRITE_CMD, ENABLE_NOTIFICATION);
-  }
-
-  @Override
-  public void disableLogging() {
-    this.sensor.disableNotification(CMD_CHAR_WRITE_CMD, DISABLE_NOTIFICATION);
-    this.sensor.unhook();
-    LOG.info(this.sensor.getName() + " unhooked");
-  }
-
-  @Override
-  public void disconnectAndExit() {
+  public void disconnectBlocking() {
     try {
-      this.bw.write(CMD_DISCONNECT);
-      this.bw.newLine();
-      this.bw.flush();
+      this.streamToSensor.write(CMD_DISCONNECT);
+      this.streamToSensor.newLine();
+      this.streamToSensor.flush();
       while (this.state == STATE.CONNECTED) {
         Thread.sleep(50);
       }
-      LOG.info("disconnected from " + this.sensor.getBdaddress());
-      this.bw.write(CMD_EXIT);
-      this.bw.newLine();
-      this.bw.flush();
-      LOG.info("exit gatttool");
+      LOG.info("disconnected from " + this.bdAddress);
     } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void disconnect() {
+    try {
+      this.streamToSensor.write(CMD_DISCONNECT);
+      this.streamToSensor.newLine();
+      this.streamToSensor.flush();
+      LOG.info("disconnected from " + this.bdAddress);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void exitGatttool() {
+    try {
+      this.streamToSensor.write(CMD_EXIT);
+      this.streamToSensor.newLine();
+      this.streamToSensor.flush();
+      LOG.info("exit gatttool");
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
