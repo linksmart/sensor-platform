@@ -1,13 +1,11 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.util.LEDstate;
 
 /**
@@ -22,41 +20,30 @@ public class Controller {
 
   private final Properties properties;
 
-  private final List<Gatttool> gatttoolList = new ArrayList<Gatttool>();
-
-  private final LEDcontrol ledcontrol;
+  private List<SensorWrapper> swList;
 
   public Controller(Properties properties) {
     this.properties = properties;
-    this.ledcontrol = new LEDcontrol(properties);
   }
 
   /**
    * Initialise all components and activate sensor measurements.
    */
   public void startup() {
-    SensorWrapperFactory sensorFactory = new SensorWrapperFactory(this.properties);
+    LOG.info("startup");
+    this.swList = SensorWrapperFactory.setupFromProjectBuildConfiguration(this.properties);
 
-    // for (Sensor sensor : sensorFactory.createSensorsFromConfigurationFile()) {
-    // System.out.println("Sensor: " + sensor);
-    // GatttoolImpl gatttool = new GatttoolImpl(sensor.getAddressType(), sensor.getBdaddress());
-    // this.gatttoolList.add(gatttool);
-    //
-    // new Thread(gatttool).start();
-    // try {
-    // gatttool.connect(new Integer(this.properties.getProperty("sensor.connect.timeout.seconds")));
-    // } catch (BluetoothGattException e) {
-    // LOG.error(e.getMessage());
-    // // gatttool.disconnectAndExit();
-    // LOG.info("Invalid gatttool removed from list: " + this.gatttoolList.remove(gatttool));
-    // }
-    // }
+    for (SensorWrapper sensorWrapper : this.swList) {
+      sensorWrapper.connectToSensor(new Integer(this.properties.getProperty("sensor.connect.timeout.seconds")));
+    }
 
-    // for (Gatttool gatttool : this.gatttoolList) {
-    // gatttool.enableLogging();
-    // }
+    for (SensorWrapper sensorWrapper : this.swList) {
+      sensorWrapper.enableLogging();
+    }
 
-    this.ledcontrol.setLED(LEDstate.HEARTBEAT);
+    LOG.info("initialisation complete");
+
+    ShellscriptExecutor.setLED(LEDstate.RUNNING, this.properties.getProperty("led.control.script"));
   }
 
   /**
@@ -64,12 +51,18 @@ public class Controller {
    * to standby mode and other <b>bad</b> things!
    */
   public void shutdown() {
-    for (Gatttool gatttool : this.gatttoolList) {
-      // gatttool.disableLogging();
-      // gatttool.disconnectAndExit();
+    LOG.info("shutting down threads and processes gracefully");
+    for (SensorWrapper sensorWrapper : this.swList) {
+      sensorWrapper.disableLogging();
+    }
+    for (SensorWrapper sensorWrapper : this.swList) {
+      sensorWrapper.disconnectBlocking();
+    }
+    for (SensorWrapper sensorWrapper : this.swList) {
+      sensorWrapper.shutdown();
     }
     LOG.info("shutdown");
-    this.ledcontrol.setLED(LEDstate.BLINK);
+    ShellscriptExecutor.setLED(LEDstate.STANDBY, this.properties.getProperty("led.control.script"));
   }
 
 }

@@ -9,7 +9,6 @@ import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
-import de.fhg.fit.biomos.sensorplatform.util.Unit;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
@@ -50,8 +49,7 @@ public class AdidasHrmWrapper implements SensorWrapper {
 
   @Override
   public void enableLogging() {
-    this.sampleLogger = new SampleLogger("hrm", this.adidasHrm.getName().name());
-    this.sampleLogger.addDescriptionLine("Heartrate [" + Unit.BPM + "]");
+    this.sampleLogger = new SampleLogger(this.adidasHrm.getName().name());
     this.adidasHrm.enableNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
   }
 
@@ -78,20 +76,16 @@ public class AdidasHrmWrapper implements SensorWrapper {
 
   @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
-    System.out.println("obs: handle " + handle + " " + "rawHexData " + rawHexValues);
-    HeartRateSample sample = this.adidasHrm.calculateHeartRateData(handle, rawHexValues);
-    if (sample != null) {
-      this.sampleLogger.writeLine(sample.toString());
-      this.sampleLogger.writeLine(sample.toString());
+    HeartRateSample hrs = this.adidasHrm.calculateHeartRateData(handle, rawHexValues);
 
-      System.out.println(sample.toString());
+    this.sampleLogger.writeLine(hrs.toString());
 
-      if (this.uploader != null) {
-        this.uploader.sendData(this.adidasHrm.getBdaddress(), sample.getHeartRate());
-      }
-    } else {
-      LOG.error("heart rate sample is null");
+    // System.out.println(sample.toString()); // extreme debugging
+
+    if (this.uploader != null) {
+      this.uploader.addToQueue(hrs);
     }
+
   }
 
 }

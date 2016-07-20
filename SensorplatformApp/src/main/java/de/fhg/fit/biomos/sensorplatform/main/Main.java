@@ -23,12 +23,10 @@ public class Main {
     new Main().start();
   }
 
-  /**
-   * TODO dependency injection for properties
-   */
   public Main() {
     try {
       this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFilename));
+      LOG.info("version is " + this.properties.getProperty("version"));
     } catch (IOException e) {
       LOG.error("cannot load properties");
       System.exit(1);
@@ -38,8 +36,6 @@ public class Main {
     // ditGhttpUploader.login();
     // ditGhttpUploader.downloadData();
     // System.exit(0);
-
-    LOG.info("version is " + this.properties.getProperty("version"));
   }
 
   private void start() {
@@ -47,7 +43,9 @@ public class Main {
       Controller controller = new Controller(this.properties);
       controller.startup();
 
-      Thread.sleep(new Integer(this.properties.getProperty("sensorplatform.uptime.seconds")) * 1000);
+      int uptime = new Integer(this.properties.getProperty("sensorplatform.uptime.seconds"));
+      LOG.info("sleeping for " + uptime + " seconds");
+      Thread.sleep(uptime * 1000);
 
       controller.shutdown();
 

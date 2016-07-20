@@ -1,5 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.sample;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,12 +11,16 @@ import java.util.List;
  */
 public class HeartRateSample extends Sample {
 
-  private int heartRate;
-  private int energyExpended;
-  private List<Integer> rrIntervals;
+  private final String UNIT_BEATS_PER_MINUTE = "bpm";
+  private final String UNIT_JOULE = "J";
+  private final String UNIT_BPM_MS = "bpm/ms";
 
-  public HeartRateSample(String timestamp) {
-    super(timestamp);
+  private int heartRate = 0;
+  private int energyExpended = 0;
+  private List<Integer> rrIntervals = new ArrayList<Integer>();
+
+  public HeartRateSample(String timestamp, String bdAddress) {
+    super(timestamp, bdAddress);
   }
 
   public int getHeartRate() {
@@ -44,7 +49,10 @@ public class HeartRateSample extends Sample {
 
   @Override
   public String toString() {
-    return "{\"timestamp\":\" " + this.timestamp + "\",\"heartrate\":\"" + this.heartRate + "\",\"rrintervals\":" + this.rrIntervals.toString() + "}";
+    return "{\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"value\":" + "{\"heartrate\":{\"value\":" + this.heartRate
+        + ",\"unit\":\"" + this.UNIT_BEATS_PER_MINUTE + "\"},\"energyexpended\":{\"value\":" + this.energyExpended + ",\"unit\":\"" + this.UNIT_JOULE + "\"}"
+        + ",\"rrintervals\":{\"value\":" + this.rrIntervals.toString() + ",\"unit\":\"" + this.UNIT_BPM_MS + "\"}}}";
+
   }
 
 }

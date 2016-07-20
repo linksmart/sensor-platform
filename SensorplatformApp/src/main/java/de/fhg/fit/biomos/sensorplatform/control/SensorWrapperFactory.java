@@ -35,15 +35,17 @@ public class SensorWrapperFactory {
   public static final String WEBINTERFACE = "webinterface";
   public static final String SETTINGS = "settings";
 
-  private final Properties properties;
-  private final JSONArray sensorsConfiguration;
+  public SensorWrapperFactory() {
+    // unused
+  }
 
-  public SensorWrapperFactory(Properties properties) {
-    this.properties = properties;
-    String sensorsConfigurationFile = this.properties.getProperty("default.sensor.configuration.file");
-    JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(sensorsConfigurationFile));
-    this.sensorsConfiguration = new JSONArray(tokener);
-    LOG.info("sensor configuration file " + sensorsConfigurationFile);
+  /**
+   * TODO Placeholder for configuration through webapplication
+   *
+   * @return
+   */
+  public static List<SensorWrapper> setupFromWebinterfaceConfinguration() {
+    return null;
   }
 
   /**
@@ -51,37 +53,28 @@ public class SensorWrapperFactory {
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform shall work with
    */
-  public List<SensorWrapper> createSensorsFromConfigurationFile() {
+  public static List<SensorWrapper> setupFromProjectBuildConfiguration(Properties properties) {
+    LOG.info("setup from project build configuration");
+    String sensorsConfigurationFilename = properties.getProperty("default.sensor.configuration.file");
+    LOG.info("sensor configuration file " + sensorsConfigurationFilename);
+
+    JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(sensorsConfigurationFilename));
+    JSONArray sensorConfiguration = new JSONArray(tokener);
+
     List<SensorWrapper> sensorWrapperList = new ArrayList<SensorWrapper>();
-    for (int i = 0; i < this.sensorsConfiguration.length(); i++) {
+    for (int i = 0; i < sensorConfiguration.length(); i++) {
 
-      JSONObject sensorDescription = this.sensorsConfiguration.getJSONObject(i);
-      SensorName name = SensorName.valueOf(sensorDescription.getString(NAME));
-      String bdAddress = sensorDescription.getString(BDADDRESS);
-      AddressType addressType = AddressType.valueOf(sensorDescription.getString(ADDRESSTYPE));
-      String webinterface = sensorDescription.getString(WEBINTERFACE);
+      JSONObject sensorConfigEntry = sensorConfiguration.getJSONObject(i);
+      SensorName name = SensorName.valueOf(sensorConfigEntry.getString(NAME));
+      String bdAddress = sensorConfigEntry.getString(BDADDRESS);
+      AddressType addressType = AddressType.valueOf(sensorConfigEntry.getString(ADDRESSTYPE));
+      String timestampFormat = properties.getProperty("logfile.timestamp.format");
+      JSONObject settings = sensorConfigEntry.getJSONObject(SETTINGS);
 
-      JSONObject settings = sensorDescription.getJSONObject(SETTINGS);
+      // FIXME not very flexible if we would add other webinterfaces
+      Uploader uploader = sensorConfigEntry.getString(WEBINTERFACE).equals("telipro") ? new TeLiProUploader(properties) : null;
 
-      String timestampFormat = this.properties.getProperty("logfile.timestamp.format");
-
-      Uploader uploader = null;
       SensorWrapper sensorWrapper = null;
-
-      // TODO not very flexible if we add other webinterfaces
-      switch (webinterface) {
-        case "telipro":
-          uploader = new TeLiProUploader(this.properties);
-          uploader.login();
-          break;
-        case "":
-          LOG.info("No webinterface specified");
-          break;
-        default:
-          LOG.error("Unknown webinterface name: " + webinterface);
-          break;
-      }
-
       switch (name) {
         case PolarH7:
           sensorWrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, addressType, timestampFormat, settings), uploader);
@@ -93,10 +86,11 @@ public class SensorWrapperFactory {
           sensorWrapper = new TomTomHrmWrapper(new TomTomHRM(name, bdAddress, addressType, timestampFormat, settings), uploader);
           break;
         case PolarV800:
+          LOG.error("PolarV800 not yet implemented - sensor will be ignored");
           break;
         case CC2650:
-          // TODO
-          sensorWrapper = new CC2650Wrapper(new CC2650(name, bdAddress, addressType, timestampFormat, settings), uploader);
+          // no uploader, upload to any webinterface not intended for CC2650
+          sensorWrapper = new CC2650Wrapper(new CC2650(name, bdAddress, addressType, timestampFormat, settings));
           break;
         default:
           LOG.error("unknown sensor name " + name);

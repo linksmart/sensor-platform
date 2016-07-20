@@ -216,8 +216,8 @@ public abstract class HeartRateSensor extends Sensor {
   }
 
   protected HeartRateSample calculateHeartRateData(String expectedHandle, String handle, String rawHexValues) {
+    HeartRateSample hrs = new HeartRateSample(this.dtf.print(new DateTime()), this.bdAddress);
     if (handle.equals(expectedHandle)) {
-      HeartRateSample hrs = new HeartRateSample(this.dtf.print(new DateTime()));
 
       if (isSkinContactDetectionSupported(rawHexValues)) {
         if (!isSkinContactDetected(rawHexValues)) {
@@ -236,10 +236,10 @@ public abstract class HeartRateSensor extends Sensor {
           hrs.setRRinterval(getRRintervalsWith16BitHeartRateData(rawHexValues));
         }
       }
-      return hrs;
     } else {
       LOG.error("unexpected handle address " + handle + " " + rawHexValues);
-      return null;
+      LOG.warn("process heart rate sample with default values");
     }
+    return hrs;
   }
 }

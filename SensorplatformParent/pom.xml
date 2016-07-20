@@ -19,7 +19,7 @@
             </activation>
             <properties>
                 <http.useragent.boardname>Sensorplatform RaspberryPi3</http.useragent.boardname>
-                <led.control.script>/home/pi/ledcontrol.sh</led.control.script>
+                <led.control.script>/home/pi/Sensorplatform/ledcontrol.sh</led.control.script>
             </properties>
         </profile>
         <profile>

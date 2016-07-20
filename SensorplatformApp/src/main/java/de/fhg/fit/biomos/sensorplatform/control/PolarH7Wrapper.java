@@ -9,7 +9,6 @@ import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
-import de.fhg.fit.biomos.sensorplatform.util.Unit;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
@@ -27,6 +26,7 @@ public class PolarH7Wrapper implements SensorWrapper {
   private SampleLogger sampleLogger;
 
   private final Uploader uploader;
+  private final Thread uploaderThread;
 
   public PolarH7Wrapper(PolarH7 polarh7, Uploader uploader) {
     this.polarh7 = polarh7;
@@ -35,6 +35,9 @@ public class PolarH7Wrapper implements SensorWrapper {
     this.gatttool = new GatttoolImpl(this.polarh7.getAddressType(), polarh7.getBdaddress());
     this.gatttool.addObs(this);
     new Thread(this.gatttool).start();
+
+    this.uploaderThread = new Thread(this.uploader);
+    this.uploaderThread.start();
   }
 
   @Override
@@ -50,8 +53,7 @@ public class PolarH7Wrapper implements SensorWrapper {
 
   @Override
   public void enableLogging() {
-    this.sampleLogger = new SampleLogger("hrm", this.polarh7.getName().name());
-    this.sampleLogger.addDescriptionLine("Heartrate [" + Unit.BPM + "]");
+    this.sampleLogger = new SampleLogger(this.polarh7.getName().name());
     this.polarh7.enableNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
   }
 
@@ -74,23 +76,21 @@ public class PolarH7Wrapper implements SensorWrapper {
   @Override
   public void shutdown() {
     this.gatttool.exitGatttool();
+    this.uploaderThread.interrupt();
   }
 
   @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
-    System.out.println("obs: handle " + handle + " " + "rawHexData " + rawHexValues);
-    HeartRateSample sample = this.polarh7.calculateHeartRateData(handle, rawHexValues);
-    if (sample != null) {
-      this.sampleLogger.writeLine(sample.toString());
+    HeartRateSample hrs = this.polarh7.calculateHeartRateData(handle, rawHexValues);
 
-      System.out.println(sample.toString());
+    this.sampleLogger.writeLine(hrs.toString());
 
-      if (this.uploader != null) {
-        this.uploader.sendData(this.polarh7.getBdaddress(), sample.getHeartRate());
-      }
-    } else {
-      LOG.error("heart rate sample is null");
+    // System.out.println(sample.toString()); // extreme debugging
+
+    if (this.uploader != null) {
+      this.uploader.addToQueue(hrs);
     }
+
   }
 
 }

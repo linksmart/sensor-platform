@@ -19,9 +19,9 @@ public class SampleLogger {
 
   private PrintWriter pw = null;
 
-  public SampleLogger(String measure, String sensorName) {
+  public SampleLogger(String sensorName) {
 
-    File file = new File(new File(new File("data", sensorName), measure), measure + ".txt");
+    File file = new File(new File("data", sensorName), sensorName + ".txt");
 
     if (file.exists()) {
       file.delete();

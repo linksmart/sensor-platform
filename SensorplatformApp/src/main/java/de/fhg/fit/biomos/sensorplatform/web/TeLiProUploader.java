@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.Properties;
+import java.util.Queue;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -18,6 +20,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
  * Communication class for the DITG webinterface. It basically provides a REST interface for logging in, which returns a cookie for authorisation and another
@@ -41,6 +45,8 @@ public class TeLiProUploader implements Uploader {
   private final String dataDownloadAddress;
 
   private String authorizationToken = "";
+
+  private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
 
   public TeLiProUploader(Properties properties) {
     this.dtf = DateTimeFormat.forPattern(properties.getProperty("telipro.webinterface.timestamp.format")).withZone(DateTimeZone.UTC);
@@ -128,6 +134,7 @@ public class TeLiProUploader implements Uploader {
    */
   @Deprecated
   public void downloadData() {
+    login();
     try {
       HttpsURLConnection httpsURLConnection = newhttpsGetRequest(this.dataDownloadAddress);
       httpsURLConnection.setRequestProperty("Authorization", this.authorizationToken);
@@ -147,7 +154,32 @@ public class TeLiProUploader implements Uploader {
   }
 
   @Override
-  public void login() {
+  public void addToQueue(HeartRateSample hrs) {
+    this.queue.add(hrs);
+  }
+
+  // TODO stop when queue is empty!!
+  @Override
+  public void run() {
+    login();
+    while (!Thread.currentThread().isInterrupted()) {
+      HeartRateSample hrs = this.queue.poll();
+      if (hrs != null) {
+        sendData(hrs);
+      } else {
+        try {
+          Thread.sleep(200);
+          LOG.info("sleep occ");
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          LOG.info("upload thread interrupt received from SensorWrapper");
+        }
+      }
+    }
+    LOG.info("upload thread finished");
+  }
+
+  private boolean login() {
     try {
       HttpsURLConnection httpsURLConnection = newhttpsPostRequest(this.loginAddress);
 
@@ -161,27 +193,28 @@ public class TeLiProUploader implements Uploader {
       if (httpsURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
         this.authorizationToken = httpsURLConnection.getHeaderFields().get("Authorization").get(0);
         LOG.info("login successful - token acquired");
-        // System.out.println(this.authorization);
+        // System.out.println(this.authorization); // extreme debugging
+        httpsURLConnection.disconnect();
+        return true;
       } else {
         LOG.error("login failed, error code: " + httpsURLConnection.getResponseCode());
+        httpsURLConnection.disconnect();
+        return false;
       }
-
-      httpsURLConnection.disconnect();
-
     } catch (IOException e) {
       e.printStackTrace();
+      return false;
     }
   }
 
-  @Override
-  public void sendData(String bdAddress, int value) {
+  private void sendData(HeartRateSample hrs) {
     try {
       HttpsURLConnection httpsURLConnection = newhttpsPostRequest(this.dataAddress);
 
       httpsURLConnection.setRequestProperty("Authorization", this.authorizationToken);
 
       OutputStream os = httpsURLConnection.getOutputStream();
-      os.write(createPOSTcontent(bdAddress, value).toString().getBytes());
+      os.write(createPOSTcontent(hrs.getBDaddress(), hrs.getHeartRate()).toString().getBytes());
       os.close();
 
       switch (httpsURLConnection.getResponseCode()) {
@@ -190,8 +223,9 @@ public class TeLiProUploader implements Uploader {
           break;
         case HttpURLConnection.HTTP_UNAUTHORIZED:
           LOG.error("transmission unauthorized - attempting to log in again");
-          login();
-          // TODO we lose at least one sample here, what about latency?
+          if (login()) {
+            sendData(hrs);
+          }
           break;
         default:
           LOG.error("transmission failed, error code: " + httpsURLConnection.getResponseCode());

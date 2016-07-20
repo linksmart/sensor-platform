@@ -1,7 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +13,12 @@ import de.fhg.fit.biomos.sensorplatform.util.LEDstate;
  * @author Daniel Pyka
  *
  */
-public class LEDcontrol {
+public class ShellscriptExecutor {
 
-  private static final Logger LOG = LoggerFactory.getLogger(LEDcontrol.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ShellscriptExecutor.class);
 
-  private final Properties properties;
-
-  public LEDcontrol(Properties properties) {
-    this.properties = properties;
+  public ShellscriptExecutor() {
+    // unused
   }
 
   /**
@@ -30,13 +27,12 @@ public class LEDcontrol {
    *
    * @param ledstate
    */
-  public void setLED(LEDstate ledstate) {
-    String filename = this.properties.getProperty("led.control.script");
+  public static void setLED(LEDstate ledstate, String fileName) {
     try {
-      String[] cmd = { "/bin/sh", "-c", "sudo -i sh " + filename + " " + ledstate.toString() };
+      String[] cmd = { "/bin/sh", "-c", "sudo -i sh " + fileName + " " + ledstate.toString() };
       Process p = Runtime.getRuntime().exec(cmd);
       p.waitFor();
-      LOG.info("LED state " + ledstate.toString());
+      LOG.info("LED state " + ledstate.name());
     } catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
