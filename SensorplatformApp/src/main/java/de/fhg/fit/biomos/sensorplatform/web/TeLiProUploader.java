@@ -34,6 +34,8 @@ public class TeLiProUploader implements Uploader {
 
   private static final Logger LOG = LoggerFactory.getLogger(TeLiProUploader.class);
 
+  private static final int UPLOAD_THREAD_SLEEP_TIME_MS = 300;
+
   private final DateTimeFormatter dtf;
 
   private final String userName;
@@ -48,6 +50,7 @@ public class TeLiProUploader implements Uploader {
 
   private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
 
+  // TODO Friday Singleton for uploader, use properties to specifiy which uploader binded to guice and in controller, pass this to sensorwrappers
   public TeLiProUploader(Properties properties) {
     this.dtf = DateTimeFormat.forPattern(properties.getProperty("telipro.webinterface.timestamp.format")).withZone(DateTimeZone.UTC);
     LOG.info("timestamp pattern: " + properties.getProperty("telipro.webinterface.timestamp.format"));
@@ -158,21 +161,22 @@ public class TeLiProUploader implements Uploader {
     this.queue.add(hrs);
   }
 
-  // TODO stop when queue is empty!!
   @Override
   public void run() {
     login();
     while (!Thread.currentThread().isInterrupted()) {
-      HeartRateSample hrs = this.queue.poll();
-      if (hrs != null) {
-        sendData(hrs);
+      if (!this.queue.isEmpty()) {
+        sendData(this.queue.poll());
       } else {
         try {
-          Thread.sleep(200);
-          LOG.info("sleep occ");
+          Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
         } catch (InterruptedException e) {
+          LOG.info("interrupt received from SensorWrapper");
+          while (!this.queue.isEmpty()) {
+            LOG.info("sending remaining samples");
+            sendData(this.queue.poll());
+          }
           Thread.currentThread().interrupt();
-          LOG.info("upload thread interrupt received from SensorWrapper");
         }
       }
     }

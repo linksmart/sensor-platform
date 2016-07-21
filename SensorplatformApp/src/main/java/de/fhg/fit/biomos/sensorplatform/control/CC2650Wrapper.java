@@ -3,13 +3,18 @@ package de.fhg.fit.biomos.sensorplatform.control;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
+import de.fhg.fit.biomos.sensorplatform.persistence.TextFileLogger;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650Sample;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
 
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
 public class CC2650Wrapper implements SensorWrapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(CC2650Wrapper.class);
@@ -17,7 +22,7 @@ public class CC2650Wrapper implements SensorWrapper {
   private final CC2650 cc2650;
   private final Gatttool gatttool;
 
-  private SampleLogger sampleLogger;
+  private TextFileLogger sampleLogger;
 
   public CC2650Wrapper(CC2650 cc2650) {
     this.cc2650 = cc2650;
@@ -40,7 +45,7 @@ public class CC2650Wrapper implements SensorWrapper {
 
   @Override
   public void enableLogging() {
-    this.sampleLogger = new SampleLogger(this.cc2650.getName().name());
+    this.sampleLogger = new TextFileLogger(this.cc2650.getName().name());
     this.cc2650.enableNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
 
   }
@@ -48,7 +53,6 @@ public class CC2650Wrapper implements SensorWrapper {
   @Override
   public void disableLogging() {
     this.cc2650.disableNotification(GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
-    this.sampleLogger.close();
   }
 
   @Override
@@ -64,6 +68,7 @@ public class CC2650Wrapper implements SensorWrapper {
   @Override
   public void shutdown() {
     this.gatttool.exitGatttool();
+    this.sampleLogger.close();
   }
 
   @Override

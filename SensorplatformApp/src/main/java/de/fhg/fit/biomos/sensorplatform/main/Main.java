@@ -6,7 +6,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.control.Controller;
+import de.fhg.fit.biomos.sensorplatform.web.ServerStarter;
 
 /**
  * @author Daniel Pyka
@@ -31,27 +31,22 @@ public class Main {
       LOG.error("cannot load properties");
       System.exit(1);
     }
-    // download samples
-    // DITGuploader ditGhttpUploader = new DITGuploader(this.properties);
-    // ditGhttpUploader.login();
-    // ditGhttpUploader.downloadData();
-    // System.exit(0);
+    // downloadSamples();
   }
 
   private void start() {
-    try {
-      Controller controller = new Controller(this.properties);
-      controller.startup();
-
-      int uptime = new Integer(this.properties.getProperty("sensorplatform.uptime.seconds"));
-      LOG.info("sleeping for " + uptime + " seconds");
-      Thread.sleep(uptime * 1000);
-
-      controller.shutdown();
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    new Thread(new ServerStarter(this.properties)).start();
+    // if (Boolean.parseBoolean(this.properties.getProperty("run.with.default.settings"))) {
+    // new Controller(this.properties).startupFromProjectBuildConfiguration(10);
+    // }
   }
+
+  // @Deprecated
+  // private void downloadSamples() {
+  // DITGuploader ditGhttpUploader = new DITGuploader(this.properties);
+  // ditGhttpUploader.login();
+  // ditGhttpUploader.downloadData();
+  // System.exit(0);
+  // }
 
 }

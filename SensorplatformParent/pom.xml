@@ -10,8 +10,9 @@
     <description>The parent project of the sensorplatform application.</description>
     <inceptionYear>2016</inceptionYear>
 
-    <!-- Profiles for board-specific settings -->
+    <!-- Profiles for board-specific settings and for different webinterfaces, for the future -->
     <profiles>
+
         <profile>
             <id>raspberrypi3</id>
             <activation>
@@ -22,6 +23,7 @@
                 <led.control.script>/home/pi/Sensorplatform/ledcontrol.sh</led.control.script>
             </properties>
         </profile>
+
         <profile>
             <id>cubietruck3</id>
             <properties>
@@ -30,6 +32,27 @@
                 <http.useragent.boardname>Sensorplatform Cubietruck3</http.useragent.boardname>
             </properties>
         </profile>
+
+        <profile>
+            <id>telipro</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <webinterface.name>TeliPro</webinterface.name>
+                <webinterface.username>SYML-TST-003-XXX</webinterface.username>
+                <!-- stored password is bad -->
+                <webinterface.password>a-secret</webinterface.password>
+                <webinterface.base.url>https://ditg.fit.fraunhofer.de</webinterface.base.url>
+                <webinterface.login.url>https://ditg.fit.fraunhofer.de/api/v1/deviceLogin</webinterface.login.url>
+                <!-- ATTENTION: username hardcoded in url -->
+                <webinterface.data.url>https://ditg.fit.fraunhofer.de/api/v1/user/SYML-TST-003-XXX/samples</webinterface.data.url>
+                <!-- only for testing/ verifying, change date in url to filter data -->
+                <webinterface.data.download.url>https://ditg.fit.fraunhofer.de/api/v1/user/SYML-TST-003-XXX/samples/HeartRate/date/2016-07-14/1d.json</webinterface.data.download.url>
+                <webinterface.timestamp.format>YYYY-MM-dd'T'HH:mm:ss.SSS'Z'</webinterface.timestamp.format>
+            </properties>
+        </profile>
+
     </profiles>
 
     <properties>
@@ -42,8 +65,11 @@
         <junit.version>4.12</junit.version>
         <slf4j.version>1.7.21</slf4j.version>
         <json.version>20160212</json.version>
-        <guice.version>4.1.0</guice.version>
+        <!-- guice version 4.x does not work with current jetty implementation -->
+        <guice.version>3.0</guice.version>
         <joda.version>2.9.4</joda.version>
+        <jetty.version>9.3.10.v20160621</jetty.version>
+        <jersey.version>1.19.1</jersey.version>
     </properties>
 
     <modules>
@@ -52,7 +78,6 @@
         <module>../PolarH7</module>
         <module>../TomTomHRM</module>
         <module>../AdidasMiCoachHRM</module>
-        <module>../SensorplatformServer</module>
         <module>../SensorplatformApp</module>
     </modules>
 
@@ -85,11 +110,6 @@
             </dependency>
             <dependency>
                 <groupId>de.fhg.fit.biomos</groupId>
-                <artifactId>SensorplatformServer</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.fhg.fit.biomos</groupId>
                 <artifactId>SensorplatformApp</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -114,14 +134,39 @@
                 <version>${json.version}</version>
             </dependency>
             <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-servlet</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.jersey</groupId>
+                <artifactId>jersey-servlet</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.jersey</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.jersey</groupId>
+                <artifactId>jersey-json</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice</artifactId>
                 <version>${guice.version}</version>
             </dependency>
             <dependency>
-                <groupId>joda-time</groupId>
-                <artifactId>joda-time</artifactId>
-                <version>${joda.version}</version>
+                <groupId>com.sun.jersey.contribs</groupId>
+                <artifactId>jersey-guice</artifactId>
+                <version>${jersey.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

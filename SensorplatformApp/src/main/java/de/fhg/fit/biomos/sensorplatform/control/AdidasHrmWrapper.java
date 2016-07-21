@@ -3,7 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.control;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
+import de.fhg.fit.biomos.sensorplatform.persistence.TextFileLogger;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
@@ -21,11 +21,12 @@ public class AdidasHrmWrapper implements SensorWrapper {
   private static final Logger LOG = LoggerFactory.getLogger(AdidasHrmWrapper.class);
 
   private final AdidasMiCoachHRM adidasHrm;
+  private final Uploader uploader;
   private final Gatttool gatttool;
 
-  private SampleLogger sampleLogger;
+  private final TextFileLogger sampleLogger;
 
-  private final Uploader uploader;
+  private Thread uploaderThread;
 
   public AdidasHrmWrapper(AdidasMiCoachHRM adidasHrm, Uploader uploader) {
     this.adidasHrm = adidasHrm;
@@ -34,6 +35,13 @@ public class AdidasHrmWrapper implements SensorWrapper {
     this.gatttool = new GatttoolImpl(this.adidasHrm.getAddressType(), adidasHrm.getBdaddress());
     this.gatttool.addObs(this);
     new Thread(this.gatttool).start();
+
+    this.sampleLogger = new TextFileLogger(this.adidasHrm.getName().name());
+
+    if (uploader != null) {
+      this.uploaderThread = new Thread(this.uploader);
+      this.uploaderThread.start();
+    }
   }
 
   @Override
@@ -49,14 +57,12 @@ public class AdidasHrmWrapper implements SensorWrapper {
 
   @Override
   public void enableLogging() {
-    this.sampleLogger = new SampleLogger(this.adidasHrm.getName().name());
     this.adidasHrm.enableNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
   }
 
   @Override
   public void disableLogging() {
     this.adidasHrm.disableNotification(GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
-    this.sampleLogger.close();
   }
 
   @Override
@@ -72,6 +78,10 @@ public class AdidasHrmWrapper implements SensorWrapper {
   @Override
   public void shutdown() {
     this.gatttool.exitGatttool();
+    this.sampleLogger.close();
+    if (this.uploaderThread != null) {
+      this.uploaderThread.interrupt();
+    }
   }
 
   @Override

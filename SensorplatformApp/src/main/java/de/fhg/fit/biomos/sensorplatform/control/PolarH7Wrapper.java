@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.biomos.sensorplatform.sensors.PolarH7;
-import de.fhg.fit.biomos.sensorplatform.persistence.SampleLogger;
+import de.fhg.fit.biomos.sensorplatform.persistence.TextFileLogger;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
@@ -21,12 +21,11 @@ public class PolarH7Wrapper implements SensorWrapper {
   private static final Logger LOG = LoggerFactory.getLogger(PolarH7Wrapper.class);
 
   private final PolarH7 polarh7;
-  private final Gatttool gatttool;
-
-  private SampleLogger sampleLogger;
-
   private final Uploader uploader;
-  private final Thread uploaderThread;
+  private final Gatttool gatttool;
+  private final TextFileLogger sampleLogger;
+
+  private Thread uploaderThread;
 
   public PolarH7Wrapper(PolarH7 polarh7, Uploader uploader) {
     this.polarh7 = polarh7;
@@ -36,8 +35,12 @@ public class PolarH7Wrapper implements SensorWrapper {
     this.gatttool.addObs(this);
     new Thread(this.gatttool).start();
 
-    this.uploaderThread = new Thread(this.uploader);
-    this.uploaderThread.start();
+    this.sampleLogger = new TextFileLogger(this.polarh7.getName().name());
+
+    if (uploader != null) {
+      this.uploaderThread = new Thread(this.uploader);
+      this.uploaderThread.start();
+    }
   }
 
   @Override
@@ -53,14 +56,12 @@ public class PolarH7Wrapper implements SensorWrapper {
 
   @Override
   public void enableLogging() {
-    this.sampleLogger = new SampleLogger(this.polarh7.getName().name());
     this.polarh7.enableNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
   }
 
   @Override
   public void disableLogging() {
     this.polarh7.disableNotification(GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
-    this.sampleLogger.close();
   }
 
   @Override
@@ -76,7 +77,10 @@ public class PolarH7Wrapper implements SensorWrapper {
   @Override
   public void shutdown() {
     this.gatttool.exitGatttool();
-    this.uploaderThread.interrupt();
+    this.sampleLogger.close();
+    if (this.uploaderThread != null) {
+      this.uploaderThread.interrupt();
+    }
   }
 
   @Override

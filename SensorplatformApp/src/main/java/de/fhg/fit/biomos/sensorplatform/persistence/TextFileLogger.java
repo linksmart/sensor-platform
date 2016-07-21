@@ -13,13 +13,13 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Pyka
  *
  */
-public class SampleLogger {
+public class TextFileLogger {
 
-  private static final Logger LOG = LoggerFactory.getLogger(SampleLogger.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TextFileLogger.class);
 
   private PrintWriter pw = null;
 
-  public SampleLogger(String sensorName) {
+  public TextFileLogger(String sensorName) {
 
     File file = new File(new File("data", sensorName), sensorName + ".txt");
 
@@ -57,6 +57,7 @@ public class SampleLogger {
    * Close the stream to the log file gracefully.
    */
   public void close() {
+    LOG.info("closing file logger");
     this.pw.flush();
     this.pw.close();
   }
