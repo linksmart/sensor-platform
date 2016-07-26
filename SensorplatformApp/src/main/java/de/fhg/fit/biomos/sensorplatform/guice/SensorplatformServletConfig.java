@@ -1,4 +1,4 @@
-package de.fhg.biomos.sensorplatform.guice;
+package de.fhg.fit.biomos.sensorplatform.guice;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -75,7 +75,7 @@ public class PolarH7Wrapper implements SensorWrapper {
 
   @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
-    HeartRateSample hrs = this.polarh7.calculateHeartRateData(handle, rawHexValues);
+    HeartRateSample hrs = this.polarh7.calculateHeartRateData(handle, rawHexValues, false);
 
     this.sampleLogger.writeLine(hrs.toString());
 

@@ -397,8 +397,8 @@ public class CC2650 extends Sensor {
     return magnetism_XYZ;
   }
 
-  public CC2650Sample calculateSensorData(String handle, String rawHexValues) {
-    CC2650Sample sample = new CC2650Sample(this.dtf.print(new DateTime()), this.bdAddress);
+  public CC2650Sample calculateSensorData(String handle, String rawHexValues, boolean transmitted) {
+    CC2650Sample sample = new CC2650Sample(this.dtf.print(new DateTime()), this.bdAddress, transmitted);
     String hexString = rawHexValues.replace(" ", "");
     switch (handle) {
       case CC2650lib.HANDLE_IR_TEMPERATURE_VALUE:

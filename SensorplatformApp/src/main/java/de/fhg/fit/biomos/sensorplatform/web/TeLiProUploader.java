@@ -1,21 +1,22 @@
 package de.fhg.fit.biomos.sensorplatform.web;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javax.net.ssl.HttpsURLConnection;
-
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,10 @@ public class TeLiProUploader implements Uploader {
 
   private String authorizationToken = "";
 
+  private final CloseableHttpClient httpclient;
+
   private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
+  // private final List<HeartRateSample> list = new ArrayList<HeartRateSample>();
 
   @Inject
   public TeLiProUploader(@Named("webinterface.username") String userName, @Named("webinterface.password") String password,
@@ -74,6 +78,125 @@ public class TeLiProUploader implements Uploader {
     LOG.info("data address: " + this.dataAddress);
     this.dataDownloadAddress = dataDownloadAddress;
     LOG.info("download address: " + this.dataDownloadAddress);
+
+    this.httpclient = HttpClients.createDefault();
+  }
+
+  @Override
+  public void addToQueue(HeartRateSample hrs) {
+    this.queue.add(hrs);
+  }
+
+  @Override
+  public void run() {
+    if (!login()) {
+      LOG.error("login failed!");
+      LOG.info("upload thread finished");
+      return;
+    }
+    while (!Thread.currentThread().isInterrupted()) {
+      if (!this.queue.isEmpty()) {
+        sendData(this.queue.poll());
+      } else {
+        try {
+          Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
+        } catch (InterruptedException e) {
+          LOG.info("interrupt received from SensorWrapper");
+          while (!this.queue.isEmpty()) {
+            LOG.info("sending remaining samples");
+            sendData(this.queue.poll());
+          }
+          Thread.currentThread().interrupt();
+        }
+      }
+    }
+    LOG.info("upload thread finished");
+  }
+
+  /**
+   * Only for testing! Download samples needs authorisation, too. Got some troubles using a REST-client. Therefor this piece of code is added by hand.
+   */
+  @Deprecated
+  public void downloadData() {
+    if (!login()) {
+      LOG.error("login failed!");
+      return;
+    }
+    HttpGet get = new HttpGet(this.dataDownloadAddress);
+    get.setHeader("Authorization", this.authorizationToken);
+
+    try {
+      CloseableHttpResponse response = this.httpclient.execute(get);
+      System.out.println(EntityUtils.toString(response.getEntity()));
+      response.close();
+      LOG.info("download data successful");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public boolean login() {
+    HttpPost post = new HttpPost(this.loginAddress);
+    post.setHeader("User-Agent", this.userAgent);
+
+    JSONObject content = new JSONObject();
+    content.put("username", this.userName);
+    content.put("password", this.password);
+
+    StringEntity requestEntity = new StringEntity(content.toString(), ContentType.create("application/json", "UTF-8"));
+    post.setEntity(requestEntity);
+
+    try {
+      CloseableHttpResponse response = this.httpclient.execute(post);
+
+      int statusCode = response.getStatusLine().getStatusCode();
+      if (statusCode == HttpStatus.SC_OK) {
+        this.authorizationToken = response.getFirstHeader("Authorization").getValue();
+        response.close();
+        LOG.info("login successful");
+        return true;
+      } else {
+        LOG.error("login failed, error code: " + statusCode);
+        response.close();
+        return false;
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public void sendData(HeartRateSample hrs) {
+    HttpPost post = new HttpPost(this.dataAddress);
+    post.setHeader("User-Agent", this.userAgent);
+    post.setHeader("Authorization", this.authorizationToken);
+
+    JSONObject content = createPOSTcontent(hrs.getBDaddress(), hrs.getHeartRate());
+    StringEntity requestEntity = new StringEntity(content.toString(), ContentType.create("application/json", "UTF-8"));
+    post.setEntity(requestEntity);
+
+    try {
+      CloseableHttpResponse response = this.httpclient.execute(post);
+      int statusCode = response.getStatusLine().getStatusCode();
+
+      switch (statusCode) {
+        case HttpStatus.SC_CREATED:
+          LOG.info("sample transmission successful");
+          break;
+        case HttpStatus.SC_UNAUTHORIZED:
+          LOG.error("transmission unauthorized - attempting to log in again");
+          // if (login()) {
+          // sendData(hrs);
+          // }
+          break;
+        default:
+          LOG.error("transmission failed, error code: " + statusCode);
+          break;
+      }
+      response.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -97,152 +220,6 @@ public class TeLiProUploader implements Uploader {
     o.put("endDate", format);
     o.put("metadata", new JSONObject().put("device", bdAddress));
     return o;
-  }
-
-  /**
-   * Create a new https connection as POST to the given url.
-   *
-   * @param url
-   *          the webinterface to connect to
-   * @return HttpsURLConnection object
-   * @throws IOException
-   */
-  private HttpsURLConnection newhttpsPostRequest(String url) throws IOException {
-    HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(url).openConnection();
-    httpsURLConnection.setDoInput(true);
-    httpsURLConnection.setDoOutput(true);
-    httpsURLConnection.setRequestMethod("POST");
-    httpsURLConnection.setReadTimeout(0);
-    httpsURLConnection.setRequestProperty("User-Agent", this.userAgent);
-    httpsURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf8");
-    return httpsURLConnection;
-  }
-
-  /**
-   * Only for testing! Required for downloading samples.
-   *
-   * @param url
-   *          the webinterface to connect to
-   * @return HttpsURLConnection object
-   * @throws IOException
-   */
-  private HttpsURLConnection newhttpsGetRequest(String url) throws IOException {
-    HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(url).openConnection();
-    httpsURLConnection.setDoInput(true);
-    httpsURLConnection.setDoOutput(false);
-    httpsURLConnection.setRequestMethod("GET");
-    httpsURLConnection.setReadTimeout(0);
-    httpsURLConnection.setRequestProperty("User-Agent", this.userAgent);
-    httpsURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf8");
-    return httpsURLConnection;
-  }
-
-  /**
-   * Only for testing! Download samples needs authorisation, too. Got some troubles using a REST-client. Therefor this piece of code is added by hand.
-   */
-  @Deprecated
-  public void downloadData() {
-    login();
-    try {
-      HttpsURLConnection httpsURLConnection = newhttpsGetRequest(this.dataDownloadAddress);
-      httpsURLConnection.setRequestProperty("Authorization", this.authorizationToken);
-
-      BufferedReader br = new BufferedReader(new InputStreamReader(httpsURLConnection.getInputStream()));
-      StringBuilder responseStrBuilder = new StringBuilder();
-      String responseString;
-      while ((responseString = br.readLine()) != null) {
-        responseStrBuilder.append(responseString);
-      }
-      JSONArray content = new JSONArray(responseStrBuilder.toString());
-      LOG.info("download data successful");
-      System.out.println(content);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  @Override
-  public void addToQueue(HeartRateSample hrs) {
-    this.queue.add(hrs);
-  }
-
-  @Override
-  public void run() {
-    login();
-    while (!Thread.currentThread().isInterrupted()) {
-      if (!this.queue.isEmpty()) {
-        sendData(this.queue.poll());
-      } else {
-        try {
-          Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
-        } catch (InterruptedException e) {
-          LOG.info("interrupt received from SensorWrapper");
-          while (!this.queue.isEmpty()) {
-            LOG.info("sending remaining samples");
-            sendData(this.queue.poll());
-          }
-          Thread.currentThread().interrupt();
-        }
-      }
-    }
-    LOG.info("upload thread finished");
-  }
-
-  private boolean login() {
-    try {
-      HttpsURLConnection httpsURLConnection = newhttpsPostRequest(this.loginAddress);
-
-      OutputStream os = httpsURLConnection.getOutputStream();
-      JSONObject content = new JSONObject();
-      content.put("username", this.userName);
-      content.put("password", this.password);
-      os.write(content.toString().getBytes());
-      os.close();
-
-      if (httpsURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-        this.authorizationToken = httpsURLConnection.getHeaderFields().get("Authorization").get(0);
-        LOG.info("login successful - token acquired");
-        // System.out.println(this.authorization); // extreme debugging
-        httpsURLConnection.disconnect();
-        return true;
-      } else {
-        LOG.error("login failed, error code: " + httpsURLConnection.getResponseCode());
-        httpsURLConnection.disconnect();
-        return false;
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-      return false;
-    }
-  }
-
-  private void sendData(HeartRateSample hrs) {
-    try {
-      HttpsURLConnection httpsURLConnection = newhttpsPostRequest(this.dataAddress);
-
-      httpsURLConnection.setRequestProperty("Authorization", this.authorizationToken);
-
-      OutputStream os = httpsURLConnection.getOutputStream();
-      os.write(createPOSTcontent(hrs.getBDaddress(), hrs.getHeartRate()).toString().getBytes());
-      os.close();
-
-      switch (httpsURLConnection.getResponseCode()) {
-        case HttpURLConnection.HTTP_CREATED:
-          LOG.info("sample transmission successful");
-          break;
-        case HttpURLConnection.HTTP_UNAUTHORIZED:
-          LOG.error("transmission unauthorized - attempting to log in again");
-          if (login()) {
-            sendData(hrs);
-          }
-          break;
-        default:
-          LOG.error("transmission failed, error code: " + httpsURLConnection.getResponseCode());
-          break;
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
 }

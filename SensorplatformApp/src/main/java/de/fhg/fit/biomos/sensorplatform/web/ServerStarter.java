@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.servlet.GuiceFilter;
 
-import de.fhg.biomos.sensorplatform.guice.SensorplatformServletConfig;
+import de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig;
 
 public class ServerStarter implements Runnable {
 

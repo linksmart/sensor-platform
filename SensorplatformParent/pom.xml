@@ -72,8 +72,8 @@
         <joda.version>2.9.4</joda.version>
         <jetty.version>9.3.10.v20160621</jetty.version>
         <jersey.version>1.19.1</jersey.version>
-        
-        <sensorplatform.https.port>8081</sensorplatform.https.port>
+
+        <sensorplatform.https.port>8080</sensorplatform.https.port>
         <keystore.filename>keystore.jks</keystore.filename>
         <keystore.password>123456</keystore.password>
     </properties>
@@ -173,6 +173,11 @@
                 <groupId>com.sun.jersey.contribs</groupId>
                 <artifactId>jersey-guice</artifactId>
                 <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

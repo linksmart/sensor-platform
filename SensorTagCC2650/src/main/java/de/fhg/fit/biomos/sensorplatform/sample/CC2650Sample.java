@@ -113,8 +113,8 @@ public class CC2650Sample extends Sample {
   // private MovementSample movementSample;
   private Measurement measurement;
 
-  public CC2650Sample(String timestamp, String bdAddress) {
-    super(timestamp, bdAddress);
+  public CC2650Sample(String timestamp, String bdAddress, boolean transmitted) {
+    super(timestamp, bdAddress, transmitted);
   }
 
   public Measurement getSample() {
@@ -143,7 +143,8 @@ public class CC2650Sample extends Sample {
 
   @Override
   public String toString() {
-    return "{\"timestamp\":\" " + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"value\":" + this.measurement.toString() + "}";
+    return "{\"timestamp\":\" " + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"transmitted\":" + this.transmitted + ",\"value\":"
+        + this.measurement.toString() + "}";
   }
 
 }

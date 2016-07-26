@@ -76,7 +76,7 @@ public class AdidasHrmWrapper implements SensorWrapper {
 
   @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
-    HeartRateSample hrs = this.adidasHrm.calculateHeartRateData(handle, rawHexValues);
+    HeartRateSample hrs = this.adidasHrm.calculateHeartRateData(handle, rawHexValues, false);
 
     this.sampleLogger.writeLine(hrs.toString());
 

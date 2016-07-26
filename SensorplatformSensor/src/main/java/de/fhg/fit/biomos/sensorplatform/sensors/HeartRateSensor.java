@@ -215,8 +215,8 @@ public abstract class HeartRateSensor extends Sensor {
     return rrIntervals;
   }
 
-  protected HeartRateSample calculateHeartRateData(String expectedHandle, String handle, String rawHexValues) {
-    HeartRateSample hrs = new HeartRateSample(this.dtf.print(new DateTime()), this.bdAddress);
+  protected HeartRateSample calculateHeartRateData(String expectedHandle, String handle, String rawHexValues, boolean transmitted) {
+    HeartRateSample hrs = new HeartRateSample(this.dtf.print(new DateTime()), this.bdAddress, transmitted);
     if (handle.equals(expectedHandle)) {
 
       if (isSkinContactDetectionSupported(rawHexValues)) {

@@ -19,8 +19,8 @@ public class HeartRateSample extends Sample {
   private int energyExpended = 0;
   private List<Integer> rrIntervals = new ArrayList<Integer>();
 
-  public HeartRateSample(String timestamp, String bdAddress) {
-    super(timestamp, bdAddress);
+  public HeartRateSample(String timestamp, String bdAddress, boolean transmitted) {
+    super(timestamp, bdAddress, transmitted);
   }
 
   public int getHeartRate() {
@@ -49,9 +49,10 @@ public class HeartRateSample extends Sample {
 
   @Override
   public String toString() {
-    return "{\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"value\":" + "{\"heartrate\":{\"value\":" + this.heartRate
-        + ",\"unit\":\"" + this.UNIT_BEATS_PER_MINUTE + "\"},\"energyexpended\":{\"value\":" + this.energyExpended + ",\"unit\":\"" + this.UNIT_JOULE + "\"}"
-        + ",\"rrintervals\":{\"value\":" + this.rrIntervals.toString() + ",\"unit\":\"" + this.UNIT_BPM_MS + "\"}}}";
+    return "{\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"transmitted\":" + this.transmitted + ",\"value\":"
+        + "{\"heartrate\":{\"value\":" + this.heartRate + ",\"unit\":\"" + this.UNIT_BEATS_PER_MINUTE + "\"},\"energyexpended\":{\"value\":"
+        + this.energyExpended + ",\"unit\":\"" + this.UNIT_JOULE + "\"}" + ",\"rrintervals\":{\"value\":" + this.rrIntervals.toString() + ",\"unit\":\""
+        + this.UNIT_BPM_MS + "\"}}}";
 
   }
 

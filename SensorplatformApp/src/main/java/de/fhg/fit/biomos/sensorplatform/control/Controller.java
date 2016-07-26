@@ -53,6 +53,7 @@ public class Controller implements Runnable {
 
   public void startupFromProjectBuildConfiguration() throws RuntimeException {
     if (!this.recording) {
+      this.recording = true;
       initFromProjectBuild();
       new Thread(this).start();
       this.uploaderThread = new Thread(this.uploader);
@@ -66,6 +67,7 @@ public class Controller implements Runnable {
 
   public void startupFromWebConfiguration(int uptime, int timeout, JSONArray sensorConfiguration) throws RuntimeException {
     if (!this.recording) {
+      this.recording = true;
       this.uptime = uptime;
       this.timeout = timeout;
       initFromWebapplication(sensorConfiguration);

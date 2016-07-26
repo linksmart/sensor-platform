@@ -81,8 +81,8 @@ public class PolarH7 extends HeartRateSensor {
    * @param rawHexValues
    * @return
    */
-  public HeartRateSample calculateHeartRateData(String handle, String rawHexValues) {
-    return calculateHeartRateData(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT, handle, rawHexValues);
+  public HeartRateSample calculateHeartRateData(String handle, String rawHexValues, boolean transmitted) {
+    return calculateHeartRateData(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT, handle, rawHexValues, transmitted);
   }
 
 }

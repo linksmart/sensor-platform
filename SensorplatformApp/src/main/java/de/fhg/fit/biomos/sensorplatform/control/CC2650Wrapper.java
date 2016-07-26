@@ -73,7 +73,7 @@ public class CC2650Wrapper implements SensorWrapper {
 
   @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
-    CC2650Sample sample = this.cc2650.calculateSensorData(handle, rawHexValues);
+    CC2650Sample sample = this.cc2650.calculateSensorData(handle, rawHexValues, false);
 
     this.sampleLogger.writeLine(sample.toString());
 
