@@ -2,12 +2,11 @@
 	"name": "CC2650",
 	"bdaddress": "A0:E6:F8:B6:37:05",
 	"addresstype": "PUBLIC",
-	"webinterface": "",
 	"settings": {
-		"irtemperature": "64",
-		"humidity": "64",
-		"ambientlight": "50",
-		"pressure": "64",
-		"movement": "64"
+		"irtemperature": 64,
+		"humidity": 64,
+		"ambientlight": 50,
+		"pressure": 64,
+		"movement": 64
 	}
 }]

@@ -3,13 +3,19 @@ package de.fhg.fit.biomos.sensorplatform.web;
 import java.util.Properties;
 
 import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.session.HashSessionManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +35,20 @@ public class ServerStarter implements Runnable {
 
   @Override
   public void run() {
-    int port = Integer.parseInt(this.properties.getProperty("webinterface.port"));
-    Server server = new Server(port);
+    int port = Integer.parseInt(this.properties.getProperty("sensorplatform.https.port"));
+    Server server = new Server();
+
+    HttpConfiguration https = new HttpConfiguration();
+    https.addCustomizer(new SecureRequestCustomizer());
+    SslContextFactory sslContextFactory = new SslContextFactory();
+    sslContextFactory.setKeyStorePath(ClassLoader.getSystemResource(this.properties.getProperty("keystore.filename")).toExternalForm());
+    sslContextFactory.setKeyStorePassword("123456");
+    sslContextFactory.setKeyManagerPassword("123456");
+    ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
+    sslConnector.setPort(port);
+    // TODO bind connectors to eth0 and wlan0 but no other interface (especially not ppp)
+
+    server.setConnectors(new ServerConnector[] { sslConnector });
 
     SensorplatformServletConfig sensorplatformServletConfig = new SensorplatformServletConfig(this.properties);
 
@@ -40,10 +58,6 @@ public class ServerStarter implements Runnable {
     context.addEventListener(sensorplatformServletConfig);
     context.addFilter(GuiceFilter.class, "/*", null);
     context.addServlet(DefaultServlet.class, "/*");
-
-    // ServletHolder jerseyServlet = context.addServlet(ServletContainer.class, "/*");
-    // jerseyServlet.setInitOrder(0);
-    // jerseyServlet.setInitParameter("com.sun.jersey.config.property.packages", "de.fhg.fit.biomos.sensorplatform.restservices");
 
     ResourceHandler resourceHandler = new ResourceHandler();
     resourceHandler.setDirectoriesListed(true);

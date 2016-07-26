@@ -13,7 +13,6 @@ import java.util.UUID;
 public abstract class TomTomHRMlib {
   //@formatter:off
 
-  public static final String DEFAULT_BDADDRESS_ADIDAS = "CB:A2:4A:FE:0F:DA";
   public static final String DEFAULT_BDADDRESS_TOMTOM = "F4:2C:87:24:12:09";
 
   // primary

@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
-import java.util.Properties;
 import java.util.Queue;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -21,11 +20,15 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
  * Communication class for the DITG webinterface. It basically provides a REST interface for logging in, which returns a cookie for authorisation and another
- * REST interface for sending samples.
+ * REST interface for sending samples.<br>
+ * The class <b>must</b> be used as a singleton. Use <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -50,24 +53,26 @@ public class TeLiProUploader implements Uploader {
 
   private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
 
-  // TODO Friday Singleton for uploader, use properties to specifiy which uploader binded to guice and in controller, pass this to sensorwrappers
-  public TeLiProUploader(Properties properties) {
-    this.dtf = DateTimeFormat.forPattern(properties.getProperty("telipro.webinterface.timestamp.format")).withZone(DateTimeZone.UTC);
-    LOG.info("timestamp pattern: " + properties.getProperty("telipro.webinterface.timestamp.format"));
-
-    this.userName = properties.getProperty("telipro.webinterface.username");
+  @Inject
+  public TeLiProUploader(@Named("webinterface.username") String userName, @Named("webinterface.password") String password,
+      @Named("http.useragent.boardname") String userAgent, @Named("webinterface.timestamp.format") String timestampFormat,
+      @Named("webinterface.login.url") String loginAddress, @Named("webinterface.data.url") String dataAddress,
+      @Named("webinterface.data.download.url") String dataDownloadAddress) {
+    this.userName = userName;
     LOG.info("username: " + this.userName);
-    this.password = properties.getProperty("telipro.webinterface.password");
+    this.password = password;
     LOG.info("password: " + this.password);
-    this.userAgent = properties.getProperty("http.useragent.boardname") + " " + System.getProperty("os.name") + " " + System.getProperty("os.arch") + " "
-        + System.getProperty("os.version");
+    this.userAgent = userAgent + " " + System.getProperty("os.name") + " " + System.getProperty("os.arch") + " " + System.getProperty("os.version");
     LOG.info("user agent: " + this.userAgent);
 
-    this.loginAddress = properties.getProperty("telipro.webinterface.login.url");
+    this.dtf = DateTimeFormat.forPattern(timestampFormat).withZone(DateTimeZone.UTC);
+    LOG.info("timestamp pattern: " + timestampFormat);
+
+    this.loginAddress = loginAddress;
     LOG.info("login address: " + this.loginAddress);
-    this.dataAddress = properties.getProperty("telipro.webinterface.data.url");
+    this.dataAddress = dataAddress;
     LOG.info("data address: " + this.dataAddress);
-    this.dataDownloadAddress = properties.getProperty("telipro.webinterface.data.download.url");
+    this.dataDownloadAddress = dataDownloadAddress;
     LOG.info("download address: " + this.dataDownloadAddress);
   }
 

@@ -26,8 +26,6 @@ public class TomTomHrmWrapper implements SensorWrapper {
 
   private final TextFileLogger sampleLogger;
 
-  private Thread uploaderThread;
-
   public TomTomHrmWrapper(TomTomHRM tomtomhrm, Uploader uploader) {
     this.tomtomhrm = tomtomhrm;
     this.uploader = uploader;
@@ -37,11 +35,6 @@ public class TomTomHrmWrapper implements SensorWrapper {
     new Thread(this.gatttool).start();
 
     this.sampleLogger = new TextFileLogger(this.tomtomhrm.getName().name());
-
-    if (uploader != null) {
-      this.uploaderThread = new Thread(this.uploader);
-      this.uploaderThread.start();
-    }
   }
 
   @Override
@@ -79,9 +72,6 @@ public class TomTomHrmWrapper implements SensorWrapper {
   public void shutdown() {
     this.gatttool.exitGatttool();
     this.sampleLogger.close();
-    if (this.uploaderThread != null) {
-      this.uploaderThread.interrupt();
-    }
   }
 
   @Override

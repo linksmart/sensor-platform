@@ -2,7 +2,7 @@ package de.fhg.fit.biomos.sensorplatform.control;
 
 import java.util.List;
 
-import org.codehaus.jettison.json.JSONArray;
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +10,8 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import de.fhg.fit.biomos.sensorplatform.util.LEDstate;
+import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
+import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
  * This class defines the control flow of the sensorplatform.<br>
@@ -23,29 +25,38 @@ public class Controller implements Runnable {
 
   private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
-  private final SensorWrapperFactory swFactory;
-
-  private List<SensorWrapper> swList;
-
   private final String ledControlScriptFileName;
+
+  private final SensorWrapperFactory swFactory;
+  private final Uploader uploader;
+
+  private Thread uploaderThread;
+  private List<SensorWrapper> swList;
 
   private int timeout;
   private int uptime;
-  private boolean running = false;
+  private boolean recording = false;
 
   @Inject
-  public Controller(SensorWrapperFactory swFactory, @Named("default.sensor.timeout") String timeout, @Named("default.recording.time") String uptime,
-      @Named("led.control.script") String ledControlScriptFileName) {
+  public Controller(TeLiProUploader uploader, SensorWrapperFactory swFactory, @Named("default.sensor.timeout") String timeout,
+      @Named("default.recording.time") String uptime, @Named("led.control.script") String ledControlScriptFileName) {
     this.swFactory = swFactory;
+    this.uploader = uploader;
     this.timeout = new Integer(timeout);
     this.uptime = new Integer(uptime);
     this.ledControlScriptFileName = ledControlScriptFileName;
   }
 
+  public boolean isRecording() {
+    return this.recording;
+  }
+
   public void startupFromProjectBuildConfiguration() throws RuntimeException {
-    if (!this.running) {
+    if (!this.recording) {
       initFromProjectBuild();
       new Thread(this).start();
+      this.uploaderThread = new Thread(this.uploader);
+      this.uploaderThread.start();
     } else {
       String errorMsg = "Data recording ongoing. No other startup allowed!";
       LOG.info(errorMsg);
@@ -54,11 +65,13 @@ public class Controller implements Runnable {
   }
 
   public void startupFromWebConfiguration(int uptime, int timeout, JSONArray sensorConfiguration) throws RuntimeException {
-    if (!this.running) {
+    if (!this.recording) {
       this.uptime = uptime;
       this.timeout = timeout;
       initFromWebapplication(sensorConfiguration);
       new Thread(this).start();
+      this.uploaderThread = new Thread(this.uploader);
+      this.uploaderThread.start();
     } else {
       String errorMsg = "Data recording ongoing. No other startup allowed!";
       LOG.info(errorMsg);
@@ -70,12 +83,13 @@ public class Controller implements Runnable {
   public void run() {
     sleep(this.uptime);
     shutdown();
-    this.running = false;
+    this.uploaderThread.interrupt();
+    this.recording = false;
   }
 
   private void initFromProjectBuild() {
     LOG.info("initialise");
-    this.swList = this.swFactory.setupFromProjectBuildConfiguration();
+    this.swList = this.swFactory.setupFromProjectBuildConfiguration(this.uploader);
 
     for (SensorWrapper sensorWrapper : this.swList) {
       sensorWrapper.connectToSensor(this.timeout);
@@ -90,7 +104,7 @@ public class Controller implements Runnable {
 
   private void initFromWebapplication(JSONArray sensorConfiguration) {
     LOG.info("initialise");
-    this.swList = this.swFactory.setupFromWebinterfaceConfinguration(sensorConfiguration);
+    this.swList = this.swFactory.setupFromWebinterfaceConfinguration(sensorConfiguration, this.uploader);
 
     for (SensorWrapper sensorWrapper : this.swList) {
       sensorWrapper.connectToSensor(this.timeout);

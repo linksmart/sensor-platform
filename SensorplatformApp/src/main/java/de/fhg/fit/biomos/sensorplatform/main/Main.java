@@ -15,7 +15,7 @@ public class Main {
 
   private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
-  private static final String propertiesFilename = "SensorplatformApp.properties";
+  private static final String propertiesFileName = "SensorplatformApp.properties";
 
   private final Properties properties = new Properties();
 
@@ -25,7 +25,7 @@ public class Main {
 
   public Main() {
     try {
-      this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFilename));
+      this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFileName));
       LOG.info("version is " + this.properties.getProperty("version"));
     } catch (IOException e) {
       LOG.error("cannot load properties");

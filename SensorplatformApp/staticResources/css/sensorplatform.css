@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+.container {
+	background-color: #009374;
+}
+
+#config {
+	width:100%
+}
+
+#uptime, #timeout {
+	width:50%
+}

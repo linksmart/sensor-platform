@@ -25,8 +25,6 @@ public class PolarH7Wrapper implements SensorWrapper {
   private final Gatttool gatttool;
   private final TextFileLogger sampleLogger;
 
-  private Thread uploaderThread;
-
   public PolarH7Wrapper(PolarH7 polarh7, Uploader uploader) {
     this.polarh7 = polarh7;
     this.uploader = uploader;
@@ -36,11 +34,6 @@ public class PolarH7Wrapper implements SensorWrapper {
     new Thread(this.gatttool).start();
 
     this.sampleLogger = new TextFileLogger(this.polarh7.getName().name());
-
-    if (uploader != null) {
-      this.uploaderThread = new Thread(this.uploader);
-      this.uploaderThread.start();
-    }
   }
 
   @Override
@@ -78,9 +71,6 @@ public class PolarH7Wrapper implements SensorWrapper {
   public void shutdown() {
     this.gatttool.exitGatttool();
     this.sampleLogger.close();
-    if (this.uploaderThread != null) {
-      this.uploaderThread.interrupt();
-    }
   }
 
   @Override

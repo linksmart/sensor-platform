@@ -39,11 +39,13 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <!-- these two are not yet used -->
                 <webinterface.name>TeliPro</webinterface.name>
-                <webinterface.username>SYML-TST-003-XXX</webinterface.username>
-                <!-- stored password is bad -->
-                <webinterface.password>a-secret</webinterface.password>
                 <webinterface.base.url>https://ditg.fit.fraunhofer.de</webinterface.base.url>
+
+                <webinterface.username>SYML-TST-003-XXX</webinterface.username>
+                <!-- stored password is bad obviously -->
+                <webinterface.password>a-secret</webinterface.password>
                 <webinterface.login.url>https://ditg.fit.fraunhofer.de/api/v1/deviceLogin</webinterface.login.url>
                 <!-- ATTENTION: username hardcoded in url -->
                 <webinterface.data.url>https://ditg.fit.fraunhofer.de/api/v1/user/SYML-TST-003-XXX/samples</webinterface.data.url>
@@ -70,6 +72,10 @@
         <joda.version>2.9.4</joda.version>
         <jetty.version>9.3.10.v20160621</jetty.version>
         <jersey.version>1.19.1</jersey.version>
+        
+        <sensorplatform.https.port>8081</sensorplatform.https.port>
+        <keystore.filename>keystore.jks</keystore.filename>
+        <keystore.password>123456</keystore.password>
     </properties>
 
     <modules>
@@ -172,6 +178,19 @@
     </dependencyManagement>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <nonFilteredFileExtensions>
+                        <!-- keystore file (binary), this would get corrupted if filtered by maven -->
+                        <nonFilteredFileExtension>jks</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+        </plugins>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

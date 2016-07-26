@@ -18,11 +18,11 @@ import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
 import de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
- * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory.
+ * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory.<br>
+ * The class <b>must</b> be used as a singleton. Use <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -34,7 +34,6 @@ public class SensorWrapperFactory {
   public static final String NAME = "name";
   public static final String BDADDRESS = "bdaddress";
   public static final String ADDRESSTYPE = "addresstype";
-  public static final String WEBINTERFACE = "webinterface";
   public static final String SETTINGS = "settings";
 
   private final String sensorConfigurationFileName;
@@ -52,13 +51,9 @@ public class SensorWrapperFactory {
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */
-  public List<SensorWrapper> setupFromWebinterfaceConfinguration(org.codehaus.jettison.json.JSONArray sensorConfiguration) {
+  public List<SensorWrapper> setupFromWebinterfaceConfinguration(JSONArray sensorConfiguration, Uploader uploader) {
     LOG.info("setup from webapplication configuration");
-    // List<SensorWrapper> sensorWrapperList = new ArrayList<SensorWrapper>();
-    for (int i = 0; i < sensorConfiguration.length(); i++) {
-      // TODO
-    }
-    return null;
+    return createSensorWrapper(sensorConfiguration, uploader);
   }
 
   /**
@@ -66,13 +61,17 @@ public class SensorWrapperFactory {
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */
-  public List<SensorWrapper> setupFromProjectBuildConfiguration() {
+  public List<SensorWrapper> setupFromProjectBuildConfiguration(Uploader uploader) {
     LOG.info("setup from project build configuration");
     LOG.info("sensor configuration file " + this.sensorConfigurationFileName);
 
     JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(this.sensorConfigurationFileName));
     JSONArray sensorConfiguration = new JSONArray(tokener);
 
+    return createSensorWrapper(sensorConfiguration, uploader);
+  }
+
+  private List<SensorWrapper> createSensorWrapper(JSONArray sensorConfiguration, Uploader uploader) {
     List<SensorWrapper> sensorWrapperList = new ArrayList<SensorWrapper>();
     for (int i = 0; i < sensorConfiguration.length(); i++) {
 
@@ -81,9 +80,6 @@ public class SensorWrapperFactory {
       String bdAddress = sensorConfigEntry.getString(BDADDRESS);
       AddressType addressType = AddressType.valueOf(sensorConfigEntry.getString(ADDRESSTYPE));
       JSONObject settings = sensorConfigEntry.getJSONObject(SETTINGS);
-
-      // FIXME not very flexible if we would add other webinterfaces
-      Uploader uploader = sensorConfigEntry.getString(WEBINTERFACE).equals("telipro") ? new TeLiProUploader(null) : null; // TODO null properties telipro
 
       SensorWrapper sensorWrapper = null;
       switch (name) {
