@@ -8,8 +8,6 @@ import javax.ws.rs.core.Response;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
@@ -18,7 +16,7 @@ import de.fhg.fit.biomos.sensorplatform.control.Controller;
 @Path("/info")
 public class InfoService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(InfoService.class);
+  // private static final Logger LOG = LoggerFactory.getLogger(InfoService.class);
 
   private final Controller controller;
 
@@ -30,7 +28,7 @@ public class InfoService {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response info() {
-    LOG.info("/info called");
+    // LOG.info("/info called");
 
     JSONObject response = new JSONObject();
     try {

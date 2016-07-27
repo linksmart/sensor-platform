@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import de.fhg.fit.biomos.sensorplatform.main.ShellscriptExecutor;
 import de.fhg.fit.biomos.sensorplatform.util.LEDstate;
 import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
@@ -27,19 +28,22 @@ public class Controller implements Runnable {
 
   private final String ledControlScriptFileName;
 
+  private final SensorObserver sensorObserver;
   private final SensorWrapperFactory swFactory;
   private final Uploader uploader;
 
+  private Thread sensorObserverThread;
   private Thread uploaderThread;
-  private List<SensorWrapper> swList;
+  private List<AbstractSensorWrapper> swList;
 
   private int timeout;
   private int uptime;
   private boolean recording = false;
 
   @Inject
-  public Controller(TeLiProUploader uploader, SensorWrapperFactory swFactory, @Named("default.sensor.timeout") String timeout,
+  public Controller(SensorObserver sensorObserver, TeLiProUploader uploader, SensorWrapperFactory swFactory, @Named("default.sensor.timeout") String timeout,
       @Named("default.recording.time") String uptime, @Named("led.control.script") String ledControlScriptFileName) {
+    this.sensorObserver = sensorObserver;
     this.swFactory = swFactory;
     this.uploader = uploader;
     this.timeout = new Integer(timeout);
@@ -51,72 +55,67 @@ public class Controller implements Runnable {
     return this.recording;
   }
 
-  public void startupFromProjectBuildConfiguration() throws RuntimeException {
+  public void startupFromProjectBuildConfiguration() {
     if (!this.recording) {
       this.recording = true;
       initFromProjectBuild();
-      new Thread(this).start();
-      this.uploaderThread = new Thread(this.uploader);
-      this.uploaderThread.start();
+      startupThreads();
     } else {
-      String errorMsg = "Data recording ongoing. No other startup allowed!";
-      LOG.info(errorMsg);
-      throw new RuntimeException(errorMsg);
+      LOG.error("Data recording ongoing. No other startup allowed! Skipped!");
     }
   }
 
-  public void startupFromWebConfiguration(int uptime, int timeout, JSONArray sensorConfiguration) throws RuntimeException {
+  public void startupFromWebConfiguration(int uptime, int timeout, JSONArray sensorConfiguration) {
     if (!this.recording) {
       this.recording = true;
       this.uptime = uptime;
       this.timeout = timeout;
       initFromWebapplication(sensorConfiguration);
-      new Thread(this).start();
-      this.uploaderThread = new Thread(this.uploader);
-      this.uploaderThread.start();
+      startupThreads();
     } else {
-      String errorMsg = "Data recording ongoing. No other startup allowed!";
-      LOG.info(errorMsg);
-      throw new RuntimeException(errorMsg);
+      LOG.error("Data recording ongoing. No other startup allowed! Skipped!");
     }
+  }
+
+  private void startupThreads() {
+    new Thread(this).start();
+    this.sensorObserverThread = new Thread(this.sensorObserver);
+    this.sensorObserverThread.start();
+    this.uploaderThread = new Thread(this.uploader);
+    this.uploaderThread.start();
   }
 
   @Override
   public void run() {
     sleep(this.uptime);
     shutdown();
+    this.sensorObserverThread.interrupt();
     this.uploaderThread.interrupt();
     this.recording = false;
   }
 
   private void initFromProjectBuild() {
-    LOG.info("initialise");
+    LOG.info("initialise from project build configuration");
     this.swList = this.swFactory.setupFromProjectBuildConfiguration(this.uploader);
-
-    for (SensorWrapper sensorWrapper : this.swList) {
-      sensorWrapper.connectToSensor(this.timeout);
-    }
-    for (SensorWrapper sensorWrapper : this.swList) {
-      sensorWrapper.enableLogging();
-    }
-
-    LOG.info("initialisation complete");
-    ShellscriptExecutor.setLED(LEDstate.RUNNING, this.ledControlScriptFileName);
+    init();
   }
 
   private void initFromWebapplication(JSONArray sensorConfiguration) {
-    LOG.info("initialise");
+    LOG.info("initialise from web application configuration");
     this.swList = this.swFactory.setupFromWebinterfaceConfinguration(sensorConfiguration, this.uploader);
+    init();
+  }
 
+  private void init() {
+    this.sensorObserver.setTarget(this.swList);
     for (SensorWrapper sensorWrapper : this.swList) {
       sensorWrapper.connectToSensor(this.timeout);
     }
     for (SensorWrapper sensorWrapper : this.swList) {
       sensorWrapper.enableLogging();
     }
-
-    LOG.info("initialisation complete");
     ShellscriptExecutor.setLED(LEDstate.RUNNING, this.ledControlScriptFileName);
+    LOG.info("initialise complete");
   }
 
   private void sleep(int seconds) {

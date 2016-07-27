@@ -51,7 +51,7 @@ public class SensorWrapperFactory {
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */
-  public List<SensorWrapper> setupFromWebinterfaceConfinguration(JSONArray sensorConfiguration, Uploader uploader) {
+  public List<AbstractSensorWrapper> setupFromWebinterfaceConfinguration(JSONArray sensorConfiguration, Uploader uploader) {
     LOG.info("setup from webapplication configuration");
     return createSensorWrapper(sensorConfiguration, uploader);
   }
@@ -61,7 +61,7 @@ public class SensorWrapperFactory {
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */
-  public List<SensorWrapper> setupFromProjectBuildConfiguration(Uploader uploader) {
+  public List<AbstractSensorWrapper> setupFromProjectBuildConfiguration(Uploader uploader) {
     LOG.info("setup from project build configuration");
     LOG.info("sensor configuration file " + this.sensorConfigurationFileName);
 
@@ -71,8 +71,8 @@ public class SensorWrapperFactory {
     return createSensorWrapper(sensorConfiguration, uploader);
   }
 
-  private List<SensorWrapper> createSensorWrapper(JSONArray sensorConfiguration, Uploader uploader) {
-    List<SensorWrapper> sensorWrapperList = new ArrayList<SensorWrapper>();
+  private List<AbstractSensorWrapper> createSensorWrapper(JSONArray sensorConfiguration, Uploader uploader) {
+    List<AbstractSensorWrapper> sensorWrapperList = new ArrayList<AbstractSensorWrapper>();
     for (int i = 0; i < sensorConfiguration.length(); i++) {
 
       JSONObject sensorConfigEntry = sensorConfiguration.getJSONObject(i);
@@ -81,7 +81,7 @@ public class SensorWrapperFactory {
       AddressType addressType = AddressType.valueOf(sensorConfigEntry.getString(ADDRESSTYPE));
       JSONObject settings = sensorConfigEntry.getJSONObject(SETTINGS);
 
-      SensorWrapper sensorWrapper = null;
+      AbstractSensorWrapper sensorWrapper = null;
       switch (name) {
         case PolarH7:
           sensorWrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, addressType, this.logFileTimestampFormat, settings), uploader);

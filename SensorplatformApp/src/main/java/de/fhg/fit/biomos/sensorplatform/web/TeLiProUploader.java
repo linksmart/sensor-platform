@@ -52,6 +52,8 @@ public class TeLiProUploader implements Uploader {
 
   private String authorizationToken = "";
 
+  private boolean loggedIn = false;
+
   private final CloseableHttpClient httpclient;
 
   private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
@@ -89,19 +91,17 @@ public class TeLiProUploader implements Uploader {
 
   @Override
   public void run() {
-    if (!login()) {
-      LOG.error("login failed!");
-      LOG.info("upload thread finished");
-      return;
-    }
     while (!Thread.currentThread().isInterrupted()) {
+      if (!this.loggedIn) {
+        login();
+      }
       if (!this.queue.isEmpty()) {
-        sendData(this.queue.poll());
+        sendData(this.queue.peek());
       } else {
         try {
           Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
         } catch (InterruptedException e) {
-          LOG.info("interrupt received from SensorWrapper");
+          LOG.info("interrupt received from Controller");
           while (!this.queue.isEmpty()) {
             LOG.info("sending remaining samples");
             sendData(this.queue.poll());
@@ -118,9 +118,8 @@ public class TeLiProUploader implements Uploader {
    */
   @Deprecated
   public void downloadData() {
-    if (!login()) {
-      LOG.error("login failed!");
-      return;
+    if (!this.loggedIn) {
+      login();
     }
     HttpGet get = new HttpGet(this.dataDownloadAddress);
     get.setHeader("Authorization", this.authorizationToken);
@@ -135,7 +134,7 @@ public class TeLiProUploader implements Uploader {
     }
   }
 
-  public boolean login() {
+  public void login() {
     HttpPost post = new HttpPost(this.loginAddress);
     post.setHeader("User-Agent", this.userAgent);
 
@@ -153,16 +152,14 @@ public class TeLiProUploader implements Uploader {
       if (statusCode == HttpStatus.SC_OK) {
         this.authorizationToken = response.getFirstHeader("Authorization").getValue();
         response.close();
+        this.loggedIn = true;
         LOG.info("login successful");
-        return true;
       } else {
         LOG.error("login failed, error code: " + statusCode);
         response.close();
-        return false;
       }
     } catch (IOException e) {
       e.printStackTrace();
-      return false;
     }
   }
 
@@ -182,12 +179,11 @@ public class TeLiProUploader implements Uploader {
       switch (statusCode) {
         case HttpStatus.SC_CREATED:
           LOG.info("sample transmission successful");
+          this.queue.poll();
           break;
         case HttpStatus.SC_UNAUTHORIZED:
           LOG.error("transmission unauthorized - attempting to log in again");
-          // if (login()) {
-          // sendData(hrs);
-          // }
+          this.loggedIn = false;
           break;
         default:
           LOG.error("transmission failed, error code: " + statusCode);

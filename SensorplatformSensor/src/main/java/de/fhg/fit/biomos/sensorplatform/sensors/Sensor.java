@@ -22,7 +22,7 @@ public abstract class Sensor implements SensorCommands {
 
   protected final SensorName name;
   protected final String bdAddress;
-  protected final AddressType addressType;
+  protected AddressType addressType;
 
   protected final JSONObject settings;
 
@@ -50,6 +50,10 @@ public abstract class Sensor implements SensorCommands {
 
   public AddressType getAddressType() {
     return this.addressType;
+  }
+
+  public void setAddressType(AddressType addressType) {
+    this.addressType = addressType;
   }
 
   public JSONObject getSettings() {

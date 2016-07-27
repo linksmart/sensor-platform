@@ -1,6 +1,5 @@
 package de.fhg.fit.biomos.sensorplatform.tools;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,26 +13,12 @@ import java.util.List;
  */
 public interface Hcitool {
 
-  /**
-   * Stores the Bluetooth device (usually hci0) and the Bluetooth address and print both. May not work properly if the system has two Bluetooth devices.
-   *
-   * @return
-   * @throws IOException
-   */
-  public void collectLocalDeviceAndAddress() throws IOException;
+  public void collectLocalDeviceAndAddress();
 
-  /**
-   * Search for Bluetooth 2.1 devices for a fixed period of time.
-   *
-   * @return
-   */
-  public List<String> scan() throws IOException;
+  public List<String> scan();
 
-  /**
-   * Search for Bluetooth Low Energy devices.
-   * 
-   * @return
-   */
-  public List<String> lescan(int duration) throws IOException;
+  public void lescan(int scanDuration);
+
+  public List<String> findDevices(int scanDuration);
 
 }

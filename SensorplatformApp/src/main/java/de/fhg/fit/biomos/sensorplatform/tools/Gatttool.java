@@ -3,7 +3,6 @@ package de.fhg.fit.biomos.sensorplatform.tools;
 import java.io.BufferedWriter;
 
 import de.fhg.fit.biomos.sensorplatform.control.SensorNotificationDataObserver;
-import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
 
 /**
  * Controller class for gatttool command line tool. You may use multiple instances of it at once.<br />
@@ -20,7 +19,9 @@ public interface Gatttool extends Runnable {
 
   BufferedWriter getStreamToSensor();
 
-  public void connect(int timeout) throws BluetoothGattException;
+  public boolean connect(int timeout);
+
+  public boolean reconnect(int timeout);
 
   public void disconnectBlocking();
 

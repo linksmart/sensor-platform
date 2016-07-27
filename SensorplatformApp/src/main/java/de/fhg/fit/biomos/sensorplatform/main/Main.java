@@ -31,7 +31,6 @@ public class Main {
       LOG.error("cannot load properties");
       System.exit(1);
     }
-    // downloadSamples();
   }
 
   private void start() {

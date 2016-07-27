@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import de.fhg.fit.biomos.sensorplatform.control.ObservableSensorNotificationData;
 import de.fhg.fit.biomos.sensorplatform.control.SensorNotificationDataObserver;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
 
 /**
  * @see {@link de.fhg.fit.biomos.sensorplatform.tools.Gatttool}
@@ -44,6 +43,11 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   public static final String ENABLE_NOTIFICATION = "01:00";
   public static final String DISABLE_NOTIFICATION = "00:00";
 
+  // TODO optimise for later use (ATTENTION: typo "F"ailed may be fixed in future releases)
+  private static final String BLUEZ_RESPONSE_CONNECT = "Connection successful";
+  private static final String BLUEZ_RESPONSE_INPUT_MIRRORED_DISCONNECT = "disconnect";
+  private static final String BLUEZ_RESPONSE_DISCONNECTED = "Command Failed: Disconnect";
+
   private static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
 
   private enum STATE {
@@ -71,7 +75,6 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       LOG.info("gatttool process for " + bdAddress + " created");
     } catch (IOException e) {
       e.printStackTrace();
-      return;
     }
   }
 
@@ -95,46 +98,69 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
     try {
       String line = null;
       while ((line = GatttoolImpl.this.streamFromSensor.readLine()) != null) {
-        // System.out.println(line); // extreme debugging
+        // System.out.println("!!! " + line); // extreme debugging
+        // FIXME optimise for performance here, make more dynamic
         Matcher m = NOTIFICATION_DATA.matcher(line);
         if (m.find()) {
           notifyObserver(m.group(1), m.group(2));
         } else if (line.contains("successful")) {
           this.state = STATE.CONNECTED;
-        } else if (line.contains("disconnect")) {
+        } else if (line.contains("disconnect") || line.contains("Disconnected")) {
           this.state = STATE.DISCONNECTED;
         }
       }
     } catch (IOException e) {
+      LOG.error("gatttool crashed while attempting to read process output.");
       e.printStackTrace();
     }
   }
 
   @Override
-  public void connect(int timeout) throws BluetoothGattException {
+  public boolean connect(int timeout) {
     try {
       this.streamToSensor.write(CMD_CONNECT);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
-      LOG.info("Attempting to connect to " + this.bdAddress + " for " + timeout + "s");
+      LOG.info("attempting to connect to " + this.bdAddress + " for " + timeout + "s");
 
       long startTime = System.currentTimeMillis();
       while (false || (System.currentTimeMillis() - startTime) < timeout * 1000) {
         if (this.state == STATE.CONNECTED) {
           LOG.info("connected");
-          return;
+          return true;
         } else {
           Thread.sleep(50); // wait for incoming messages in the other thread
         }
       }
 
       if (this.state == STATE.DISCONNECTED) {
-        throw new BluetoothGattException("Cannot connect to bluetooth device " + this.bdAddress);
+        LOG.error("cannot connect to bluetooth device " + this.bdAddress);
+        LOG.warn("reconnection procedure will be handled by SensorObserver");
       }
 
     } catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
+    return false;
+  }
+
+  @Override
+  public boolean reconnect(int timeout) {
+    // Bluez detectes disconnected sensor only if you issue a new command to it (no pinging or something)
+    // shoot a dummy command (try to list primary services) first to detect
+    // after internal state of gatttoolImpl is set to disconnect again, we try to connect again
+    try {
+      this.streamToSensor.write(CMD_PRIMARY);
+      this.streamToSensor.newLine();
+      this.streamToSensor.flush();
+      while (this.state == STATE.CONNECTED) {
+        Thread.sleep(50);
+      }
+      return connect(timeout);
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+    return false;
   }
 
   @Override

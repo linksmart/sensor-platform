@@ -3,7 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.util;
 /**
  * Defines specific key words which are used as input parameters for the shell script for controlling the onboard LED.
  *
- * @see {@link de.fhg.fit.biomos.sensorplatform.control.ShellscriptExecutor}
+ * @see {@link de.fhg.fit.biomos.sensorplatform.main.ShellscriptExecutor}
  *
  * @author Daniel
  *

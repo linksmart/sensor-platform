@@ -10,6 +10,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
+import de.fhg.fit.biomos.sensorplatform.control.SensorObserver;
 import de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory;
 import de.fhg.fit.biomos.sensorplatform.restservices.StartupService;
 import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
@@ -30,6 +31,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
 
     // TODO make this part dynamic
     bind(TeLiProUploader.class).in(Singleton.class);
+    bind(SensorObserver.class).in(Singleton.class);
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);
 

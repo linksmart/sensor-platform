@@ -4,11 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.biomos.sensorplatform.sensors.PolarH7;
-import de.fhg.fit.biomos.sensorplatform.persistence.TextFileLogger;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
-import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
+import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
-import de.fhg.fit.biomos.sensorplatform.util.BluetoothGattException;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
@@ -16,35 +14,20 @@ import de.fhg.fit.biomos.sensorplatform.web.Uploader;
  * @author Daniel Pyka
  *
  */
-public class PolarH7Wrapper implements SensorWrapper {
+public class PolarH7Wrapper extends AbstractSensorWrapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(PolarH7Wrapper.class);
 
   private final PolarH7 polarh7;
-  private final Uploader uploader;
-  private final Gatttool gatttool;
-  private final TextFileLogger sampleLogger;
 
   public PolarH7Wrapper(PolarH7 polarh7, Uploader uploader) {
+    super(polarh7, uploader);
     this.polarh7 = polarh7;
-    this.uploader = uploader;
-
-    this.gatttool = new GatttoolImpl(this.polarh7.getAddressType(), polarh7.getBdaddress());
-    this.gatttool.addObs(this);
-    new Thread(this.gatttool).start();
-
-    this.sampleLogger = new TextFileLogger(this.polarh7.getName().name());
   }
 
   @Override
-  public void connectToSensor(int timeout) {
-    try {
-      this.gatttool.connect(timeout);
-    } catch (BluetoothGattException e) {
-      LOG.error(e.getMessage());
-      this.gatttool.exitGatttool();
-      LOG.info("Cannot connect to device, exit gatttool");
-    }
+  public Sensor getSensor() {
+    return this.polarh7;
   }
 
   @Override
@@ -58,23 +41,10 @@ public class PolarH7Wrapper implements SensorWrapper {
   }
 
   @Override
-  public void disconnectBlocking() {
-    this.gatttool.disconnectBlocking();
-  }
-
-  @Override
-  public void disconnect() {
-    this.gatttool.disconnect();
-  }
-
-  @Override
-  public void shutdown() {
-    this.gatttool.exitGatttool();
-    this.sampleLogger.close();
-  }
-
-  @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
+    LOG.info("new notification arrived");
+    this.lastNotificationTimestamp = System.currentTimeMillis();
+
     HeartRateSample hrs = this.polarh7.calculateHeartRateData(handle, rawHexValues, false);
 
     this.sampleLogger.writeLine(hrs.toString());
