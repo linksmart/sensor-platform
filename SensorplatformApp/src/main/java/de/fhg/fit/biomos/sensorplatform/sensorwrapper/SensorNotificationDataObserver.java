@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.control;
+package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 public interface SensorNotificationDataObserver {
 

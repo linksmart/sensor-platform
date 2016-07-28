@@ -16,6 +16,11 @@ import de.fhg.biomos.sensorplatform.sensors.PolarH7;
 import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
 import de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AdidasHrmWrapper;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.PolarH7Wrapper;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.TomTomHrmWrapper;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
@@ -47,7 +52,6 @@ public class SensorWrapperFactory {
   }
 
   /**
-   * TODO Placeholder for configuration through webapplication
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */

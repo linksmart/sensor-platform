@@ -1,5 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -10,6 +11,8 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import de.fhg.fit.biomos.sensorplatform.main.ShellscriptExecutor;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.util.LEDstate;
 import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
@@ -36,7 +39,7 @@ public class Controller implements Runnable {
   private Thread uploaderThread;
   private List<AbstractSensorWrapper> swList;
 
-  private int timeout;
+  private final int timeout;
   private int uptime;
   private boolean recording = false;
 
@@ -65,11 +68,10 @@ public class Controller implements Runnable {
     }
   }
 
-  public void startupFromWebConfiguration(int uptime, int timeout, JSONArray sensorConfiguration) {
+  public void startupFromWebConfiguration(int uptime, JSONArray sensorConfiguration) {
     if (!this.recording) {
       this.recording = true;
       this.uptime = uptime;
-      this.timeout = timeout;
       initFromWebapplication(sensorConfiguration);
       startupThreads();
     } else {
@@ -79,10 +81,14 @@ public class Controller implements Runnable {
 
   private void startupThreads() {
     new Thread(this).start();
+    LOG.info("start controller thread");
     this.sensorObserverThread = new Thread(this.sensorObserver);
     this.sensorObserverThread.start();
+    LOG.info("start observer");
     this.uploaderThread = new Thread(this.uploader);
     this.uploaderThread.start();
+    LOG.info("start uploader thread");
+    LOG.info("all threads started");
   }
 
   @Override
@@ -107,13 +113,23 @@ public class Controller implements Runnable {
   }
 
   private void init() {
-    this.sensorObserver.setTarget(this.swList);
-    for (SensorWrapper sensorWrapper : this.swList) {
-      sensorWrapper.connectToSensor(this.timeout);
+    LOG.info("connecting to sensors");
+    for (Iterator<AbstractSensorWrapper> iterator = this.swList.iterator(); iterator.hasNext();) {
+      AbstractSensorWrapper sensorWrapper = iterator.next();
+      boolean isConnected = sensorWrapper.connectToSensorBlocking(this.timeout);
+      if (!isConnected) {
+        sensorWrapper.shutdown();
+        iterator.remove();
+        LOG.info(sensorWrapper.toString() + " unreachable and removed");
+      }
     }
+    LOG.info("enable logging");
     for (SensorWrapper sensorWrapper : this.swList) {
       sensorWrapper.enableLogging();
     }
+
+    this.sensorObserver.setTarget(this.swList);
+
     ShellscriptExecutor.setLED(LEDstate.RUNNING, this.ledControlScriptFileName);
     LOG.info("initialise complete");
   }

@@ -39,7 +39,7 @@ public class CC2650 extends Sensor {
   /**
    * Enable temperature sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
    */
-  private void enableTemperatureNotification(String charWriteCmd, String enableNotification, int period) {
+  private void enableTemperatureNotification(String charWriteCmd, String enableNotification, String period) {
     try {
       this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + period);
       this.bw.newLine();
@@ -79,7 +79,7 @@ public class CC2650 extends Sensor {
   /**
    * Enable humidity sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
    */
-  private void enableHumidityNotification(String charWriteCmd, String enableNotification, int period) {
+  private void enableHumidityNotification(String charWriteCmd, String enableNotification, String period) {
     try {
       this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + period);
       this.bw.newLine();
@@ -119,7 +119,7 @@ public class CC2650 extends Sensor {
   /**
    * Enable ambientlight sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
    */
-  private void enableAmbientlightNotification(String charWriteCmd, String enableNotification, int period) {
+  private void enableAmbientlightNotification(String charWriteCmd, String enableNotification, String period) {
     try {
       this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + period);
       this.bw.newLine();
@@ -159,7 +159,7 @@ public class CC2650 extends Sensor {
   /**
    * Enable pressure sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
    */
-  private void enablePressureNotification(String charWriteCmd, String enableNotification, int period) {
+  private void enablePressureNotification(String charWriteCmd, String enableNotification, String period) {
     try {
       this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + period);
       this.bw.newLine();
@@ -200,7 +200,7 @@ public class CC2650 extends Sensor {
    * Enable movement sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.</br>
    *
    */
-  private void enableMovementNotification(String charWriteCmd, String enableNotification, int period, String configuration) {
+  private void enableMovementNotification(String charWriteCmd, String enableNotification, String period, String configuration) {
     try {
       this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + period);
       this.bw.newLine();
@@ -241,22 +241,22 @@ public class CC2650 extends Sensor {
   public void enableNotification(BufferedWriter bw, String charWriteCmd, String enableNotification) {
     this.bw = bw;
     if (this.settings.has(IRTEMPERATURE)) {
-      enableTemperatureNotification(charWriteCmd, enableNotification, this.settings.getInt(IRTEMPERATURE));
+      enableTemperatureNotification(charWriteCmd, enableNotification, this.settings.getString(IRTEMPERATURE));
     }
     if (this.settings.has(HUMIDITY)) {
-      enableHumidityNotification(charWriteCmd, enableNotification, this.settings.getInt(HUMIDITY));
+      enableHumidityNotification(charWriteCmd, enableNotification, this.settings.getString(HUMIDITY));
     }
     if (this.settings.has(AMBIENTLIGHT)) {
-      enableAmbientlightNotification(charWriteCmd, enableNotification, this.settings.getInt(AMBIENTLIGHT));
+      enableAmbientlightNotification(charWriteCmd, enableNotification, this.settings.getString(AMBIENTLIGHT));
     }
     if (this.settings.has(PRESSURE)) {
-      enablePressureNotification(charWriteCmd, enableNotification, this.settings.getInt(PRESSURE));
+      enablePressureNotification(charWriteCmd, enableNotification, this.settings.getString(PRESSURE));
     }
     if (this.settings.has(MOVEMENT)) {
       // FIXME Currently there are presets defined for the configuration
       // the acceleration range is fixed at -16, +16 G
       // activate all measurements (up to 9 values) at once
-      enableMovementNotification(charWriteCmd, enableNotification, this.settings.getInt(MOVEMENT), CC2650lib.VALUE_MOVEMENT_ACTIVATE_ALL_16G);
+      enableMovementNotification(charWriteCmd, enableNotification, this.settings.getString(MOVEMENT), CC2650lib.VALUE_MOVEMENT_ACTIVATE_ALL_16G);
     }
   }
 

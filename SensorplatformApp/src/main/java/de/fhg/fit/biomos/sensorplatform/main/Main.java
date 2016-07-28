@@ -35,17 +35,7 @@ public class Main {
 
   private void start() {
     new Thread(new ServerStarter(this.properties)).start();
-    // if (Boolean.parseBoolean(this.properties.getProperty("run.with.default.settings"))) {
-    // new Controller(this.properties).startupFromProjectBuildConfiguration(10);
-    // }
+    // TODO resume recording
   }
-
-  // @Deprecated
-  // private void downloadSamples() {
-  // DITGuploader ditGhttpUploader = new DITGuploader(this.properties);
-  // ditGhttpUploader.login();
-  // ditGhttpUploader.downloadData();
-  // System.exit(0);
-  // }
 
 }

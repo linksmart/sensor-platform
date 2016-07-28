@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
-import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 
 /**
  * The class <b>must</b> be used as a singleton. Use <b>GUICE</b> to enforce that.
@@ -24,43 +23,57 @@ public class SensorObserver implements Runnable {
   private static final Logger LOG = LoggerFactory.getLogger(SensorObserver.class);
 
   private final List<AbstractSensorWrapper> wrapperWithLostSensor = new ArrayList<AbstractSensorWrapper>();
-  private List<String> foundDevices = new ArrayList<String>();
 
   private List<AbstractSensorWrapper> swList;
 
-  private final Hcitool hcitool = new HcitoolImpl();
-  private final int lescanDuration;
-  private final int defaultSensorTimeout;
   private final int noNotificationTriggerTime;
 
   @Inject
-  public SensorObserver(@Named("hcitool.lescan.duration") String lescanDuration, @Named("default.sensor.timeout") String defaultSensorTimeout,
-      @Named("sensor.no.notification.trigger.time") String noNotificationTriggerTime) {
-    this.lescanDuration = new Integer(lescanDuration);
-    this.defaultSensorTimeout = new Integer(defaultSensorTimeout);
-    this.noNotificationTriggerTime = new Integer(noNotificationTriggerTime);
+  public SensorObserver(@Named("default.sensor.timeout") String defaultSensorTimeout) {
+    this.noNotificationTriggerTime = new Integer(defaultSensorTimeout) * 2;
   }
 
   public void setTarget(List<AbstractSensorWrapper> swList) {
     this.swList = swList;
+    LOG.info("set sensorwrapper to observe");
   }
 
   @Override
   public void run() {
+    LOG.info("start observing");
     while (!Thread.currentThread().isInterrupted()) {
       long currentTime = System.currentTimeMillis();
       for (AbstractSensorWrapper sw : this.swList) {
         if ((currentTime - sw.getLastNotifactionTimestamp()) > (this.noNotificationTriggerTime * 1000)) {
-          LOG.warn("sensor " + sw.getSensor().getBdaddress() + " did not send a notification within " + this.noNotificationTriggerTime + "s");
           if (!this.wrapperWithLostSensor.contains(sw)) {
             this.wrapperWithLostSensor.add(sw);
-            LOG.info("");
+            LOG.warn(sw.toString() + "did not send a notification within " + this.noNotificationTriggerTime + "s");
+            sw.disconnectBlocking();
+            try {
+              Thread.sleep(2000); // give gatttool time react
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
           }
         }
       }
       if (!this.wrapperWithLostSensor.isEmpty()) {
-        this.foundDevices = this.hcitool.findDevices(this.lescanDuration); // TODO DO: stop scan properly if interrupted by controller after uptime
-        tryToReconnectSensors();
+        for (Iterator<AbstractSensorWrapper> iterator = this.wrapperWithLostSensor.iterator(); iterator.hasNext();) {
+          AbstractSensorWrapper sw = iterator.next();
+          switch (sw.getGatttoolInternalState()) {
+            case RECONNECTING:
+              break;
+            case DISCONNECTED:
+              sw.reconnectToSensor();
+              LOG.info(sw.toString() + " (still) not connected");
+              break;
+            case CONNECTED:
+              sw.enableLogging();
+              iterator.remove();
+              LOG.info(sw.toString() + " reconnected successfully");
+              break;
+          }
+        }
       }
       try {
         Thread.sleep(1000);
@@ -69,26 +82,9 @@ public class SensorObserver implements Runnable {
         Thread.currentThread().interrupt();
       }
     }
+    this.wrapperWithLostSensor.clear();
+    this.swList.clear();
     LOG.info("observer thread finished");
-  }
-
-  private void tryToReconnectSensors() {
-    for (Iterator<AbstractSensorWrapper> iterator = this.wrapperWithLostSensor.iterator(); iterator.hasNext();) {
-      AbstractSensorWrapper sw = iterator.next();
-      for (String bdAddress : this.foundDevices) {
-        if (sw.getSensor().getBdaddress().equals(bdAddress)) {
-          LOG.info("attempting to reconnect to " + bdAddress);
-          if (sw.reconnectToSensor(this.defaultSensorTimeout)) {
-            sw.enableLogging();
-            iterator.remove();
-            LOG.info("Sensor " + bdAddress + " reconnected successfully!");
-          }
-        }
-      }
-    }
-    // for (AbstractSensorWrapper sw : this.wrapperWithLostSensor) {
-    // this.wrapperWithLostSensor.remove(sw);
-    // }
   }
 
 }

@@ -1,11 +1,10 @@
-package de.fhg.fit.biomos.sensorplatform.control;
+package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
-import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
@@ -26,13 +25,9 @@ public class AdidasHrmWrapper extends AbstractSensorWrapper {
   }
 
   @Override
-  public Sensor getSensor() {
-    return this.adidasHrm;
-  }
-
-  @Override
   public void enableLogging() {
     this.adidasHrm.enableNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
+    this.lastNotificationTimestamp = System.currentTimeMillis();
   }
 
   @Override
@@ -54,7 +49,11 @@ public class AdidasHrmWrapper extends AbstractSensorWrapper {
     if (this.uploader != null) {
       this.uploader.addToQueue(hrs);
     }
+  }
 
+  @Override
+  public String toString() {
+    return this.adidasHrm.getBdaddress() + " " + this.adidasHrm.getName();
   }
 
 }

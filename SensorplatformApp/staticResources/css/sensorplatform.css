@@ -2,6 +2,7 @@
 
 .container {
 	background-color: #009374;
+	height: 100vh;
 }
 
 #config {

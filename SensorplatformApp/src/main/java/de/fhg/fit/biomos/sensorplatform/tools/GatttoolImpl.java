@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.control.ObservableSensorNotificationData;
-import de.fhg.fit.biomos.sensorplatform.control.SensorNotificationDataObserver;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.ObservableSensorNotificationData;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorNotificationDataObserver;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 
 /**
@@ -44,17 +44,14 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   public static final String DISABLE_NOTIFICATION = "00:00";
 
   // TODO optimise for later use (ATTENTION: typo "F"ailed may be fixed in future releases)
-  private static final String BLUEZ_RESPONSE_CONNECT = "Connection successful";
-  private static final String BLUEZ_RESPONSE_INPUT_MIRRORED_DISCONNECT = "disconnect";
-  private static final String BLUEZ_RESPONSE_DISCONNECTED = "Command Failed: Disconnect";
+  // private static final String BLUEZ_RESPONSE_CONNECT = "Connection successful";
+  // private static final String BLUEZ_RESPONSE_INPUT_MIRRORED_DISCONNECT = "disconnect";
+  // private static final String BLUEZ_RESPONSE_DISCONNECTED = "Command Failed: Disconnect";
+  // private static final String BLUEZ_RESPONSE_CONNECT_ERROR = "Error: connect error: Connection refused (111)";
 
   private static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
 
-  private enum STATE {
-    CONNECTED, DISCONNECTED
-  };
-
-  private STATE state = STATE.DISCONNECTED;
+  private State state = State.DISCONNECTED;
 
   private BufferedWriter streamToSensor = null;
   private BufferedReader streamFromSensor = null;
@@ -65,7 +62,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   public GatttoolImpl(AddressType addressType, String bdAddress) {
     this.addressType = addressType;
     this.bdAddress = bdAddress;
-    this.state = STATE.DISCONNECTED;
+    this.state = State.DISCONNECTED;
 
     try {
       Process process = null;
@@ -79,13 +76,18 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   }
 
   @Override
+  public State getInternalState() {
+    return this.state;
+  }
+
+  @Override
   public BufferedWriter getStreamToSensor() {
     return this.streamToSensor;
   }
 
   @Override
-  public void addObs(SensorNotificationDataObserver sndo) {
-    setObserver(sndo);
+  public void addObs(SensorNotificationDataObserver abstractSensorWrapper) {
+    setObserver(abstractSensorWrapper);
   }
 
   @Override
@@ -104,9 +106,14 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
         if (m.find()) {
           notifyObserver(m.group(1), m.group(2));
         } else if (line.contains("successful")) {
-          this.state = STATE.CONNECTED;
-        } else if (line.contains("disconnect") || line.contains("Disconnected")) {
-          this.state = STATE.DISCONNECTED;
+          this.state = State.CONNECTED;
+          LOG.info(this.state.name());
+        } else if (line.contains("disconnect")) {
+          this.state = State.DISCONNECTED;
+          LOG.info(this.state.name());
+        } else if (line.contains("refused")) {
+          this.state = State.DISCONNECTED;
+          LOG.info(this.state.name());
         }
       }
     } catch (IOException e) {
@@ -116,7 +123,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   }
 
   @Override
-  public boolean connect(int timeout) {
+  public boolean connectBlocking(int timeout) {
     try {
       this.streamToSensor.write(CMD_CONNECT);
       this.streamToSensor.newLine();
@@ -124,18 +131,16 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       LOG.info("attempting to connect to " + this.bdAddress + " for " + timeout + "s");
 
       long startTime = System.currentTimeMillis();
-      while (false || (System.currentTimeMillis() - startTime) < timeout * 1000) {
-        if (this.state == STATE.CONNECTED) {
-          LOG.info("connected");
+      while ((System.currentTimeMillis() - startTime) < timeout * 1000) {
+        if (this.state == State.CONNECTED) {
           return true;
         } else {
           Thread.sleep(50); // wait for incoming messages in the other thread
         }
       }
 
-      if (this.state == STATE.DISCONNECTED) {
+      if (this.state == State.DISCONNECTED) {
         LOG.error("cannot connect to bluetooth device " + this.bdAddress);
-        LOG.warn("reconnection procedure will be handled by SensorObserver");
       }
 
     } catch (IOException | InterruptedException e) {
@@ -145,31 +150,26 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   }
 
   @Override
-  public boolean reconnect(int timeout) {
-    // Bluez detectes disconnected sensor only if you issue a new command to it (no pinging or something)
-    // shoot a dummy command (try to list primary services) first to detect
-    // after internal state of gatttoolImpl is set to disconnect again, we try to connect again
+  public void reconnect() {
     try {
-      this.streamToSensor.write(CMD_PRIMARY);
+      this.state = State.RECONNECTING;
+      LOG.info(this.state.name());
+      this.streamToSensor.write(CMD_CONNECT);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
-      while (this.state == STATE.CONNECTED) {
-        Thread.sleep(50);
-      }
-      return connect(timeout);
-    } catch (IOException | InterruptedException e) {
+      LOG.info("Attempting to reconnect to sensor for ca. 40s (nonblocking)");
+    } catch (IOException e) {
       e.printStackTrace();
     }
-    return false;
   }
 
   @Override
   public void disconnectBlocking() {
     try {
-      this.streamToSensor.write(CMD_DISCONNECT);
+      this.streamToSensor.write(CMD_DISCONNECT); // mirrored to streamFromSensor, this will be read because no disconnect event message in bluez
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
-      while (this.state == STATE.CONNECTED) {
+      while (this.state == State.CONNECTED) {
         Thread.sleep(50);
       }
       LOG.info("disconnected from " + this.bdAddress);

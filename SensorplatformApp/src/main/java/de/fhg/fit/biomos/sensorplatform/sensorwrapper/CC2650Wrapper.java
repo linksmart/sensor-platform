@@ -1,11 +1,10 @@
-package de.fhg.fit.biomos.sensorplatform.control;
+package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650Sample;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
-import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 
 /**
@@ -25,13 +24,9 @@ public class CC2650Wrapper extends AbstractSensorWrapper {
   }
 
   @Override
-  public Sensor getSensor() {
-    return this.cc2650;
-  }
-
-  @Override
   public void enableLogging() {
     this.cc2650.enableNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
+    this.lastNotificationTimestamp = System.currentTimeMillis();
   }
 
   @Override
@@ -49,6 +44,11 @@ public class CC2650Wrapper extends AbstractSensorWrapper {
     this.sampleLogger.writeLine(sample.toString());
 
     // System.out.println(sample.toString()); // extreme debugging
+  }
+
+  @Override
+  public String toString() {
+    return this.cc2650.getBdaddress() + " " + this.cc2650.getName();
   }
 
 }

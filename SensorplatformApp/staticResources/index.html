@@ -18,6 +18,7 @@
             <H1>
                 Sensorplatform <span id="recording">(unknown)</span>
             </H1>
+            <H4>Masterarbeit Daniel Pyka</H4>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <H3>Sensor configuration</H3>
@@ -43,12 +44,6 @@
                 <input id="uptime" class="form-control" placeholder="30"></input>
             </p>
             <p>
-                <b>Sensor timeout (seconds &lt;30)</b>
-            </p>
-            <p>
-                <input id="timeout" class="form-control" placeholder="5"></input>
-            </p>
-            <p>
                 <b>Start from web configuration</b>
             </p>
             <p>
@@ -60,9 +55,12 @@
             <p>
                 <button type="button" class="btn btn-default" id="startbuild" onclick="startFromMavenBuild()">Start</button>
             </p>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <b>Samples not transmitted:</b> (not yet implemented)
+            <p>
+                <b>Samples not transmitted:</b> (not yet implemented)
+            </p>
+            <p>
+                <button type="button" class="btn btn-default" id="upload">Upload samples</button>
+            </p>
         </div>
     </div>
 </body>

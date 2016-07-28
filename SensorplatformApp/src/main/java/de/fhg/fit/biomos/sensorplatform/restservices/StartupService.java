@@ -8,7 +8,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,18 +33,16 @@ public class StartupService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.TEXT_PLAIN)
-  public Response startupFromWebApp(JSONArray request) {
+  public Response startupFromWebApp(JSONObject request) {
     LOG.info("/startup/fromwebapp called");
-    System.out.println(request);
-    // it is not possible to use org.json.JSONArray as input parameter of this REST call
-    // therefor we convert from one json library to the other
-    org.json.JSONArray requestConverted = new org.json.JSONArray(request.toString());
-    System.out.println(requestConverted);
-
     try {
-      this.controller.startupFromWebConfiguration(10, 5, requestConverted);
+      // it is not possible to use org.json.JSONArray as input parameter of this REST call
+      // therefor we convert from one json library to the other
+      int uptime = request.getInt("uptime");
+      org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configuration").toString());
+      this.controller.startupFromWebConfiguration(uptime, requestConverted);
       return Response.ok().build();
-    } catch (RuntimeException e) {
+    } catch (JSONException e) {
       e.printStackTrace();
       return Response.serverError().build();
     }

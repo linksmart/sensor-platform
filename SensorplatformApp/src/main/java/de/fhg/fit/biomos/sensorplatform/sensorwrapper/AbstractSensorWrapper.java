@@ -1,11 +1,17 @@
-package de.fhg.fit.biomos.sensorplatform.control;
+package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import de.fhg.fit.biomos.sensorplatform.persistence.TextFileLogger;
 import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
+import de.fhg.fit.biomos.sensorplatform.tools.Gatttool.State;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
 public abstract class AbstractSensorWrapper implements SensorWrapper, SensorNotificationDataObserver {
 
   // private static final Logger LOG = LoggerFactory.getLogger(AbstractSensorWrapper.class);
@@ -29,25 +35,18 @@ public abstract class AbstractSensorWrapper implements SensorWrapper, SensorNoti
   }
 
   @Override
-  public boolean connectToSensor(int timeout) {
-    if (this.gatttool.connect(timeout)) {
-      // just "refreshing" to not confuse the SensorObserver
-      this.lastNotificationTimestamp = System.currentTimeMillis();
-      return true;
-    } else {
-      return false;
-    }
+  public State getGatttoolInternalState() {
+    return this.gatttool.getInternalState();
   }
 
   @Override
-  public boolean reconnectToSensor(int timeout) {
-    if (this.gatttool.reconnect(timeout)) {
-      // just "refreshing" to not confuse the SensorObserver
-      this.lastNotificationTimestamp = System.currentTimeMillis();
-      return true;
-    } else {
-      return false;
-    }
+  public boolean connectToSensorBlocking(int timeout) {
+    return this.gatttool.connectBlocking(timeout);
+  }
+
+  @Override
+  public void reconnectToSensor() {
+    this.gatttool.reconnect();
   }
 
   @Override
