@@ -25,7 +25,6 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceFilter;
 
 import de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig;
@@ -36,14 +35,11 @@ public class ServerStarter implements Runnable {
 
   private final Properties properties;
 
-  private Injector createdInjector;
+  private final SensorplatformServletConfig sensorplatformServletConfig;
 
-  public ServerStarter(Properties properties) {
+  public ServerStarter(Properties properties, SensorplatformServletConfig sensorplatformServletConfig) {
     this.properties = properties;
-  }
-
-  public Injector getCreatedInjector() {
-    return this.createdInjector;
+    this.sensorplatformServletConfig = sensorplatformServletConfig;
   }
 
   @Override
@@ -55,7 +51,6 @@ public class ServerStarter implements Runnable {
     https.addCustomizer(new SecureRequestCustomizer());
     SslContextFactory sslContextFactory = new SslContextFactory();
     sslContextFactory.setKeyStorePath(ClassLoader.getSystemResource(this.properties.getProperty("keystore.filename")).toExternalForm());
-    // sslContextFactory.setKeyStorePath(this.properties.getProperty("keystore.file.path"));
     sslContextFactory.setKeyStorePassword(this.properties.getProperty("keystore.password"));
     sslContextFactory.setKeyManagerPassword(this.properties.getProperty("keystore.password"));
     ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
@@ -65,14 +60,10 @@ public class ServerStarter implements Runnable {
 
     server.setConnectors(new ServerConnector[] { sslConnector });
 
-    // TODO move dependency injection to Main to have to injector there
-    SensorplatformServletConfig sensorplatformServletConfig = new SensorplatformServletConfig(this.properties);
-    this.createdInjector = sensorplatformServletConfig.getCreatedInjector();
-
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
     context.setContextPath("/");
     context.setSessionHandler(new SessionHandler(new HashSessionManager()));
-    context.addEventListener(sensorplatformServletConfig);
+    context.addEventListener(this.sensorplatformServletConfig);
     context.addFilter(GuiceFilter.class, "/*", null);
     context.addServlet(DefaultServlet.class, "/*");
 
@@ -120,7 +111,6 @@ public class ServerStarter implements Runnable {
       ServerStarter.LOG.error("Could not start the server:", e);
       System.exit(16);
     }
-
   }
 
 }

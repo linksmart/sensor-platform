@@ -39,7 +39,7 @@ public class StartupService {
       int uptime = request.getInt("uptime");
       // jetty uses only codehous json library
       org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configuration").toString());
-      this.controller.startupFromWebConfiguration(uptime * 1000, requestConverted);
+      this.controller.startupFromWebConfiguration(uptime * 1000, requestConverted, true);
       return Response.ok().build();
     } catch (JSONException e) {
       e.printStackTrace();
@@ -55,7 +55,7 @@ public class StartupService {
     LOG.info("/startup/frombuild called");
 
     try {
-      this.controller.startupFromProjectBuildConfiguration();
+      this.controller.startupFromProjectBuildConfiguration(true);
       return Response.ok().build();
     } catch (RuntimeException e) {
       e.printStackTrace();

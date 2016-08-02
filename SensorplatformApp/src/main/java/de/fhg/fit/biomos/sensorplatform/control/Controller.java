@@ -81,17 +81,18 @@ public class Controller implements Runnable {
         Properties recProperties = new Properties();
         recProperties.load(new FileInputStream(this.recordingInfo));
         LOG.info("recording properties loaded");
-        long diff = System.currentTimeMillis() - new Long(recProperties.getProperty(RECORDING_END_TIME));
-        if (diff < 0) {
+        long diff = new Long(recProperties.getProperty(RECORDING_END_TIME)) - System.currentTimeMillis();
+        System.out.println("time difference is " + Long.toString(diff) + " milliseconds");
+        if (diff > 0) {
+          LOG.info("a recording period was interrupted, which is not finished yet - trying to resume");
           if (recProperties.getProperty(SETUP_TYPE).equals(SETUP_TYPE_WEB)) {
-            startupFromWebConfiguration(diff, new JSONArray(recProperties.getProperty(CONFIGURATION)));
+            startupFromWebConfiguration(diff, new JSONArray(recProperties.getProperty(CONFIGURATION)), false);
           } else if (recProperties.getProperty(SETUP_TYPE).equals(SETUP_TYPE_BUILD)) {
-            startupFromProjectBuildConfiguration(diff);
+            startupFromProjectBuildConfiguration(diff, false);
           }
         } else {
-          LOG.warn("sensorplatform restarted after an interrupted recording period");
+          LOG.info("a recording period was interrupted but it is finished now - delete file");
           this.recordingInfo.delete();
-          LOG.info("recording file deleted");
         }
       } catch (IOException e) {
         LOG.info("failed to load recording properties", e);
@@ -102,10 +103,13 @@ public class Controller implements Runnable {
   private void storeSensorplatformState(String setuptype, JSONArray sensorConfiguration) {
     long timestamp = System.currentTimeMillis();
     Properties recProperties = new Properties();
-    recProperties.put(RECORDING_END_TIME, (timestamp + this.uptimeMillis));
+    recProperties.put(RECORDING_END_TIME, Long.toString(timestamp + this.uptimeMillis));
     recProperties.put(SETUP_TYPE, setuptype);
-    recProperties.put(CONFIGURATION, sensorConfiguration);
+    recProperties.put(CONFIGURATION, sensorConfiguration.toString());
     try {
+      if (this.recordingInfo.exists()) {
+        this.recordingInfo.delete();
+      }
       recProperties.store(new FileOutputStream(this.recordingInfo), null);
       LOG.info("recording properties stored");
     } catch (IOException e) {
@@ -113,15 +117,17 @@ public class Controller implements Runnable {
     }
   }
 
-  public void startupFromProjectBuildConfiguration() {
-    startupFromProjectBuildConfiguration(this.uptimeMillis);
+  public void startupFromProjectBuildConfiguration(boolean store) {
+    startupFromProjectBuildConfiguration(this.uptimeMillis, store);
   }
 
-  public void startupFromProjectBuildConfiguration(long uptimeMillis) {
+  private void startupFromProjectBuildConfiguration(long uptimeMillis, boolean store) {
     if (!this.recording) {
       this.recording = true;
       this.uptimeMillis = uptimeMillis;
-      storeSensorplatformState(SETUP_TYPE_BUILD, null);
+      if (store) {
+        storeSensorplatformState(SETUP_TYPE_BUILD, null);
+      }
       initFromProjectBuild();
       startupThreads();
     } else {
@@ -129,11 +135,13 @@ public class Controller implements Runnable {
     }
   }
 
-  public void startupFromWebConfiguration(long uptimeMillis, JSONArray sensorConfiguration) {
+  public void startupFromWebConfiguration(long uptimeMillis, JSONArray sensorConfiguration, boolean store) {
     if (!this.recording) {
       this.recording = true;
       this.uptimeMillis = uptimeMillis;
-      storeSensorplatformState(SETUP_TYPE_WEB, sensorConfiguration);
+      if (store) {
+        storeSensorplatformState(SETUP_TYPE_WEB, sensorConfiguration);
+      }
       initFromWebapplication(sensorConfiguration);
       startupThreads();
     } else {
@@ -142,23 +150,32 @@ public class Controller implements Runnable {
   }
 
   private void startupThreads() {
-    LOG.info("start controller thread");
-    new Thread(this).start();
-    LOG.info("start observer");
-    this.sensorObserverThread = new Thread(this.sensorObserver);
-    this.sensorObserverThread.start();
-    LOG.info("start uploader thread");
-    this.uploaderThread = new Thread(this.uploader);
-    this.uploaderThread.start();
-    LOG.info("all threads started");
+    if (this.swList.isEmpty()) {
+      LOG.info("there are no sensors connected - skip recording period!");
+      ShellscriptExecutor.setLED(LEDstate.STANDBY, this.ledControlScriptFileName);
+      this.recordingInfo.delete();
+      this.recording = false;
+    } else {
+      LOG.info("start controller thread");
+      new Thread(this).start();
+      LOG.info("start observer");
+      this.sensorObserverThread = new Thread(this.sensorObserver);
+      this.sensorObserverThread.start();
+      LOG.info("start uploader thread");
+      this.uploaderThread = new Thread(this.uploader);
+      this.uploaderThread.start();
+      LOG.info("all threads started");
+    }
   }
 
   @Override
   public void run() {
     sleep(this.uptimeMillis);
     shutdown();
+    ShellscriptExecutor.setLED(LEDstate.STANDBY, this.ledControlScriptFileName);
     this.sensorObserverThread.interrupt();
     this.uploaderThread.interrupt();
+    this.recordingInfo.delete();
     this.recording = false;
   }
 
@@ -166,12 +183,14 @@ public class Controller implements Runnable {
     LOG.info("initialise from project build configuration");
     this.swList = this.swFactory.setupFromProjectBuildConfiguration(this.uploader);
     init();
+    ShellscriptExecutor.setLED(LEDstate.RUNNING, this.ledControlScriptFileName);
   }
 
   private void initFromWebapplication(JSONArray sensorConfiguration) {
     LOG.info("initialise from web application configuration");
     this.swList = this.swFactory.setupFromWebinterfaceConfinguration(sensorConfiguration, this.uploader);
     init();
+    ShellscriptExecutor.setLED(LEDstate.RUNNING, this.ledControlScriptFileName);
   }
 
   private void init() {
@@ -181,7 +200,6 @@ public class Controller implements Runnable {
       boolean isConnected = sensorWrapper.connectToSensorBlocking(this.timeout);
       if (!isConnected) {
         LOG.info("Cannot connect to " + sensorWrapper.toString());
-        // LOG.info("Further (non-blocking) attempts will be handled by SensorObserver");
         sensorWrapper.shutdown();
         iterator.remove();
       }
@@ -192,14 +210,12 @@ public class Controller implements Runnable {
     }
 
     this.sensorObserver.setTarget(this.swList);
-
-    ShellscriptExecutor.setLED(LEDstate.RUNNING, this.ledControlScriptFileName);
     LOG.info("initialise complete");
   }
 
   private void sleep(long millis) {
     try {
-      LOG.info("sleeping for " + millis + " seconds");
+      LOG.info("sleeping for " + millis + " milliseconds");
       Thread.sleep(millis);
     } catch (InterruptedException e) {
       e.printStackTrace();
@@ -222,7 +238,6 @@ public class Controller implements Runnable {
       sensorWrapper.shutdown();
     }
     LOG.info("Recording period finished");
-    ShellscriptExecutor.setLED(LEDstate.STANDBY, this.ledControlScriptFileName);
   }
 
 }
