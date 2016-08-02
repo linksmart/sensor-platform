@@ -1,7 +1,7 @@
 #!/bin/sh
 
 remoteloginname='pi'
-remotehost='129.26.160.34'
+remotehost='129.26.160.38'
 targetdirectory='/home/pi/Sensorplatform/bin'
 
 #run="ssh ${remoteloginname}@${remotehost} mkdir -p ${targetdirectory}"

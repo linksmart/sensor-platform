@@ -73,9 +73,12 @@
         <jetty.version>9.3.10.v20160621</jetty.version>
         <jersey.version>1.19.1</jersey.version>
 
-        <sensorplatform.https.port>8080</sensorplatform.https.port>
+        <webapp.port>8080</webapp.port>
+        <webapp.username>sensorplatform</webapp.username>
+        <webapp.password>123456</webapp.password>
         <keystore.filename>keystore.jks</keystore.filename>
         <keystore.password>123456</keystore.password>
+        <recording.info.filename>recording.properties</recording.info.filename>
     </properties>
 
     <modules>

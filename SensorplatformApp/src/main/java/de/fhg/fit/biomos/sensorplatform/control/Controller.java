@@ -1,7 +1,12 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.json.JSONArray;
 import org.slf4j.Logger;
@@ -29,6 +34,12 @@ public class Controller implements Runnable {
 
   private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
+  private static final String RECORDING_END_TIME = "endtime";
+  private static final String SETUP_TYPE = "setuptype";
+  private static final String SETUP_TYPE_WEB = "web";
+  private static final String SETUP_TYPE_BUILD = "build";
+  private static final String CONFIGURATION = "configuration";
+
   private final String ledControlScriptFileName;
 
   private final SensorObserver sensorObserver;
@@ -40,27 +51,77 @@ public class Controller implements Runnable {
   private List<AbstractSensorWrapper> swList;
 
   private final int timeout;
-  private int uptime;
+  private long uptimeMillis;
   private boolean recording = false;
+
+  private final File recordingInfo;
 
   @Inject
   public Controller(SensorObserver sensorObserver, TeLiProUploader uploader, SensorWrapperFactory swFactory, @Named("default.sensor.timeout") String timeout,
-      @Named("default.recording.time") String uptime, @Named("led.control.script") String ledControlScriptFileName) {
+      @Named("default.recording.time") String uptime, @Named("led.control.script") String ledControlScriptFileName,
+      @Named("recording.info.filename") String recordingInfoFileName) {
     this.sensorObserver = sensorObserver;
     this.swFactory = swFactory;
     this.uploader = uploader;
     this.timeout = new Integer(timeout);
-    this.uptime = new Integer(uptime);
+    this.uptimeMillis = new Integer(uptime);
     this.ledControlScriptFileName = ledControlScriptFileName;
+    this.recordingInfo = new File(recordingInfoFileName);
   }
 
   public boolean isRecording() {
     return this.recording;
   }
 
+  public void checkLastSensorplatformState() {
+    if (!this.recordingInfo.exists()) {
+      LOG.info("no recording period was interrupted");
+    } else {
+      try {
+        Properties recProperties = new Properties();
+        recProperties.load(new FileInputStream(this.recordingInfo));
+        LOG.info("recording properties loaded");
+        long diff = System.currentTimeMillis() - new Long(recProperties.getProperty(RECORDING_END_TIME));
+        if (diff < 0) {
+          if (recProperties.getProperty(SETUP_TYPE).equals(SETUP_TYPE_WEB)) {
+            startupFromWebConfiguration(diff, new JSONArray(recProperties.getProperty(CONFIGURATION)));
+          } else if (recProperties.getProperty(SETUP_TYPE).equals(SETUP_TYPE_BUILD)) {
+            startupFromProjectBuildConfiguration(diff);
+          }
+        } else {
+          LOG.warn("sensorplatform restarted after an interrupted recording period");
+          this.recordingInfo.delete();
+          LOG.info("recording file deleted");
+        }
+      } catch (IOException e) {
+        LOG.info("failed to load recording properties", e);
+      }
+    }
+  }
+
+  private void storeSensorplatformState(String setuptype, JSONArray sensorConfiguration) {
+    long timestamp = System.currentTimeMillis();
+    Properties recProperties = new Properties();
+    recProperties.put(RECORDING_END_TIME, (timestamp + this.uptimeMillis));
+    recProperties.put(SETUP_TYPE, setuptype);
+    recProperties.put(CONFIGURATION, sensorConfiguration);
+    try {
+      recProperties.store(new FileOutputStream(this.recordingInfo), null);
+      LOG.info("recording properties stored");
+    } catch (IOException e) {
+      LOG.error("failed to store recording properties", e);
+    }
+  }
+
   public void startupFromProjectBuildConfiguration() {
+    startupFromProjectBuildConfiguration(this.uptimeMillis);
+  }
+
+  public void startupFromProjectBuildConfiguration(long uptimeMillis) {
     if (!this.recording) {
       this.recording = true;
+      this.uptimeMillis = uptimeMillis;
+      storeSensorplatformState(SETUP_TYPE_BUILD, null);
       initFromProjectBuild();
       startupThreads();
     } else {
@@ -68,10 +129,11 @@ public class Controller implements Runnable {
     }
   }
 
-  public void startupFromWebConfiguration(int uptime, JSONArray sensorConfiguration) {
+  public void startupFromWebConfiguration(long uptimeMillis, JSONArray sensorConfiguration) {
     if (!this.recording) {
       this.recording = true;
-      this.uptime = uptime;
+      this.uptimeMillis = uptimeMillis;
+      storeSensorplatformState(SETUP_TYPE_WEB, sensorConfiguration);
       initFromWebapplication(sensorConfiguration);
       startupThreads();
     } else {
@@ -80,20 +142,20 @@ public class Controller implements Runnable {
   }
 
   private void startupThreads() {
-    new Thread(this).start();
     LOG.info("start controller thread");
+    new Thread(this).start();
+    LOG.info("start observer");
     this.sensorObserverThread = new Thread(this.sensorObserver);
     this.sensorObserverThread.start();
-    LOG.info("start observer");
+    LOG.info("start uploader thread");
     this.uploaderThread = new Thread(this.uploader);
     this.uploaderThread.start();
-    LOG.info("start uploader thread");
     LOG.info("all threads started");
   }
 
   @Override
   public void run() {
-    sleep(this.uptime);
+    sleep(this.uptimeMillis);
     shutdown();
     this.sensorObserverThread.interrupt();
     this.uploaderThread.interrupt();
@@ -118,9 +180,10 @@ public class Controller implements Runnable {
       AbstractSensorWrapper sensorWrapper = iterator.next();
       boolean isConnected = sensorWrapper.connectToSensorBlocking(this.timeout);
       if (!isConnected) {
+        LOG.info("Cannot connect to " + sensorWrapper.toString());
+        // LOG.info("Further (non-blocking) attempts will be handled by SensorObserver");
         sensorWrapper.shutdown();
         iterator.remove();
-        LOG.info(sensorWrapper.toString() + " unreachable and removed");
       }
     }
     LOG.info("enable logging");
@@ -134,10 +197,10 @@ public class Controller implements Runnable {
     LOG.info("initialise complete");
   }
 
-  private void sleep(int seconds) {
+  private void sleep(long millis) {
     try {
-      LOG.info("sleeping for " + seconds + " seconds");
-      Thread.sleep(seconds * 1000);
+      LOG.info("sleeping for " + millis + " seconds");
+      Thread.sleep(millis);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }

@@ -36,11 +36,10 @@ public class StartupService {
   public Response startupFromWebApp(JSONObject request) {
     LOG.info("/startup/fromwebapp called");
     try {
-      // it is not possible to use org.json.JSONArray as input parameter of this REST call
-      // therefor we convert from one json library to the other
       int uptime = request.getInt("uptime");
+      // jetty uses only codehous json library
       org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configuration").toString());
-      this.controller.startupFromWebConfiguration(uptime, requestConverted);
+      this.controller.startupFromWebConfiguration(uptime * 1000, requestConverted);
       return Response.ok().build();
     } catch (JSONException e) {
       e.printStackTrace();
