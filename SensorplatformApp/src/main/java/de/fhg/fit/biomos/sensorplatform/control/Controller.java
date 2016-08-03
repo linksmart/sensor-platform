@@ -25,7 +25,7 @@ import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 /**
  * This class defines the control flow of the sensorplatform.<br>
  * <br>
- * The class <b>must</b> be used as a singleton. Use <b>GUICE</b> to enforce that.
+ * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -40,11 +40,10 @@ public class Controller implements Runnable {
   private static final String SETUP_TYPE_BUILD = "build";
   private static final String CONFIGURATION = "configuration";
 
-  private final String ledControlScriptFileName;
-
   private final SensorObserver sensorObserver;
   private final SensorWrapperFactory swFactory;
   private final Uploader uploader;
+  private final ShellscriptExecutor shExec;
 
   private Thread sensorObserverThread;
   private Thread uploaderThread;
@@ -57,15 +56,15 @@ public class Controller implements Runnable {
   private final File recordingInfo;
 
   @Inject
-  public Controller(SensorObserver sensorObserver, TeLiProUploader uploader, SensorWrapperFactory swFactory, @Named("default.sensor.timeout") String timeout,
-      @Named("default.recording.time") String uptime, @Named("led.control.script") String ledControlScriptFileName,
+  public Controller(SensorObserver sensorObserver, TeLiProUploader uploader, SensorWrapperFactory swFactory, ShellscriptExecutor shExec,
+      @Named("default.sensor.timeout") String timeout, @Named("default.recording.time") String uptime,
       @Named("recording.info.filename") String recordingInfoFileName) {
     this.sensorObserver = sensorObserver;
     this.swFactory = swFactory;
     this.uploader = uploader;
+    this.shExec = shExec;
     this.timeout = new Integer(timeout);
     this.uptimeMillis = new Integer(uptime);
-    this.ledControlScriptFileName = ledControlScriptFileName;
     this.recordingInfo = new File(recordingInfoFileName);
   }
 
@@ -82,7 +81,7 @@ public class Controller implements Runnable {
         recProperties.load(new FileInputStream(this.recordingInfo));
         LOG.info("recording properties loaded");
         long diff = new Long(recProperties.getProperty(RECORDING_END_TIME)) - System.currentTimeMillis();
-        System.out.println("time difference is " + Long.toString(diff) + " milliseconds");
+        LOG.info("time difference is: " + Long.toString(diff) + " milliseconds");
         if (diff > 0) {
           LOG.info("a recording period was interrupted, which is not finished yet - trying to resume");
           if (recProperties.getProperty(SETUP_TYPE).equals(SETUP_TYPE_WEB)) {
@@ -128,8 +127,9 @@ public class Controller implements Runnable {
       if (store) {
         storeSensorplatformState(SETUP_TYPE_BUILD, null);
       }
-      initFromProjectBuild();
-      startupThreads();
+      LOG.info("initialise from project build configuration");
+      this.swList = this.swFactory.createSensorWrapperFromProjectBuild(this.uploader);
+      init();
     } else {
       LOG.error("Data recording ongoing. No other startup allowed! Skipped!");
     }
@@ -142,55 +142,12 @@ public class Controller implements Runnable {
       if (store) {
         storeSensorplatformState(SETUP_TYPE_WEB, sensorConfiguration);
       }
-      initFromWebapplication(sensorConfiguration);
-      startupThreads();
+      LOG.info("initialise from web application configuration");
+      this.swList = this.swFactory.createSensorWrapperFromWebApp(sensorConfiguration, this.uploader);
+      init();
     } else {
       LOG.error("Data recording ongoing. No other startup allowed! Skipped!");
     }
-  }
-
-  private void startupThreads() {
-    if (this.swList.isEmpty()) {
-      LOG.info("there are no sensors connected - skip recording period!");
-      ShellscriptExecutor.setLED(LEDstate.STANDBY, this.ledControlScriptFileName);
-      this.recordingInfo.delete();
-      this.recording = false;
-    } else {
-      LOG.info("start controller thread");
-      new Thread(this).start();
-      LOG.info("start observer");
-      this.sensorObserverThread = new Thread(this.sensorObserver);
-      this.sensorObserverThread.start();
-      LOG.info("start uploader thread");
-      this.uploaderThread = new Thread(this.uploader);
-      this.uploaderThread.start();
-      LOG.info("all threads started");
-    }
-  }
-
-  @Override
-  public void run() {
-    sleep(this.uptimeMillis);
-    shutdown();
-    ShellscriptExecutor.setLED(LEDstate.STANDBY, this.ledControlScriptFileName);
-    this.sensorObserverThread.interrupt();
-    this.uploaderThread.interrupt();
-    this.recordingInfo.delete();
-    this.recording = false;
-  }
-
-  private void initFromProjectBuild() {
-    LOG.info("initialise from project build configuration");
-    this.swList = this.swFactory.setupFromProjectBuildConfiguration(this.uploader);
-    init();
-    ShellscriptExecutor.setLED(LEDstate.RUNNING, this.ledControlScriptFileName);
-  }
-
-  private void initFromWebapplication(JSONArray sensorConfiguration) {
-    LOG.info("initialise from web application configuration");
-    this.swList = this.swFactory.setupFromWebinterfaceConfinguration(sensorConfiguration, this.uploader);
-    init();
-    ShellscriptExecutor.setLED(LEDstate.RUNNING, this.ledControlScriptFileName);
   }
 
   private void init() {
@@ -208,18 +165,48 @@ public class Controller implements Runnable {
     for (SensorWrapper sensorWrapper : this.swList) {
       sensorWrapper.enableLogging();
     }
-
     this.sensorObserver.setTarget(this.swList);
+    startThreads();
     LOG.info("initialise complete");
+
+    this.shExec.setLED(LEDstate.RUNNING);
   }
 
-  private void sleep(long millis) {
-    try {
-      LOG.info("sleeping for " + millis + " milliseconds");
-      Thread.sleep(millis);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+  private void startThreads() {
+    if (this.swList.isEmpty()) {
+      LOG.info("there are no sensors connected - skip recording period!");
+      this.shExec.setLED(LEDstate.STANDBY);
+      this.recordingInfo.delete();
+      this.recording = false;
+    } else {
+      LOG.info("start observer");
+      this.sensorObserverThread = new Thread(this.sensorObserver);
+      this.sensorObserverThread.start();
+      LOG.info("start uploader thread");
+      this.uploaderThread = new Thread(this.uploader);
+      this.uploaderThread.start();
+      LOG.info("start controller thread");
+      new Thread(this).start();
+      LOG.info("all threads started");
     }
+  }
+
+  @Override
+  public void run() {
+    try {
+      LOG.info("sleeping for " + this.uptimeMillis + " milliseconds");
+      Thread.sleep(this.uptimeMillis);
+    } catch (InterruptedException e) {
+      LOG.error("sleep interrupted - recording period finished too early");
+    }
+    LOG.info("Recording period finished");
+    this.sensorObserverThread.interrupt();
+    this.uploaderThread.interrupt();
+    shutdown();
+    this.sensorObserver.clearTarget();
+    this.recordingInfo.delete();
+    this.recording = false;
+    this.shExec.setLED(LEDstate.STANDBY);
   }
 
   /**
@@ -237,7 +224,5 @@ public class Controller implements Runnable {
     for (SensorWrapper sensorWrapper : this.swList) {
       sensorWrapper.shutdown();
     }
-    LOG.info("Recording period finished");
   }
-
 }

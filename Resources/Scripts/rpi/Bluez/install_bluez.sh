@@ -1,17 +1,30 @@
 #!/bin/bash
 
+# always run as sudo
+
+# newest version (19.07.2016)
+version="5.41"
+url="http://www.kernel.org/pub/linux/bluetooth/bluez-${version}.tar.xz"
+
+echo "Installing Bluez Bluetooth stack"
+echo "version to be installed: ${version}"
+echo "from: ${url}"
+
 # install dependencies
+echo "Update package manager"
+apt-get update
 echo "Installing dependencies"
-sudo apt-get update
-sudo apt-get install -y libusb-dev libdbus-1-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev
+#  D-Bus-1.10.8 GLib-2.48.1, and libical-2.0.0 
+# apt-get install -y dbus glib libical
+apt-get install -y libusb-dev libdbus-1-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev
 
 # download bluez
 echo "Downloading Bluez"
-cd /home/pi
-wget wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.39.tar.xz
-tar xvf bluez-5.39.tar.xz
-rm bluez-5.39.tar.xz
-cd bluez-5.37
+mkdir /home/${USER}/bluez
+cd /home/${USER}/bluez
+wget ${url}
+tar xvf bluez-${version}.tar.xz
+cd bluez-${version}
 
 # install
 echo "Installing Bluez"
@@ -19,14 +32,21 @@ echo "Installing Bluez"
 make
 make install
 
-echo "additional manual configuration required!"
-echo "sudo nano /lib/systemd/system/bluetooth.service"
-echo "change line"
-echo "ExecStart=/usr/local/libexec/bluetooth/bluetoothd"
-echo "to"
-echo "ExecStart=/usr/local/libexec/bluetooth/bluetoothd --experimental"
-echo ""
-echo "sudo systemctl daemon-reload"
-echo "systemctl restart bluetooth"
-echo "reboot recommended"
-echo "systemctl status bluetooth (for checking)"
+# system deamon update to new version
+echo "Restarting daemon"
+systemctl daemon-reload
+systemctl restart bluetooth
+
+# run at boot automatically
+systemctl enable bluetooth
+
+# print result at the end, should be new version now
+systemctl status bluetooth
+
+# delete down
+echo "Cleanup"
+cd /home/${USER}
+rm -r /home/${USER}/bluez
+
+echo "Finished"
+exit 0

@@ -27,7 +27,7 @@ import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
  * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory.<br>
- * The class <b>must</b> be used as a singleton. Use <b>GUICE</b> to enforce that.
+ * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -55,9 +55,9 @@ public class SensorWrapperFactory {
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */
-  public List<AbstractSensorWrapper> setupFromWebinterfaceConfinguration(JSONArray sensorConfiguration, Uploader uploader) {
+  public List<AbstractSensorWrapper> createSensorWrapperFromWebApp(JSONArray sensorConfiguration, Uploader uploader) {
     LOG.info("setup from webapplication configuration");
-    return createSensorWrapper(sensorConfiguration, uploader);
+    return createSensorWrapper(sensorConfiguration, null);
   }
 
   /**
@@ -65,14 +65,14 @@ public class SensorWrapperFactory {
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */
-  public List<AbstractSensorWrapper> setupFromProjectBuildConfiguration(Uploader uploader) {
+  public List<AbstractSensorWrapper> createSensorWrapperFromProjectBuild(Uploader uploader) {
     LOG.info("setup from project build configuration");
     LOG.info("sensor configuration file " + this.sensorConfigurationFileName);
 
     JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(this.sensorConfigurationFileName));
     JSONArray sensorConfiguration = new JSONArray(tokener);
 
-    return createSensorWrapper(sensorConfiguration, uploader);
+    return createSensorWrapper(sensorConfiguration, null);
   }
 
   private List<AbstractSensorWrapper> createSensorWrapper(JSONArray sensorConfiguration, Uploader uploader) {

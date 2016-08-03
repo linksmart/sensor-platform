@@ -35,7 +35,13 @@ public class SensorObserver implements Runnable {
 
   public void setTarget(List<AbstractSensorWrapper> swList) {
     this.swList = swList;
-    LOG.info("set sensorwrapper to observe");
+    LOG.info("set target");
+  }
+
+  public void clearTarget() {
+    this.wrapperWithLostSensor.clear();
+    this.swList.clear();
+    LOG.info("clear target");
   }
 
   @Override
@@ -82,8 +88,6 @@ public class SensorObserver implements Runnable {
         Thread.currentThread().interrupt();
       }
     }
-    this.wrapperWithLostSensor.clear();
-    this.swList.clear();
     LOG.info("observer thread finished");
   }
 
