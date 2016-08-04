@@ -22,12 +22,12 @@ public abstract class Test {
     //
     // System.out.println(s.toString());
 
-    HeartRateSample hrs = new HeartRateSample("2016-07-20T20:20:20:600Z", "AA:BB:CC:DD:EE:FF", false);
+    HeartRateSample hrs = new HeartRateSample("2016-07-20T20:20:20:600Z", "AA:BB:CC:DD:EE:FF");
     hrs.setHeartRate(120);
     List<Integer> l = new ArrayList<Integer>();
     l.add(500);
     l.add(501);
-    hrs.setRRinterval(l);
+    hrs.setRRintervals(l);
 
     System.out.println(hrs.toString());
   }

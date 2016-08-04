@@ -49,7 +49,6 @@ public class StartupService {
 
   @Path("/frombuild")
   @GET
-  @Consumes(MediaType.TEXT_PLAIN)
   @Produces(MediaType.TEXT_PLAIN)
   public Response startupFromProjectBuild() {
     LOG.info("/startup/frombuild called");

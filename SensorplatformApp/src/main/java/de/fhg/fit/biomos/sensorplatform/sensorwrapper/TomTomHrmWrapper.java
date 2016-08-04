@@ -40,7 +40,7 @@ public class TomTomHrmWrapper extends AbstractSensorWrapper {
     LOG.info("new notification arrived");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    HeartRateSample hrs = this.tomtomhrm.calculateHeartRateData(handle, rawHexValues, false);
+    HeartRateSample hrs = this.tomtomhrm.calculateHeartRateData(handle, rawHexValues);
 
     this.sampleLogger.writeLine(hrs.toString());
 

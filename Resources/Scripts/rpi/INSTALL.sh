@@ -5,6 +5,6 @@
 # maven
 # bluez
 # wvdial
-# mongodb
+# hsqldb files
 # iptables
 # keystore

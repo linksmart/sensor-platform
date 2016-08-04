@@ -7,7 +7,7 @@ import java.util.Arrays;
  * @author Daniel Pyka
  *
  */
-public class CC2650Sample extends Sample {
+public class CC2650Sample {
 
   private class Measurement {
   };
@@ -106,15 +106,21 @@ public class CC2650Sample extends Sample {
     }
   }
 
-  // private TemperatureSample temperatureSample;
-  // private HumiditySample humiditySample;
-  // private AmbientlightSample ambientlightSample;
-  // private PressureSample pressureSample;
-  // private MovementSample movementSample;
+  private final String timestamp;
+  private final String bdAddress;
   private Measurement measurement;
 
-  public CC2650Sample(String timestamp, String bdAddress, boolean transmitted) {
-    super(timestamp, bdAddress, transmitted);
+  public CC2650Sample(String timestamp, String bdAddress) {
+    this.timestamp = timestamp;
+    this.bdAddress = bdAddress;
+  }
+
+  public String getTimestamp() {
+    return this.timestamp;
+  }
+
+  public String getBDaddress() {
+    return this.bdAddress;
   }
 
   public Measurement getSample() {
@@ -143,8 +149,7 @@ public class CC2650Sample extends Sample {
 
   @Override
   public String toString() {
-    return "{\"timestamp\":\" " + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"transmitted\":" + this.transmitted + ",\"value\":"
-        + this.measurement.toString() + "}";
+    return "{\"timestamp\":\" " + this.timestamp + "\",\"device\":\"" + this.bdAddress + ",\"value\":" + this.measurement.toString() + "}";
   }
 
 }

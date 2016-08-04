@@ -3,6 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.util;
 public abstract class Unit {
 
   public static final String BPM = "bpm";
+  public static final String JOULE = "J";
   public static final String BPMMS = "bpm/ms";
 
   public static final String DEGREES_CELSIUS = "°C";

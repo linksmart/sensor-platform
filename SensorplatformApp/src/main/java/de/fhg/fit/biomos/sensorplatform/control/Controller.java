@@ -128,7 +128,7 @@ public class Controller implements Runnable {
         storeSensorplatformState(SETUP_TYPE_BUILD, null);
       }
       LOG.info("initialise from project build configuration");
-      this.swList = this.swFactory.createSensorWrapperFromProjectBuild(this.uploader);
+      this.swList = this.swFactory.createSensorWrapperFromProjectBuild();
       init();
     } else {
       LOG.error("Data recording ongoing. No other startup allowed! Skipped!");
@@ -143,7 +143,7 @@ public class Controller implements Runnable {
         storeSensorplatformState(SETUP_TYPE_WEB, sensorConfiguration);
       }
       LOG.info("initialise from web application configuration");
-      this.swList = this.swFactory.createSensorWrapperFromWebApp(sensorConfiguration, this.uploader);
+      this.swList = this.swFactory.createSensorWrapperFromWebApp(sensorConfiguration);
       init();
     } else {
       LOG.error("Data recording ongoing. No other startup allowed! Skipped!");

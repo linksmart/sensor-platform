@@ -215,8 +215,8 @@ public abstract class HeartRateSensor extends Sensor {
     return rrIntervals;
   }
 
-  protected HeartRateSample calculateHeartRateData(String expectedHandle, String handle, String rawHexValues, boolean transmitted) {
-    HeartRateSample hrs = new HeartRateSample(this.dtf.print(new DateTime()), this.bdAddress, transmitted);
+  protected HeartRateSample calculateHeartRateData(String expectedHandle, String handle, String rawHexValues) {
+    HeartRateSample hrs = new HeartRateSample(this.dtf.print(new DateTime()), this.bdAddress);
     if (handle.equals(expectedHandle)) {
 
       if (isSkinContactDetectionSupported(rawHexValues)) {
@@ -228,12 +228,12 @@ public abstract class HeartRateSensor extends Sensor {
       if (is8BitValue(rawHexValues)) {
         hrs.setHeartRate(getHeartRate8Bit(rawHexValues));
         if (isRRintervalDataAvailable(rawHexValues)) {
-          hrs.setRRinterval(getRRintervalsWith8BitHeartRateData(rawHexValues));
+          hrs.setRRintervals(getRRintervalsWith8BitHeartRateData(rawHexValues));
         }
       } else {
         hrs.setHeartRate(getHeartRate16Bit(rawHexValues));
         if (isRRintervalDataAvailable(rawHexValues)) {
-          hrs.setRRinterval(getRRintervalsWith16BitHeartRateData(rawHexValues));
+          hrs.setRRintervals(getRRintervalsWith16BitHeartRateData(rawHexValues));
         }
       }
     } else {

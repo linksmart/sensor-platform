@@ -35,16 +35,13 @@
 
         <profile>
             <id>telipro</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <!-- currently this profile is compulsory -->
             <properties>
                 <!-- these two are not yet used -->
                 <webinterface.name>TeliPro</webinterface.name>
                 <webinterface.base.url>https://ditg.fit.fraunhofer.de</webinterface.base.url>
 
                 <webinterface.username>SYML-TST-003-XXX</webinterface.username>
-                <!-- stored password is bad obviously -->
                 <webinterface.password>a-secret</webinterface.password>
                 <webinterface.login.url>https://ditg.fit.fraunhofer.de/api/v1/deviceLogin</webinterface.login.url>
                 <!-- ATTENTION: username hardcoded in url -->
@@ -72,12 +69,21 @@
         <joda.version>2.9.4</joda.version>
         <jetty.version>9.3.10.v20160621</jetty.version>
         <jersey.version>1.19.1</jersey.version>
+        <httpclient.version>4.5.2</httpclient.version>
+        <hsqldb.version>2.3.4</hsqldb.version>
+        <hibernate.version>5.2.1.Final</hibernate.version>
 
+        <!-- web server running on the sensorplatform for configuration -->
         <webapp.port>8080</webapp.port>
         <webapp.username>sensorplatform</webapp.username>
         <webapp.password>123456</webapp.password>
         <keystore.filename>keystore.jks</keystore.filename>
         <keystore.password>123456</keystore.password>
+        <!-- database running on the sensorplatform -->
+        <database.path>db/sensorplatform</database.path>
+        <database.username>sensorplatform</database.username>
+        <database.password>123456</database.password>
+        <!-- stores information about a recording period in case of power loss -->
         <recording.info.filename>recording.properties</recording.info.filename>
     </properties>
 
@@ -180,7 +186,17 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.5.2</version>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${hsqldb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
             </dependency>
             <!-- >dependency>
                 <groupId>org.apache.httpcomponents</groupId>

@@ -39,7 +39,7 @@ public class CC2650Wrapper extends AbstractSensorWrapper {
     LOG.info("new notification arrived");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    CC2650Sample sample = this.cc2650.calculateSensorData(handle, rawHexValues, false);
+    CC2650Sample sample = this.cc2650.calculateSensorData(handle, rawHexValues);
 
     this.sampleLogger.writeLine(sample.toString());
 

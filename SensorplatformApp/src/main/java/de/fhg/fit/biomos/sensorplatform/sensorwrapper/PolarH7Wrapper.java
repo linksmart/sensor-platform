@@ -40,7 +40,7 @@ public class PolarH7Wrapper extends AbstractSensorWrapper {
     LOG.info("new notification arrived");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    HeartRateSample hrs = this.polarh7.calculateHeartRateData(handle, rawHexValues, false);
+    HeartRateSample hrs = this.polarh7.calculateHeartRateData(handle, rawHexValues);
 
     this.sampleLogger.writeLine(hrs.toString());
 

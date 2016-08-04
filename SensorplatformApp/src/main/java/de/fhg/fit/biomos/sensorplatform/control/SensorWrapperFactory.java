@@ -23,7 +23,7 @@ import de.fhg.fit.biomos.sensorplatform.sensorwrapper.PolarH7Wrapper;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.TomTomHrmWrapper;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.web.Uploader;
+import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
 
 /**
  * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory.<br>
@@ -41,12 +41,15 @@ public class SensorWrapperFactory {
   public static final String ADDRESSTYPE = "addresstype";
   public static final String SETTINGS = "settings";
 
+  private final TeLiProUploader uploader;
+
   private final String sensorConfigurationFileName;
   private final String logFileTimestampFormat;
 
   @Inject
-  public SensorWrapperFactory(@Named("default.sensor.configuration.file") String sensorConfigurationFileName,
+  public SensorWrapperFactory(TeLiProUploader uploader, @Named("default.sensor.configuration.file") String sensorConfigurationFileName,
       @Named("logfile.timestamp.format") String logFileTimestampFormat) {
+    this.uploader = uploader;
     this.sensorConfigurationFileName = sensorConfigurationFileName;
     this.logFileTimestampFormat = logFileTimestampFormat;
   }
@@ -55,9 +58,9 @@ public class SensorWrapperFactory {
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */
-  public List<AbstractSensorWrapper> createSensorWrapperFromWebApp(JSONArray sensorConfiguration, Uploader uploader) {
+  public List<AbstractSensorWrapper> createSensorWrapperFromWebApp(JSONArray sensorConfiguration) {
     LOG.info("setup from webapplication configuration");
-    return createSensorWrapper(sensorConfiguration, null);
+    return createSensorWrapper(sensorConfiguration);
   }
 
   /**
@@ -65,17 +68,17 @@ public class SensorWrapperFactory {
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */
-  public List<AbstractSensorWrapper> createSensorWrapperFromProjectBuild(Uploader uploader) {
+  public List<AbstractSensorWrapper> createSensorWrapperFromProjectBuild() {
     LOG.info("setup from project build configuration");
     LOG.info("sensor configuration file " + this.sensorConfigurationFileName);
 
     JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(this.sensorConfigurationFileName));
     JSONArray sensorConfiguration = new JSONArray(tokener);
 
-    return createSensorWrapper(sensorConfiguration, null);
+    return createSensorWrapper(sensorConfiguration);
   }
 
-  private List<AbstractSensorWrapper> createSensorWrapper(JSONArray sensorConfiguration, Uploader uploader) {
+  private List<AbstractSensorWrapper> createSensorWrapper(JSONArray sensorConfiguration) {
     List<AbstractSensorWrapper> sensorWrapperList = new ArrayList<AbstractSensorWrapper>();
     for (int i = 0; i < sensorConfiguration.length(); i++) {
 
@@ -88,13 +91,13 @@ public class SensorWrapperFactory {
       AbstractSensorWrapper sensorWrapper = null;
       switch (name) {
         case PolarH7:
-          sensorWrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, addressType, this.logFileTimestampFormat, settings), uploader);
+          sensorWrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.uploader);
           break;
         case AdidasHRM:
-          sensorWrapper = new AdidasHrmWrapper(new AdidasMiCoachHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), uploader);
+          sensorWrapper = new AdidasHrmWrapper(new AdidasMiCoachHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.uploader);
           break;
         case TomTomHRM:
-          sensorWrapper = new TomTomHrmWrapper(new TomTomHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), uploader);
+          sensorWrapper = new TomTomHrmWrapper(new TomTomHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.uploader);
           break;
         case PolarV800:
           LOG.error("PolarV800 not yet implemented - sensor will be ignored");

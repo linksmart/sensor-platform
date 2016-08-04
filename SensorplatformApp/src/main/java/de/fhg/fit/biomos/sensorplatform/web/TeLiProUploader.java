@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
+import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
@@ -39,6 +41,8 @@ public class TeLiProUploader implements Uploader {
   private static final Logger LOG = LoggerFactory.getLogger(TeLiProUploader.class);
 
   private static final int UPLOAD_THREAD_SLEEP_TIME_MS = 300;
+
+  private final DBcontroller db;
 
   private final DateTimeFormatter dtf;
 
@@ -60,10 +64,11 @@ public class TeLiProUploader implements Uploader {
   // private final List<HeartRateSample> list = new ArrayList<HeartRateSample>();
 
   @Inject
-  public TeLiProUploader(@Named("webinterface.username") String userName, @Named("webinterface.password") String password,
+  public TeLiProUploader(DBcontroller db, @Named("webinterface.username") String userName, @Named("webinterface.password") String password,
       @Named("http.useragent.boardname") String userAgent, @Named("webinterface.timestamp.format") String timestampFormat,
       @Named("webinterface.login.url") String loginAddress, @Named("webinterface.data.url") String dataAddress,
       @Named("webinterface.data.download.url") String dataDownloadAddress) {
+    this.db = db;
     this.userName = userName;
     LOG.info("username: " + this.userName);
     this.password = password;
@@ -86,6 +91,11 @@ public class TeLiProUploader implements Uploader {
 
   @Override
   public void addToQueue(HeartRateSample hrs) {
+    // TODO change to reactive behaviour
+    DBsession s = this.db.getSession();
+    s.saveHeartRateSample(hrs);
+    s.commit();
+    s.close();
     this.queue.add(hrs);
   }
 
