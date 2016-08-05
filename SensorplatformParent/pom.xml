@@ -35,12 +35,8 @@
 
         <profile>
             <id>telipro</id>
-            <!-- currently this profile is compulsory -->
             <properties>
-                <!-- these two are not yet used -->
-                <webinterface.name>TeliPro</webinterface.name>
-                <webinterface.base.url>https://ditg.fit.fraunhofer.de</webinterface.base.url>
-
+                <webinterface.name>TeLiPro</webinterface.name>
                 <webinterface.username>SYML-TST-003-XXX</webinterface.username>
                 <webinterface.password>a-secret</webinterface.password>
                 <webinterface.login.url>https://ditg.fit.fraunhofer.de/api/v1/deviceLogin</webinterface.login.url>
@@ -66,6 +62,7 @@
         <json.version>20160212</json.version>
         <!-- guice version 4.x does not work with current jetty implementation -->
         <guice.version>3.0</guice.version>
+        <jsr305.version>3.0.1</jsr305.version>
         <joda.version>2.9.4</joda.version>
         <jetty.version>9.3.10.v20160621</jetty.version>
         <jersey.version>1.19.1</jersey.version>
@@ -177,6 +174,12 @@
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice</artifactId>
                 <version>${guice.version}</version>
+            </dependency>
+            <!-- jsr305 is used for @Nullable annotations for Uploader -->
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>${jsr305.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.jersey.contribs</groupId>

@@ -53,7 +53,31 @@ public class DBsession {
 
   @SuppressWarnings("unchecked")
   public List<HeartRateSample> getHeartRateSamples() {
+    LOG.info("get all heart rate samples");
     return this.session.createQuery("FROM HeartRateSample").getResultList();
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<HeartRateSample> getNotTransmittedHeartRateSamples() {
+    LOG.info("get all not transmitted heart rate samples");
+    return this.session.createQuery("FROM HeartRateSample WHERE transmitted=false").getResultList();
+  }
+
+  @SuppressWarnings("deprecation")
+  public int getNumberOfHeartRateSamples() {
+    LOG.info("get total number of heart rate samples");
+    return ((Long) this.session.createQuery("SELECT count(*) FROM HeartRateSample").uniqueResult()).intValue();
+  }
+
+  @SuppressWarnings("deprecation")
+  public int getNumberOfNotTransmittedHeartRateSamples() {
+    LOG.info("get number of not transmitted heart rate samples");
+    return ((Long) this.session.createQuery("SELECT count(*) FROM HeartRateSample WHERE transmitted=false").uniqueResult()).intValue();
+  }
+
+  public int deleteAllHeartRateSamples() {
+    LOG.info("delete all heart rate samples");
+    return this.session.createQuery("DELETE * FROM HeartRateSample").executeUpdate();
   }
 
 }

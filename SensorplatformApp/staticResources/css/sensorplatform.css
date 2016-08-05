@@ -5,10 +5,31 @@
 	height: 100vh;
 }
 
-#config {
-	width:100%
+textarea {
+	resize: vertical;
+}
+
+input {
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+input:focus {
+	border-color: #ccc !important;
+}
+
+#configview, #dbcontentview {
+	width: 100%;
 }
 
 #uptime, #timeout {
-	width:50%
+	width: 50%
+}
+
+.divinsidewell {
+	overflow: hidden
+}
+
+li>a, li>a:hover, li>a:focus {
+	color: #000 ! important;
 }

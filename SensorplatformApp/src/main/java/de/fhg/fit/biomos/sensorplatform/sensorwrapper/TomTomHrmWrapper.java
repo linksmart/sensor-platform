@@ -3,10 +3,10 @@ package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
-import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
  *
@@ -19,8 +19,8 @@ public class TomTomHrmWrapper extends AbstractSensorWrapper {
 
   private final TomTomHRM tomtomhrm;
 
-  public TomTomHrmWrapper(TomTomHRM tomtomhrm, Uploader uploader) {
-    super(tomtomhrm, uploader);
+  public TomTomHrmWrapper(TomTomHRM tomtomhrm, HeartRateSampleCollector hrsCollector) {
+    super(tomtomhrm, hrsCollector);
     this.tomtomhrm = tomtomhrm;
   }
 
@@ -42,12 +42,10 @@ public class TomTomHrmWrapper extends AbstractSensorWrapper {
 
     HeartRateSample hrs = this.tomtomhrm.calculateHeartRateData(handle, rawHexValues);
 
-    this.sampleLogger.writeLine(hrs.toString());
-
     // System.out.println(sample.toString()); // extreme debugging
 
-    if (this.uploader != null) {
-      this.uploader.addToQueue(hrs);
+    if (this.sampleCollector != null) {
+      this.sampleCollector.addToQueue(hrs);
     }
   }
 

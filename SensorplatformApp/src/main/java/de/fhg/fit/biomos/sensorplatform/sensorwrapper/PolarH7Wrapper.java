@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.biomos.sensorplatform.sensors.PolarH7;
+import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
-import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
  *
@@ -19,8 +19,8 @@ public class PolarH7Wrapper extends AbstractSensorWrapper {
 
   private final PolarH7 polarh7;
 
-  public PolarH7Wrapper(PolarH7 polarh7, Uploader uploader) {
-    super(polarh7, uploader);
+  public PolarH7Wrapper(PolarH7 polarh7, HeartRateSampleCollector hrsCollector) {
+    super(polarh7, hrsCollector);
     this.polarh7 = polarh7;
   }
 
@@ -42,12 +42,10 @@ public class PolarH7Wrapper extends AbstractSensorWrapper {
 
     HeartRateSample hrs = this.polarh7.calculateHeartRateData(handle, rawHexValues);
 
-    this.sampleLogger.writeLine(hrs.toString());
-
     // System.out.println(sample.toString()); // extreme debugging
 
-    if (this.uploader != null) {
-      this.uploader.addToQueue(hrs);
+    if (this.sampleCollector != null) {
+      this.sampleCollector.addToQueue(hrs);
     }
   }
 

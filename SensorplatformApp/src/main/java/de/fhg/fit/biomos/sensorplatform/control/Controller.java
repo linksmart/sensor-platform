@@ -19,8 +19,6 @@ import de.fhg.fit.biomos.sensorplatform.main.ShellscriptExecutor;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.util.LEDstate;
-import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
-import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
  * This class defines the control flow of the sensorplatform.<br>
@@ -42,11 +40,11 @@ public class Controller implements Runnable {
 
   private final SensorObserver sensorObserver;
   private final SensorWrapperFactory swFactory;
-  private final Uploader uploader;
+  private final HeartRateSampleCollector hrsCollector;
   private final ShellscriptExecutor shExec;
 
   private Thread sensorObserverThread;
-  private Thread uploaderThread;
+  private Thread collectorThread;
   private List<AbstractSensorWrapper> swList;
 
   private final int timeout;
@@ -56,12 +54,12 @@ public class Controller implements Runnable {
   private final File recordingInfo;
 
   @Inject
-  public Controller(SensorObserver sensorObserver, TeLiProUploader uploader, SensorWrapperFactory swFactory, ShellscriptExecutor shExec,
+  public Controller(SensorObserver sensorObserver, HeartRateSampleCollector hrsCollector, SensorWrapperFactory swFactory, ShellscriptExecutor shExec,
       @Named("default.sensor.timeout") String timeout, @Named("default.recording.time") String uptime,
       @Named("recording.info.filename") String recordingInfoFileName) {
     this.sensorObserver = sensorObserver;
     this.swFactory = swFactory;
-    this.uploader = uploader;
+    this.hrsCollector = hrsCollector;
     this.shExec = shExec;
     this.timeout = new Integer(timeout);
     this.uptimeMillis = new Integer(uptime);
@@ -183,8 +181,8 @@ public class Controller implements Runnable {
       this.sensorObserverThread = new Thread(this.sensorObserver);
       this.sensorObserverThread.start();
       LOG.info("start uploader thread");
-      this.uploaderThread = new Thread(this.uploader);
-      this.uploaderThread.start();
+      this.collectorThread = new Thread(this.hrsCollector);
+      this.collectorThread.start();
       LOG.info("start controller thread");
       new Thread(this).start();
       LOG.info("all threads started");
@@ -201,7 +199,7 @@ public class Controller implements Runnable {
     }
     LOG.info("Recording period finished");
     this.sensorObserverThread.interrupt();
-    this.uploaderThread.interrupt();
+    this.collectorThread.interrupt();
     shutdown();
     this.sensorObserver.clearTarget();
     this.recordingInfo.delete();

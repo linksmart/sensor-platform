@@ -23,7 +23,6 @@ import de.fhg.fit.biomos.sensorplatform.sensorwrapper.PolarH7Wrapper;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.TomTomHrmWrapper;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
-import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
 
 /**
  * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory.<br>
@@ -41,15 +40,15 @@ public class SensorWrapperFactory {
   public static final String ADDRESSTYPE = "addresstype";
   public static final String SETTINGS = "settings";
 
-  private final TeLiProUploader uploader;
+  private final HeartRateSampleCollector hrsCollector;
 
   private final String sensorConfigurationFileName;
   private final String logFileTimestampFormat;
 
   @Inject
-  public SensorWrapperFactory(TeLiProUploader uploader, @Named("default.sensor.configuration.file") String sensorConfigurationFileName,
+  public SensorWrapperFactory(HeartRateSampleCollector hrsCollector, @Named("default.sensor.configuration.file") String sensorConfigurationFileName,
       @Named("logfile.timestamp.format") String logFileTimestampFormat) {
-    this.uploader = uploader;
+    this.hrsCollector = hrsCollector;
     this.sensorConfigurationFileName = sensorConfigurationFileName;
     this.logFileTimestampFormat = logFileTimestampFormat;
   }
@@ -91,13 +90,13 @@ public class SensorWrapperFactory {
       AbstractSensorWrapper sensorWrapper = null;
       switch (name) {
         case PolarH7:
-          sensorWrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.uploader);
+          sensorWrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.hrsCollector);
           break;
         case AdidasHRM:
-          sensorWrapper = new AdidasHrmWrapper(new AdidasMiCoachHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.uploader);
+          sensorWrapper = new AdidasHrmWrapper(new AdidasMiCoachHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.hrsCollector);
           break;
         case TomTomHRM:
-          sensorWrapper = new TomTomHrmWrapper(new TomTomHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.uploader);
+          sensorWrapper = new TomTomHrmWrapper(new TomTomHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.hrsCollector);
           break;
         case PolarV800:
           LOG.error("PolarV800 not yet implemented - sensor will be ignored");

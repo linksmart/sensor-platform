@@ -21,14 +21,18 @@ window.setInterval(function() {
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
 			response = JSON.parse(request.responseText);
-			if (response["recording"]) {
-				document.getElementById('recording').textContent = "(recording)";
+			if (response["status"]) {
+				$("#status").text("(recording)");
 			} else {
-				document.getElementById('recording').textContent = "(not recording)";
+				$("#status").text("(not recording)");
 			}
+			$("#device").text(response["sensorplatform"]);
+			$("#uploader").text(response["uploader"]);
 		}
 		if (request.readyState == 4 && request.status == 500) {
-			document.getElementById('recording').textContent = "(server error)";
+			$("#status").text("(server error)");
+			$("#device").text("(server error)");
+			$("#uploader").text("(server error)");
 			console.log("Server error!");
 		}
 	};
@@ -37,12 +41,12 @@ window.setInterval(function() {
 }, 3000);
 
 function writeExampleConfig() {
-	document.getElementById('config').value = JSON.stringify(exampleConfig, undefined, 4);
+	$("#configview").val(JSON.stringify(exampleConfig, undefined, 4));
 }
 
 function startFromWebConfig() {
-	var uptime = document.getElementById('uptime').value;
-	var configuration = JSON.parse(document.getElementById('config').value);
+	var uptime = $("#uptime").val();
+	var configuration = JSON.parse($("#configview").val());
 	var requestentity = {
 		"uptime" : uptime,
 		"configuration" : configuration
@@ -73,5 +77,21 @@ function startFromMavenBuild() {
 		}
 	};
 	request.open("GET", "startup/frombuild", true);
+	request.send();
+}
+
+function getNumbersHrs() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			response = JSON.parse(request.responseText);
+			$("#totalhrs").text(response["total"]);
+			$("#nottransmitted").text(response["nottransmitted"]);
+		}
+		if (request.readyState == 4 && request.status == 500) {
+			console.log("Cannot retrieve number of not transmitted hrs!");
+		}
+	};
+	request.open("GET", "hrs/numberofnottransmitted", true);
 	request.send();
 }

@@ -8,8 +8,10 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
+import com.google.inject.util.Providers;
 
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
+import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.SensorObserver;
 import de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory;
 import de.fhg.fit.biomos.sensorplatform.main.ShellscriptExecutor;
@@ -18,6 +20,7 @@ import de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService;
 import de.fhg.fit.biomos.sensorplatform.restservices.InfoService;
 import de.fhg.fit.biomos.sensorplatform.restservices.StartupService;
 import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
+import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 public class SensorplatformGuiceModule extends AbstractModule {
 
@@ -35,9 +38,25 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(InfoService.class);
     bind(HeartRateService.class);
 
-    // TODO make this part dynamic to allow different webinterfaces
-    bind(TeLiProUploader.class).in(Singleton.class);
-    //
+    String webinterfaceName = this.properties.getProperty("webinterface.name");
+
+    switch (webinterfaceName) {
+      case "TeLiPro":
+        LOG.info("webinterface is: " + webinterfaceName);
+        bind(TeLiProUploader.class).in(Singleton.class);
+        bind(Uploader.class).to(TeLiProUploader.class);
+        break;
+      case "${webinterface.name}":
+        LOG.warn("No webinterface maven profile specified");
+        bind(Uploader.class).toProvider(Providers.of(null));
+        break;
+      default:
+        LOG.error("unknown webinterface name: " + webinterfaceName);
+        bind(Uploader.class).toProvider(Providers.of(null));
+        break;
+    }
+
+    bind(HeartRateSampleCollector.class).in(Singleton.class);
     bind(SensorObserver.class).in(Singleton.class);
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);

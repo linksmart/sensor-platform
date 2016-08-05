@@ -3,6 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fhg.fit.biomos.sensorplatform.persistence.TextFileLogger;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650Sample;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
@@ -18,9 +19,12 @@ public class CC2650Wrapper extends AbstractSensorWrapper {
 
   private final CC2650 cc2650;
 
+  private final TextFileLogger sampleLogger;
+
   public CC2650Wrapper(CC2650 cc2650) {
     super(cc2650, null);
     this.cc2650 = cc2650;
+    this.sampleLogger = new TextFileLogger(cc2650.getName().name());
   }
 
   @Override
@@ -44,6 +48,12 @@ public class CC2650Wrapper extends AbstractSensorWrapper {
     this.sampleLogger.writeLine(sample.toString());
 
     // System.out.println(sample.toString()); // extreme debugging
+  }
+
+  @Override
+  public void shutdown() {
+    this.gatttool.exitGatttool();
+    this.sampleLogger.close();
   }
 
   @Override

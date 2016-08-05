@@ -55,7 +55,7 @@ public class Main {
   }
 
   private void checkLastState() {
-    LOG.info("checking the last state of the system");
+    LOG.info("checking the last state of the sensorplatform");
     this.injector.getInstance(Controller.class).checkLastSensorplatformState();
     LOG.info("main startup done");
   }

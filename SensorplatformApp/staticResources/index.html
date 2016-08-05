@@ -8,60 +8,123 @@
 <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap-3.3.6-dist/css/bootstrap.min.css"></link>
 <link rel="stylesheet" type="text/css" href="css/sensorplatform.css"></link>
 
-<script type="text/javascript" src="lib/jquery/jquery-3.1.0.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="lib/jquery/jquery-2.2.4.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="lib/bootstrap/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="index.js" charset="UTF-8"></script>
 <title>Sensorplatform</title>
 </head>
 <body>
     <div class="container">
         <div class="col-xs-12 col-sm-12 col-md-12">
-            <H1>
-                Sensorplatform <span id="recording">(unknown)</span>
-            </H1>
-            <H4>Masterarbeit Daniel Pyka</H4>
+            <H1>Sensorplatform</H1>
+            <H4>Masterthesis Computer Science Daniel Pyka 2016</H4>
         </div>
+
         <div class="col-xs-12 col-sm-12 col-md-12">
-            <H3>Sensor configuration</H3>
+
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                <li class="active"><a href="#config" data-toggle="tab">Configuration</a></li>
+                <li><a href="#db" data-toggle="tab" onclick="getNumbersHrs()">Database</a></li>
+                <li><a href="#discover" data-toggle="tab">Sensors</a></li>
+            </ul>
+
+            <div id="my-tab-content" class="tab-content">
+                <div class="tab-pane active" id="config">
+                    <div class="well well-sm">
+                        <div class="divinsidewell">
+
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <textarea rows="21" id="configview"></textarea>
+                            </div>
+
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <p>
+                                    <b>Keywords</b>
+                                </p>
+                                <p>name: PolarH7, TomTomHRM, AdidasHRM, CC2650</p>
+                                <p>bdaddress: 00:22:D0:AA:1F:B1, F4:2C:87:24:12:09, CB:A2:4A:FE:0F:DA, A0:E6:F8:B6:37:05</p>
+                                <p>addresstype: PUBLIC or RANDOM</p>
+                                <p>settings: only for CC2650 (64 [hexadecimal] ^= 1Hz)</p>
+                                <p>
+                                    <button type="button" class="btn btn-default" id="example" onclick="writeExampleConfig()">Example configuration</button>
+                                </p>
+                                <p>
+                                    <b>Recording time (seconds)</b>
+                                </p>
+                                <p>
+                                    <input id="uptime" class="form-control" placeholder="30"></input>
+                                </p>
+                                <p>
+                                    <b>Start from web configuration</b>
+                                </p>
+                                <p>
+                                    <button type="button" class="btn btn-default" id="startweb" onclick="startFromWebConfig()">Start</button>
+                                </p>
+                                <p>
+                                    <b>Start from maven build configuration</b>
+                                </p>
+                                <p>
+                                    <button type="button" class="btn btn-default" id="startbuild" onclick="startFromMavenBuild()">Start</button>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="db">
+                    <div class="well well-sm">
+                        <div class="divinsidewell">
+
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <textarea rows="21" id="dbcontentview"></textarea>
+                            </div>
+
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <p>
+                                    <b>Heart Rate Samples</b>
+                                </p>
+                                <p>
+                                    Total number of samples: <span id="totalhrs">(unknown)</span>
+                                </p>
+                                <p>
+                                    Number of samples not yet uploaded: <span id="nottransmitted">(unknown)</span>
+                                </p>
+                                <p>
+                                    <button type="button" class="btn btn-default" id="example" onclick="loadHrs()">Load all</button>
+                                    <button type="button" class="btn btn-default" id="example" onclick="deleteAllHrs()">Delete all</button>
+                                    <button type="button" class="btn btn-default" id="upload" onclick=>Upload samples</button>
+                                </p>
+                                <p>
+                                    <b>CC2650 Samples</b>
+                                </p>
+                                <p>TODO</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="discover">
+                    <div class="well well-sm">
+                        <div class="divinsidewell">TODO</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-6">
-            <textarea rows="25" id="config"></textarea>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <h5>
+                Device: <span id="device">(unknown)</span>
+            </h5>
+            <h5>
+                Webinterface: <span id="uploader">(unknown)</span>
+            </h5>
+            <h5>
+                Status: <span id="status">(unknown)</span>
+            </h5>
+
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-6">
-            <p>
-                <b>Keywords</b>
-            </p>
-            <p>name: PolarH7, TomTomHRM, AdidasHRM, CC2650</p>
-            <p>bdaddress: 00:22:D0:AA:1F:B1, F4:2C:87:24:12:09, CB:A2:4A:FE:0F:DA, A0:E6:F8:B6:37:05</p>
-            <p>addresstype: PUBLIC or RANDOM</p>
-            <p>settings: only for CC2650 (64 [hexadecimal] ^= 1Hz)</p>
-            <p>
-                <button type="button" class="btn btn-default" id="example" onclick="writeExampleConfig()">Example configuration</button>
-            </p>
-            <p>
-                <b>Recording time (seconds)</b>
-            </p>
-            <p>
-                <input id="uptime" class="form-control" placeholder="30"></input>
-            </p>
-            <p>
-                <b>Start from web configuration</b>
-            </p>
-            <p>
-                <button type="button" class="btn btn-default" id="startweb" onclick="startFromWebConfig()">Start</button>
-            </p>
-            <p>
-                <b>Start from maven build configuration</b>
-            </p>
-            <p>
-                <button type="button" class="btn btn-default" id="startbuild" onclick="startFromMavenBuild()">Start</button>
-            </p>
-            <p>
-                <b>Samples not transmitted:</b> (not yet implemented)
-            </p>
-            <p>
-                <button type="button" class="btn btn-default" id="upload">Upload samples</button>
-            </p>
-        </div>
+
     </div>
 </body>
 </html>

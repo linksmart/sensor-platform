@@ -1,8 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.web;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -24,8 +22,6 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
-import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
@@ -40,11 +36,9 @@ public class TeLiProUploader implements Uploader {
 
   private static final Logger LOG = LoggerFactory.getLogger(TeLiProUploader.class);
 
-  private static final int UPLOAD_THREAD_SLEEP_TIME_MS = 300;
-
-  private final DBcontroller db;
-
   private final DateTimeFormatter dtf;
+
+  private final String webinterfaceName;
 
   private final String userName;
   private final String password;
@@ -56,19 +50,14 @@ public class TeLiProUploader implements Uploader {
 
   private String authorizationToken = "";
 
-  private boolean loggedIn = false;
-
   private final CloseableHttpClient httpclient;
 
-  private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
-  // private final List<HeartRateSample> list = new ArrayList<HeartRateSample>();
-
   @Inject
-  public TeLiProUploader(DBcontroller db, @Named("webinterface.username") String userName, @Named("webinterface.password") String password,
-      @Named("http.useragent.boardname") String userAgent, @Named("webinterface.timestamp.format") String timestampFormat,
-      @Named("webinterface.login.url") String loginAddress, @Named("webinterface.data.url") String dataAddress,
-      @Named("webinterface.data.download.url") String dataDownloadAddress) {
-    this.db = db;
+  public TeLiProUploader(@Named("webinterface.name") String webinterfaceName, @Named("webinterface.username") String userName,
+      @Named("webinterface.password") String password, @Named("http.useragent.boardname") String userAgent,
+      @Named("webinterface.timestamp.format") String timestampFormat, @Named("webinterface.login.url") String loginAddress,
+      @Named("webinterface.data.url") String dataAddress, @Named("webinterface.data.download.url") String dataDownloadAddress) {
+    this.webinterfaceName = webinterfaceName;
     this.userName = userName;
     LOG.info("username: " + this.userName);
     this.password = password;
@@ -90,37 +79,8 @@ public class TeLiProUploader implements Uploader {
   }
 
   @Override
-  public void addToQueue(HeartRateSample hrs) {
-    // TODO change to reactive behaviour
-    DBsession s = this.db.getSession();
-    s.saveHeartRateSample(hrs);
-    s.commit();
-    s.close();
-    this.queue.add(hrs);
-  }
-
-  @Override
-  public void run() {
-    while (!Thread.currentThread().isInterrupted()) {
-      if (!this.loggedIn) {
-        login();
-      }
-      if (!this.queue.isEmpty()) {
-        sendData(this.queue.peek());
-      } else {
-        try {
-          Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
-        } catch (InterruptedException e) {
-          LOG.info("interrupt received from Controller");
-          while (!this.queue.isEmpty()) {
-            LOG.info("sending remaining samples");
-            sendData(this.queue.poll());
-          }
-          Thread.currentThread().interrupt();
-        }
-      }
-    }
-    LOG.info("upload thread finished");
+  public String getWebinterfaceName() {
+    return this.webinterfaceName;
   }
 
   /**
@@ -128,9 +88,6 @@ public class TeLiProUploader implements Uploader {
    */
   @Deprecated
   public void downloadData() {
-    if (!this.loggedIn) {
-      login();
-    }
     HttpGet get = new HttpGet(this.dataDownloadAddress);
     get.setHeader("Authorization", this.authorizationToken);
 
@@ -140,10 +97,11 @@ public class TeLiProUploader implements Uploader {
       response.close();
       LOG.info("download data successful");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("failed to download samples", e);
     }
   }
 
+  @Override
   public void login() {
     HttpPost post = new HttpPost(this.loginAddress);
     post.setHeader("User-Agent", this.userAgent);
@@ -162,18 +120,18 @@ public class TeLiProUploader implements Uploader {
       if (statusCode == HttpStatus.SC_OK) {
         this.authorizationToken = response.getFirstHeader("Authorization").getValue();
         response.close();
-        this.loggedIn = true;
         LOG.info("login successful");
       } else {
         LOG.error("login failed, error code: " + statusCode);
         response.close();
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("login failed", e);
     }
   }
 
-  public void sendData(HeartRateSample hrs) {
+  @Override
+  public int sendHeartRateSample(HeartRateSample hrs) {
     HttpPost post = new HttpPost(this.dataAddress);
     post.setHeader("User-Agent", this.userAgent);
     post.setHeader("Authorization", this.authorizationToken);
@@ -185,23 +143,11 @@ public class TeLiProUploader implements Uploader {
     try {
       CloseableHttpResponse response = this.httpclient.execute(post);
       int statusCode = response.getStatusLine().getStatusCode();
-
-      switch (statusCode) {
-        case HttpStatus.SC_CREATED:
-          LOG.info("sample transmission successful");
-          this.queue.poll();
-          break;
-        case HttpStatus.SC_UNAUTHORIZED:
-          LOG.error("transmission unauthorized - attempting to log in again");
-          this.loggedIn = false;
-          break;
-        default:
-          LOG.error("transmission failed, error code: " + statusCode);
-          break;
-      }
       response.close();
+      return statusCode;
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.info("transmission failed", e);
+      return -1;
     }
   }
 

@@ -10,11 +10,12 @@ import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
  * @author Daniel Pyka
  *
  */
-public interface Uploader extends Runnable {
+public interface Uploader {
 
-  /**
-   * Add the next sample to the upload queue.
-   */
-  public void addToQueue(HeartRateSample hrs);
+  public String getWebinterfaceName();
+
+  public void login();
+
+  public int sendHeartRateSample(HeartRateSample hrs);
 
 }

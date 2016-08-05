@@ -3,10 +3,10 @@ package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
-import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
  *
@@ -19,8 +19,8 @@ public class AdidasHrmWrapper extends AbstractSensorWrapper {
 
   private final AdidasMiCoachHRM adidasHrm;
 
-  public AdidasHrmWrapper(AdidasMiCoachHRM adidasHrm, Uploader uploader) {
-    super(adidasHrm, uploader);
+  public AdidasHrmWrapper(AdidasMiCoachHRM adidasHrm, HeartRateSampleCollector hrsCollector) {
+    super(adidasHrm, hrsCollector);
     this.adidasHrm = adidasHrm;
   }
 
@@ -42,12 +42,10 @@ public class AdidasHrmWrapper extends AbstractSensorWrapper {
 
     HeartRateSample hrs = this.adidasHrm.calculateHeartRateData(handle, rawHexValues);
 
-    this.sampleLogger.writeLine(hrs.toString());
-
     // System.out.println(sample.toString()); // extreme debugging
 
-    if (this.uploader != null) {
-      this.uploader.addToQueue(hrs);
+    if (this.sampleCollector != null) {
+      this.sampleCollector.addToQueue(hrs);
     }
   }
 
