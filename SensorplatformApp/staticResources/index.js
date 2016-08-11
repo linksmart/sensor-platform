@@ -80,6 +80,20 @@ function startFromMavenBuild() {
 	request.send();
 }
 
+function loadHrs() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText)));
+		}
+		if (request.readyState == 4 && request.status == 500) {
+			console.log("Cannot retrieve hrs!");
+		}
+	};
+	request.open("GET", "hrs", true);
+	request.send();
+}
+
 function getNumbersHrs() {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
