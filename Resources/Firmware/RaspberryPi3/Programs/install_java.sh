@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# always run as sudo
-
 # newest version Java JDK 1.8.0_101 (19.07.2016)
 ver="8u101"
 version="jdk1.8.0_101"

@@ -15,8 +15,8 @@ echo "Update package manager"
 apt-get update
 echo "Installing dependencies"
 #  D-Bus-1.10.8 GLib-2.48.1, and libical-2.0.0 
-# apt-get install -y dbus glib libical
-apt-get install -y libusb-dev libdbus-1-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev
+apt install -y dbus glib libical
+# apt install -y libusb-dev libdbus-1-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev
 
 # download bluez
 echo "Downloading Bluez"
@@ -48,5 +48,5 @@ echo "Cleanup"
 cd /home/${USER}
 rm -r /home/${USER}/bluez
 
-echo "Finished"
+echo "Finished installing Bluez"
 exit 0

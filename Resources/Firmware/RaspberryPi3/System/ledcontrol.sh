@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 # controls the green onboard LED of the Raspberry Pi 3
 
@@ -15,11 +15,11 @@ case "$1" in
 		;;
 	none)
 		echo "$1" > /sys/class/leds/led0/trigger
-	echo "Green onboard LED off"
+		echo "Green onboard LED off"
 	;;
 	*)
-	echo "(timer|heartbeat|none)"
-	;;
+		echo "(timer|heartbeat|none)"
+		;;
 esac
 
 exit 0
