@@ -45,8 +45,10 @@ echo "M2_HOME=/lib/maven/apache-maven-${maven_version}" >> /etc/profile
 echo "export M2_HOME" >> /etc/profile
 echo "M2=/lib/maven/apache-maven-${maven_version}/bin" >> /etc/profile
 echo "export M2" >> /etc/profile
-echo "PATH=$PATH:$JAVA_HOME/bin:$M2" >> /etc/profile
+echo "PATH=$PATH:/lib/jvm/${java_version}/bin:/lib/maven/apache-maven-${maven_version}/bin" >> /etc/profile
 echo "export PATH" >> /etc/profile
+
+echo "Changes to environment variables take effect after logout and login again"
 
 echo "Finished"
 exit 0
