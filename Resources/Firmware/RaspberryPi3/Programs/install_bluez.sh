@@ -6,7 +6,9 @@
 version="5.41"
 url="http://www.kernel.org/pub/linux/bluetooth/bluez-${version}.tar.xz"
 
-echo "Installing Bluez Bluetooth stack"
+username=administrator
+
+echo "Installing Bluez Bluetooth Stack"
 echo "version to be installed: ${version}"
 echo "from: ${url}"
 
@@ -20,8 +22,8 @@ apt install -y dbus glib libical
 
 # download bluez
 echo "Downloading Bluez"
-mkdir /home/${USER}/bluez
-cd /home/${USER}/bluez
+mkdir /home/${username}/bluez
+cd /home/${username}/bluez
 wget ${url}
 tar xvf bluez-${version}.tar.xz
 cd bluez-${version}
@@ -45,8 +47,7 @@ systemctl status bluetooth
 
 # delete down
 echo "Cleanup"
-cd /home/${USER}
-rm -r /home/${USER}/bluez
+rm -r /home/${username}/bluez
 
 echo "Finished installing Bluez"
 exit 0
