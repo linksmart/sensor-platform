@@ -1,13 +1,31 @@
 package de.fhg.fit.biomos.sensorplatform.tools;
 
 /**
- * Controller class for bluetoothctl command line tool. This should only be used for Bluetooth 2.1 devices.
- * Bluetoothctl is interactive.
- * This class is expected to be used as singleton!
- * 
+ * Controller class for bluetoothctl command line tool. Bluetoothctl is interactive.
+ *
  * @author Daniel Pyka
  *
  */
-public class Bluetoothctl {
+public interface Bluetoothctl {
+
+  public void init();
+
+  public String getControllerBDaddress();
+
+  public void powerOn();
+
+  public void powerOff();
+
+  public void scanOn(int timeout);
+
+  public void scanOff();
+
+  public void connect(String bdAddress);
+
+  public void disconnect();
+
+  public void pair();
+
+  public void remove(String bdAddress);
 
 }

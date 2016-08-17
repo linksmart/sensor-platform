@@ -21,7 +21,7 @@ import de.fhg.fit.biomos.sensorplatform.web.Uploader;
  * @author Daniel Pyka
  *
  */
-public class HeartRateSampleCollector implements SampleCollector {
+public class HeartRateSampleCollector implements Runnable {
 
   private static final Logger LOG = LoggerFactory.getLogger(HeartRateSampleCollector.class);
 
@@ -39,7 +39,6 @@ public class HeartRateSampleCollector implements SampleCollector {
     this.uploader = uploader;
   }
 
-  @Override
   public void addToQueue(HeartRateSample hrs) {
     this.queue.add(hrs);
   }
@@ -51,7 +50,7 @@ public class HeartRateSampleCollector implements SampleCollector {
       switch (statusCode) {
         case HttpStatus.SC_CREATED:
           hrs.setTransmitted(true);
-          LOG.info("sample transmission successful");
+          // LOG.info("sample transmission successful");
           return;
         case HttpStatus.SC_UNAUTHORIZED:
           LOG.error("transmission unauthorized - attempting to log in again");
@@ -81,7 +80,6 @@ public class HeartRateSampleCollector implements SampleCollector {
     this.uploader.login();
     while (!Thread.currentThread().isInterrupted()) {
       if (!this.queue.isEmpty()) {
-        LOG.info("queue size: " + this.queue.size());
         HeartRateSample hrs = this.queue.peek();
         if (this.uploader != null) {
           uploadSample(hrs);
@@ -99,9 +97,10 @@ public class HeartRateSampleCollector implements SampleCollector {
     }
     while (!this.queue.isEmpty()) {
       LOG.info("storing all remaining samples");
+      LOG.info("queue size: " + this.queue.size());
       storeSample(this.queue.poll());
     }
-    LOG.info("upload thread finished");
+    LOG.info("heart rate sample collector thread finished");
   }
 
 }

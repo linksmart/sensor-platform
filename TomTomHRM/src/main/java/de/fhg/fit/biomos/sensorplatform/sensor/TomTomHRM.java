@@ -75,8 +75,13 @@ public class TomTomHRM extends HeartRateSensor {
    * @param rawHexValues
    * @return
    */
-  public HeartRateSample calculateHeartRateData(String handle, String rawHexValues) {
-    return calculateHeartRateData(TomTomHRMlib.HANDLE_HEART_RATE_MEASUREMENT, handle, rawHexValues);
+  public HeartRateSample calculateHeartRateSample(String handle, String rawHexValues) {
+    if (handle.equals(TomTomHRMlib.HANDLE_HEART_RATE_MEASUREMENT)) {
+      return calculateHeartRateData(handle, rawHexValues);
+    } else {
+      LOG.error("unexpected handle address " + handle + " " + rawHexValues);
+      return null;
+    }
   }
 
 }

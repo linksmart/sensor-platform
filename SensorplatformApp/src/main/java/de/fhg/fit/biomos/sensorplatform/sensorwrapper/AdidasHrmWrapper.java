@@ -1,26 +1,24 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
  *
  * @author Daniel Pyka
  *
  */
-public class AdidasHrmWrapper extends AbstractSensorWrapper {
+public class AdidasHrmWrapper extends AbstractHeartRateSensorWrapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(AdidasHrmWrapper.class);
+  // private static final Logger LOG = LoggerFactory.getLogger(AdidasHrmWrapper.class);
 
   private final AdidasMiCoachHRM adidasHrm;
 
   public AdidasHrmWrapper(AdidasMiCoachHRM adidasHrm, HeartRateSampleCollector hrsCollector) {
-    super(adidasHrm, hrsCollector);
+    super(adidasHrm.getAddressType(), adidasHrm.getBDaddress(), hrsCollector);
     this.adidasHrm = adidasHrm;
   }
 
@@ -37,21 +35,29 @@ public class AdidasHrmWrapper extends AbstractSensorWrapper {
 
   @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
-    LOG.info("new notification arrived");
+    // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    HeartRateSample hrs = this.adidasHrm.calculateHeartRateData(handle, rawHexValues);
+    HeartRateSample hrs = this.adidasHrm.calculateHeartRateSample(handle, rawHexValues);
 
-    // System.out.println(sample.toString()); // extreme debugging
-
-    if (this.sampleCollector != null) {
-      this.sampleCollector.addToQueue(hrs);
+    if (this.hrsCollector != null) {
+      this.hrsCollector.addToQueue(hrs);
     }
   }
 
   @Override
+  public String getBDaddress() {
+    return this.adidasHrm.getBDaddress();
+  }
+
+  @Override
+  public SensorName getDeviceName() {
+    return this.adidasHrm.getName();
+  }
+
+  @Override
   public String toString() {
-    return this.adidasHrm.getBdaddress() + " " + this.adidasHrm.getName();
+    return this.adidasHrm.getBDaddress() + " " + this.adidasHrm.getName();
   }
 
 }

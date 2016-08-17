@@ -215,31 +215,27 @@ public abstract class HeartRateSensor extends Sensor {
     return rrIntervals;
   }
 
-  protected HeartRateSample calculateHeartRateData(String expectedHandle, String handle, String rawHexValues) {
+  protected HeartRateSample calculateHeartRateData(String handle, String rawHexValues) {
     HeartRateSample hrs = new HeartRateSample(this.dtf.print(new DateTime()), this.bdAddress);
-    if (handle.equals(expectedHandle)) {
 
-      if (isSkinContactDetectionSupported(rawHexValues)) {
-        if (!isSkinContactDetected(rawHexValues)) {
-          LOG.warn("No skin contact detected");
-        }
+    if (isSkinContactDetectionSupported(rawHexValues)) {
+      if (!isSkinContactDetected(rawHexValues)) {
+        LOG.warn("No skin contact detected");
       }
+    }
 
-      if (is8BitValue(rawHexValues)) {
-        hrs.setHeartRate(getHeartRate8Bit(rawHexValues));
-        if (isRRintervalDataAvailable(rawHexValues)) {
-          hrs.setRRintervals(getRRintervalsWith8BitHeartRateData(rawHexValues));
-        }
-      } else {
-        hrs.setHeartRate(getHeartRate16Bit(rawHexValues));
-        if (isRRintervalDataAvailable(rawHexValues)) {
-          hrs.setRRintervals(getRRintervalsWith16BitHeartRateData(rawHexValues));
-        }
+    if (is8BitValue(rawHexValues)) {
+      hrs.setHeartRate(getHeartRate8Bit(rawHexValues));
+      if (isRRintervalDataAvailable(rawHexValues)) {
+        hrs.setRRintervals(getRRintervalsWith8BitHeartRateData(rawHexValues));
       }
     } else {
-      LOG.error("unexpected handle address " + handle + " " + rawHexValues);
-      LOG.warn("process heart rate sample with default values");
+      hrs.setHeartRate(getHeartRate16Bit(rawHexValues));
+      if (isRRintervalDataAvailable(rawHexValues)) {
+        hrs.setRRintervals(getRRintervalsWith16BitHeartRateData(rawHexValues));
+      }
     }
+
     return hrs;
   }
 }

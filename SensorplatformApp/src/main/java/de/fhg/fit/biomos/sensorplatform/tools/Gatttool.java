@@ -25,6 +25,8 @@ public interface Gatttool extends Runnable {
 
   BufferedWriter getStreamToSensor();
 
+  public void setSecurityLevel(String securityLevel);
+
   public boolean connectBlocking(int timeout);
 
   public void reconnect();

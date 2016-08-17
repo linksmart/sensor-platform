@@ -10,6 +10,7 @@ import com.google.inject.Injector;
 
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
 import de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig;
+import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.web.ServerStarter;
 
 /**
@@ -57,6 +58,7 @@ public class Main {
   private void checkLastState() {
     LOG.info("checking the last state of the sensorplatform");
     this.injector.getInstance(Controller.class).checkLastSensorplatformState();
+    this.injector.getInstance(HardwarePlatform.class).setLEDstateSTANDBY();
     LOG.info("main startup done");
   }
 

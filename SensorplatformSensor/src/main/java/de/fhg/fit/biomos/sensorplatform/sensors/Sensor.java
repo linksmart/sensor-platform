@@ -44,7 +44,7 @@ public abstract class Sensor implements SensorCommands {
     return this.name;
   }
 
-  public String getBdaddress() {
+  public String getBDaddress() {
     return this.bdAddress;
   }
 

@@ -16,14 +16,11 @@ echo "from: ${url}"
 echo "Update package manager"
 apt-get update
 echo "Installing dependencies"
-#  D-Bus-1.10.8 GLib-2.48.1, and libical-2.0.0 
-apt install -y dbus glib libical
-# apt install -y libusb-dev libdbus-1-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev
+apt install -y libglib2.0-dev libdbus-1-dev libudev-dev libical-dev libreadline-dev
 
 # download bluez
 echo "Downloading Bluez"
-mkdir /home/${username}/bluez
-cd /home/${username}/bluez
+cd /home/${username}/Downloads
 wget ${url}
 tar xvf bluez-${version}.tar.xz
 cd bluez-${version}

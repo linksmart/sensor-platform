@@ -1,8 +1,13 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
+import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 public interface SensorWrapper {
+
+  public String getBDaddress();
+
+  public SensorName getDeviceName();
 
   public Gatttool.State getGatttoolInternalState();
 

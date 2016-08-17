@@ -1,12 +1,10 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.fhg.fit.biomos.sensorplatform.persistence.TextFileLogger;
-import de.fhg.fit.biomos.sensorplatform.sample.CC2650Sample;
+import de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector;
+import de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
  *
@@ -15,16 +13,15 @@ import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
  */
 public class CC2650Wrapper extends AbstractSensorWrapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(CC2650Wrapper.class);
+  // private static final Logger LOG = LoggerFactory.getLogger(CC2650Wrapper.class);
 
   private final CC2650 cc2650;
+  private final CC2650SampleCollector cc2650Collector;
 
-  private final TextFileLogger sampleLogger;
-
-  public CC2650Wrapper(CC2650 cc2650) {
-    super(cc2650, null);
+  public CC2650Wrapper(CC2650 cc2650, CC2650SampleCollector cc2650Collector) {
+    super(cc2650.getAddressType(), cc2650.getBDaddress());
     this.cc2650 = cc2650;
-    this.sampleLogger = new TextFileLogger(cc2650.getName().name());
+    this.cc2650Collector = cc2650Collector;
   }
 
   @Override
@@ -40,25 +37,54 @@ public class CC2650Wrapper extends AbstractSensorWrapper {
 
   @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
-    LOG.info("new notification arrived");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    CC2650Sample sample = this.cc2650.calculateSensorData(handle, rawHexValues);
-
-    this.sampleLogger.writeLine(sample.toString());
-
-    // System.out.println(sample.toString()); // extreme debugging
+    String data = rawHexValues.replace(" ", "");
+    switch (handle) {
+      case CC2650lib.HANDLE_IR_TEMPERATURE_VALUE:
+        // LOG.info("new temperature notification received");
+        this.cc2650Collector.addToQueue(this.cc2650.calculateTemperatureData(data));
+        break;
+      case CC2650lib.HANDLE_HUMIDITY_VALUE:
+        // LOG.info("new humidity notification received");
+        this.cc2650Collector.addToQueue(this.cc2650.calculateHumidityData(data));
+        break;
+      case CC2650lib.HANDLE_AMBIENTLIGHT_VALUE:
+        // LOG.info("new ambientlight notification received");
+        this.cc2650Collector.addToQueue(this.cc2650.calculateAmbientlightData(data));
+        break;
+      case CC2650lib.HANDLE_PRESSURE_VALUE:
+        // LOG.info("new pressure notification received");
+        this.cc2650Collector.addToQueue(this.cc2650.calculatePressureData(data));
+        break;
+      case CC2650lib.HANDLE_MOVEMENT_VALUE:
+        // LOG.info("new movement notification received");
+        this.cc2650Collector.addToQueue(this.cc2650.calculateMovementSample(data));
+        break;
+      default:
+        // LOG.error("unexpected handle notification " + handle + " : " + rawHexValues);
+        break;
+    }
   }
 
   @Override
   public void shutdown() {
     this.gatttool.exitGatttool();
-    this.sampleLogger.close();
+  }
+
+  @Override
+  public String getBDaddress() {
+    return this.cc2650.getBDaddress();
+  }
+
+  @Override
+  public SensorName getDeviceName() {
+    return this.cc2650.getName();
   }
 
   @Override
   public String toString() {
-    return this.cc2650.getBdaddress() + " " + this.cc2650.getName();
+    return this.cc2650.getBDaddress() + " " + this.cc2650.getName();
   }
 
 }

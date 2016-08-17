@@ -7,7 +7,7 @@ package de.fhg.fit.biomos.sensorplatform.util;
  *
  */
 public enum AddressType {
-  PUBLIC("public"), RANDOM("random");
+  PUBLIC("public"), RANDOM("random"), STATIC("random"); // Bluez inconsistency
 
   private final String type;
 

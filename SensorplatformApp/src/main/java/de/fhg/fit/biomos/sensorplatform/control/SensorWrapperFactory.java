@@ -41,14 +41,16 @@ public class SensorWrapperFactory {
   public static final String SETTINGS = "settings";
 
   private final HeartRateSampleCollector hrsCollector;
+  private final CC2650SampleCollector cc2650Collector;
 
   private final String sensorConfigurationFileName;
   private final String logFileTimestampFormat;
 
   @Inject
-  public SensorWrapperFactory(HeartRateSampleCollector hrsCollector, @Named("default.sensor.configuration.file") String sensorConfigurationFileName,
-      @Named("logfile.timestamp.format") String logFileTimestampFormat) {
+  public SensorWrapperFactory(HeartRateSampleCollector hrsCollector, CC2650SampleCollector cc2650Collector,
+      @Named("default.sensor.configuration.file") String sensorConfigurationFileName, @Named("logfile.timestamp.format") String logFileTimestampFormat) {
     this.hrsCollector = hrsCollector;
+    this.cc2650Collector = cc2650Collector;
     this.sensorConfigurationFileName = sensorConfigurationFileName;
     this.logFileTimestampFormat = logFileTimestampFormat;
   }
@@ -102,8 +104,7 @@ public class SensorWrapperFactory {
           LOG.error("PolarV800 not yet implemented - sensor will be ignored");
           break;
         case CC2650:
-          // no uploader, upload to any webinterface not intended for CC2650
-          sensorWrapper = new CC2650Wrapper(new CC2650(name, bdAddress, addressType, this.logFileTimestampFormat, settings));
+          sensorWrapper = new CC2650Wrapper(new CC2650(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.cc2650Collector);
           break;
         default:
           LOG.error("unknown sensor name " + name);

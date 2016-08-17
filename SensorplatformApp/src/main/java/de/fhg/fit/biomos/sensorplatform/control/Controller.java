@@ -15,10 +15,9 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import de.fhg.fit.biomos.sensorplatform.main.ShellscriptExecutor;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorWrapper;
-import de.fhg.fit.biomos.sensorplatform.util.LEDstate;
+import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 
 /**
  * This class defines the control flow of the sensorplatform.<br>
@@ -41,10 +40,13 @@ public class Controller implements Runnable {
   private final SensorObserver sensorObserver;
   private final SensorWrapperFactory swFactory;
   private final HeartRateSampleCollector hrsCollector;
-  private final ShellscriptExecutor shExec;
+  private final CC2650SampleCollector cc2650Collector;
+  private final HardwarePlatform hwPlatform;
+  private final SecurityManager secman;
 
   private Thread sensorObserverThread;
-  private Thread collectorThread;
+  private Thread hrsCollectorThread;
+  private Thread cc2650CollectorThread;
   private List<AbstractSensorWrapper> swList;
 
   private final int timeout;
@@ -54,13 +56,15 @@ public class Controller implements Runnable {
   private final File recordingInfo;
 
   @Inject
-  public Controller(SensorObserver sensorObserver, HeartRateSampleCollector hrsCollector, SensorWrapperFactory swFactory, ShellscriptExecutor shExec,
-      @Named("default.sensor.timeout") String timeout, @Named("default.recording.time") String uptime,
-      @Named("recording.info.filename") String recordingInfoFileName) {
+  public Controller(SensorObserver sensorObserver, HeartRateSampleCollector hrsCollector, CC2650SampleCollector cc2650SampleCollector,
+      SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, SecurityManager secman, @Named("default.sensor.timeout") String timeout,
+      @Named("default.recording.time") String uptime, @Named("recording.info.filename") String recordingInfoFileName) {
     this.sensorObserver = sensorObserver;
     this.swFactory = swFactory;
     this.hrsCollector = hrsCollector;
-    this.shExec = shExec;
+    this.cc2650Collector = cc2650SampleCollector;
+    this.hwPlatform = hwPlatform;
+    this.secman = secman;
     this.timeout = new Integer(timeout);
     this.uptimeMillis = new Integer(uptime);
     this.recordingInfo = new File(recordingInfoFileName);
@@ -71,6 +75,8 @@ public class Controller implements Runnable {
   }
 
   public void checkLastSensorplatformState() {
+    this.secman.loadStoredDevices();
+    // TODO
     if (!this.recordingInfo.exists()) {
       LOG.info("no recording period was interrupted");
     } else {
@@ -149,6 +155,8 @@ public class Controller implements Runnable {
   }
 
   private void init() {
+    LOG.info("connecting and pairing devices");
+    // TODO SecurityManager setup
     LOG.info("connecting to sensors");
     for (Iterator<AbstractSensorWrapper> iterator = this.swList.iterator(); iterator.hasNext();) {
       AbstractSensorWrapper sensorWrapper = iterator.next();
@@ -167,22 +175,25 @@ public class Controller implements Runnable {
     startThreads();
     LOG.info("initialise complete");
 
-    this.shExec.setLED(LEDstate.RUNNING);
+    this.hwPlatform.setLEDstateRECORDING();
   }
 
   private void startThreads() {
     if (this.swList.isEmpty()) {
       LOG.info("there are no sensors connected - skip recording period!");
-      this.shExec.setLED(LEDstate.STANDBY);
+      this.hwPlatform.setLEDstateSTANDBY();
       this.recordingInfo.delete();
       this.recording = false;
     } else {
       LOG.info("start observer");
       this.sensorObserverThread = new Thread(this.sensorObserver);
       this.sensorObserverThread.start();
-      LOG.info("start uploader thread");
-      this.collectorThread = new Thread(this.hrsCollector);
-      this.collectorThread.start();
+      LOG.info("start hrs collector thread");
+      this.hrsCollectorThread = new Thread(this.hrsCollector);
+      this.hrsCollectorThread.start();
+      LOG.info("start cc2650 collector thread");
+      this.cc2650CollectorThread = new Thread(this.cc2650Collector);
+      this.cc2650CollectorThread.start();
       LOG.info("start controller thread");
       new Thread(this).start();
       LOG.info("all threads started");
@@ -199,12 +210,13 @@ public class Controller implements Runnable {
     }
     LOG.info("Recording period finished");
     this.sensorObserverThread.interrupt();
-    this.collectorThread.interrupt();
+    this.hrsCollectorThread.interrupt();
+    this.cc2650CollectorThread.interrupt();
     shutdown();
     this.sensorObserver.clearTarget();
     this.recordingInfo.delete();
     this.recording = false;
-    this.shExec.setLED(LEDstate.STANDBY);
+    this.hwPlatform.setLEDstateSTANDBY();
   }
 
   /**

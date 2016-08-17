@@ -8,6 +8,11 @@ import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
@@ -30,7 +35,6 @@ public class DBsession {
     Transaction transaction = this.session.getTransaction();
     if (transaction.getStatus() == TransactionStatus.ACTIVE) {
       transaction.commit();
-      LOG.info("committed");
     }
     this.session.beginTransaction();
   }
@@ -78,6 +82,26 @@ public class DBsession {
   public int deleteAllHeartRateSamples() {
     LOG.info("delete all heart rate samples");
     return this.session.createQuery("DELETE * FROM HeartRateSample").executeUpdate();
+  }
+
+  public void saveCC2650AmbientlightSample(CC2650AmbientlightSample sample) {
+    this.session.save(sample);
+  }
+
+  public void saveCC2650HumiditySample(CC2650HumiditySample sample) {
+    this.session.save(sample);
+  }
+
+  public void saveCC2650MovementSample(CC2650MovementSample sample) {
+    this.session.save(sample);
+  }
+
+  public void saveCC2650PressureAample(CC2650PressureSample sample) {
+    this.session.save(sample);
+  }
+
+  public void saveCC2650TemperatureSample(CC2650TemperatureSample sample) {
+    this.session.save(sample);
   }
 
 }

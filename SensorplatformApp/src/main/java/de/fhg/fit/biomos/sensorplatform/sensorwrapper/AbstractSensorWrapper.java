@@ -1,10 +1,9 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
-import de.fhg.fit.biomos.sensorplatform.control.SampleCollector;
-import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool.State;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 
 /**
  *
@@ -13,15 +12,13 @@ import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
  */
 public abstract class AbstractSensorWrapper implements SensorWrapper, SensorNotificationDataObserver {
 
-  protected final SampleCollector sampleCollector;
   protected final Gatttool gatttool;
 
   protected long lastNotificationTimestamp;
 
-  public AbstractSensorWrapper(Sensor sensor, SampleCollector sampleCollector) {
-    this.sampleCollector = sampleCollector;
+  public AbstractSensorWrapper(AddressType addressType, String bdAddress) {
 
-    this.gatttool = new GatttoolImpl(sensor.getAddressType(), sensor.getBdaddress());
+    this.gatttool = new GatttoolImpl(addressType, bdAddress);
     this.gatttool.addObs(this);
     new Thread(this.gatttool).start();
 

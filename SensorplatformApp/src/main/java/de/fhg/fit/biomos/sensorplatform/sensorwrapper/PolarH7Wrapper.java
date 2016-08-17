@@ -1,26 +1,24 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.fhg.biomos.sensorplatform.sensors.PolarH7;
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
  *
  * @author Daniel Pyka
  *
  */
-public class PolarH7Wrapper extends AbstractSensorWrapper {
+public class PolarH7Wrapper extends AbstractHeartRateSensorWrapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(PolarH7Wrapper.class);
+  // private static final Logger LOG = LoggerFactory.getLogger(PolarH7Wrapper.class);
 
   private final PolarH7 polarh7;
 
   public PolarH7Wrapper(PolarH7 polarh7, HeartRateSampleCollector hrsCollector) {
-    super(polarh7, hrsCollector);
+    super(polarh7.getAddressType(), polarh7.getBDaddress(), hrsCollector);
     this.polarh7 = polarh7;
   }
 
@@ -37,21 +35,29 @@ public class PolarH7Wrapper extends AbstractSensorWrapper {
 
   @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
-    LOG.info("new notification arrived");
+    // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    HeartRateSample hrs = this.polarh7.calculateHeartRateData(handle, rawHexValues);
+    HeartRateSample hrs = this.polarh7.calculateHeartRateSample(handle, rawHexValues);
 
-    // System.out.println(sample.toString()); // extreme debugging
-
-    if (this.sampleCollector != null) {
-      this.sampleCollector.addToQueue(hrs);
+    if (this.hrsCollector != null && hrs != null) {
+      this.hrsCollector.addToQueue(hrs);
     }
   }
 
   @Override
+  public String getBDaddress() {
+    return this.polarh7.getBDaddress();
+  }
+
+  @Override
+  public SensorName getDeviceName() {
+    return this.polarh7.getName();
+  }
+
+  @Override
   public String toString() {
-    return this.polarh7.getBdaddress() + " " + this.polarh7.getName();
+    return this.polarh7.getBDaddress() + " " + this.polarh7.getName();
   }
 
 }

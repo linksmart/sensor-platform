@@ -1,3 +1,3 @@
 #!/bin/sh
 
-java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main
+sudo java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main

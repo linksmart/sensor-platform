@@ -40,6 +40,10 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   public static final String CMD_SEC_LEVEL = "sec-level";
   public static final String CMD_MTU = "mtu";
 
+  public static final String SEC_LEVEL_LOW = "low";
+  public static final String SEC_LEVEL_MEDIUM = "medium";
+  public static final String SEC_LEVEL_HIGH = "high";
+
   public static final String ENABLE_NOTIFICATION = "01:00";
   public static final String DISABLE_NOTIFICATION = "00:00";
 
@@ -71,7 +75,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       this.streamFromSensor = new BufferedReader(new InputStreamReader(process.getInputStream()));
       LOG.info("gatttool process for " + bdAddress + " created");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("creating gatttool process failed", e);
     }
   }
 
@@ -117,8 +121,18 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
         }
       }
     } catch (IOException e) {
-      LOG.error("gatttool crashed while attempting to read process output.");
-      e.printStackTrace();
+      LOG.error("gatttool crashed while attempting to read process output.", e);
+    }
+  }
+
+  @Override
+  public void setSecurityLevel(String securityLevel) {
+    try {
+      this.streamToSensor.write(CMD_SEC_LEVEL + " " + securityLevel);
+      this.streamToSensor.newLine();
+      this.streamToSensor.flush();
+    } catch (IOException e) {
+      LOG.error("failed to set security level", e);
     }
   }
 
@@ -144,7 +158,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       }
 
     } catch (IOException | InterruptedException e) {
-      e.printStackTrace();
+      LOG.error("connect failed", e);
     }
     return false;
   }
@@ -159,7 +173,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       this.streamToSensor.flush();
       LOG.info("Attempting to reconnect to sensor for ca. 40s (nonblocking)");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("reconnect failed", e);
     }
   }
 
@@ -174,7 +188,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       }
       LOG.info("disconnected from " + this.bdAddress);
     } catch (IOException | InterruptedException e) {
-      e.printStackTrace();
+      LOG.error("disconnect (blocking) failed", e);
     }
   }
 
@@ -186,7 +200,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       this.streamToSensor.flush();
       LOG.info("disconnected from " + this.bdAddress);
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("disconnect failed", e);
     }
   }
 
@@ -198,7 +212,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       this.streamToSensor.flush();
       LOG.info("exit gatttool");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("exit gatttool failed", e);
     }
   }
 

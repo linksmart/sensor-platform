@@ -9,7 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib;
-import de.fhg.fit.biomos.sensorplatform.sample.CC2650Sample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
 import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
@@ -31,6 +35,8 @@ public class CC2650 extends Sensor {
   public static final String AMBIENTLIGHT = "ambientlight";
   public static final String PRESSURE = "pressure";
   public static final String MOVEMENT = "movement";
+
+  private static final int ACCELERATION_RESOLUTION = 16;
 
   public CC2650(SensorName name, String bdAddress, AddressType addressType, String timestampFormat, JSONObject settings) {
     super(name, bdAddress, addressType, timestampFormat, settings);
@@ -289,7 +295,7 @@ public class CC2650 extends Sensor {
    */
   private float getIRtemperatureFromTemperatureSensor(String data) {
     int raw = (Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16)) >>> 2;
-    return Math.round(raw * 0.03125f * 10) / 10.0f;
+    return raw * 0.03125f;
   }
 
   /**
@@ -298,7 +304,7 @@ public class CC2650 extends Sensor {
    */
   private float getDieTemperatureFromTemperatureSensor(String data) {
     int raw = (Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16)) >>> 2;
-    return Math.round(raw * 0.03125f * 10) / 10.0f;
+    return raw * 0.03125f;
   }
 
   /**
@@ -330,7 +336,7 @@ public class CC2650 extends Sensor {
    */
   private float getTemperatureFromHumiditySensor(String data) {
     int raw = Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16);
-    return Math.round((((float) raw / 65536) * 165 - 40) * 10) / 10.0f;
+    return ((float) raw / 65536) * 165 - 40;
   }
 
   /**
@@ -340,7 +346,7 @@ public class CC2650 extends Sensor {
    */
   private float getRelativeHumidty(String data) {
     int raw = Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16);
-    return Math.round((((float) raw / 65536) * 100) * 10) / 10.0f;
+    return ((float) raw / 65536) * 100;
   }
 
   /**
@@ -356,72 +362,147 @@ public class CC2650 extends Sensor {
   }
 
   /**
-   * TODO Values need a lot of post-processing. Sensor values have spikes to 500 deg/s and some noise.
+   * Calculate the rotation on the X axis.
    *
    * @param data
-   * @return Rotation in deg/s (degrees per second), range -250, +250
+   *          raw sensor notification data without spaces
+   * @return rotation on the X axis.
    */
-  private float[] getRotation(String data) {
-    float rotationX = Math.round((Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16) * 1.0f) / (65536 / 500) * 100) / 100.0f;
-    float rotationY = Math.round((Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16) * 1.0f) / (65536 / 500) * 100) / 100.0f;
-    float rotationZ = Math.round((Integer.parseInt(data.substring(10, 12) + data.substring(8, 10), 16) * 1.0f) / (65536 / 500) * 100) / 100.0f;
-    float[] rotation_XYZ = { rotationX, rotationY, rotationZ };
-    return rotation_XYZ;
+  private float getRotationX(String data) {
+    return Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16) * 1.0f / (65536 / 500);
   }
 
   /**
-   * FIXME Acceleration range fixed at -16, +16 G for now, when activating movement logging
+   * Calculate the rotation on the Y axis.
    *
    * @param data
-   * @return Acceleration in G
+   *          raw sensor notification data without spaces
+   * @return rotation on the Y axis.
    */
-  private float[] getAcceleration(String data) {
-    float accX = Math.round((Integer.parseInt(data.substring(14, 16) + data.substring(12, 14), 16) * 1.0f) / (32768 / 16) * 100) / 100.0f;
-    float accY = Math.round((Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16) * 1.0f) / (32768 / 16) * 100) / 100.0f;
-    float accZ = Math.round((Integer.parseInt(data.substring(22, 24) + data.substring(20, 22), 16) * 1.0f) / (32768 / 16) * 100) / 100.0f;
-    float[] acceleration_XYZ = { accX, accY, accZ };
-    return acceleration_XYZ;
+  private float getRotationY(String data) {
+    return Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16) * 1.0f / (65536 / 500);
   }
 
   /**
-   * May need calibration before using the values.
+   * Calculate the rotation on the Z axis.
    *
    * @param data
-   * @return Magnetism in uT (micro Tesla), range +-4900
+   *          raw sensor notification data without spaces
+   * @return rotation on the Z axis.
    */
-  private float[] getMagnetism(String data) {
-    int magX = Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16);
-    int magY = Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16);
-    int magZ = Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
-    float[] magnetism_XYZ = { magX, magY, magZ };
-    return magnetism_XYZ;
+  private float getRotationZ(String data) {
+    return Integer.parseInt(data.substring(10, 12) + data.substring(8, 10), 16) * 1.0f / (65536 / 500);
+    // legacy TODO compare/test
+    // Math.round((Integer.parseInt(data.substring(10, 12) + data.substring(8, 10), 16) * 1.0f) / (65536 / 500) * 100) / 100.0f;
   }
 
-  public CC2650Sample calculateSensorData(String handle, String rawHexValues) {
-    CC2650Sample sample = new CC2650Sample(this.dtf.print(new DateTime()), this.bdAddress);
-    String hexString = rawHexValues.replace(" ", "");
-    switch (handle) {
-      case CC2650lib.HANDLE_IR_TEMPERATURE_VALUE:
-        sample.setTemperatureMeasurement(getIRtemperatureFromTemperatureSensor(hexString), getDieTemperatureFromTemperatureSensor(hexString));
-        break;
-      case CC2650lib.HANDLE_HUMIDITY_VALUE:
-        sample.setHumidityMeasurement(getTemperatureFromHumiditySensor(hexString), getRelativeHumidty(hexString));
-        break;
-      case CC2650lib.HANDLE_AMBIENTLIGHT_VALUE:
-        sample.setAmbientlightMeasurement(getAmbientLight(hexString));
-        break;
-      case CC2650lib.HANDLE_PRESSURE_VALUE:
-        sample.setPressureMeasurement(getTemperatureFromBarometricPressureSensor(hexString), getPressure(hexString));
-        break;
-      case CC2650lib.HANDLE_MOVEMENT_VALUE:
-        sample.setMovementMeasurement(getRotation(hexString), getAcceleration(hexString), getMagnetism(hexString));
-        break;
-      default:
-        LOG.error("unexpected handle notification " + handle + " : " + rawHexValues);
-        LOG.warn("process sample without sensor data");
-        break;
-    }
-    return sample;
+  /**
+   * Calculate the acceleration on the X axis.
+   *
+   * @param data
+   *          raw sensor notification data without spaces
+   * @return acceleration on the X axis.
+   */
+  private float getAccelerationX(String data) {
+    return Integer.parseInt(data.substring(14, 16) + data.substring(12, 14), 16) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
+  }
+
+  /**
+   * Calculate the acceleration on the Y axis.
+   *
+   * @param data
+   *          raw sensor notification data without spaces
+   * @return acceleration on the Y axis.
+   */
+  private float getAccelerationY(String data) {
+    return Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
+    // legacy TODO compare/test
+    // return Math.round((Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16) * 1.0f) / (32768 / ACCELERATION_RESOLUTION) * 100) / 100.0f;
+  }
+
+  /**
+   * Calculate the acceleration on the Z axis.
+   *
+   * @param data
+   *          raw sensor notification data without spaces
+   * @return acceleration on the Z axis.
+   */
+  private float getAccelerationZ(String data) {
+    return Integer.parseInt(data.substring(22, 24) + data.substring(20, 22), 16) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
+  }
+
+  /**
+   * Calculate the magnetism on the X axis.
+   *
+   * @param data
+   *          raw sensor notification data without spaces
+   * @return magnetism on the X axis.
+   */
+  private float getMagnetismX(String data) {
+    return Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16);
+  }
+
+  /**
+   * Calculate the magnetism on the Y axis.
+   *
+   * @param data
+   *          raw sensor notification data without spaces
+   * @return magnetism on the Y axis.
+   */
+  private float getMagnetismY(String data) {
+    return Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16);
+  }
+
+  /**
+   * Calculate the magnetism on the Z axis.
+   *
+   * @param data
+   *          raw sensor notification data without spaces
+   * @return magnetism on the Z axis.
+   */
+  private float getMagnetismZ(String data) {
+    return Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
+  }
+
+  public CC2650TemperatureSample calculateTemperatureData(String data) {
+    CC2650TemperatureSample temperatureSample = new CC2650TemperatureSample(this.dtf.print(new DateTime()), this.bdAddress);
+    temperatureSample.setObjectTemperature(getIRtemperatureFromTemperatureSensor(data));
+    temperatureSample.setDieTemperature(getDieTemperatureFromTemperatureSensor(data));
+    return temperatureSample;
+  }
+
+  public CC2650HumiditySample calculateHumidityData(String data) {
+    CC2650HumiditySample humiditySample = new CC2650HumiditySample(this.dtf.print(new DateTime()), this.bdAddress);
+    humiditySample.setTemperature(getTemperatureFromHumiditySensor(data));
+    humiditySample.setHumidity(getRelativeHumidty(data));
+    return humiditySample;
+  }
+
+  public CC2650PressureSample calculatePressureData(String data) {
+    CC2650PressureSample pressureSample = new CC2650PressureSample(this.dtf.print(new DateTime()), this.bdAddress);
+    pressureSample.setTemperature(getTemperatureFromBarometricPressureSensor(data));
+    pressureSample.setPressure(getPressure(data));
+    return pressureSample;
+  }
+
+  public CC2650AmbientlightSample calculateAmbientlightData(String data) {
+    CC2650AmbientlightSample ambientlightSample = new CC2650AmbientlightSample(this.dtf.print(new DateTime()), this.bdAddress);
+    ambientlightSample.setAmbientlight(getAmbientLight(data));
+    return ambientlightSample;
+  }
+
+  public CC2650MovementSample calculateMovementSample(String data) {
+    CC2650MovementSample movementSample = new CC2650MovementSample(this.dtf.print(new DateTime()), this.bdAddress);
+    movementSample.setRotationX(getRotationX(data));
+    movementSample.setRotationY(getRotationY(data));
+    movementSample.setRotationZ(getRotationZ(data));
+    movementSample.setAccelerationX(getAccelerationX(data));
+    movementSample.setAccelerationY(getAccelerationY(data));
+    movementSample.setAccelerationZ(getAccelerationZ(data));
+    movementSample.setMagnetismX(getMagnetismX(data));
+    movementSample.setMagnetismY(getMagnetismY(data));
+    movementSample.setMagnetismZ(getMagnetismZ(data));
+    return movementSample;
   }
 
 }
