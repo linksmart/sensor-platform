@@ -3,7 +3,6 @@ package de.fhg.fit.biomos.sensorplatform.sensor;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,24 +37,24 @@ public class CC2650 extends Sensor {
 
   private static final int ACCELERATION_RESOLUTION = 16;
 
-  public CC2650(SensorName name, String bdAddress, AddressType addressType, String timestampFormat, JSONObject settings) {
-    super(name, bdAddress, addressType, timestampFormat, settings);
+  public CC2650(SensorName name, String bdAddress, AddressType addressType, JSONObject settings) {
+    super(name, bdAddress, addressType, settings);
   }
 
   /**
    * Enable temperature sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
    */
-  private void enableTemperatureNotification(String charWriteCmd, String enableNotification, String period) {
+  private void enableTemperatureNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + period);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + enableNotification);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + period);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + enableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("enable temperature notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -65,17 +64,17 @@ public class CC2650 extends Sensor {
   /**
    * Disable temperature sensor measurement, notification and reset the notification peroid to the default value.
    */
-  private void disableTemperatureNotification(String charWriteCmd, String disableNotification) {
+  private void disableTemperatureNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + disableNotification);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + CC2650lib.INTERVAL_IR_TEMPERATURE_1000MS_DEFAULT);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + disableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + CC2650lib.INTERVAL_IR_TEMPERATURE_1000MS_DEFAULT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("disable temperature notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -85,17 +84,17 @@ public class CC2650 extends Sensor {
   /**
    * Enable humidity sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
    */
-  private void enableHumidityNotification(String charWriteCmd, String enableNotification, String period) {
+  private void enableHumidityNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + period);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_NOTIFICATION + " " + enableNotification);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + period);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_NOTIFICATION + " " + enableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("enable humidity notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -105,17 +104,17 @@ public class CC2650 extends Sensor {
   /**
    * Disable humidity sensor measurement, notification and reset the notification peroid to the default value.
    */
-  private void disableHumidityNotification(String charWriteCmd, String disableNotification) {
+  private void disableHumidityNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_NOTIFICATION + " " + disableNotification);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + CC2650lib.INTERVAL_HUMIDITY_1000MS_DEFAULT);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_NOTIFICATION + " " + disableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + CC2650lib.INTERVAL_HUMIDITY_1000MS_DEFAULT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("disable humidity notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -125,17 +124,17 @@ public class CC2650 extends Sensor {
   /**
    * Enable ambientlight sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
    */
-  private void enableAmbientlightNotification(String charWriteCmd, String enableNotification, String period) {
+  private void enableAmbientlightNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + period);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + enableNotification);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + period);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + enableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("enable ambientlight notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -145,17 +144,17 @@ public class CC2650 extends Sensor {
   /**
    * Disable ambientlight sensor measurement, notification and reset the notification peroid to the default value.
    */
-  private void disableAmbientlightNotification(String charWriteCmd, String disableNotification) {
+  private void disableAmbientlightNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + disableNotification);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + CC2650lib.INTERVAL_AMBIENTLIGHT_800MS_DEFAULT);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + disableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + CC2650lib.INTERVAL_AMBIENTLIGHT_800MS_DEFAULT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("disable ambientlight notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -165,17 +164,17 @@ public class CC2650 extends Sensor {
   /**
    * Enable pressure sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
    */
-  private void enablePressureNotification(String charWriteCmd, String enableNotification, String period) {
+  private void enablePressureNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + period);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_NOTIFICATION + " " + enableNotification);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + period);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_NOTIFICATION + " " + enableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("enable pressure notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -185,17 +184,17 @@ public class CC2650 extends Sensor {
   /**
    * Disable pressure sensor measurement, notification and reset the notification peroid to the default value.
    */
-  private void disablePressureNotification(String charWriteCmd, String disableNotification) {
+  private void disablePressureNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_NOTIFICATION + " " + disableNotification);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + CC2650lib.INTERVAL_PRESSURE_1000MS_DEFAULT);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_NOTIFICATION + " " + disableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + CC2650lib.INTERVAL_PRESSURE_1000MS_DEFAULT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("disable pressure notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -206,17 +205,17 @@ public class CC2650 extends Sensor {
    * Enable movement sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.</br>
    *
    */
-  private void enableMovementNotification(String charWriteCmd, String enableNotification, String period, String configuration) {
+  private void enableMovementNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period, String configuration) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + period);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_ENABLE + " " + configuration);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_NOTIFICATION + " " + enableNotification);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + period);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_ENABLE + " " + configuration);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_NOTIFICATION + " " + enableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("enable movement notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -226,17 +225,17 @@ public class CC2650 extends Sensor {
   /**
    * Disable movement sensor measurement, notification and reset the notification peroid to the default value.
    */
-  private void disableMovementNotification(String charWriteCmd, String disableNotification, String configuration) {
+  private void disableMovementNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification, String configuration) {
     try {
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_NOTIFICATION + " " + disableNotification);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_ENABLE + " " + configuration);
-      this.bw.newLine();
-      this.bw.flush();
-      this.bw.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + CC2650lib.INTERVAL_MOVEMENT_1000MS_DEFAULT);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_NOTIFICATION + " " + disableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_ENABLE + " " + configuration);
+      streamToSensor.newLine();
+      streamToSensor.flush();
+      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + CC2650lib.INTERVAL_MOVEMENT_1000MS_DEFAULT);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("disable movement notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -244,49 +243,48 @@ public class CC2650 extends Sensor {
   }
 
   @Override
-  public void enableNotification(BufferedWriter bw, String charWriteCmd, String enableNotification) {
-    this.bw = bw;
+  public void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     if (this.settings.has(IRTEMPERATURE)) {
-      enableTemperatureNotification(charWriteCmd, enableNotification, this.settings.getString(IRTEMPERATURE));
+      enableTemperatureNotification(streamToSensor, charWriteCmd, enableNotification, this.settings.getString(IRTEMPERATURE));
     }
     if (this.settings.has(HUMIDITY)) {
-      enableHumidityNotification(charWriteCmd, enableNotification, this.settings.getString(HUMIDITY));
+      enableHumidityNotification(streamToSensor, charWriteCmd, enableNotification, this.settings.getString(HUMIDITY));
     }
     if (this.settings.has(AMBIENTLIGHT)) {
-      enableAmbientlightNotification(charWriteCmd, enableNotification, this.settings.getString(AMBIENTLIGHT));
+      enableAmbientlightNotification(streamToSensor, charWriteCmd, enableNotification, this.settings.getString(AMBIENTLIGHT));
     }
     if (this.settings.has(PRESSURE)) {
-      enablePressureNotification(charWriteCmd, enableNotification, this.settings.getString(PRESSURE));
+      enablePressureNotification(streamToSensor, charWriteCmd, enableNotification, this.settings.getString(PRESSURE));
     }
     if (this.settings.has(MOVEMENT)) {
       // FIXME Currently there are presets defined for the configuration
       // the acceleration range is fixed at -16, +16 G
       // activate all measurements (up to 9 values) at once
-      enableMovementNotification(charWriteCmd, enableNotification, this.settings.getString(MOVEMENT), CC2650lib.VALUE_MOVEMENT_ACTIVATE_ALL_16G);
+      enableMovementNotification(streamToSensor, charWriteCmd, enableNotification, this.settings.getString(MOVEMENT),
+          CC2650lib.VALUE_MOVEMENT_ACTIVATE_ALL_16G);
     }
   }
 
   @Override
-  public void disableNotification(String charWriteCmd, String disableNotification) {
+  public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     if (this.settings.has(IRTEMPERATURE)) {
-      disableTemperatureNotification(charWriteCmd, disableNotification);
+      disableTemperatureNotification(streamToSensor, charWriteCmd, disableNotification);
     }
     if (this.settings.has(HUMIDITY)) {
-      disableHumidityNotification(charWriteCmd, disableNotification);
+      disableHumidityNotification(streamToSensor, charWriteCmd, disableNotification);
 
     }
     if (this.settings.has(AMBIENTLIGHT)) {
-      disableAmbientlightNotification(charWriteCmd, disableNotification);
+      disableAmbientlightNotification(streamToSensor, charWriteCmd, disableNotification);
 
     }
     if (this.settings.has(PRESSURE)) {
-      disablePressureNotification(charWriteCmd, disableNotification);
+      disablePressureNotification(streamToSensor, charWriteCmd, disableNotification);
     }
     if (this.settings.has(MOVEMENT)) {
       // FIXME static deactivate configuration
-      disableMovementNotification(charWriteCmd, disableNotification, CC2650lib.VALUE_MOVEMENT_DEACTIVATE_ALL_16G);
+      disableMovementNotification(streamToSensor, charWriteCmd, disableNotification, CC2650lib.VALUE_MOVEMENT_DEACTIVATE_ALL_16G);
     }
-    this.bw = null;
   }
 
   /**
@@ -428,7 +426,7 @@ public class CC2650 extends Sensor {
    * @return acceleration on the Z axis.
    */
   private float getAccelerationZ(String data) {
-    return Integer.parseInt(data.substring(22, 24) + data.substring(20, 22), 16) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
+    return 1.0f * Integer.parseInt(data.substring(22, 24) + data.substring(20, 22), 16) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
   }
 
   /**
@@ -439,7 +437,7 @@ public class CC2650 extends Sensor {
    * @return magnetism on the X axis.
    */
   private float getMagnetismX(String data) {
-    return Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16);
+    return 1.0f * Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16);
   }
 
   /**
@@ -450,7 +448,7 @@ public class CC2650 extends Sensor {
    * @return magnetism on the Y axis.
    */
   private float getMagnetismY(String data) {
-    return Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16);
+    return 1.0f * Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16);
   }
 
   /**
@@ -464,35 +462,35 @@ public class CC2650 extends Sensor {
     return Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
   }
 
-  public CC2650TemperatureSample calculateTemperatureData(String data) {
-    CC2650TemperatureSample temperatureSample = new CC2650TemperatureSample(this.dtf.print(new DateTime()), this.bdAddress);
+  public CC2650TemperatureSample calculateTemperatureData(String timestamp, String data) {
+    CC2650TemperatureSample temperatureSample = new CC2650TemperatureSample(timestamp, this.bdAddress);
     temperatureSample.setObjectTemperature(getIRtemperatureFromTemperatureSensor(data));
     temperatureSample.setDieTemperature(getDieTemperatureFromTemperatureSensor(data));
     return temperatureSample;
   }
 
-  public CC2650HumiditySample calculateHumidityData(String data) {
-    CC2650HumiditySample humiditySample = new CC2650HumiditySample(this.dtf.print(new DateTime()), this.bdAddress);
+  public CC2650HumiditySample calculateHumidityData(String timestamp, String data) {
+    CC2650HumiditySample humiditySample = new CC2650HumiditySample(timestamp, this.bdAddress);
     humiditySample.setTemperature(getTemperatureFromHumiditySensor(data));
     humiditySample.setHumidity(getRelativeHumidty(data));
     return humiditySample;
   }
 
-  public CC2650PressureSample calculatePressureData(String data) {
-    CC2650PressureSample pressureSample = new CC2650PressureSample(this.dtf.print(new DateTime()), this.bdAddress);
+  public CC2650PressureSample calculatePressureData(String timestamp, String data) {
+    CC2650PressureSample pressureSample = new CC2650PressureSample(timestamp, this.bdAddress);
     pressureSample.setTemperature(getTemperatureFromBarometricPressureSensor(data));
     pressureSample.setPressure(getPressure(data));
     return pressureSample;
   }
 
-  public CC2650AmbientlightSample calculateAmbientlightData(String data) {
-    CC2650AmbientlightSample ambientlightSample = new CC2650AmbientlightSample(this.dtf.print(new DateTime()), this.bdAddress);
+  public CC2650AmbientlightSample calculateAmbientlightData(String timestamp, String data) {
+    CC2650AmbientlightSample ambientlightSample = new CC2650AmbientlightSample(timestamp, this.bdAddress);
     ambientlightSample.setAmbientlight(getAmbientLight(data));
     return ambientlightSample;
   }
 
-  public CC2650MovementSample calculateMovementSample(String data) {
-    CC2650MovementSample movementSample = new CC2650MovementSample(this.dtf.print(new DateTime()), this.bdAddress);
+  public CC2650MovementSample calculateMovementSample(String timestamp, String data) {
+    CC2650MovementSample movementSample = new CC2650MovementSample(timestamp, this.bdAddress);
     movementSample.setRotationX(getRotationX(data));
     movementSample.setRotationY(getRotationY(data));
     movementSample.setRotationZ(getRotationZ(data));

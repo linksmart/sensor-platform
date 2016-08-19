@@ -3,6 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.tools;
 import java.io.BufferedWriter;
 
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorNotificationDataObserver;
+import de.fhg.fit.biomos.sensorplatform.util.GatttoolSecurityLevel;
 
 /**
  * Controller class for gatttool command line tool. You may use multiple instances of it at once.<br />
@@ -23,9 +24,11 @@ public interface Gatttool extends Runnable {
 
   public void removeObs();
 
-  BufferedWriter getStreamToSensor();
+  public BufferedWriter getStreamToSensor();
 
-  public void setSecurityLevel(String securityLevel);
+  public GatttoolSecurityLevel getSecurityLevel();
+
+  public void setSecurityLevel(GatttoolSecurityLevel secLevel);
 
   public boolean connectBlocking(int timeout);
 

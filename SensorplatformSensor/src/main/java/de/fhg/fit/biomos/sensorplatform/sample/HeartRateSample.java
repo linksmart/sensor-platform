@@ -10,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import de.fhg.fit.biomos.sensorplatform.util.Unit;
-
 /**
  * Stores all available data from a single heart rate sample.
  *
@@ -23,6 +21,10 @@ import de.fhg.fit.biomos.sensorplatform.util.Unit;
 public class HeartRateSample implements Serializable {
 
   private static final long serialVersionUID = 850688777942461042L;
+
+  private static final String BPM = "bpm";
+  private static final String JOULE = "J";
+  private static final String BPMMS = "bpm/ms";
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,8 +46,8 @@ public class HeartRateSample implements Serializable {
   public HeartRateSample() {
   }
 
-  public HeartRateSample(String timestamp, String bdAddress) {
-    this.timestamp = timestamp;
+  public HeartRateSample(String timeStamp, String bdAddress) {
+    this.timestamp = timeStamp;
     this.bdAddress = bdAddress;
   }
 
@@ -112,9 +114,8 @@ public class HeartRateSample implements Serializable {
   @Override
   public String toString() {
     return "{\"id\":" + this.id + ",\"transmitted\":" + this.transmitted + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress
-        + "\",\"value\":" + "{\"heartrate\":{\"value\":" + this.heartRate + ",\"unit\":\"" + Unit.BPM + "\"},\"energyexpended\":{\"value\":"
-        + this.energyExpended + ",\"unit\":\"" + Unit.JOULE + "\"}" + ",\"rrintervals\":{\"value\":" + this.rrIntervals.toString() + ",\"unit\":\"" + Unit.BPMMS
-        + "\"}}}";
+        + "\",\"value\":" + "{\"heartrate\":{\"value\":" + this.heartRate + ",\"unit\":\"" + BPM + "\"},\"energyexpended\":{\"value\":" + this.energyExpended
+        + ",\"unit\":\"" + JOULE + "\"}" + ",\"rrintervals\":{\"value\":" + this.rrIntervals.toString() + ",\"unit\":\"" + BPMMS + "\"}}}";
   }
 
 }

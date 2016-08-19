@@ -18,6 +18,7 @@ import com.google.inject.name.Named;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
+import de.fhg.fit.biomos.sensorplatform.util.BluetoothDevice;
 
 /**
  * This class defines the control flow of the sensorplatform.<br>
@@ -32,51 +33,71 @@ public class Controller implements Runnable {
   private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
   private static final String RECORDING_END_TIME = "endtime";
-  private static final String SETUP_TYPE = "setuptype";
-  private static final String SETUP_TYPE_WEB = "web";
-  private static final String SETUP_TYPE_BUILD = "build";
   private static final String CONFIGURATION = "configuration";
 
-  private final SensorObserver sensorObserver;
+  private final int timeoutNotification;
+  private final int timeoutConnect;
+  private final File recordingInfo;
+
   private final SensorWrapperFactory swFactory;
   private final HeartRateSampleCollector hrsCollector;
   private final CC2650SampleCollector cc2650Collector;
   private final HardwarePlatform hwPlatform;
   private final SecurityManager secman;
 
+  private SensorObserver sensorObserver;
+
+  private Thread controllerThread;
   private Thread sensorObserverThread;
   private Thread hrsCollectorThread;
   private Thread cc2650CollectorThread;
   private List<AbstractSensorWrapper> swList;
 
-  private final int timeout;
   private long uptimeMillis;
   private boolean recording = false;
 
-  private final File recordingInfo;
-
   @Inject
-  public Controller(SensorObserver sensorObserver, HeartRateSampleCollector hrsCollector, CC2650SampleCollector cc2650SampleCollector,
-      SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, SecurityManager secman, @Named("default.sensor.timeout") String timeout,
-      @Named("default.recording.time") String uptime, @Named("recording.info.filename") String recordingInfoFileName) {
-    this.sensorObserver = sensorObserver;
+  public Controller(HeartRateSampleCollector hrsCollector, CC2650SampleCollector cc2650SampleCollector, SensorWrapperFactory swFactory,
+      HardwarePlatform hwPlatform, SecurityManager secman, @Named("timeout.sensor.connect") String timeoutConnect,
+      @Named("timeout.sensor.notification") String timeoutNotification, @Named("recording.info.filename") String recordingInfoFileName) {
     this.swFactory = swFactory;
     this.hrsCollector = hrsCollector;
     this.cc2650Collector = cc2650SampleCollector;
     this.hwPlatform = hwPlatform;
     this.secman = secman;
-    this.timeout = new Integer(timeout);
-    this.uptimeMillis = new Integer(uptime);
+    this.timeoutConnect = new Integer(timeoutConnect);
+    this.timeoutNotification = new Integer(timeoutNotification) * 2;
     this.recordingInfo = new File(recordingInfoFileName);
   }
 
+  /**
+   * Expose running state for webinterface.
+   *
+   * @return true if the sensorplatform is recording
+   */
   public boolean isRecording() {
     return this.recording;
   }
 
+  /**
+   * Used for stopping a recording period of the sensorplatform from the web application.
+   */
+  public void interruptController() {
+    if (this.recording) {
+      this.controllerThread.interrupt();
+    }
+  }
+
+  /**
+   * Called on program startup from main thread. Check if sensorplatform was shut down during recording. Try to resume recording after next start.
+   */
   public void checkLastSensorplatformState() {
     this.secman.loadStoredDevices();
-    // TODO
+
+    for (BluetoothDevice btDevice : this.secman.getBluetoothDevices()) {
+      System.out.println(btDevice);
+    }
+
     if (!this.recordingInfo.exists()) {
       LOG.info("no recording period was interrupted");
     } else {
@@ -88,11 +109,7 @@ public class Controller implements Runnable {
         LOG.info("time difference is: " + Long.toString(diff) + " milliseconds");
         if (diff > 0) {
           LOG.info("a recording period was interrupted, which is not finished yet - trying to resume");
-          if (recProperties.getProperty(SETUP_TYPE).equals(SETUP_TYPE_WEB)) {
-            startupFromWebConfiguration(diff, new JSONArray(recProperties.getProperty(CONFIGURATION)), false);
-          } else if (recProperties.getProperty(SETUP_TYPE).equals(SETUP_TYPE_BUILD)) {
-            startupFromProjectBuildConfiguration(diff, false);
-          }
+          startup(diff, new JSONArray(recProperties.getProperty(CONFIGURATION)), false);
         } else {
           LOG.info("a recording period was interrupted but it is finished now - delete file");
           this.recordingInfo.delete();
@@ -103,11 +120,15 @@ public class Controller implements Runnable {
     }
   }
 
-  private void storeSensorplatformState(String setuptype, JSONArray sensorConfiguration) {
+  /**
+   * Save the sensor configuration and the timestamp of the recording period end in a properties file.
+   *
+   * @param sensorConfiguration
+   */
+  private void saveSensorplatformConfiguration(JSONArray sensorConfiguration) {
     long timestamp = System.currentTimeMillis();
     Properties recProperties = new Properties();
     recProperties.put(RECORDING_END_TIME, Long.toString(timestamp + this.uptimeMillis));
-    recProperties.put(SETUP_TYPE, setuptype);
     recProperties.put(CONFIGURATION, sensorConfiguration.toString());
     try {
       if (this.recordingInfo.exists()) {
@@ -120,84 +141,77 @@ public class Controller implements Runnable {
     }
   }
 
-  public void startupFromProjectBuildConfiguration(boolean store) {
-    startupFromProjectBuildConfiguration(this.uptimeMillis, store);
-  }
-
-  private void startupFromProjectBuildConfiguration(long uptimeMillis, boolean store) {
+  public void startup(long uptimeMillis, JSONArray sensorConfiguration, boolean saveConfiguration) {
     if (!this.recording) {
       this.recording = true;
       this.uptimeMillis = uptimeMillis;
-      if (store) {
-        storeSensorplatformState(SETUP_TYPE_BUILD, null);
-      }
-      LOG.info("initialise from project build configuration");
-      this.swList = this.swFactory.createSensorWrapperFromProjectBuild();
-      init();
-    } else {
-      LOG.error("Data recording ongoing. No other startup allowed! Skipped!");
-    }
-  }
-
-  public void startupFromWebConfiguration(long uptimeMillis, JSONArray sensorConfiguration, boolean store) {
-    if (!this.recording) {
-      this.recording = true;
-      this.uptimeMillis = uptimeMillis;
-      if (store) {
-        storeSensorplatformState(SETUP_TYPE_WEB, sensorConfiguration);
+      if (saveConfiguration) {
+        saveSensorplatformConfiguration(sensorConfiguration);
       }
       LOG.info("initialise from web application configuration");
-      this.swList = this.swFactory.createSensorWrapperFromWebApp(sensorConfiguration);
-      init();
+      init(sensorConfiguration);
     } else {
-      LOG.error("Data recording ongoing. No other startup allowed! Skipped!");
+      LOG.error("data recording ongoing. No other startup allowed! Skipped!");
     }
   }
 
-  private void init() {
-    LOG.info("connecting and pairing devices");
-    // TODO SecurityManager setup
+  private void init(JSONArray sensorConfiguration) {
+    this.swList = this.swFactory.createSensorWrapper(sensorConfiguration);
+
+    int expectedSensorCount = this.swList.size();
+    int presentSensorCount = connectDevices();
+
+    if (presentSensorCount < expectedSensorCount) {
+      LOG.info("abort startup!");
+      finish();
+      return;
+    }
+
+    enableLogging();
+    startThreads();
+    this.hwPlatform.setLEDstateRECORDING();
+    LOG.info("sensorplatform is recording");
+  }
+
+  private int connectDevices() {
     LOG.info("connecting to sensors");
     for (Iterator<AbstractSensorWrapper> iterator = this.swList.iterator(); iterator.hasNext();) {
       AbstractSensorWrapper sensorWrapper = iterator.next();
-      boolean isConnected = sensorWrapper.connectToSensorBlocking(this.timeout);
+      // GatttoolSecurityLevel desiredSecurityLevel = this.secman.pairDevice(sensorWrapper);
+      // LOG.info("security level " + desiredSecurityLevel + " for device" + sensorWrapper.toString());
+      // sensorWrapper.setSecurityLevel(desiredSecurityLevel);
+      boolean isConnected = sensorWrapper.connectToSensorBlocking(this.timeoutConnect);
       if (!isConnected) {
-        LOG.info("Cannot connect to " + sensorWrapper.toString());
+        LOG.info("device removed from list");
         sensorWrapper.shutdown();
         iterator.remove();
       }
     }
+    return this.swList.size();
+  }
+
+  private void enableLogging() {
     LOG.info("enable logging");
     for (SensorWrapper sensorWrapper : this.swList) {
       sensorWrapper.enableLogging();
     }
-    this.sensorObserver.setTarget(this.swList);
-    startThreads();
-    LOG.info("initialise complete");
-
-    this.hwPlatform.setLEDstateRECORDING();
   }
 
   private void startThreads() {
-    if (this.swList.isEmpty()) {
-      LOG.info("there are no sensors connected - skip recording period!");
-      this.hwPlatform.setLEDstateSTANDBY();
-      this.recordingInfo.delete();
-      this.recording = false;
-    } else {
-      LOG.info("start observer");
-      this.sensorObserverThread = new Thread(this.sensorObserver);
-      this.sensorObserverThread.start();
-      LOG.info("start hrs collector thread");
-      this.hrsCollectorThread = new Thread(this.hrsCollector);
-      this.hrsCollectorThread.start();
-      LOG.info("start cc2650 collector thread");
-      this.cc2650CollectorThread = new Thread(this.cc2650Collector);
-      this.cc2650CollectorThread.start();
-      LOG.info("start controller thread");
-      new Thread(this).start();
-      LOG.info("all threads started");
-    }
+    LOG.info("start observer");
+    this.sensorObserver = new SensorObserver(this.timeoutNotification, this.swList);
+    this.sensorObserverThread = new Thread(this.sensorObserver);
+    this.sensorObserverThread.start();
+    LOG.info("start hrs collector thread");
+    this.hrsCollectorThread = new Thread(this.hrsCollector);
+    this.hrsCollectorThread.start();
+    LOG.info("start cc2650 collector thread");
+    this.cc2650CollectorThread = new Thread(this.cc2650Collector);
+    this.cc2650CollectorThread.start();
+    LOG.info("start controller thread");
+    this.controllerThread = new Thread(this);
+    this.controllerThread.start();
+    LOG.info("all threads started");
   }
 
   @Override
@@ -205,25 +219,29 @@ public class Controller implements Runnable {
     try {
       LOG.info("sleeping for " + this.uptimeMillis + " milliseconds");
       Thread.sleep(this.uptimeMillis);
+      LOG.info("recording period finished regular");
     } catch (InterruptedException e) {
-      LOG.error("sleep interrupted - recording period finished too early");
+      LOG.warn("interrupt received - recording period finished");
     }
-    LOG.info("Recording period finished");
     this.sensorObserverThread.interrupt();
     this.hrsCollectorThread.interrupt();
     this.cc2650CollectorThread.interrupt();
-    shutdown();
-    this.sensorObserver.clearTarget();
+    finish();
+  }
+
+  private void finish() {
+    shutdownGatttools();
     this.recordingInfo.delete();
+    LOG.info("recording properties deleted");
     this.recording = false;
     this.hwPlatform.setLEDstateSTANDBY();
   }
 
   /**
-   * Shut down sub-processes and threads of the sensorplatform <b>gracefully</b>. This avoids zombie gatttool processes which may prevent sensors from returning
-   * to standby mode and other <b>bad</b> things!
+   * Shut down sub-processes and threads of the sensorplatform <b>gracefully</b>. This avoids zombie gatttool processes which may block sensors and other
+   * <b>bad</b> things!
    */
-  private void shutdown() {
+  private void shutdownGatttools() {
     LOG.info("shutting down threads and processes gracefully");
     for (SensorWrapper sensorWrapper : this.swList) {
       sensorWrapper.disableLogging();

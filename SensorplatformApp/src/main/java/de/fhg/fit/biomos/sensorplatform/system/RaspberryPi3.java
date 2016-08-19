@@ -49,7 +49,7 @@ public class RaspberryPi3 implements HardwarePlatform {
       pw = new PrintWriter(new File(LED0_DELAY_OFF));
       pw.write(BLINK_INTERVAL);
       pw.close();
-      LOG.info("LED standby");
+      LOG.info("LED " + LEDstate.STANDBY.name());
     } catch (FileNotFoundException e) {
       LOG.error("cannot write to board LED file (no sudo)", e);
     }
@@ -61,7 +61,7 @@ public class RaspberryPi3 implements HardwarePlatform {
       PrintWriter pw = new PrintWriter(new File(LED0_TRIGGER));
       pw.write(LEDstate.RECORDING.toString());
       pw.close();
-      LOG.info("LED recording");
+      LOG.info("LED " + LEDstate.RECORDING.name());
     } catch (FileNotFoundException e) {
       LOG.error("cannot write to board LED file (no sudo)", e);
     }
@@ -73,7 +73,7 @@ public class RaspberryPi3 implements HardwarePlatform {
       PrintWriter pw = new PrintWriter(new File(LED0_TRIGGER));
       pw.write(LEDstate.ERROR.toString());
       pw.close();
-      LOG.info("LED error");
+      LOG.info("LED " + LEDstate.ERROR.name());
     } catch (FileNotFoundException e) {
       LOG.error("cannot write to board LED file (no sudo)", e);
     }

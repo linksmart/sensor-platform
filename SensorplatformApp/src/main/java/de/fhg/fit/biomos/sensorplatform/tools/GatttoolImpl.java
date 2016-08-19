@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.ObservableSensorNotificationData;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorNotificationDataObserver;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.GatttoolSecurityLevel;
 
 /**
  * @see {@link de.fhg.fit.biomos.sensorplatform.tools.Gatttool}
@@ -55,18 +56,20 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
 
   private static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
 
-  private State state = State.DISCONNECTED;
+  private final AddressType addressType;
+  private final String bdAddress;
+
+  private State state;
+  private GatttoolSecurityLevel secLevel;
 
   private BufferedWriter streamToSensor = null;
   private BufferedReader streamFromSensor = null;
-
-  private final AddressType addressType;
-  private final String bdAddress;
 
   public GatttoolImpl(AddressType addressType, String bdAddress) {
     this.addressType = addressType;
     this.bdAddress = bdAddress;
     this.state = State.DISCONNECTED;
+    this.secLevel = GatttoolSecurityLevel.LOW;
 
     try {
       Process process = null;
@@ -120,15 +123,23 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
           LOG.info(this.state.name());
         }
       }
+      this.streamToSensor.close();
+      this.streamFromSensor.close();
     } catch (IOException e) {
-      LOG.error("gatttool crashed while attempting to read process output.", e);
+      LOG.error("gatttool crashed while attempting to read process output", e);
     }
   }
 
   @Override
-  public void setSecurityLevel(String securityLevel) {
+  public GatttoolSecurityLevel getSecurityLevel() {
+    return this.secLevel;
+  }
+
+  @Override
+  public void setSecurityLevel(GatttoolSecurityLevel secLevel) {
+    this.secLevel = secLevel;
     try {
-      this.streamToSensor.write(CMD_SEC_LEVEL + " " + securityLevel);
+      this.streamToSensor.write(CMD_SEC_LEVEL + " " + this.secLevel);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
     } catch (IOException e) {

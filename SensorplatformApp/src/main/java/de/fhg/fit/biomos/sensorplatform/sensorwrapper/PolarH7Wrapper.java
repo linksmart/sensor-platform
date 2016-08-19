@@ -1,5 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
+import org.joda.time.DateTime;
+
 import de.fhg.biomos.sensorplatform.sensors.PolarH7;
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
@@ -17,20 +19,20 @@ public class PolarH7Wrapper extends AbstractHeartRateSensorWrapper {
 
   private final PolarH7 polarh7;
 
-  public PolarH7Wrapper(PolarH7 polarh7, HeartRateSampleCollector hrsCollector) {
-    super(polarh7.getAddressType(), polarh7.getBDaddress(), hrsCollector);
+  public PolarH7Wrapper(PolarH7 polarh7, String timeStampFormat, HeartRateSampleCollector hrsCollector) {
+    super(polarh7.getAddressType(), polarh7.getBDaddress(), timeStampFormat, hrsCollector);
     this.polarh7 = polarh7;
   }
 
   @Override
   public void enableLogging() {
-    this.polarh7.enableNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
+    this.polarh7.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
     this.lastNotificationTimestamp = System.currentTimeMillis();
   }
 
   @Override
   public void disableLogging() {
-    this.polarh7.disableNotification(GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
+    this.polarh7.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
   }
 
   @Override
@@ -38,7 +40,7 @@ public class PolarH7Wrapper extends AbstractHeartRateSensorWrapper {
     // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    HeartRateSample hrs = this.polarh7.calculateHeartRateSample(handle, rawHexValues);
+    HeartRateSample hrs = this.polarh7.calculateHeartRateSample(this.dtf.print(new DateTime()), handle, rawHexValues);
 
     if (this.hrsCollector != null && hrs != null) {
       this.hrsCollector.addToQueue(hrs);

@@ -22,8 +22,8 @@ input:focus {
 	width: 100%;
 }
 
-#uptime, #timeout {
-	width: 50%
+#uptime {
+	width: 30%
 }
 
 .divinsidewell {

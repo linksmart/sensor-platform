@@ -23,9 +23,16 @@ Password: raspberry
 (Attention: The default keyboard layout is british, so y becomes z and vice versa)
 
 6. Enter "sudo raspi-config" (always without quotes) for some general settings
-6.1
-6.2
-6.1
+6.1 Internationalisation Options >> Change Timezone >> Europe >> Berlin
+6.2 Internationalisation Options >> Change Keyboard Layout >> Generic 105-key (Intl) PC >> Other >> German >> German >> The default for the keyoard layout >> No compose key
+6.3 Internationalisation Options >> Change Wi-fi Country >> DE Germany
+6.4 Change User Password >> <your new password>
+6.5 Boot Options >> B1 Console
+6.6 Wait for Network at Boot >> No
+6.7 Advanced Options >> Hostname
+6.8 Advanced Options >> Memory Split >> 16
+6.9 Expand File System
+6.10 Finish >> Reboot
 
 7. User account setup
 7.1 Type in "sudo -i" for the root shell
@@ -34,22 +41,23 @@ Password: raspberry
 ##### adm dialout cdrom audio video plugdev games users input netdev spi i2c gpio
 7.3 Set a password for administrator "passwd administrator"
 7.4 Set a password for root "passd root"
-7.5 Log out by typing "exit"
-7.6 Log in as root (you set the password for root earlier)
+7.5 Log out by typing "exit" and again "exit"
+7.6 Log in as root
 7.7 Delete the default user pi "deluser -remove-home pi"
 7.8 Log out by typing "exit"
 7.9 Log in as administrator
-7.10 Move to administrator's home directory, create some folders
+7.10 Move to administrator's home directory "cd /home/administrator" and create some folders
 	"mkdir Downloads"
 	"mkdir Repositories"
 	"mkdir Keytool"
 	"mkdir Sensorplatform"
-7.11 Allow administrator to use sudo without password check
-	"sudo sed -i -- 's/administrator/pi/g' /etc/sudoers"
+7.11 Allow administrator to use sudo without password check (password will be required ones)
+	"sudo sed -i -- 's/pi/administrator/g' /etc/sudoers"
 7.12 Do not allow root login via SSH
 	"sudo sed -i -- 's/PermitRootLogin without-password/PermitRootLogin no/g' /etc/ssh/sshd_config"
 
 8. Update packages
+TODO sudo apt-mark hold bluez ???
 8.1 "sudo apt update"
 8.2 "sudo apt upgrade"
 8.3 Install git "sudo apt install git"
@@ -66,25 +74,39 @@ Password: raspberry
 
 10. "sudo reboot" and log in as administrator again
 
-11. "cd /home/administrator/repositories"
+11. "cd /home/administrator/Repositories"
 11.1 "git clone http://scm.fit.fraunhofer.de:8080/scm/git/Sensorplatform Sensorplatform"
+	Use some valid login credentials here
+11.2 "cd Sensorplatform"
 
-12. Install Java and Maven "sudo sh ..."
+12. Install Java and Maven "sudo sh Resources/Firmware/RaspberryPi3/Programs/install_java_maven.sh"
 
-13. Install Bluez "sudo sh ..."
+13. Install Bluez "sudo sh Resources/Firmware/RaspberryPi3/Programs/install_bluez.sh"
 
-14. Install Iptables "sudo sh ..."
+14. Install Iptables "sudo sh Resources/Firmware/RaspberryPi3/Programs/install_iptables.sh"
 
-15. Maven clean install with Profiles
-15.1 cd SensorplatformParent
-15.2 mvn clean install -Praspberrypi3, telipro
+15. "sudo reboot" >> log in as administrator >> "cd /home/administrator/Repositories/Sensorplatform"
+
+16. Maven clean install with Profiles
+16.1 cd SensorplatformParent
+16.2 mvn clean install -Praspberrypi3,telipro
 
 16. Export
 16.1 "cd .."
 16.2 "sudo sensorplatform.sh --export"
-16.3 "sudo reboot"
 
-17. Open sensorplatform.fit.fraunhofer.de (TODO check port, ip addresses if different network setup)
+TODO
+init.d shell script
+Sensorplatform:
+bin
+db
+static resources
+what about keystore file?
+
+16.3 "sudo reboot"
+16.4 The sensorplatform application will now start automatically after boot
+
+17. Open https://sensorplatform.fit.fraunhofer.de:8080 in Chrome/Firefox/Edge(or https://129.26.160.38:8080 in case of static IP)
 
 ## Local Windows Installation Guide
 

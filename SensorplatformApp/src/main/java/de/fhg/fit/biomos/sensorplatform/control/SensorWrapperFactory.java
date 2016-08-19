@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,43 +42,22 @@ public class SensorWrapperFactory {
   private final HeartRateSampleCollector hrsCollector;
   private final CC2650SampleCollector cc2650Collector;
 
-  private final String sensorConfigurationFileName;
-  private final String logFileTimestampFormat;
+  private final String databaseTimeStampFormat;
 
   @Inject
   public SensorWrapperFactory(HeartRateSampleCollector hrsCollector, CC2650SampleCollector cc2650Collector,
-      @Named("default.sensor.configuration.file") String sensorConfigurationFileName, @Named("logfile.timestamp.format") String logFileTimestampFormat) {
+      @Named("database.timestamp.format") String databaseTimeStampFormat) {
     this.hrsCollector = hrsCollector;
     this.cc2650Collector = cc2650Collector;
-    this.sensorConfigurationFileName = sensorConfigurationFileName;
-    this.logFileTimestampFormat = logFileTimestampFormat;
+    this.databaseTimeStampFormat = databaseTimeStampFormat;
   }
 
   /**
    *
    * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
    */
-  public List<AbstractSensorWrapper> createSensorWrapperFromWebApp(JSONArray sensorConfiguration) {
-    LOG.info("setup from webapplication configuration");
-    return createSensorWrapper(sensorConfiguration);
-  }
-
-  /**
-   * Creates sensors from a configuration file provided by the maven build process or an "external" file.
-   *
-   * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
-   */
-  public List<AbstractSensorWrapper> createSensorWrapperFromProjectBuild() {
-    LOG.info("setup from project build configuration");
-    LOG.info("sensor configuration file " + this.sensorConfigurationFileName);
-
-    JSONTokener tokener = new JSONTokener(ClassLoader.getSystemResourceAsStream(this.sensorConfigurationFileName));
-    JSONArray sensorConfiguration = new JSONArray(tokener);
-
-    return createSensorWrapper(sensorConfiguration);
-  }
-
-  private List<AbstractSensorWrapper> createSensorWrapper(JSONArray sensorConfiguration) {
+  public List<AbstractSensorWrapper> createSensorWrapper(JSONArray sensorConfiguration) {
+    LOG.info("creating sensorwrappers");
     List<AbstractSensorWrapper> sensorWrapperList = new ArrayList<AbstractSensorWrapper>();
     for (int i = 0; i < sensorConfiguration.length(); i++) {
 
@@ -92,19 +70,19 @@ public class SensorWrapperFactory {
       AbstractSensorWrapper sensorWrapper = null;
       switch (name) {
         case PolarH7:
-          sensorWrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.hrsCollector);
+          sensorWrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, addressType, settings), this.databaseTimeStampFormat, this.hrsCollector);
           break;
         case AdidasHRM:
-          sensorWrapper = new AdidasHrmWrapper(new AdidasMiCoachHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.hrsCollector);
+          sensorWrapper = new AdidasHrmWrapper(new AdidasMiCoachHRM(name, bdAddress, addressType, settings), this.databaseTimeStampFormat, this.hrsCollector);
           break;
         case TomTomHRM:
-          sensorWrapper = new TomTomHrmWrapper(new TomTomHRM(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.hrsCollector);
-          break;
-        case PolarV800:
-          LOG.error("PolarV800 not yet implemented - sensor will be ignored");
+          sensorWrapper = new TomTomHrmWrapper(new TomTomHRM(name, bdAddress, addressType, settings), this.databaseTimeStampFormat, this.hrsCollector);
           break;
         case CC2650:
-          sensorWrapper = new CC2650Wrapper(new CC2650(name, bdAddress, addressType, this.logFileTimestampFormat, settings), this.cc2650Collector);
+          sensorWrapper = new CC2650Wrapper(new CC2650(name, bdAddress, addressType, settings), this.databaseTimeStampFormat, this.cc2650Collector);
+          break;
+        case BLE113:
+          // TODO
           break;
         default:
           LOG.error("unknown sensor name " + name);
@@ -115,6 +93,7 @@ public class SensorWrapperFactory {
         sensorWrapperList.add(sensorWrapper);
       }
     }
+    LOG.info("finished creating sensorwrappers");
     return sensorWrapperList;
   }
 

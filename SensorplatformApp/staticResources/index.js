@@ -33,7 +33,6 @@ window.setInterval(function() {
 			$("#status").text("(server error)");
 			$("#device").text("(server error)");
 			$("#uploader").text("(server error)");
-			console.log("Server error!");
 		}
 	};
 	request.open("GET", "info", true);
@@ -42,9 +41,10 @@ window.setInterval(function() {
 
 function writeExampleConfig() {
 	$("#configview").val(JSON.stringify(exampleConfig, undefined, 4));
+	$("#uptime").val(10);
 }
 
-function startFromWebConfig() {
+function startRecording() {
 	var uptime = $("#uptime").val();
 	var configuration = JSON.parse($("#configview").val());
 	var requestentity = {
@@ -55,28 +55,22 @@ function startFromWebConfig() {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
-			console.log("Running web config now!");
-		}
-		if (request.readyState == 4 && request.status == 500) {
-			console.log("Server error!");
+			console.log("Recording now!");
 		}
 	};
-	request.open("POST", "startup/fromwebapp", true);
+	request.open("POST", "controller/start", true);
 	request.setRequestHeader("Content-Type", "application/json;");
 	request.send(JSON.stringify(requestentity));
 }
 
-function startFromMavenBuild() {
+function stopRecording() {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
-			console.log("Running build config now!");
-		}
-		if (request.readyState == 4 && request.status == 500) {
-			console.log("Server error!");
+			console.log("Stopping recording!");
 		}
 	};
-	request.open("GET", "startup/frombuild", true);
+	request.open("GET", "controller/stop", true);
 	request.send();
 }
 
@@ -85,9 +79,6 @@ function loadHrs() {
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
 			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText)));
-		}
-		if (request.readyState == 4 && request.status == 500) {
-			console.log("Cannot retrieve hrs!");
 		}
 	};
 	request.open("GET", "hrs", true);
@@ -101,9 +92,6 @@ function getNumbersHrs() {
 			response = JSON.parse(request.responseText);
 			$("#totalhrs").text(response["total"]);
 			$("#nottransmitted").text(response["nottransmitted"]);
-		}
-		if (request.readyState == 4 && request.status == 500) {
-			console.log("Cannot retrieve number of not transmitted hrs!");
 		}
 	};
 	request.open("GET", "hrs/numberofnottransmitted", true);

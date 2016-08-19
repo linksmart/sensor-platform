@@ -7,13 +7,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 
 /**
- * The class <b>must</b> be used as a singleton. Use <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -24,24 +20,13 @@ public class SensorObserver implements Runnable {
 
   private final List<AbstractSensorWrapper> wrapperWithLostSensor = new ArrayList<AbstractSensorWrapper>();
 
-  private List<AbstractSensorWrapper> swList;
+  private final List<AbstractSensorWrapper> swList;
 
   private final int noNotificationTriggerTime;
 
-  @Inject
-  public SensorObserver(@Named("default.sensor.timeout") String defaultSensorTimeout) {
-    this.noNotificationTriggerTime = new Integer(defaultSensorTimeout) * 2;
-  }
-
-  public void setTarget(List<AbstractSensorWrapper> swList) {
+  public SensorObserver(int noNotificationTriggerTime, List<AbstractSensorWrapper> swList) {
+    this.noNotificationTriggerTime = noNotificationTriggerTime;
     this.swList = swList;
-    LOG.info("set target");
-  }
-
-  public void clearTarget() {
-    this.wrapperWithLostSensor.clear();
-    this.swList.clear();
-    LOG.info("clear target");
   }
 
   @Override
@@ -56,7 +41,7 @@ public class SensorObserver implements Runnable {
             LOG.warn(sw.toString() + "did not send a notification within " + this.noNotificationTriggerTime + "s");
             sw.disconnectBlocking();
             try {
-              Thread.sleep(2000); // give gatttool time react
+              Thread.sleep(2000); // give bluez time to update itself
             } catch (InterruptedException e) {
               e.printStackTrace();
             }
@@ -88,6 +73,7 @@ public class SensorObserver implements Runnable {
         Thread.currentThread().interrupt();
       }
     }
+    this.wrapperWithLostSensor.clear();
     LOG.info("observer thread finished");
   }
 

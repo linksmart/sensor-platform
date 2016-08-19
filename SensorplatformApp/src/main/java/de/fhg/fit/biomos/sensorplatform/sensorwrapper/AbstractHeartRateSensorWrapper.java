@@ -12,8 +12,8 @@ public abstract class AbstractHeartRateSensorWrapper extends AbstractSensorWrapp
 
   protected final HeartRateSampleCollector hrsCollector;
 
-  public AbstractHeartRateSensorWrapper(AddressType addressType, String bdAddress, HeartRateSampleCollector hrsCollector) {
-    super(addressType, bdAddress);
+  public AbstractHeartRateSensorWrapper(AddressType addressType, String bdAddress, String timestampFormat, HeartRateSampleCollector hrsCollector) {
+    super(addressType, bdAddress, timestampFormat);
     this.hrsCollector = hrsCollector;
   }
 

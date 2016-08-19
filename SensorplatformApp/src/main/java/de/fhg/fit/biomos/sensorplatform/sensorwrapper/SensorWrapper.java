@@ -1,6 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
+import de.fhg.fit.biomos.sensorplatform.util.GatttoolSecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 public interface SensorWrapper {
@@ -10,6 +11,8 @@ public interface SensorWrapper {
   public SensorName getDeviceName();
 
   public Gatttool.State getGatttoolInternalState();
+
+  public void setSecurityLevel(GatttoolSecurityLevel secLevel);
 
   public boolean connectToSensorBlocking(int timeout);
 

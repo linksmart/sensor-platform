@@ -1,5 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
+import org.joda.time.DateTime;
+
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
@@ -17,20 +19,20 @@ public class AdidasHrmWrapper extends AbstractHeartRateSensorWrapper {
 
   private final AdidasMiCoachHRM adidasHrm;
 
-  public AdidasHrmWrapper(AdidasMiCoachHRM adidasHrm, HeartRateSampleCollector hrsCollector) {
-    super(adidasHrm.getAddressType(), adidasHrm.getBDaddress(), hrsCollector);
+  public AdidasHrmWrapper(AdidasMiCoachHRM adidasHrm, String timeStampFormat, HeartRateSampleCollector hrsCollector) {
+    super(adidasHrm.getAddressType(), adidasHrm.getBDaddress(), timeStampFormat, hrsCollector);
     this.adidasHrm = adidasHrm;
   }
 
   @Override
   public void enableLogging() {
-    this.adidasHrm.enableNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
+    this.adidasHrm.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
     this.lastNotificationTimestamp = System.currentTimeMillis();
   }
 
   @Override
   public void disableLogging() {
-    this.adidasHrm.disableNotification(GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
+    this.adidasHrm.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
   }
 
   @Override
@@ -38,7 +40,7 @@ public class AdidasHrmWrapper extends AbstractHeartRateSensorWrapper {
     // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    HeartRateSample hrs = this.adidasHrm.calculateHeartRateSample(handle, rawHexValues);
+    HeartRateSample hrs = this.adidasHrm.calculateHeartRateSample(this.dtf.print(new DateTime()), handle, rawHexValues);
 
     if (this.hrsCollector != null) {
       this.hrsCollector.addToQueue(hrs);

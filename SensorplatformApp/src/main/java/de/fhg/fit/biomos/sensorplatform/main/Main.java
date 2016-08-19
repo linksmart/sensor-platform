@@ -29,6 +29,7 @@ public class Main {
   public static void main(String[] args) {
     Main sensorplatformApp = new Main();
     sensorplatformApp.startWebServer();
+    sensorplatformApp.startLED();
     sensorplatformApp.checkLastState();
   }
 
@@ -58,8 +59,11 @@ public class Main {
   private void checkLastState() {
     LOG.info("checking the last state of the sensorplatform");
     this.injector.getInstance(Controller.class).checkLastSensorplatformState();
-    this.injector.getInstance(HardwarePlatform.class).setLEDstateSTANDBY();
     LOG.info("main startup done");
+  }
+
+  private void startLED() {
+    this.injector.getInstance(HardwarePlatform.class).setLEDstateSTANDBY();
   }
 
 }

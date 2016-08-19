@@ -5,14 +5,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.InvalidSensorDataException;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
@@ -40,8 +38,8 @@ public abstract class HeartRateSensor extends Sensor {
 
   private static final Pattern PATTERN_RR = Pattern.compile("(\\w{2}\\s\\w{2})+");
 
-  public HeartRateSensor(SensorName name, String bdAddress, AddressType addressType, String timestampFormat, JSONObject sensorConfiguration) {
-    super(name, bdAddress, addressType, timestampFormat, sensorConfiguration);
+  public HeartRateSensor(SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
+    super(name, bdAddress, addressType, sensorConfiguration);
   }
 
   /**
@@ -168,8 +166,6 @@ public abstract class HeartRateSensor extends Sensor {
    * @param rawHexValues
    *          raw notification data as hexadecimal from the sensor
    * @return List&lt;Integer&gt; list of all rr intervals (can be none, one or more)
-   * @throws InvalidSensorDataException
-   *           if the input string does not have the expected format
    */
   protected List<Integer> getRRintervalsWith8BitHeartRateData(String rawHexValues) {
     return getRRintervals(6, rawHexValues);
@@ -181,8 +177,6 @@ public abstract class HeartRateSensor extends Sensor {
    * @param rawHexValues
    *          raw notification data as hexadecimal from the sensor
    * @return List&lt;Integer&gt; list of all rr intervals (can be none, one or more)
-   * @throws InvalidSensorDataException
-   *           if the input string does not have the expected format
    */
   protected List<Integer> getRRintervalsWith16BitHeartRateData(String rawHexValues) {
     return getRRintervals(9, rawHexValues);
@@ -196,27 +190,22 @@ public abstract class HeartRateSensor extends Sensor {
    * @param rawHexValues
    *          raw notification data as hexadecimal from the sensor
    * @return List&lt;Integer&gt; list of all rr intervals (can be none, one or more)
-   * @throws InvalidSensorDataException
-   *           if the input string does not have the expected format
    */
   protected List<Integer> getRRintervals(int index, String rawHexValues) {
     List<Integer> rrIntervals = new ArrayList<Integer>();
-    try {
-      String rrIntervalsHex = rawHexValues.substring(index);
+    String rrIntervalsHex = rawHexValues.substring(index);
 
-      Matcher m = PATTERN_RR.matcher(rrIntervalsHex);
-      while (m.find()) {
-        String tmp = m.group(0);
-        rrIntervals.add(Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16));
-      }
-    } catch (IndexOutOfBoundsException e) {
-      LOG.error("Bad sensor data! Cannot calculate rr intervals.");
+    Matcher m = PATTERN_RR.matcher(rrIntervalsHex);
+    while (m.find()) {
+      String tmp = m.group(0);
+      rrIntervals.add(Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16));
     }
+
     return rrIntervals;
   }
 
-  protected HeartRateSample calculateHeartRateData(String handle, String rawHexValues) {
-    HeartRateSample hrs = new HeartRateSample(this.dtf.print(new DateTime()), this.bdAddress);
+  protected HeartRateSample calculateHeartRateData(String timestamp, String handle, String rawHexValues) {
+    HeartRateSample hrs = new HeartRateSample(timestamp, this.bdAddress);
 
     if (isSkinContactDetectionSupported(rawHexValues)) {
       if (!isSkinContactDetected(rawHexValues)) {

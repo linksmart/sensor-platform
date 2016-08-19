@@ -13,11 +13,11 @@ public interface SensorCommands {
   /**
    * Enable the measurement and notification of the sensor as defined in the settings of the sensor.
    */
-  void enableNotification(BufferedWriter bw, String charWriteCmd, String enableNotification);
+  void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification);
 
   /**
    * Disable the measurement and notification of the sensor previously enabled.
    */
-  void disableNotification(String charWriteCmd, String disableNotification);
+  void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification);
 
 }

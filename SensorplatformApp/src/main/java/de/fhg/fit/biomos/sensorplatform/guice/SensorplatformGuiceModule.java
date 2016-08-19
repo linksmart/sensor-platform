@@ -13,12 +13,11 @@ import com.google.inject.util.Providers;
 import de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
-import de.fhg.fit.biomos.sensorplatform.control.SensorObserver;
 import de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
+import de.fhg.fit.biomos.sensorplatform.restservices.ControllerService;
 import de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService;
 import de.fhg.fit.biomos.sensorplatform.restservices.InfoService;
-import de.fhg.fit.biomos.sensorplatform.restservices.StartupService;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3;
 import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
@@ -36,7 +35,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(StartupService.class);
+    bind(ControllerService.class);
     bind(InfoService.class);
     bind(HeartRateService.class);
 
@@ -77,7 +76,6 @@ public class SensorplatformGuiceModule extends AbstractModule {
 
     bind(HeartRateSampleCollector.class).in(Singleton.class);
     bind(CC2650SampleCollector.class).in(Singleton.class);
-    bind(SensorObserver.class).in(Singleton.class);
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);
     bind(DBcontroller.class).in(Singleton.class);

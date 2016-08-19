@@ -17,29 +17,30 @@ import com.google.inject.Inject;
 
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
 
-@Path("/startup")
-public class StartupService {
+@Path("/controller")
+public class ControllerService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(StartupService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ControllerService.class);
 
   private final Controller controller;
 
   @Inject
-  public StartupService(Controller controller) {
+  public ControllerService(Controller controller) {
     this.controller = controller;
   }
 
-  @Path("/fromwebapp")
+  @Path("/start")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.TEXT_PLAIN)
-  public Response startupFromWebApp(JSONObject request) {
-    LOG.info("/startup/fromwebapp called");
+  public Response start(JSONObject request) {
+    LOG.info("/controller/start called");
     try {
       int uptime = request.getInt("uptime");
       // jetty uses only codehous json library
+      // the rest of the application uses org.json library for cleaner code
       org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configuration").toString());
-      this.controller.startupFromWebConfiguration(uptime * 1000, requestConverted, true);
+      this.controller.startup(uptime * 1000, requestConverted, true);
       return Response.ok().build();
     } catch (JSONException e) {
       e.printStackTrace();
@@ -47,19 +48,14 @@ public class StartupService {
     }
   }
 
-  @Path("/frombuild")
+  @Path("/stop")
   @GET
+  @Consumes(MediaType.TEXT_PLAIN)
   @Produces(MediaType.TEXT_PLAIN)
-  public Response startupFromProjectBuild() {
-    LOG.info("/startup/frombuild called");
-
-    try {
-      this.controller.startupFromProjectBuildConfiguration(true);
-      return Response.ok().build();
-    } catch (RuntimeException e) {
-      e.printStackTrace();
-      return Response.serverError().build();
-    }
+  public Response stop() {
+    LOG.info("/controller/stop called");
+    this.controller.interruptController();
+    return Response.ok().build();
   }
 
 }

@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.util;
+package de.fhg.fit.biomos.sensorplatform.deprecated;
 
 /**
  *

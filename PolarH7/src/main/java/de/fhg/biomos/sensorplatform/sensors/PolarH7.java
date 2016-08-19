@@ -23,8 +23,8 @@ public class PolarH7 extends HeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(PolarH7.class);
 
-  public PolarH7(SensorName name, String bdAddress, AddressType addressType, String timestampFormat, JSONObject sensorConfiguration) {
-    super(name, bdAddress, addressType, timestampFormat, sensorConfiguration);
+  public PolarH7(SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
+    super(name, bdAddress, addressType, sensorConfiguration);
   }
 
   /**
@@ -34,11 +34,11 @@ public class PolarH7 extends HeartRateSensor {
    * @param charWriteCmd
    * @param enableNotification
    */
-  private void enableHeartRateNotification(String charWriteCmd, String enableNotification) {
+  private void enableHeartRateNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     try {
-      this.bw.write(charWriteCmd + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + enableNotification);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + enableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("enable heart rate and rr-interval notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -51,11 +51,11 @@ public class PolarH7 extends HeartRateSensor {
    * @param charWriteCmd
    * @param disableNotification
    */
-  private void disableHeartRateNotification(String charWriteCmd, String disableNotification) {
+  private void disableHeartRateNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      this.bw.write(charWriteCmd + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + disableNotification);
-      this.bw.newLine();
-      this.bw.flush();
+      streamToSensor.write(charWriteCmd + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + disableNotification);
+      streamToSensor.newLine();
+      streamToSensor.flush();
       LOG.info("disable heart rate and rr-interval notification");
     } catch (IOException e) {
       e.printStackTrace();
@@ -63,15 +63,13 @@ public class PolarH7 extends HeartRateSensor {
   }
 
   @Override
-  public void enableNotification(BufferedWriter bw, String charWriteCmd, String enableNotification) {
-    this.bw = bw;
-    enableHeartRateNotification(charWriteCmd, enableNotification);
+  public void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
+    enableHeartRateNotification(streamToSensor, charWriteCmd, enableNotification);
   }
 
   @Override
-  public void disableNotification(String charWriteCmd, String diableNotification) {
-    disableHeartRateNotification(charWriteCmd, diableNotification);
-    this.bw = null;
+  public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String diableNotification) {
+    disableHeartRateNotification(streamToSensor, charWriteCmd, diableNotification);
   }
 
   /**
@@ -81,9 +79,9 @@ public class PolarH7 extends HeartRateSensor {
    * @param rawHexValues
    * @return
    */
-  public HeartRateSample calculateHeartRateSample(String handle, String rawHexValues) {
+  public HeartRateSample calculateHeartRateSample(String timestamp, String handle, String rawHexValues) {
     if (handle.equals(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT)) {
-      return calculateHeartRateData(handle, rawHexValues);
+      return calculateHeartRateData(timestamp, handle, rawHexValues);
     } else {
       LOG.error("unexpected handle address " + handle + " " + rawHexValues);
       return null;
