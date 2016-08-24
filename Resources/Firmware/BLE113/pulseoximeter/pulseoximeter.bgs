@@ -1,0 +1,353 @@
+# ================================================================
+# BLE113 Pulse Oximeter
+# A secure sensor based on whitelist_peripheral example
+# ================================================================
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!! IMPORTANT WHITELISTING NOTE !!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+# The CC254x chipset used in the BLE(D)11x devices has a hardware limitation
+# which prevents a whitelisted private/random address from continuing to match
+# after the remote device changes its address, EVEN IF THE DEVICES ARE BONDED.
+# Whitelisting only matches the address and address type bit pattern transferred
+# over the air, and does not make use of the IRK (identity-resolving key) which
+# would allow the whitelisting filter to "follow" a changing private address.
+#
+# This means that devices which employ the private addressing scheme with a
+# rapid address update interval (most notably ANY IOS DEVICE) cannot be
+# whitelisted using the built-in stack method demonstrated in this example. An
+# alternative method would be to use bonding (as this example does), but write
+# in similar application-level functionality which does not use the stack's
+# whitelisting features but instead simply disconnects immediately (using
+# "connection_disconnect") if a device connects without a valid bond handle.
+# This is effectively what the stack's whitelisting functionality does, just a
+# little bit less efficiently.
+#
+# TO REITERATE: this example will not work with an iPhone/iPad for more than
+# about 15 minutes. As soon as the iOS device updates its private address--
+# which occurs on an interval as well as any time the Bluetooth subsystem is
+# stopped/started, e.g. cycling flight mode--then whitelisting the original
+# address will prevent the device from connecting again.
+#
+# The "address_type" argument to the "system_whitelist_append" command is still
+# useful for whitelisting if the remote device uses static addresses, i.e. an
+# address which is random to the device but does not change often. More info
+# on this is available in the Bluetooth 4.0 Core Spec Vol 3, Part C 10.8.
+
+dim tmp(5)
+dim bond_count
+dim bond_enum_counter
+
+# connection_info structure:
+# - 0: connected/encrypted/bonded flag (bits 0, 1, 2)
+# - 1: disconnection action flags (bit 0 = add to whitelist, bit 1 = resume unfiltered advertising)
+# - 2-7: current or last connected MAC address
+# - 8: current or last connected address type
+# - 9: current or last connected bond handle
+dim connection_info(10)
+
+dim ret_result
+dim ret_value_len
+dim ret_value_data(7)
+
+# temporary buffer used for storing and echoing hex data as ASCII
+dim temp_buf(4)
+
+event system_boot(major, minor, patch, build, ll_version, protocol_version, hw)
+    # welcome banner out UART1/Alt1 @ 115200, no flow control (assuming unmodified hardware.xml)
+    call system_endpoint_tx(system_endpoint_uart1, 41, "\r\nBLE peripheral whitelist demo started\r\n")
+    
+    # enable rising-edge interrupt detection on P0_0 and P0_1
+    # - P0_0 is used to restart advertising without filters if we currently are not
+    # - P0_1 is used to clear all bonding/whitelist info and start fresh
+    call hardware_io_port_config_irq(0, $03, 0)
+
+    # enable bondable mode
+    call sm_set_bondable_mode(1)
+    
+    # initialize connection status to empty (not connected, etc.)
+	memset(connection_info(0), 0, 10)
+	connection_info(9:1) = $ff # bond data is 0xFF to indicate nothing
+    
+    # NOTE: you have to initialize whitelist BEFORE enabling filtering or entering
+    # any advertising/scanning modes
+    
+    # check to see if we have any bond info yet
+    bond_enum_counter = 0
+    call system_endpoint_tx(system_endpoint_uart1, 20, "Current bond count: ")
+    call sm_get_bonds()(bond_count)
+    call system_endpoint_tx(system_endpoint_uart1, 1, bond_count + $30) # convert to ASCII (always 0-8)
+    call system_endpoint_tx(system_endpoint_uart1, 2, "\r\n")
+    
+    # now we use sm_bond_status events defined below to enumerate through all
+    # bonds and load the correct stored addresses from PS keys one at a time
+    
+    # if we don't have any bonds yet, then assume we want to advertise with
+    # no filtering so that any device can connect at will
+    if bond_count = 0 then
+        # advertise without filters
+        call gap_set_filtering(gap_scan_policy_all, gap_adv_policy_all, 0)
+        call gap_set_mode(gap_general_discoverable, gap_undirected_connectable)
+        call system_endpoint_tx(system_endpoint_uart1, 32, "Started UNFILTERED advertising\r\n")
+    end if
+	# update the oxi
+	call hardware_set_soft_timer(32768, 2, 0)
+end
+
+event connection_status(connection, flags, address, address_type, conn_interval, timeout, latency, bonding)
+    if (flags & $05) = $05 then
+        # connection established
+        call system_endpoint_tx(system_endpoint_uart1, 10, "Connected ")
+        
+        # display current bond status
+        if bonding < $ff then
+            call system_endpoint_tx(system_endpoint_uart1, 17, "(already bonded, ")
+            call system_endpoint_tx(system_endpoint_uart1, 1, bonding + $30)
+            call system_endpoint_tx(system_endpoint_uart1, 3, ")\r\n")
+        else
+            call system_endpoint_tx(system_endpoint_uart1, 14, "(not bonded)\r\n")
+        end if
+        
+        # update connection info (connected = true)
+        connection_info(0:1) = connection_info(0:1) | 1
+
+        # clear "disconnection actions" flag so we don't re-use old settings
+        connection_info(1:1) = 0
+
+        # copy address information into placeholders
+        memcpy(connection_info(2), address(0), 6)
+        connection_info(8:1) = address_type
+    end if
+    
+    if (flags & $02) = $02 then
+        # encryption started
+        call system_endpoint_tx(system_endpoint_uart1, 10, "Encrypted ")
+        # display current bond status
+        if bonding < $ff then
+            call system_endpoint_tx(system_endpoint_uart1, 17, "(already bonded, ")
+            call system_endpoint_tx(system_endpoint_uart1, 1, bonding + $30)
+            call system_endpoint_tx(system_endpoint_uart1, 3, ")\r\n")
+        else
+            call system_endpoint_tx(system_endpoint_uart1, 14, "(not bonded)\r\n")
+        end if
+
+        # update connection info (encrypted = true)
+        connection_info(0:1) = connection_info(0:1) | 2
+
+        # cancel the pending one-shot encryption timer, if running
+        call hardware_set_soft_timer(0, 1, 1)
+    else
+        # request encryption if not encrypted already
+        if bonding = $ff then
+            # not bonded or encrypted, so request both
+            call system_endpoint_tx(system_endpoint_uart1, 26, "Requesting encryption...\r\n")
+            call sm_encrypt_start(connection, 1)
+        else
+            # update connection info (bonded = true)
+            connection_info(0:1) = connection_info(0:1) | 4
+            
+            # start one-shot encryption attempt timer in case the remote side
+            # doesn't attempt an encrypted link within 1 second (this might
+            # happen if you bond with a smartphone and then remove the pairing
+            # info from the phone side, but not the local module side)
+            call hardware_set_soft_timer(32768, 1, 1)
+        end if
+    end if
+	
+	# copy bond flag to status buffer
+	connection_info(9:1) = bonding
+end
+
+event hardware_soft_timer(handle)
+    if handle = 1 then
+        call system_endpoint_tx(system_endpoint_uart1, 26, "Requesting encryption...\r\n")
+
+        # other side hasn't tried an encrypted link yet even though we are
+        # bonded as far as we know anyway, so try to start it from this end
+        # ("connection" value here is always 0 since we are a peripheral,
+        # and peripherals only support a single connection at a time)
+        call sm_encrypt_start(0, 1)
+	end if
+	if handle = 2 then
+		tmp(0:1) = $00
+		tmp(1:1) = $00
+		tmp(2:1) = $62
+		tmp(3:1) = $00
+		tmp(4:1) = $3C
+		call attributes_write(c_plx_continuous_measurement, 0, 5, tmp(0:5))
+    end if
+end
+
+event connection_disconnected(handle, result)
+    # disconnected
+    call system_endpoint_tx(system_endpoint_uart1, 14, "Disconnected\r\n")
+
+    if (connection_info(1:1) & $01) > 0 then
+        # add to whitelist
+        call system_whitelist_append(connection_info(2:6), connection_info(8:1))
+        call system_endpoint_tx(system_endpoint_uart1, 29, "Added last MAC to whitelist\r\n")
+    end if
+
+    # restart advertising appropriately based on bond count and "connection" flag
+    if bond_count > 0 && (connection_info(1:1) & $02) = 0 then
+        call gap_set_filtering(gap_scan_policy_all, gap_adv_policy_whitelist_all, 0)
+        call gap_set_mode(gap_general_discoverable, gap_undirected_connectable)
+        call system_endpoint_tx(system_endpoint_uart1, 30, "Started FILTERED advertising\r\n")
+    else
+        # use unfiltered if there are no bonds OR if "connection" = 2
+        # (connection flag set specially in GPIO interrupt handler)
+        call gap_set_filtering(gap_scan_policy_all, gap_adv_policy_all, 0)
+        call gap_set_mode(gap_general_discoverable, gap_undirected_connectable)
+        call system_endpoint_tx(system_endpoint_uart1, 32, "Started UNFILTERED advertising\r\n")
+    end if
+
+    # clear connected/encrypted/bonded status
+    connection_info(0:1) = 0
+end
+
+event sm_bond_status(bond, keysize, mitm, keys)
+    if (connection_info(0:1) & $01) = 0 then
+        # not connected, so that means we're loading at boot
+        # load 6-byte address and 1-byte address_type from PS key
+        call flash_ps_load($8000 + bond)(ret_result, ret_value_len, ret_value_data(0:ret_value_len))
+        call system_endpoint_tx(system_endpoint_uart1, 29, "Loaded MAC/type from PS key\r\n")
+
+        # add to whitelist
+        call system_whitelist_append(ret_value_data(0:6), ret_value_data(6:1))
+        call system_endpoint_tx(system_endpoint_uart1, 26, "Added stored MAC for bond ")
+        call system_endpoint_tx(system_endpoint_uart1, 1, $30 + bond)
+        call system_endpoint_tx(system_endpoint_uart1, 15, " to whitelist\r\n")
+        
+        # increment bond enumeration count and check for completion
+        bond_enum_counter = bond_enum_counter + 1
+        if bond_enum_counter >= bond_count then
+            # start advertising filter whitelist filtering
+            call gap_set_filtering(gap_scan_policy_all, gap_adv_policy_whitelist_all, 0)
+            call gap_set_mode(gap_general_discoverable, gap_undirected_connectable)
+            call system_endpoint_tx(system_endpoint_uart1, 30, "Started FILTERED advertising\r\n")
+        end if
+    else
+        # already connected, so that means we just bonded
+
+        # update connection status (bonded = true)
+        connection_info(0:1) = connection_info(0:1) | 4
+		connection_info(9:1) = bond
+
+        # increment local bond count
+        bond_count = bond_count + 1
+
+        call system_endpoint_tx(system_endpoint_uart1, 20, "Current bond count: ")
+        call system_endpoint_tx(system_endpoint_uart1, 1, bond_count + $30) # convert to ASCII (always 0-8)
+        call system_endpoint_tx(system_endpoint_uart1, 2, "\r\n")
+
+        # set "add-to-whitelist" disconnection action
+        connection_info(1:1) = connection_info(1:1) | 1
+        call system_endpoint_tx(system_endpoint_uart1, 29, "Set 'add-to-whitelist' flag\r\n")
+
+        # store address+type in correct PS key slot
+        call flash_ps_save($8000 + bond, 7, connection_info(2:7))
+        call system_endpoint_tx(system_endpoint_uart1, 29, "Stored MAC/type into PS key\r\n")
+    end if
+end
+
+event sm_bonding_fail(handle, result)
+    # if bonding fails, handle it gracefully based on the following possible results:
+    # - 0x018B - Out of bonds (no space left, all 8 bonding slots taken)
+    # - 0x0205 - Authentication failure (shouldn't happen with "just works" mode, but might otherwise)
+    # - 0x0206 - Pin or key missing (probably local or remote device is missing the key, but not both)
+    # - 0x0301 - Passkey entry failed (also shouldn't happen in "just works" mode unless bonding is cancelled)
+    # - 0x0302 - OOB data not available (only occurs if OOB is required and not supported on both ends)
+    # - 0x0303 - Authentication requirements (I/O capabilities required but not supported)
+    # - 0x0304 - Confirm value failed (PIN entry/comparison attempted but failed)
+    # - 0x0305 - Pairing not supported (also occurs if bond info removed from remote device but not local module)
+    # - 0x0306 - Encryption key size (key size insufficient to meet security requirements)
+    # - 0x0307 - Command not supported (SMP command is not supported on this device)
+    # - 0x0308 - Unspecified reason (may occur if bond info is present remotely but not locally)
+    # - 0x0309 - Repeated attempts (too little time has elapsed since last pairing/security request)
+    # - 0x030A - Invalid parameters (bad parameters sent during pairing/bonding process)
+    call system_endpoint_tx(system_endpoint_uart1, 16, "Bonding failed: ")
+    temp_buf(0:1) = ((result >> 12) & $f) + 48 + ((result >> 12) & $f)/10*7
+    temp_buf(1:1) = ((result >> 8) & $f) + 48 + ((result >> 8) & $f)/10*7
+    temp_buf(2:1) = ((result >> 4) & $f) + 48 + ((result >> 4) & $f)/10*7
+    temp_buf(3:1) = (result & $f) + 48 + (result & $f)/10*7
+    call system_endpoint_tx(system_endpoint_uart1, 4, temp_buf(0:4))
+    call system_endpoint_tx(system_endpoint_uart1, 2, "\r\n")
+    
+    # NOTE: the most common cases you need to take care of are:
+    # - 0x018B, which means you ran out of space and must remove at least one bond in order to bond again
+    # - 0x0206, which typically means the pairing info was removed on the remote device but not locally
+    # - 0x0301, which typically means the user cancelled the pairing request or entered the wrong passkey
+    # - 0x0305, which is like 0x0206 but is often generated instead if the remote device is a smartphone
+    # - 0x0308, which typically means the pairing info was removed on the local device but not remotely
+    if result = $018b then
+        # only solved by removing bonds
+        call system_endpoint_tx(system_endpoint_uart1, 33, "Out of bonds, clear bonds first\r\n")
+    end if
+    if result = $0301 then
+        # usually solved simply by trying again
+        call system_endpoint_tx(system_endpoint_uart1, 33, "Passkey/confirm issue, retry...\r\n")
+        call sm_encrypt_start(0, 1)
+    end if
+    if result = $0305 || result = $0206 then
+        # remove local bonding info first, then the remote device needs to reconnect
+        call system_endpoint_tx(system_endpoint_uart1, 39, "Local bond info issue, remove/disc...\r\n")
+        bond_count = bond_count - 1
+        call flash_ps_erase($8000 + handle)
+		if connection_info(9:1) != $ff then
+			call sm_delete_bonding(connection_info(9:1))
+		end if
+        call connection_disconnect(0)
+    end if
+    if result = $0308 then
+        # remove remote bonding info first, then the remote device needs to reconnect
+        call system_endpoint_tx(system_endpoint_uart1, 38, "Remote bond info issue, remove first\r\n")
+        call connection_disconnect(0)
+    end if
+end
+
+event hardware_io_port_status(timestamp, port, irq, state)
+    if port = 0 && irq = $01 then
+        # P0_0 button pressed
+        if (connection_info(0:1) & $01) = 0 then
+            # not currently connected, so do this immediately here (stop/restart)
+            call gap_set_mode(0, 0)
+            call gap_set_filtering(gap_scan_policy_all, gap_adv_policy_all, 0)
+            call gap_set_mode(gap_general_discoverable, gap_undirected_connectable)
+            call system_endpoint_tx(system_endpoint_uart1, 32, "Started UNFILTERED advertising\r\n")
+        else
+            # currently connected, so disconnect and let "connection_disconnected" event handle it
+            connection_info(1:1) = connection_info(1:1) | 2
+            call system_endpoint_tx(system_endpoint_uart1, 35, "Set 'unfiltered-advertising' flag\r\n")
+            call connection_disconnect(0)
+        end if
+    end if
+    
+    if port = 0 && irq = $02 then
+        # P0_1 button pressed
+        
+        # stop advertising if we are already
+        call gap_set_mode(0, 0)
+
+        # indiscriminately remove all possible bonds
+        call sm_delete_bonding($ff)
+        
+        # clear whitelist
+        call system_whitelist_clear()
+        call system_endpoint_tx(system_endpoint_uart1, 29, "All bonds/whitelist cleared\r\n")
+        
+        # reset bond count
+        bond_count = 0
+
+        # start/resume advertising as necessary
+        if (connection_info(0:1) & $01) = 0 then
+            # not currently connected, so do this immediately here
+            call gap_set_filtering(gap_scan_policy_all, gap_adv_policy_all, 0)
+            call gap_set_mode(gap_general_discoverable, gap_undirected_connectable)
+            call system_endpoint_tx(system_endpoint_uart1, 32, "Started UNFILTERED advertising\r\n")
+        else
+            # disconnect, which will trigger "connection_disconnected" event and do the above automatically
+            call connection_disconnect(0)
+        end if
+    end if
+end

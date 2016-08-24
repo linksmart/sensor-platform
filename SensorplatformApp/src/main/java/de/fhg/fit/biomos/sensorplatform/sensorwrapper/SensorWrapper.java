@@ -1,31 +1,21 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
+import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
-import de.fhg.fit.biomos.sensorplatform.util.GatttoolSecurityLevel;
-import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
 public interface SensorWrapper {
 
-  public String getBDaddress();
+  public Sensor getSensor();
 
-  public SensorName getDeviceName();
-
-  public Gatttool.State getGatttoolInternalState();
-
-  public void setSecurityLevel(GatttoolSecurityLevel secLevel);
-
-  public boolean connectToSensorBlocking(int timeout);
-
-  public void reconnectToSensor();
+  public Gatttool getGatttool();
 
   public void enableLogging();
 
   public void disableLogging();
-
-  public void disconnectBlocking();
-
-  public void disconnect();
-
-  public void shutdown();
 
 }

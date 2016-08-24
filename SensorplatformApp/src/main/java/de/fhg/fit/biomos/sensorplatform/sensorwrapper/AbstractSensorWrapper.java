@@ -4,72 +4,61 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
-import de.fhg.fit.biomos.sensorplatform.tools.Gatttool.State;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
-import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.GatttoolSecurityLevel;
 
 /**
  *
  * @author Daniel Pyka
  *
  */
-public abstract class AbstractSensorWrapper implements SensorWrapper, SensorNotificationDataObserver {
-
-  protected final Gatttool gatttool;
+public abstract class AbstractSensorWrapper<T extends Sensor> implements SensorWrapper, SensorNotificationDataObserver {
 
   protected final DateTimeFormatter dtf;
+
   protected long lastNotificationTimestamp;
+  protected Gatttool gatttool;
 
-  public AbstractSensorWrapper(AddressType addressType, String bdAddress, String timestampFormat) {
+  protected final T sensor;
 
-    this.gatttool = new GatttoolImpl(addressType, bdAddress);
+  public AbstractSensorWrapper(T sensor, String timestampFormat) {
+    this.sensor = sensor;
+    this.dtf = DateTimeFormat.forPattern(timestampFormat).withZone(DateTimeZone.UTC);
+    this.gatttool = new GatttoolImpl(sensor.getBDaddress(), sensor.getAddressType(), sensor.getSecurityLevel());
     this.gatttool.addObs(this);
     new Thread(this.gatttool).start();
+  }
 
-    this.dtf = DateTimeFormat.forPattern(timestampFormat).withZone(DateTimeZone.UTC);
+  @Override
+  public void enableLogging() {
+    this.sensor.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
     this.lastNotificationTimestamp = System.currentTimeMillis();
   }
 
   @Override
-  public State getGatttoolInternalState() {
-    return this.gatttool.getInternalState();
+  public void disableLogging() {
+    this.sensor.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
   }
 
   @Override
-  public void setSecurityLevel(GatttoolSecurityLevel secLevel) {
-    this.gatttool.setSecurityLevel(secLevel);
+  public Sensor getSensor() {
+    return this.sensor;
   }
 
   @Override
-  public boolean connectToSensorBlocking(int timeout) {
-    return this.gatttool.connectBlocking(timeout);
-  }
-
-  @Override
-  public void reconnectToSensor() {
-    this.gatttool.reconnect();
-  }
-
-  @Override
-  public void disconnectBlocking() {
-    this.gatttool.disconnectBlocking();
-  }
-
-  @Override
-  public void disconnect() {
-    this.gatttool.disconnect();
-  }
-
-  @Override
-  public void shutdown() {
-    this.gatttool.exitGatttool();
+  public Gatttool getGatttool() {
+    return this.gatttool;
   }
 
   @Override
   public long getLastNotifactionTimestamp() {
     return this.lastNotificationTimestamp;
+  }
+
+  @Override
+  public String toString() {
+    return this.sensor.getBDaddress() + " " + this.sensor.getName();
   }
 
 }

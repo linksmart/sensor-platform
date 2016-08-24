@@ -13,6 +13,7 @@ import com.google.inject.util.Providers;
 import de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
+import de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
 import de.fhg.fit.biomos.sensorplatform.restservices.ControllerService;
@@ -75,6 +76,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
     }
 
     bind(HeartRateSampleCollector.class).in(Singleton.class);
+    bind(PulseOximeterSampleCollector.class).in(Singleton.class);
     bind(CC2650SampleCollector.class).in(Singleton.class);
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);

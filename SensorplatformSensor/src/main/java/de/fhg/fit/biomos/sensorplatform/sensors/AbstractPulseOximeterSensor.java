@@ -1,0 +1,115 @@
+package de.fhg.fit.biomos.sensorplatform.sensors;
+
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample;
+import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
+import de.fhg.fit.biomos.sensorplatform.util.SensorName;
+
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
+public abstract class AbstractPulseOximeterSensor extends Sensor implements PulseOximeterSensor {
+
+  private static final Logger LOG = LoggerFactory.getLogger(AbstractPulseOximeterSensor.class);
+
+  public AbstractPulseOximeterSensor(SensorName name, String bdAddress, AddressType addressType, SecurityLevel securityLevel, JSONObject settings) {
+    super(name, bdAddress, addressType, securityLevel, settings);
+  }
+
+  @Override
+  public boolean hasSpO2PRfastField(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return false;
+  }
+
+  @Override
+  public boolean hasSpO2PRslowField(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return false;
+  }
+
+  @Override
+  public boolean hasMeasurementStatusField(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return false;
+  }
+
+  @Override
+  public boolean hasDeviceAndSensorStatusField(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return false;
+  }
+
+  @Override
+  public boolean hasPulseAmplitudeIndexField(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return false;
+  }
+
+  @Override
+  public int getSpO2PRnormalSpO2(String rawHexValues) {
+    return Integer.parseInt(rawHexValues.substring(3, 8).replace(" ", ""), 16);
+  }
+
+  @Override
+  public int getSpO2PRnormalPulseRate(String rawHexValues) {
+    return Integer.parseInt(rawHexValues.substring(9, 14).replace(" ", ""), 16);
+  }
+
+  @Override
+  public int getSpO2PRfastSpO2(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return 0;
+  }
+
+  @Override
+  public int getSpO2PRfastPulseRate(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return 0;
+  }
+
+  @Override
+  public int getSpO2PRslowSpO2(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return 0;
+  }
+
+  @Override
+  public int getSpO2PRslowPulseRate(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return 0;
+  }
+
+  @Override
+  public short getMeasurementStatus(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return 0;
+  }
+
+  @Override
+  public short getDeviceAndSensorStatus(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return 0;
+  }
+
+  @Override
+  public short getPulseAmplitudeIndex(String rawHexValues) {
+    LOG.error("not yet implemented");
+    return 0;
+  }
+
+  @Override
+  public PulseOximeterSample calculatePulseOximeterData(String timestamp, String rawHexValues) {
+    PulseOximeterSample sample = new PulseOximeterSample(timestamp, this.bdAddress);
+    sample.setPulseRate(getSpO2PRnormalPulseRate(rawHexValues));
+    sample.setSpO2(getSpO2PRnormalSpO2(rawHexValues));
+    return sample;
+  }
+
+}

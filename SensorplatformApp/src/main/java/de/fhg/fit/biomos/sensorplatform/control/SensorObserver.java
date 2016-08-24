@@ -18,13 +18,13 @@ public class SensorObserver implements Runnable {
 
   private static final Logger LOG = LoggerFactory.getLogger(SensorObserver.class);
 
-  private final List<AbstractSensorWrapper> wrapperWithLostSensor = new ArrayList<AbstractSensorWrapper>();
+  private final List<AbstractSensorWrapper<?>> wrapperWithLostSensor = new ArrayList<AbstractSensorWrapper<?>>();
 
-  private final List<AbstractSensorWrapper> swList;
+  private final List<AbstractSensorWrapper<?>> swList;
 
   private final int noNotificationTriggerTime;
 
-  public SensorObserver(int noNotificationTriggerTime, List<AbstractSensorWrapper> swList) {
+  public SensorObserver(int noNotificationTriggerTime, List<AbstractSensorWrapper<?>> swList) {
     this.noNotificationTriggerTime = noNotificationTriggerTime;
     this.swList = swList;
   }
@@ -34,12 +34,12 @@ public class SensorObserver implements Runnable {
     LOG.info("start observing");
     while (!Thread.currentThread().isInterrupted()) {
       long currentTime = System.currentTimeMillis();
-      for (AbstractSensorWrapper sw : this.swList) {
-        if ((currentTime - sw.getLastNotifactionTimestamp()) > (this.noNotificationTriggerTime * 1000)) {
-          if (!this.wrapperWithLostSensor.contains(sw)) {
-            this.wrapperWithLostSensor.add(sw);
-            LOG.warn(sw.toString() + "did not send a notification within " + this.noNotificationTriggerTime + "s");
-            sw.disconnectBlocking();
+      for (AbstractSensorWrapper<?> asw : this.swList) {
+        if ((currentTime - asw.getLastNotifactionTimestamp()) > (this.noNotificationTriggerTime * 1000)) {
+          if (!this.wrapperWithLostSensor.contains(asw)) {
+            this.wrapperWithLostSensor.add(asw);
+            LOG.warn(asw.toString() + "did not send a notification within " + this.noNotificationTriggerTime + "s");
+            asw.getGatttool().disconnectBlocking();
             try {
               Thread.sleep(2000); // give bluez time to update itself
             } catch (InterruptedException e) {
@@ -49,19 +49,19 @@ public class SensorObserver implements Runnable {
         }
       }
       if (!this.wrapperWithLostSensor.isEmpty()) {
-        for (Iterator<AbstractSensorWrapper> iterator = this.wrapperWithLostSensor.iterator(); iterator.hasNext();) {
-          AbstractSensorWrapper sw = iterator.next();
-          switch (sw.getGatttoolInternalState()) {
+        for (Iterator<AbstractSensorWrapper<?>> iterator = this.wrapperWithLostSensor.iterator(); iterator.hasNext();) {
+          AbstractSensorWrapper<?> asw = iterator.next();
+          switch (asw.getGatttool().getInternalState()) {
             case RECONNECTING:
               break;
             case DISCONNECTED:
-              sw.reconnectToSensor();
-              LOG.info(sw.toString() + " (still) not connected");
+              asw.getGatttool().reconnect();
+              LOG.info(asw.toString() + " (still) not connected");
               break;
             case CONNECTED:
-              sw.enableLogging();
+              asw.enableLogging();
               iterator.remove();
-              LOG.info(sw.toString() + " reconnected successfully");
+              LOG.info(asw.toString() + " reconnected successfully");
               break;
           }
         }

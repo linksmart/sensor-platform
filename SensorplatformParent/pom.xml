@@ -97,6 +97,7 @@
         <module>../PolarH7</module>
         <module>../TomTomHRM</module>
         <module>../AdidasMiCoachHRM</module>
+        <module>../BLE113</module>
         <module>../SensorplatformApp</module>
     </modules>
 
@@ -125,6 +126,11 @@
             <dependency>
                 <groupId>de.fhg.fit.biomos</groupId>
                 <artifactId>AdidasMiCoachHRM</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.fhg.fit.biomos</groupId>
+                <artifactId>BLE113</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -215,6 +221,26 @@
             </dependency-->
         </dependencies>
     </dependencyManagement>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+                    <docletArtifact>
+                        <groupId>org.umlgraph</groupId>
+                        <artifactId>umlgraph</artifactId>
+                        <version>5.6</version>
+                    </docletArtifact>
+                    <additionalparam>-views -all</additionalparam>
+                    <useStandardDocletOptions>true</useStandardDocletOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <build>
         <plugins>

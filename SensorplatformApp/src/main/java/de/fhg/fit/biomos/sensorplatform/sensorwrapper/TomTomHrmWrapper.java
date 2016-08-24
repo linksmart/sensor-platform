@@ -1,38 +1,25 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
+import de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM;
-import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
-import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
  *
  * @author Daniel Pyka
  *
  */
-public class TomTomHrmWrapper extends AbstractHeartRateSensorWrapper {
+public class TomTomHrmWrapper extends AbstractHeartRateSensorWrapper<TomTomHRM> {
 
-  // private static final Logger LOG = LoggerFactory.getLogger(TomTomHrmWrapper.class);
-
-  private final TomTomHRM tomtomhrm;
+  private static final Logger LOG = LoggerFactory.getLogger(TomTomHrmWrapper.class);
 
   public TomTomHrmWrapper(TomTomHRM tomtomhrm, String timeStampFormat, HeartRateSampleCollector hrsCollector) {
-    super(tomtomhrm.getAddressType(), tomtomhrm.getBDaddress(), timeStampFormat, hrsCollector);
-    this.tomtomhrm = tomtomhrm;
-  }
-
-  @Override
-  public void enableLogging() {
-    this.tomtomhrm.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
-    this.lastNotificationTimestamp = System.currentTimeMillis();
-  }
-
-  @Override
-  public void disableLogging() {
-    this.tomtomhrm.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
+    super(tomtomhrm, timeStampFormat, hrsCollector);
   }
 
   @Override
@@ -40,26 +27,13 @@ public class TomTomHrmWrapper extends AbstractHeartRateSensorWrapper {
     // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    HeartRateSample hrs = this.tomtomhrm.calculateHeartRateSample(this.dtf.print(new DateTime()), handle, rawHexValues);
-
-    if (this.hrsCollector != null) {
+    if (handle.equals(TomTomHRMlib.HANDLE_HEART_RATE_MEASUREMENT)) {
+      HeartRateSample hrs = this.sensor.calculateHeartRateData(this.dtf.print(new DateTime()), rawHexValues);
       this.hrsCollector.addToQueue(hrs);
+    } else {
+      LOG.error("unexpected handle address " + handle + " " + rawHexValues);
     }
-  }
 
-  @Override
-  public String getBDaddress() {
-    return this.tomtomhrm.getBDaddress();
-  }
-
-  @Override
-  public SensorName getDeviceName() {
-    return this.tomtomhrm.getName();
-  }
-
-  @Override
-  public String toString() {
-    return this.tomtomhrm.getBDaddress() + " " + this.tomtomhrm.getName();
   }
 
 }

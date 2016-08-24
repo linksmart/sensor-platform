@@ -33,6 +33,10 @@
             <artifactId>AdidasMiCoachHRM</artifactId>
         </dependency>
         <dependency>
+            <groupId>de.fhg.fit.biomos</groupId>
+            <artifactId>BLE113</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>

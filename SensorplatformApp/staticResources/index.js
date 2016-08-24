@@ -1,12 +1,10 @@
 var exampleConfig = [{
 	"name" : "PolarH7",
 	"bdaddress" : "00:22:D0:AA:1F:B1",
-	"addresstype" : "PUBLIC",
 	"settings" : {}
 }, {
 	"name" : "CC2650",
 	"bdaddress" : "A0:E6:F8:B6:37:05",
-	"addresstype" : "PUBLIC",
 	"settings" : {
 		"irtemperature" : "64",
 		"humidity" : "64",

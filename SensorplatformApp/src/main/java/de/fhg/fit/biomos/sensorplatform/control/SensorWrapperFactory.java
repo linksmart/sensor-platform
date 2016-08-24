@@ -11,21 +11,22 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import de.fhg.biomos.sensorplatform.sensors.PolarH7;
 import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
+import de.fhg.fit.biomos.sensorplatform.sensor.BLE113;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
 import de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM;
+import de.fhg.fit.biomos.sensorplatform.sensors.PolarH7;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AdidasHrmWrapper;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.BLE113SensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.PolarH7Wrapper;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.TomTomHrmWrapper;
-import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
- * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory.<br>
- * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that.
+ * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory. The class <b>must</b> be used as a
+ * singleton. Configured with <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -40,57 +41,71 @@ public class SensorWrapperFactory {
   public static final String SETTINGS = "settings";
 
   private final HeartRateSampleCollector hrsCollector;
+  private final PulseOximeterSampleCollector pulseCollector;
   private final CC2650SampleCollector cc2650Collector;
 
   private final String databaseTimeStampFormat;
 
   @Inject
-  public SensorWrapperFactory(HeartRateSampleCollector hrsCollector, CC2650SampleCollector cc2650Collector,
+  public SensorWrapperFactory(HeartRateSampleCollector hrsCollector, CC2650SampleCollector cc2650Collector, PulseOximeterSampleCollector pulseCollector,
       @Named("database.timestamp.format") String databaseTimeStampFormat) {
     this.hrsCollector = hrsCollector;
     this.cc2650Collector = cc2650Collector;
+    this.pulseCollector = pulseCollector;
     this.databaseTimeStampFormat = databaseTimeStampFormat;
   }
 
   /**
    *
-   * @return List&lt;Sensor&gt; List of sensors the sensorplatform will work with
+   * @param sensorConfiguration
+   *          configuration from the web application.
+   * @return A list of all sensorwrappers to use during recording.
    */
-  public List<AbstractSensorWrapper> createSensorWrapper(JSONArray sensorConfiguration) {
+  public List<AbstractSensorWrapper<?>> createSensorWrapper(JSONArray sensorConfiguration) {
     LOG.info("creating sensorwrappers");
-    List<AbstractSensorWrapper> sensorWrapperList = new ArrayList<AbstractSensorWrapper>();
+    List<AbstractSensorWrapper<?>> sensorWrapperList = new ArrayList<AbstractSensorWrapper<?>>();
     for (int i = 0; i < sensorConfiguration.length(); i++) {
 
-      JSONObject sensorConfigEntry = sensorConfiguration.getJSONObject(i);
-      SensorName name = SensorName.valueOf(sensorConfigEntry.getString(NAME));
-      String bdAddress = sensorConfigEntry.getString(BDADDRESS);
-      AddressType addressType = AddressType.valueOf(sensorConfigEntry.getString(ADDRESSTYPE));
-      JSONObject settings = sensorConfigEntry.getJSONObject(SETTINGS);
+      try {
+        JSONObject sensorConfigEntry = sensorConfiguration.getJSONObject(i);
+        SensorName name = SensorName.valueOf(sensorConfigEntry.getString(NAME));
+        String bdAddress = sensorConfigEntry.getString(BDADDRESS);
+        JSONObject settings = sensorConfigEntry.getJSONObject(SETTINGS);
 
-      AbstractSensorWrapper sensorWrapper = null;
-      switch (name) {
-        case PolarH7:
-          sensorWrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, addressType, settings), this.databaseTimeStampFormat, this.hrsCollector);
-          break;
-        case AdidasHRM:
-          sensorWrapper = new AdidasHrmWrapper(new AdidasMiCoachHRM(name, bdAddress, addressType, settings), this.databaseTimeStampFormat, this.hrsCollector);
-          break;
-        case TomTomHRM:
-          sensorWrapper = new TomTomHrmWrapper(new TomTomHRM(name, bdAddress, addressType, settings), this.databaseTimeStampFormat, this.hrsCollector);
-          break;
-        case CC2650:
-          sensorWrapper = new CC2650Wrapper(new CC2650(name, bdAddress, addressType, settings), this.databaseTimeStampFormat, this.cc2650Collector);
-          break;
-        case BLE113:
-          // TODO
-          break;
-        default:
-          LOG.error("unknown sensor name " + name);
-          break;
-      }
-
-      if (sensorWrapper != null) {
-        sensorWrapperList.add(sensorWrapper);
+        switch (name) {
+          case PolarH7:
+            PolarH7Wrapper polarh7Wrapper = new PolarH7Wrapper(new PolarH7(name, bdAddress, settings), this.databaseTimeStampFormat, this.hrsCollector);
+            this.hrsCollector.setStartFlag(true);
+            sensorWrapperList.add(polarh7Wrapper);
+            break;
+          case AdidasHRM:
+            AdidasHrmWrapper adidasHrmWrapper = new AdidasHrmWrapper(new AdidasMiCoachHRM(name, bdAddress, settings), this.databaseTimeStampFormat,
+                this.hrsCollector);
+            this.hrsCollector.setStartFlag(true);
+            sensorWrapperList.add(adidasHrmWrapper);
+            break;
+          case TomTomHRM:
+            TomTomHrmWrapper tomtomHrmWrapper = new TomTomHrmWrapper(new TomTomHRM(name, bdAddress, settings), this.databaseTimeStampFormat, this.hrsCollector);
+            this.hrsCollector.setStartFlag(true);
+            sensorWrapperList.add(tomtomHrmWrapper);
+            break;
+          case CC2650:
+            CC2650Wrapper cc2650Wrapper = new CC2650Wrapper(new CC2650(name, bdAddress, settings), this.databaseTimeStampFormat, this.cc2650Collector);
+            this.cc2650Collector.setStartFlag(true);
+            sensorWrapperList.add(cc2650Wrapper);
+            break;
+          case BLE113:
+            BLE113SensorWrapper ble113Wrapper = new BLE113SensorWrapper(new BLE113(name, bdAddress, settings), this.databaseTimeStampFormat,
+                this.pulseCollector);
+            this.pulseCollector.setStartFlag(true);
+            sensorWrapperList.add(ble113Wrapper);
+            break;
+          default:
+            LOG.error("unknown sensor name " + name);
+            break;
+        }
+      } catch (Exception e) {
+        LOG.error("bad json fields - skip this sensor", e);
       }
     }
     LOG.info("finished creating sensorwrappers");

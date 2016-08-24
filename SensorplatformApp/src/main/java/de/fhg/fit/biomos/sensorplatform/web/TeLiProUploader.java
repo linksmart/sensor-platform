@@ -46,7 +46,6 @@ public class TeLiProUploader implements Uploader {
 
   private final String loginAddress;
   private final String dataAddress;
-  private final String dataDownloadAddress;
 
   private String authorizationToken = "";
 
@@ -56,24 +55,16 @@ public class TeLiProUploader implements Uploader {
   public TeLiProUploader(@Named("webinterface.name") String webinterfaceName, @Named("webinterface.username") String userName,
       @Named("webinterface.password") String password, @Named("http.useragent.boardname") String userAgent,
       @Named("webinterface.timestamp.format") String timestampFormat, @Named("webinterface.login.url") String loginAddress,
-      @Named("webinterface.data.url") String dataAddress, @Named("webinterface.data.download.url") String dataDownloadAddress) {
+      @Named("webinterface.data.url") String dataAddress) {
     this.webinterfaceName = webinterfaceName;
     this.userName = userName;
-    LOG.info("username: " + this.userName);
     this.password = password;
-    LOG.info("password: " + this.password);
     this.userAgent = userAgent + " " + System.getProperty("os.name") + " " + System.getProperty("os.arch") + " " + System.getProperty("os.version");
-    LOG.info("user agent: " + this.userAgent);
 
     this.dtf = DateTimeFormat.forPattern(timestampFormat).withZone(DateTimeZone.UTC);
-    LOG.info("timestamp pattern: " + timestampFormat);
 
     this.loginAddress = loginAddress;
-    LOG.info("login address: " + this.loginAddress);
     this.dataAddress = dataAddress;
-    LOG.info("data address: " + this.dataAddress);
-    this.dataDownloadAddress = dataDownloadAddress;
-    LOG.info("download address: " + this.dataDownloadAddress);
 
     this.httpclient = HttpClients.createDefault();
   }
@@ -85,10 +76,13 @@ public class TeLiProUploader implements Uploader {
 
   /**
    * Only for testing! Download samples needs authorisation, too. Got some troubles using a REST-client. Therefor this piece of code is added by hand.
+   *
+   * @param webinterfaceDataDownloadURL
+   *          the GET url with parameters what to download
    */
   @Deprecated
-  public void downloadData() {
-    HttpGet get = new HttpGet(this.dataDownloadAddress);
+  public void downloadData(String webinterfaceDataDownloadURL) {
+    HttpGet get = new HttpGet(webinterfaceDataDownloadURL);
     get.setHeader("Authorization", this.authorizationToken);
 
     try {

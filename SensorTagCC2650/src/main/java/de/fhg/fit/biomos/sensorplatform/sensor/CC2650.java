@@ -15,12 +15,12 @@ import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
 import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
  * @see <a href="http://processors.wiki.ti.com/index.php/CC2650_SensorTag_User's_Guide">CC2650 SensorTag User's Guide</a>
  *
- * @see {@link de.fhg.fit.biomos.sensorplatform.gatt.sensortag.CC2650lib}
  *
  * @author Daniel Pyka
  *
@@ -37,8 +37,11 @@ public class CC2650 extends Sensor {
 
   private static final int ACCELERATION_RESOLUTION = 16;
 
-  public CC2650(SensorName name, String bdAddress, AddressType addressType, JSONObject settings) {
-    super(name, bdAddress, addressType, settings);
+  private static final AddressType addressType = AddressType.PUBLIC;
+  private static final SecurityLevel securityLevel = SecurityLevel.LOW;
+
+  public CC2650(SensorName name, String bdAddress, JSONObject settings) {
+    super(name, bdAddress, addressType, securityLevel, settings);
   }
 
   /**
@@ -390,8 +393,6 @@ public class CC2650 extends Sensor {
    */
   private float getRotationZ(String data) {
     return Integer.parseInt(data.substring(10, 12) + data.substring(8, 10), 16) * 1.0f / (65536 / 500);
-    // legacy TODO compare/test
-    // Math.round((Integer.parseInt(data.substring(10, 12) + data.substring(8, 10), 16) * 1.0f) / (65536 / 500) * 100) / 100.0f;
   }
 
   /**
@@ -462,6 +463,15 @@ public class CC2650 extends Sensor {
     return Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
   }
 
+  /**
+   * Calculate a temperature sample for the given notification data.
+   *
+   * @param timestamp
+   *          the current timestamp from the sensorwrapper.
+   * @param data
+   *          sensor notification data without spaces
+   * @return CC2650TemperatureSample
+   */
   public CC2650TemperatureSample calculateTemperatureData(String timestamp, String data) {
     CC2650TemperatureSample temperatureSample = new CC2650TemperatureSample(timestamp, this.bdAddress);
     temperatureSample.setObjectTemperature(getIRtemperatureFromTemperatureSensor(data));
@@ -469,6 +479,15 @@ public class CC2650 extends Sensor {
     return temperatureSample;
   }
 
+  /**
+   * Calculate a humidity sample for the given notification data.
+   *
+   * @param timestamp
+   *          the current timestamp from the sensorwrapper.
+   * @param data
+   *          sensor notification data without spaces
+   * @return CC2650HumiditySample
+   */
   public CC2650HumiditySample calculateHumidityData(String timestamp, String data) {
     CC2650HumiditySample humiditySample = new CC2650HumiditySample(timestamp, this.bdAddress);
     humiditySample.setTemperature(getTemperatureFromHumiditySensor(data));
@@ -476,6 +495,15 @@ public class CC2650 extends Sensor {
     return humiditySample;
   }
 
+  /**
+   * Calculate a pressure sample for the given notification data.
+   *
+   * @param timestamp
+   *          the current timestamp from the sensorwrapper.
+   * @param data
+   *          sensor notification data without spaces
+   * @return CC2650PressureSample
+   */
   public CC2650PressureSample calculatePressureData(String timestamp, String data) {
     CC2650PressureSample pressureSample = new CC2650PressureSample(timestamp, this.bdAddress);
     pressureSample.setTemperature(getTemperatureFromBarometricPressureSensor(data));
@@ -483,12 +511,30 @@ public class CC2650 extends Sensor {
     return pressureSample;
   }
 
+  /**
+   * Calculate a ambient light sample for the given notification data.
+   *
+   * @param timestamp
+   *          the current timestamp from the sensorwrapper.
+   * @param data
+   *          sensor notification data without spaces
+   * @return CC2650AmbientlightSample
+   */
   public CC2650AmbientlightSample calculateAmbientlightData(String timestamp, String data) {
     CC2650AmbientlightSample ambientlightSample = new CC2650AmbientlightSample(timestamp, this.bdAddress);
     ambientlightSample.setAmbientlight(getAmbientLight(data));
     return ambientlightSample;
   }
 
+  /**
+   * Calculate a movement light sample for the given notification data.
+   *
+   * @param timestamp
+   *          the current timestamp from the sensorwrapper.
+   * @param data
+   *          sensor notification data without spaces
+   * @return CC2650MovementSample
+   */
   public CC2650MovementSample calculateMovementSample(String timestamp, String data) {
     CC2650MovementSample movementSample = new CC2650MovementSample(timestamp, this.bdAddress);
     movementSample.setRotationX(getRotationX(data));

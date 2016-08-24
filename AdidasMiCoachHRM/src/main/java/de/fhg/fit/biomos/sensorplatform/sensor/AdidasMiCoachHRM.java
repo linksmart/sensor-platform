@@ -8,23 +8,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib;
-import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
-import de.fhg.fit.biomos.sensorplatform.sensors.HeartRateSensor;
+import de.fhg.fit.biomos.sensorplatform.sensors.AbstractHeartRateSensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
- * @see {@link de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib}
  *
  * @author Daniel Pyka
  *
  */
-public class AdidasMiCoachHRM extends HeartRateSensor {
+public class AdidasMiCoachHRM extends AbstractHeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(AdidasMiCoachHRMlib.class);
 
-  public AdidasMiCoachHRM(SensorName name, String bdAddress, AddressType addressType, JSONObject sensorConfiguration) {
-    super(name, bdAddress, addressType, sensorConfiguration);
+  private static final AddressType addressType = AddressType.STATIC;
+  private static final SecurityLevel securityLevel = SecurityLevel.LOW;
+
+  public AdidasMiCoachHRM(SensorName name, String bdAddress, JSONObject sensorConfiguration) {
+    super(name, bdAddress, addressType, securityLevel, sensorConfiguration);
   }
 
   /**
@@ -64,15 +66,6 @@ public class AdidasMiCoachHRM extends HeartRateSensor {
   @Override
   public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     disableHeartRateNotification(streamToSensor, charWriteCmd, disableNotification);
-  }
-
-  public HeartRateSample calculateHeartRateSample(String timestamp, String handle, String rawHexValues) {
-    if (handle.equals(AdidasMiCoachHRMlib.HANDLE_HEART_RATE_MEASUREMENT)) {
-      return calculateHeartRateData(timestamp, handle, rawHexValues);
-    } else {
-      LOG.error("unexpected handle address " + handle + " " + rawHexValues);
-      return null;
-    }
   }
 
 }

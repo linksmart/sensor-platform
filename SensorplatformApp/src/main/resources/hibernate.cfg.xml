@@ -12,12 +12,13 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="show_sql">false</property>
 
-        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample" />
-        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample" />
-        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample" />
-        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample" />
-        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample" />
-        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample" />
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample"/>
     </session-factory>
 </hibernate-configuration>
 

@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Simple class for logging sensor values to a file.
  *
  * @author Daniel Pyka
  *
@@ -43,19 +42,11 @@ public class TextFileLogger {
     this.pw.flush();
   }
 
-  /**
-   * Write a line to the log file. Adds timestamp to the value. Always flushes the stream to persist the data.<br>
-   *
-   * @param value
-   */
   public void writeLine(String line) {
     this.pw.println(line);
     this.pw.flush();
   }
 
-  /**
-   * Close the stream to the log file gracefully.
-   */
   public void close() {
     LOG.info("closing file logger");
     this.pw.flush();

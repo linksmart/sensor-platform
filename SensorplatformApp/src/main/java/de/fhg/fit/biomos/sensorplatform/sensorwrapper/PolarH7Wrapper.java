@@ -1,38 +1,25 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import de.fhg.biomos.sensorplatform.sensors.PolarH7;
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
+import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
-import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
-import de.fhg.fit.biomos.sensorplatform.util.SensorName;
+import de.fhg.fit.biomos.sensorplatform.sensors.PolarH7;
 
 /**
  *
  * @author Daniel Pyka
  *
  */
-public class PolarH7Wrapper extends AbstractHeartRateSensorWrapper {
+public class PolarH7Wrapper extends AbstractHeartRateSensorWrapper<PolarH7> {
 
-  // private static final Logger LOG = LoggerFactory.getLogger(PolarH7Wrapper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PolarH7Wrapper.class);
 
-  private final PolarH7 polarh7;
-
-  public PolarH7Wrapper(PolarH7 polarh7, String timeStampFormat, HeartRateSampleCollector hrsCollector) {
-    super(polarh7.getAddressType(), polarh7.getBDaddress(), timeStampFormat, hrsCollector);
-    this.polarh7 = polarh7;
-  }
-
-  @Override
-  public void enableLogging() {
-    this.polarh7.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
-    this.lastNotificationTimestamp = System.currentTimeMillis();
-  }
-
-  @Override
-  public void disableLogging() {
-    this.polarh7.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
+  public PolarH7Wrapper(PolarH7 sensor, String timeStampFormat, HeartRateSampleCollector hrsCollector) {
+    super(sensor, timeStampFormat, hrsCollector);
   }
 
   @Override
@@ -40,26 +27,12 @@ public class PolarH7Wrapper extends AbstractHeartRateSensorWrapper {
     // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    HeartRateSample hrs = this.polarh7.calculateHeartRateSample(this.dtf.print(new DateTime()), handle, rawHexValues);
-
-    if (this.hrsCollector != null && hrs != null) {
+    if (handle.equals(PolarH7lib.HANDLE_HEART_RATE_MEASUREMENT)) {
+      HeartRateSample hrs = this.sensor.calculateHeartRateData(this.dtf.print(new DateTime()), rawHexValues);
       this.hrsCollector.addToQueue(hrs);
+    } else {
+      LOG.error("unexpected handle address " + handle + " " + rawHexValues);
     }
-  }
-
-  @Override
-  public String getBDaddress() {
-    return this.polarh7.getBDaddress();
-  }
-
-  @Override
-  public SensorName getDeviceName() {
-    return this.polarh7.getName();
-  }
-
-  @Override
-  public String toString() {
-    return this.polarh7.getBDaddress() + " " + this.polarh7.getName();
   }
 
 }

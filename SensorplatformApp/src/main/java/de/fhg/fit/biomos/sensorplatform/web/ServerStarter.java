@@ -29,7 +29,12 @@ import com.google.inject.servlet.GuiceFilter;
 
 import de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig;
 
-public class ServerStarter implements Runnable {
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
+public class ServerStarter {
 
   private static final Logger LOG = LoggerFactory.getLogger(ServerStarter.class);
 
@@ -42,8 +47,7 @@ public class ServerStarter implements Runnable {
     this.sensorplatformServletConfig = sensorplatformServletConfig;
   }
 
-  @Override
-  public void run() {
+  public void start() {
     int port = Integer.parseInt(this.properties.getProperty("webapp.port"));
     Server server = new Server();
 
@@ -76,17 +80,12 @@ public class ServerStarter implements Runnable {
     HashLoginService hls = new HashLoginService();
     hls.putUser(this.properties.getProperty("webapp.username"), Credential.getCredential(this.properties.getProperty("webapp.password")),
         new String[] { "default" });
-    hls.setName("Sensorplattform");
+    hls.setName("Sensorplatform");
 
     Constraint constraint = new Constraint();
     constraint.setName(Constraint.__BASIC_AUTH);
     constraint.setAuthenticate(true);
     constraint.setRoles(new String[] { "default" });
-
-    // Constraint constraint = new Constraint();
-    // constraint.setName("auth");
-    // constraint.setAuthenticate(true);
-    // constraint.setRoles(new String[] { "default" });
 
     ConstraintMapping cm = new ConstraintMapping();
     cm.setPathSpec("/*");

@@ -1,38 +1,25 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
+import de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
-import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
-import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
  *
  * @author Daniel Pyka
  *
  */
-public class AdidasHrmWrapper extends AbstractHeartRateSensorWrapper {
+public class AdidasHrmWrapper extends AbstractHeartRateSensorWrapper<AdidasMiCoachHRM> {
 
-  // private static final Logger LOG = LoggerFactory.getLogger(AdidasHrmWrapper.class);
-
-  private final AdidasMiCoachHRM adidasHrm;
+  private static final Logger LOG = LoggerFactory.getLogger(AdidasHrmWrapper.class);
 
   public AdidasHrmWrapper(AdidasMiCoachHRM adidasHrm, String timeStampFormat, HeartRateSampleCollector hrsCollector) {
-    super(adidasHrm.getAddressType(), adidasHrm.getBDaddress(), timeStampFormat, hrsCollector);
-    this.adidasHrm = adidasHrm;
-  }
-
-  @Override
-  public void enableLogging() {
-    this.adidasHrm.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
-    this.lastNotificationTimestamp = System.currentTimeMillis();
-  }
-
-  @Override
-  public void disableLogging() {
-    this.adidasHrm.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
+    super(adidasHrm, timeStampFormat, hrsCollector);
   }
 
   @Override
@@ -40,26 +27,12 @@ public class AdidasHrmWrapper extends AbstractHeartRateSensorWrapper {
     // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    HeartRateSample hrs = this.adidasHrm.calculateHeartRateSample(this.dtf.print(new DateTime()), handle, rawHexValues);
-
-    if (this.hrsCollector != null) {
+    if (handle.equals(AdidasMiCoachHRMlib.HANDLE_HEART_RATE_MEASUREMENT)) {
+      HeartRateSample hrs = this.sensor.calculateHeartRateData(this.dtf.print(new DateTime()), rawHexValues);
       this.hrsCollector.addToQueue(hrs);
+    } else {
+      LOG.error("unexpected handle address " + handle + " " + rawHexValues);
     }
-  }
-
-  @Override
-  public String getBDaddress() {
-    return this.adidasHrm.getBDaddress();
-  }
-
-  @Override
-  public SensorName getDeviceName() {
-    return this.adidasHrm.getName();
-  }
-
-  @Override
-  public String toString() {
-    return this.adidasHrm.getBDaddress() + " " + this.adidasHrm.getName();
   }
 
 }

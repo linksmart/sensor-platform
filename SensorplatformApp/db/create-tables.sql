@@ -8,6 +8,14 @@ energyexpended Integer NOT NULL,
 rrintervals VARCHAR(30) NOT NULL
 )
 
+CREATE TABLE PulseOximeterSample (
+id INTEGER IDENTITY,
+timestamp VARCHAR(30) NOT NULL,
+device VARCHAR(17) NOT NULL,
+spo2 INTEGER NOT NULL,
+pulserate INTEGER NOT NULL
+)
+
 CREATE TABLE CC2650TemperatureSample (
 id INTEGER IDENTITY,
 timestamp VARCHAR(30) NOT NULL,

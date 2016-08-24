@@ -28,6 +28,10 @@ public class HciconfigImpl implements Hciconfig {
   private String localBDaddress;
 
   public HciconfigImpl() {
+  }
+
+  @Override
+  public String getLocalBDaddress() {
     try {
       Process process = null;
       process = Runtime.getRuntime().exec(HCICONFIG);
@@ -40,15 +44,11 @@ public class HciconfigImpl implements Hciconfig {
           this.localBDaddress = m.group(1);
         }
       }
-      output.close();
       process.waitFor();
+      output.close();
     } catch (IOException | InterruptedException e) {
       LOG.error("getting local controller address failed", e);
     }
-  }
-
-  @Override
-  public String getLocalBDaddress() {
     return this.localBDaddress;
   }
 

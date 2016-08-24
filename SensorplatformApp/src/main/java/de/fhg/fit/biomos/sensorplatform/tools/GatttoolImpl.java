@@ -14,10 +14,9 @@ import org.slf4j.LoggerFactory;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.ObservableSensorNotificationData;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorNotificationDataObserver;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.GatttoolSecurityLevel;
+import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 
 /**
- * @see {@link de.fhg.fit.biomos.sensorplatform.tools.Gatttool}
  *
  * @author Daniel Pyka
  *
@@ -56,27 +55,31 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
 
   private static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
 
-  private final AddressType addressType;
   private final String bdAddress;
+  private final AddressType addressType;
+  private final SecurityLevel secLevel;
 
   private State state;
-  private GatttoolSecurityLevel secLevel;
 
   private BufferedWriter streamToSensor = null;
   private BufferedReader streamFromSensor = null;
 
-  public GatttoolImpl(AddressType addressType, String bdAddress) {
-    this.addressType = addressType;
+  public GatttoolImpl(String bdAddress, AddressType addressType, SecurityLevel secLevel) {
     this.bdAddress = bdAddress;
+    this.addressType = addressType;
+    this.secLevel = secLevel;
     this.state = State.DISCONNECTED;
-    this.secLevel = GatttoolSecurityLevel.LOW;
-
     try {
-      Process process = null;
-      process = Runtime.getRuntime().exec(GATTTTOOL_INTERACTIVE + this.addressType.toString() + " -b " + bdAddress);
+      Process process = Runtime.getRuntime().exec(GATTTTOOL_INTERACTIVE + this.addressType.toString() + " -b " + this.bdAddress);
       this.streamToSensor = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
       this.streamFromSensor = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      LOG.info("gatttool process for " + bdAddress + " created");
+      LOG.info("gatttool process for " + this.bdAddress + " created");
+      LOG.info("address type is " + this.addressType);
+      this.streamToSensor.write(CMD_SEC_LEVEL + " " + this.secLevel);
+      this.streamToSensor.newLine();
+      this.streamToSensor.flush();
+      // Thread.sleep(1000);
+      LOG.info("security level set to " + this.secLevel);
     } catch (IOException e) {
       LOG.error("creating gatttool process failed", e);
     }
@@ -131,20 +134,13 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   }
 
   @Override
-  public GatttoolSecurityLevel getSecurityLevel() {
+  public SecurityLevel getSecurityLevel() {
     return this.secLevel;
   }
 
   @Override
-  public void setSecurityLevel(GatttoolSecurityLevel secLevel) {
-    this.secLevel = secLevel;
-    try {
-      this.streamToSensor.write(CMD_SEC_LEVEL + " " + this.secLevel);
-      this.streamToSensor.newLine();
-      this.streamToSensor.flush();
-    } catch (IOException e) {
-      LOG.error("failed to set security level", e);
-    }
+  public AddressType getAddressType() {
+    return this.addressType;
   }
 
   @Override

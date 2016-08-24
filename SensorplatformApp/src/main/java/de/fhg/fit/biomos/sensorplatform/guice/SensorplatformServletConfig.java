@@ -10,6 +10,13 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
+import de.fhg.fit.biomos.sensorplatform.control.Controller;
+
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
 public class SensorplatformServletConfig extends GuiceServletContextListener {
 
   private Injector injector;
@@ -31,7 +38,13 @@ public class SensorplatformServletConfig extends GuiceServletContextListener {
       }
     };
     this.injector = Guice.createInjector(jerseyServletModule);
+    initialiseController();
     return this.injector;
+  }
+
+  private void initialiseController() {
+    Controller controller = this.injector.getInstance(Controller.class);
+    controller.initialise();
   }
 
   public Injector getCreatedInjector() {

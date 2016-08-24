@@ -21,7 +21,7 @@ import de.fhg.fit.biomos.sensorplatform.web.Uploader;
  * @author Daniel Pyka
  *
  */
-public class HeartRateSampleCollector implements Runnable {
+public class HeartRateSampleCollector implements SampleCollector {
 
   private static final Logger LOG = LoggerFactory.getLogger(HeartRateSampleCollector.class);
 
@@ -33,10 +33,23 @@ public class HeartRateSampleCollector implements Runnable {
 
   private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
 
+  private boolean start;
+
   @Inject
   public HeartRateSampleCollector(DBcontroller dbc, @Nullable Uploader uploader) {
     this.dbc = dbc;
+    this.start = false;
     this.uploader = uploader;
+  }
+
+  @Override
+  public boolean getStartFlag() {
+    return this.start;
+  }
+
+  @Override
+  public void setStartFlag(boolean start) {
+    this.start = start;
   }
 
   public void addToQueue(HeartRateSample hrs) {
@@ -77,7 +90,9 @@ public class HeartRateSampleCollector implements Runnable {
 
   @Override
   public void run() {
-    this.uploader.login();
+    if (this.uploader != null) {
+      this.uploader.login();
+    }
     while (!Thread.currentThread().isInterrupted()) {
       if (!this.queue.isEmpty()) {
         HeartRateSample hrs = this.queue.peek();
@@ -100,7 +115,8 @@ public class HeartRateSampleCollector implements Runnable {
       LOG.info("queue size: " + this.queue.size());
       storeSample(this.queue.poll());
     }
-    LOG.info("heart rate sample collector thread finished");
+    this.start = false;
+    LOG.info("thread finished");
   }
 
 }

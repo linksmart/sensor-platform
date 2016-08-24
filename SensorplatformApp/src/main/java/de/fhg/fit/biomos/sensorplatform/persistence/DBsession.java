@@ -14,6 +14,7 @@ import de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
+import de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample;
 
 /**
  *
@@ -52,6 +53,10 @@ public class DBsession {
   }
 
   public void saveHeartRateSample(HeartRateSample hrs) {
+    this.session.save(hrs);
+  }
+
+  public void savePulseOximeterSample(PulseOximeterSample hrs) {
     this.session.save(hrs);
   }
 

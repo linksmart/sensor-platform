@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+    <!-- 1800: org.bluetooth.service.generic_access -->
+    <service uuid="1800" id="generic_access">
+        <description>Generic Access</description>
+
+        <!-- 2A00: org.bluetooth.characteristic.gap.device_name -->
+        <characteristic uuid="2A00" id="c_device_name">
+            <description>Device Name</description>
+            <properties read="true" const="true" />
+            <value>BLE113 Pulse Oximeter</value>
+        </characteristic>
+
+        <!-- 2A01: org.bluetooth.characteristic.gap.appearance -->
+        <characteristic uuid="2A01" id="c_appearance">
+            <description>Appearance</description>
+            <properties read="true" const="true" />
+            <value type="hex">0C41</value>
+        </characteristic>
+        
+    </service>
+
+    <!-- 180A: org.bluetooth.service.device_information -->
+    <service uuid="180A" id="device_information">
+        <description>Device Information</description>
+    
+        <!-- 2A29: org.bluetooth.characteristic.manufacturer_name_string -->
+        <characteristic uuid="2A29" id="c_manufacturer_name">
+            <description>Manufacturer Name</description>
+            <properties read="true" const="true" />
+            <value>Bluegiga</value>
+        </characteristic>
+
+        <!-- 2A24: org.bluetooth.characteristic.model_number_string -->
+        <characteristic uuid="2A24" id="c_model_number">
+            <description>Model Number</description>
+            <properties read="true" const="true" />
+            <value>BLE113DevelopmentBoard</value>
+        </characteristic>
+        
+    </service>
+	
+	<!-- 1822: org.bluetooth.service.pulse_oximeter -->
+	<service uuid="1822" id="pulse_oximeter">
+		<description>Pulse Oximeter Service</description>
+		
+		<!-- 2A5E: org.bluetooth.characteristic.plx_spot_check_measurement -->
+		<!-- omitted for now, TODO what about indication? -->
+		
+		<!-- 2A5F: org.bluetooth.characteristic.plx_continuous_measurement -->
+		<characteristic uuid="2A5F" id="c_plx_continuous_measurement">
+			<description>Periodic Pulse Oximetry Measurements</description>
+			<properties read="true" authenticated_read="true" notify="true" />
+			<value type="hex" length="5"/>
+		</characteristic>
+		
+		<!-- 2A60: org.bluetooth.characteristic.plx_features -->
+		<characteristic uuid="2A60" id="c_plx_features">
+			<description>PLX Features Supported</description>
+			<properties read="true"/>
+			<value type="hex">0000</value>
+		</characteristic>
+		
+	</service>
+	
+</configuration>

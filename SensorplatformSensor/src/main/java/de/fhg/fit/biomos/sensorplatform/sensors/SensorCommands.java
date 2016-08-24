@@ -12,11 +12,25 @@ public interface SensorCommands {
 
   /**
    * Enable the measurement and notification of the sensor as defined in the settings of the sensor.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param enableNotification
+   *          as defined in the bluetooth specification (01:00)
    */
   void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification);
 
   /**
    * Disable the measurement and notification of the sensor previously enabled.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param disableNotification
+   *          as defined in the bluetooth specification (00:00)
    */
   void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification);
 

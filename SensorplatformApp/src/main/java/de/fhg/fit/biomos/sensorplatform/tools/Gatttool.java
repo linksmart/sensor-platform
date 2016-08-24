@@ -3,11 +3,12 @@ package de.fhg.fit.biomos.sensorplatform.tools;
 import java.io.BufferedWriter;
 
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorNotificationDataObserver;
-import de.fhg.fit.biomos.sensorplatform.util.GatttoolSecurityLevel;
+import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 
 /**
- * Controller class for gatttool command line tool. You may use multiple instances of it at once.<br />
- * Gatttool is an interactive(!) tool for Bluetooth Low Energy funtions.
+ * Controller class for gatttool command line tool. You may use multiple instances of it at once. Gatttool is an interactive(!) tool for Bluetooth Low Energy
+ * funtions.
  *
  * @author Daniel Pyka
  *
@@ -26,9 +27,9 @@ public interface Gatttool extends Runnable {
 
   public BufferedWriter getStreamToSensor();
 
-  public GatttoolSecurityLevel getSecurityLevel();
+  public SecurityLevel getSecurityLevel();
 
-  public void setSecurityLevel(GatttoolSecurityLevel secLevel);
+  public AddressType getAddressType();
 
   public boolean connectBlocking(int timeout);
 
