@@ -106,7 +106,7 @@ public class DBsession {
 
   public int deleteAllHeartRateSamples() {
     LOG.info("delete all heart rate samples");
-    return this.session.createQuery("DELETE * FROM HeartRateSample").executeUpdate();
+    return this.session.createQuery("DELETE FROM HeartRateSample").executeUpdate();
   }
 
   @SuppressWarnings("unchecked")
@@ -117,7 +117,7 @@ public class DBsession {
 
   public int deleteAllPulseOximeterSamples() {
     LOG.info("delete all pulse oximeter samples");
-    return this.session.createQuery("DELETE * FROM PulseOximeterSample").executeUpdate();
+    return this.session.createQuery("DELETE FROM PulseOximeterSample").executeUpdate();
   }
 
   @SuppressWarnings("unchecked")

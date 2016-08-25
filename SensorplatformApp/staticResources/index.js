@@ -83,6 +83,16 @@ function loadHrs() {
 	request.send();
 }
 
+function deleteAllHrs() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+		}
+	};
+	request.open("GET", "hrs/delete", true);
+	request.send();
+}
+
 function getNumbersHrs() {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
@@ -90,6 +100,7 @@ function getNumbersHrs() {
 			response = JSON.parse(request.responseText);
 			$("#totalhrs").text(response["total"]);
 			$("#nottransmitted").text(response["nottransmitted"]);
+			$("#dbcontentview").val("");
 		}
 	};
 	request.open("GET", "hrs/numberofnottransmitted", true);
@@ -104,6 +115,16 @@ function loadPos() {
 		}
 	};
 	request.open("GET", "pos", true);
+	request.send();
+}
+
+function deleteAllPos() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+		}
+	};
+	request.open("GET", "pos/delete", true);
 	request.send();
 }
 

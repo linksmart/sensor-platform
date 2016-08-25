@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,20 +53,14 @@ public class PulseOximeterService {
 
   @Path("/delete")
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.TEXT_PLAIN)
   public Response deleteAllPos() {
     LOG.info("/pos/delete called");
     DBsession s = this.db.getSession();
     int result = s.deleteAllPulseOximeterSamples();
+    LOG.info("result " + result);
     s.commit();
     s.close();
-    JSONObject response = new JSONObject();
-    try {
-      response.put("result", result);
-      return Response.ok(response).build();
-    } catch (JSONException e) {
-      LOG.error("bad response JSONobject", e);
-      return Response.serverError().build();
-    }
+    return Response.ok().build();
   }
 }

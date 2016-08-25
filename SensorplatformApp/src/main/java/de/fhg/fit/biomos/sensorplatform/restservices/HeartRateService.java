@@ -60,16 +60,10 @@ public class HeartRateService {
     LOG.info("/hrs/delete called");
     DBsession s = this.db.getSession();
     int result = s.deleteAllHeartRateSamples();
+    LOG.info("result " + result);
     s.commit();
     s.close();
-    JSONObject response = new JSONObject();
-    try {
-      response.put("result", result);
-      return Response.ok(response).build();
-    } catch (JSONException e) {
-      LOG.error("bad response JSONobject", e);
-      return Response.serverError().build();
-    }
+    return Response.ok().build();
   }
 
   @Path("/nottransmitted")
