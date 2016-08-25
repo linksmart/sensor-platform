@@ -71,8 +71,8 @@ public class CC2650AmbientlightSample implements Serializable {
 
   @Override
   public String toString() {
-    return "{\"timestamp\":\" " + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"ambientlight\":{\"value\":" + this.ambientlight + ",\"unit\":\""
-        + UNIT_LUX + "\"}}";
+    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"ambientlight\":{\"value\":"
+        + this.ambientlight + ",\"unit\":\"" + UNIT_LUX + "\"}}";
   }
 
 }

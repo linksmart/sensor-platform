@@ -82,8 +82,9 @@ public class CC2650HumiditySample implements Serializable {
 
   @Override
   public String toString() {
-    return "{\"timestamp\":\" " + this.timestamp + "\",\"device\":\"" + this.bdAddress + ",\"temperature\":{\"value\":" + this.temperature + ",\"unit\":\""
-        + UNIT_DEGREES_CELSIUS + "\"}" + ",\"humidity\":{\"value\":" + this.humidity + ",\"unit\":\"" + UNIT_RELATIVE_HUMIDITY + "\"}}";
+    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"temperature\":{\"value\":"
+        + this.temperature + ",\"unit\":\"" + UNIT_DEGREES_CELSIUS + "\"}" + ",\"humidity\":{\"value\":" + this.humidity + ",\"unit\":\""
+        + UNIT_RELATIVE_HUMIDITY + "\"}}";
   }
 
 }

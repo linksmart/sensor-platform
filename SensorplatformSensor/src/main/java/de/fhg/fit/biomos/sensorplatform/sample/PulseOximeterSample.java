@@ -84,4 +84,10 @@ public class PulseOximeterSample implements Serializable {
     this.PulseRate = pulseRate;
   }
 
+  @Override
+  public String toString() {
+    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"value\":" + "{\"spo2\":{\"value\":"
+        + this.SpO2 + ",\"unit\":\"" + PERCENT + "\"},\"pulserate\":{\"value\":" + this.PulseRate + ",\"unit\":\"" + BPM + "\"}}}";
+  }
+
 }

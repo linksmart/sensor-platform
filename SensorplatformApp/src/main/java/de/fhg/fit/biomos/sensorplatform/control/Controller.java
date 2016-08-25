@@ -19,6 +19,9 @@ import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
+import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
+import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 
 /**
  * This class defines the control flow of the sensorplatform.<br>
@@ -41,6 +44,7 @@ public class Controller implements Runnable {
 
   private final SensorWrapperFactory swFactory;
   private final HardwarePlatform hwPlatform;
+  private final SecurityManager secman;
   private final HeartRateSampleCollector hrsCollector;
   private final PulseOximeterSampleCollector pulseCollector;
   private final CC2650SampleCollector cc2650Collector;
@@ -58,11 +62,12 @@ public class Controller implements Runnable {
   private boolean recording = false;
 
   @Inject
-  public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, HeartRateSampleCollector hrsCollector,
+  public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, SecurityManager secman, HeartRateSampleCollector hrsCollector,
       PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector, @Named("timeout.sensor.connect") String timeoutConnect,
       @Named("timeout.sensor.notification") String timeoutNotification, @Named("recording.info.filename") String recordingInfoFileName) {
     this.swFactory = swFactory;
     this.hwPlatform = hwPlatform;
+    this.secman = secman;
     this.hrsCollector = hrsCollector;
     this.pulseCollector = pulseCollector;
     this.cc2650Collector = cc2650Collector;
@@ -103,6 +108,11 @@ public class Controller implements Runnable {
     } catch (InterruptedException e) {
       LOG.error("sleep failed");
     }
+  }
+
+  public List<DetectedDevice> scan(int scanDuration) {
+    Hcitool hcitool = new HcitoolImpl(scanDuration);
+    return hcitool.scan();
   }
 
   /**

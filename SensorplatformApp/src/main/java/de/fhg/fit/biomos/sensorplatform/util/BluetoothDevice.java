@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.deprecated;
+package de.fhg.fit.biomos.sensorplatform.util;
 
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;

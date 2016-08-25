@@ -18,12 +18,16 @@ input:focus {
 	border-color: #ccc !important;
 }
 
-#configview, #dbcontentview {
+#configview, #dbcontentview, #detected {
 	width: 100%;
 }
 
 #uptime {
 	width: 30%
+}
+
+#duration {
+	width: 50%
 }
 
 .divinsidewell {

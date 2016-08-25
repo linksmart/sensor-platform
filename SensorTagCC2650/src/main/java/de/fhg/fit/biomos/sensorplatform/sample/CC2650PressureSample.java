@@ -82,7 +82,8 @@ public class CC2650PressureSample implements Serializable {
 
   @Override
   public String toString() {
-    return "{\"timestamp\":\" " + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"temperature\":{\"value\":" + this.temperature + ",\"unit\":\""
-        + UNIT_DEGREES_CELSIUS + "\"}" + ",\"pressure\":{\"value\":" + this.pressure + ",\"unit\":\"" + UNIT_HECTOPASCAL + "\"}}";
+    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"temperature\":{\"value\":"
+        + this.temperature + ",\"unit\":\"" + UNIT_DEGREES_CELSIUS + "\"}" + ",\"pressure\":{\"value\":" + this.pressure + ",\"unit\":\"" + UNIT_HECTOPASCAL
+        + "\"}}";
   }
 }

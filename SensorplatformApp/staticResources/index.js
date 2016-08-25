@@ -76,7 +76,7 @@ function loadHrs() {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
-			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText)));
+			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
 		}
 	};
 	request.open("GET", "hrs", true);
@@ -93,5 +93,83 @@ function getNumbersHrs() {
 		}
 	};
 	request.open("GET", "hrs/numberofnottransmitted", true);
+	request.send();
+}
+
+function loadPos() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
+		}
+	};
+	request.open("GET", "pos", true);
+	request.send();
+}
+
+function loadCC2650TemperatureSamples() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
+		}
+	};
+	request.open("GET", "cc2650/temperature", true);
+	request.send();
+}
+
+function loadCC2650HumiditySamples() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
+		}
+	};
+	request.open("GET", "cc2650/humidity", true);
+	request.send();
+}
+
+function loadCC2650PressureSamples() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
+		}
+	};
+	request.open("GET", "cc2650/pressure", true);
+	request.send();
+}
+
+function loadCC2650AmbientlightSamples() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
+		}
+	};
+	request.open("GET", "cc2650/ambientlight", true);
+	request.send();
+}
+
+function loadCC2650MovementSamples() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			$("#dbcontentview").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
+		}
+	};
+	request.open("GET", "cc2650/movement", true);
+	request.send();
+}
+
+function scan() {
+	var duration = $("#duration").val();
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			$("#detected").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
+		}
+	};
+	request.open("GET", "controller/scan?duration=" + duration, true);
 	request.send();
 }

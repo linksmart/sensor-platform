@@ -80,9 +80,9 @@ public class CC2650TemperatureSample implements Serializable {
 
   @Override
   public String toString() {
-    return "{\"timestamp\":\" " + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"{\"objectTemperature\":{\"value\":" + this.objectTemperature
-        + ",\"unit\":\"" + UNIT_DEGREES_CELSIUS + "\"}" + ",\"dieTemperature\":{\"value\":" + this.dieTemperature + ",\"unit\":\"" + UNIT_DEGREES_CELSIUS
-        + "\"}}";
+    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"objectTemperature\":{\"value\":"
+        + this.objectTemperature + ",\"unit\":\"" + UNIT_DEGREES_CELSIUS + "\"}" + ",\"dieTemperature\":{\"value\":" + this.dieTemperature + ",\"unit\":\""
+        + UNIT_DEGREES_CELSIUS + "\"}}";
   }
 
 }

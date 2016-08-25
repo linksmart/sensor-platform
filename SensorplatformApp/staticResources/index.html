@@ -50,7 +50,7 @@
                                     <b>Settings (only for CC2650)</b>
                                 </p>
                                 <p>irtemperature/ humidity/ ambientlight/ pressure/ movement</p>
-                                <p> (64 | 50 [hexadecimal] ^= 1Hz)</p>
+                                <p>(64 | 50 [hexadecimal] ^= 1Hz)</p>
                                 <p>
                                     <b>Recording time (seconds)</b>
                                 </p>
@@ -94,9 +94,22 @@
                                     <button type="button" class="btn btn-default" id="upload" onclick=>Upload samples</button>
                                 </p>
                                 <p>
+                                    <b>Pulse Oximeter Samples</b>
+                                </p>
+                                <p>
+                                    <button type="button" class="btn btn-default" id="load" onclick="loadPos()">Load all</button>
+                                    <button type="button" class="btn btn-default" id="deleteAll" onclick="deleteAllPos()">Delete all</button>
+                                </p>
+                                <p>
                                     <b>CC2650 Samples</b>
                                 </p>
-                                <p>TODO</p>
+                                <p>
+                                    <button type="button" class="btn btn-default" id="cc2650temp" onclick="loadCC2650TemperatureSamples()">Temperature</button>
+                                    <button type="button" class="btn btn-default" id="cc2650hum" onclick="loadCC2650HumiditySamples()">Humidity</button>
+                                    <button type="button" class="btn btn-default" id="cc2650press" onclick="loadCC2650PressureSamples()">Pressure</button>
+                                    <button type="button" class="btn btn-default" id="cc2650amb" onclick="loadCC2650AmbientlightSamples()">Ambientlight</button>
+                                    <button type="button" class="btn btn-default" id="cc2650mov" onclick="loadCC2650MovementSamples()">Movement</button>
+                                </p>
                             </div>
 
                         </div>
@@ -104,7 +117,27 @@
                 </div>
                 <div class="tab-pane" id="discover">
                     <div class="well well-sm">
-                        <div class="divinsidewell">TODO</div>
+                        <div class="divinsidewell">
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <textarea rows="21" id="detected"></textarea>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-2">
+                                <p>
+                                    <b>Scan duration</b>
+                                </p>
+                                <p>
+                                    <input id="duration" class="form-control"></input>
+                                </p>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-2">
+                                <p>
+                                    <b>Scan</b>
+                                </p>
+                                <p>
+                                    <button type="button" class="btn btn-default" id="scan" onclick="scan()">Scan</button>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

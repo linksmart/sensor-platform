@@ -151,16 +151,13 @@ public class CC2650MovementSample implements Serializable {
     this.magnetismZ = magnetismZ;
   }
 
-  // TODO
-  // @Override
-  // public String toString() {
-  // return "{\"timestamp\":\" " + this.timestamp + "\",\"device\":\"" + this.bdAddress + ",\"value\":" + this.measurement.toString() + "}";
-  // }
-  //
-  // @Override
-  // public String toString() {
-  // return "{\"movement\":{\"rotation\":{\"value\":" + Arrays.toString(this.rotation_XYZ) + ",\"unit\":\"" + this.UNIT_DEGREES_PER_SECOND + "\"}"
-  // + ",\"acceleration\":{\"value\":" + Arrays.toString(this.acceleration_XYZ) + ",\"unit\":\"" + this.UNIT_GRAVITY + "\"},\"magnetism\":{\"value\":"
-  // + Arrays.toString(this.magnetism_XYZ) + ",\"unit\":\"" + this.UNIT_MICROTESLA + "\"}}}";
-  // }
+  @Override
+  public String toString() {
+    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"value\":{\"rotation\":{\"value\":{\"x\":"
+        + this.rotationX + ",\"y\":" + this.rotationY + ",\"z\":" + this.rotationZ + "},\"unit\":\"" + UNIT_DEGREES_PER_SECOND
+        + "\"},\"acceleration\":{\"value\":{\"x\":" + this.accelerationX + ",\"y\":" + this.accelerationY + ",\"z\":" + this.accelerationZ + "},\"unit\":\""
+        + UNIT_GRAVITY + "\"},\"magnetism\":{\"value\":{\"x\":" + this.magnetismX + ",\"y\":" + this.magnetismY + ",\"z\":" + this.magnetismZ + "},\"unit\":\""
+        + UNIT_MICROTESLA + "\"}}}";
+  }
+
 }

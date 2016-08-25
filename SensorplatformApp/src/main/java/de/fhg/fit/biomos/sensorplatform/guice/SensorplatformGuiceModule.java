@@ -14,11 +14,13 @@ import de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector;
+import de.fhg.fit.biomos.sensorplatform.control.SecurityManager;
 import de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
 import de.fhg.fit.biomos.sensorplatform.restservices.ControllerService;
 import de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService;
 import de.fhg.fit.biomos.sensorplatform.restservices.InfoService;
+import de.fhg.fit.biomos.sensorplatform.restservices.PulseOximeterService;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3;
 import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
@@ -39,6 +41,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(ControllerService.class);
     bind(InfoService.class);
     bind(HeartRateService.class);
+    bind(PulseOximeterService.class);
 
     String webinterfaceName = this.properties.getProperty("webinterface.name");
     String targetPlatform = this.properties.getProperty("target.platform");
@@ -82,7 +85,6 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(Controller.class).in(Singleton.class);
     bind(DBcontroller.class).in(Singleton.class);
     bind(SecurityManager.class).in(Singleton.class);
-
     try {
       Names.bindProperties(binder(), this.properties);
     } catch (Exception e) {

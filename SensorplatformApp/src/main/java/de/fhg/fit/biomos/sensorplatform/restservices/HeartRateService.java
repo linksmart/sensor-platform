@@ -20,6 +20,11 @@ import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
 @Path("/hrs")
 public class HeartRateService {
 
@@ -43,7 +48,7 @@ public class HeartRateService {
       JSONArray response = new JSONArray(hrss.toString());
       return Response.ok(response).build();
     } catch (JSONException e) {
-      LOG.error("bad heartratesamples format", e);
+      LOG.error("bad heart rate samples format", e);
       return Response.serverError().build();
     }
   }
@@ -79,7 +84,7 @@ public class HeartRateService {
       JSONArray response = new JSONArray(hrss.toString());
       return Response.ok(response).build();
     } catch (JSONException e) {
-      LOG.error("bad heartratesamples format", e);
+      LOG.error("bad heart rate samples format", e);
       return Response.serverError().build();
     }
   }
@@ -99,7 +104,7 @@ public class HeartRateService {
       response.put("nottransmitted", nottransmitted);
       return Response.ok(response).build();
     } catch (JSONException e) {
-      LOG.error("bad heartratesamples format", e);
+      LOG.error("bad heart rate samples format", e);
       return Response.serverError().build();
     }
   }

@@ -60,6 +60,26 @@ public class DBsession {
     this.session.save(hrs);
   }
 
+  public void saveCC2650AmbientlightSample(CC2650AmbientlightSample sample) {
+    this.session.save(sample);
+  }
+
+  public void saveCC2650HumiditySample(CC2650HumiditySample sample) {
+    this.session.save(sample);
+  }
+
+  public void saveCC2650MovementSample(CC2650MovementSample sample) {
+    this.session.save(sample);
+  }
+
+  public void saveCC2650PressureAample(CC2650PressureSample sample) {
+    this.session.save(sample);
+  }
+
+  public void saveCC2650TemperatureSample(CC2650TemperatureSample sample) {
+    this.session.save(sample);
+  }
+
   @SuppressWarnings("unchecked")
   public List<HeartRateSample> getHeartRateSamples() {
     LOG.info("get all heart rate samples");
@@ -89,24 +109,44 @@ public class DBsession {
     return this.session.createQuery("DELETE * FROM HeartRateSample").executeUpdate();
   }
 
-  public void saveCC2650AmbientlightSample(CC2650AmbientlightSample sample) {
-    this.session.save(sample);
+  @SuppressWarnings("unchecked")
+  public List<PulseOximeterSample> getPulseOximeterSamples() {
+    LOG.info("get all pulse oximeter samples");
+    return this.session.createQuery("FROM PulseOximeterSample").getResultList();
   }
 
-  public void saveCC2650HumiditySample(CC2650HumiditySample sample) {
-    this.session.save(sample);
+  public int deleteAllPulseOximeterSamples() {
+    LOG.info("delete all pulse oximeter samples");
+    return this.session.createQuery("DELETE * FROM PulseOximeterSample").executeUpdate();
   }
 
-  public void saveCC2650MovementSample(CC2650MovementSample sample) {
-    this.session.save(sample);
+  @SuppressWarnings("unchecked")
+  public List<CC2650TemperatureSample> getCC2650TemperatureSamples() {
+    LOG.info("get all CC2650 temperature samples");
+    return this.session.createQuery("FROM CC2650TemperatureSample").getResultList();
   }
 
-  public void saveCC2650PressureAample(CC2650PressureSample sample) {
-    this.session.save(sample);
+  @SuppressWarnings("unchecked")
+  public List<CC2650HumiditySample> getCC2650HumiditySamples() {
+    LOG.info("get all CC2650 humdity samples");
+    return this.session.createQuery("FROM CC2650HumiditySample").getResultList();
   }
 
-  public void saveCC2650TemperatureSample(CC2650TemperatureSample sample) {
-    this.session.save(sample);
+  @SuppressWarnings("unchecked")
+  public List<CC2650PressureSample> getCC2650PressureSamples() {
+    LOG.info("get all CC2650 pressure samples");
+    return this.session.createQuery("FROM CC2650PressureSample").getResultList();
   }
 
+  @SuppressWarnings("unchecked")
+  public List<CC2650AmbientlightSample> getCC2650AmbientlightSamples() {
+    LOG.info("get all CC2650 ambientlight samples");
+    return this.session.createQuery("FROM CC2650AmbientlightSample").getResultList();
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<CC2650MovementSample> getCC2650MovementSamples() {
+    LOG.info("get all CC2650 movement samples");
+    return this.session.createQuery("FROM CC2650MovementSample").getResultList();
+  }
 }

@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.deprecated;
+package de.fhg.fit.biomos.sensorplatform.control;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,11 @@ import com.google.inject.Inject;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
+import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
+import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.BluetoothDevice;
+import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 
 /**
@@ -56,31 +60,29 @@ public class SecurityManager {
     this.hciconfig = new HciconfigImpl();
   }
 
-  public List<BluetoothDevice> getBluetoothDevices() {
-    return this.knownDevices;
-  }
-
   public void loadStoredDevices() {
-    if (this.hciconfig.getLocalBDaddress() != null) {
-      File bluezStore = new File(BLUEZ_STORAGE, this.hciconfig.getLocalBDaddress());
-      if (bluezStore.exists() && bluezStore.isDirectory()) {
-        File[] directories = bluezStore.listFiles(File::isDirectory);
-        for (File deviceFolder : directories) {
-          String deviceAddress = deviceFolder.getName();
-          if (deviceAddress.equals("cache")) {
-            continue;
-          }
-          try {
-            this.knownDevices.add(parse(getInfoFilePath(deviceAddress), deviceAddress));
-          } catch (IOException e) {
-            LOG.error("error parsing file", e);
-          }
+    File bluezStore;
+    try {
+      bluezStore = new File(BLUEZ_STORAGE, this.hciconfig.getLocalBDaddress());
+    } catch (NullPointerException e) {
+      LOG.error("no local bd address", e);
+      return;
+    }
+    if (bluezStore.exists() && bluezStore.isDirectory()) {
+      File[] directories = bluezStore.listFiles(File::isDirectory);
+      for (File deviceFolder : directories) {
+        String deviceAddress = deviceFolder.getName();
+        if (deviceAddress.equals("cache")) {
+          continue;
         }
-      } else {
-        LOG.info("no stored bluetooth devices");
+        try {
+          this.knownDevices.add(parse(getInfoFilePath(deviceAddress), deviceAddress));
+        } catch (IOException e) {
+          LOG.error("error parsing file", e);
+        }
       }
     } else {
-      LOG.error("failed to obtain local bluetooth mac address");
+      LOG.info("no stored bluetooth devices");
     }
   }
 
@@ -157,12 +159,17 @@ public class SecurityManager {
     }
     LOG.info("device " + asw.getSensor().getBDaddress() + " is unknown");
     String bdAddress = asw.getSensor().getBDaddress();
-    Hcitool hcitool = new HcitoolImpl(bdAddress);
-    if (!hcitool.getFoundDevices().contains(bdAddress)) {
-      LOG.info("device not yet detected - try scanning (blocking)");
-      hcitool.scanFor(bdAddress);
+    Hcitool hcitool = new HcitoolImpl(5);
+    for (DetectedDevice device : hcitool.getDetectedDevices()) {
+      if (device.getBdAddress().equals(bdAddress)) {
+        hcitool.pair(bdAddress);
+        BluetoothDevice btDev = parse(getInfoFilePath(asw.getSensor().getBDaddress()), asw.getSensor().getBDaddress());
+        this.knownDevices.add(btDev);
+        return asw;
+      }
     }
-    hcitool.pair();
+    hcitool.scan();
+    hcitool.pair(bdAddress);
 
     BluetoothDevice btDev = parse(getInfoFilePath(asw.getSensor().getBDaddress()), asw.getSensor().getBDaddress());
     this.knownDevices.add(btDev);
