@@ -37,9 +37,9 @@ public class HeartRateSample implements Serializable {
   @Column(name = "device")
   private String bdAddress;
   @Column(name = "heartrate")
-  private Integer heartRate = 0;
+  private Integer heartRate;
   @Column(name = "energyexpended")
-  private Integer energyExpended = 0;
+  private Integer energyExpended;
   @Column(name = "rrintervals")
   private String rrIntervals = "[]";
 

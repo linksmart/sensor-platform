@@ -34,7 +34,7 @@ public abstract class AbstractHeartRateSensor extends Sensor implements HeartRat
   private static final byte UINT16 = 1;
   private static final byte SKIN_CONTACT_DETECTED = 1 << 1;
   private static final byte SKIN_CONTACT_SUPPORTED = 1 << 2;
-  private static final byte ENERGY_EXPENDED = 1 << 3;
+  private static final byte ENERGY_EXPENDED_PRESENT = 1 << 3;
   private static final byte RR_INTERVAL_AVAILABLE = 1 << 4;
 
   private static final Pattern PATTERN_RR = Pattern.compile("(\\w{2}\\s\\w{2})+");
@@ -136,13 +136,18 @@ public abstract class AbstractHeartRateSensor extends Sensor implements HeartRat
    * @return true if energy expended is available, false otherwise
    */
   @Override
-  public boolean isEnergyExpendedSupported(String rawHexValues) {
+  public boolean isEnergyExpendedPresent(String rawHexValues) {
     byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
-    if ((config & ENERGY_EXPENDED) == ENERGY_EXPENDED) {
+    if ((config & ENERGY_EXPENDED_PRESENT) == ENERGY_EXPENDED_PRESENT) {
       return true;
     } else {
       return false;
     }
+  }
+
+  @Override
+  public int getEnergyExpended(int index, String rawHexValues) {
+    return Integer.parseInt(rawHexValues.substring(index + 3, index + 5) + rawHexValues.substring(index, index + 2), 16);
   }
 
   /**
@@ -166,31 +171,7 @@ public abstract class AbstractHeartRateSensor extends Sensor implements HeartRat
    */
   @Override
   public int getHeartRate16Bit(String rawHexValues) {
-    return Integer.parseInt(rawHexValues.substring(3, 8).replace(" ", ""), 16);
-  }
-
-  /**
-   * Calculate the rr interval(s) for a given input string with 8 bit heart rate value.
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return List&lt;Integer&gt; list of all rr intervals (can be none, one or more)
-   */
-  @Override
-  public List<Integer> getRRintervalsWith8BitHeartRateData(String rawHexValues) {
-    return getRRintervals(6, rawHexValues);
-  }
-
-  /**
-   * Calculate the rr interval(s) for a given input string with 16 bit heart rate value.
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return List&lt;Integer&gt; list of all rr intervals (can be none, one or more)
-   */
-  @Override
-  public List<Integer> getRRintervalsWith16BitHeartRateData(String rawHexValues) {
-    return getRRintervals(9, rawHexValues);
+    return Integer.parseInt(rawHexValues.substring(6, 8) + rawHexValues.substring(3, 5), 16);
   }
 
   /**
@@ -228,14 +209,47 @@ public abstract class AbstractHeartRateSensor extends Sensor implements HeartRat
 
     if (is8BitValue(rawHexValues)) {
       hrs.setHeartRate(getHeartRate8Bit(rawHexValues));
-      if (isRRintervalDataAvailable(rawHexValues)) {
-        hrs.setRRintervals(getRRintervalsWith8BitHeartRateData(rawHexValues));
+      if (isEnergyExpendedPresent(rawHexValues)) {
+        hrs.setEnergyExpended(getEnergyExpended(6, rawHexValues));
+        if (isRRintervalDataAvailable(rawHexValues)) {
+          hrs.setRRintervals(getRRintervals(12, rawHexValues));
+          // CC HH EE EE RR RR RR RR
+        } else {
+          hrs.setRRintervals("[]");
+          // CC HH EE EE
+        }
+      } else {
+        hrs.setEnergyExpended(0);
+        if (isRRintervalDataAvailable(rawHexValues)) {
+          hrs.setRRintervals(getRRintervals(6, rawHexValues));
+          // CC HH RR RR RR RR
+        } else {
+          hrs.setRRintervals("[]");
+          // CC HH
+        }
       }
     } else {
       hrs.setHeartRate(getHeartRate16Bit(rawHexValues));
-      if (isRRintervalDataAvailable(rawHexValues)) {
-        hrs.setRRintervals(getRRintervalsWith16BitHeartRateData(rawHexValues));
+      if (isEnergyExpendedPresent(rawHexValues)) {
+        hrs.setEnergyExpended(getEnergyExpended(9, rawHexValues));
+        if (isRRintervalDataAvailable(rawHexValues)) {
+          hrs.setRRintervals(getRRintervals(15, rawHexValues));
+          // CC HH HH EE EE RR RR RR RR
+        } else {
+          hrs.setRRintervals("[]");
+          // CC HH HH EE EE
+        }
+      } else {
+        hrs.setEnergyExpended(0);
+        if (isRRintervalDataAvailable(rawHexValues)) {
+          hrs.setRRintervals(getRRintervals(9, rawHexValues));
+          // CC HH HH RR RR RR RR
+        } else {
+          hrs.setRRintervals("[]");
+          // CC HH HH
+        }
       }
+
     }
 
     return hrs;

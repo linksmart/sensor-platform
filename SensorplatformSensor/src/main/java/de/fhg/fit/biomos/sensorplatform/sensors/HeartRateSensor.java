@@ -16,15 +16,13 @@ public interface HeartRateSensor {
 
   public boolean isSkinContactDetected(String rawHexValues);
 
-  public boolean isEnergyExpendedSupported(String rawHexValues);
+  public boolean isEnergyExpendedPresent(String rawHexValues);
+
+  public int getEnergyExpended(int index, String rawHexValues);
 
   public int getHeartRate8Bit(String rawHexValues);
 
   public int getHeartRate16Bit(String rawHexValues);
-
-  public List<Integer> getRRintervalsWith8BitHeartRateData(String rawHexValues);
-
-  public List<Integer> getRRintervalsWith16BitHeartRateData(String rawHexValues);
 
   public List<Integer> getRRintervals(int index, String rawHexValues);
 

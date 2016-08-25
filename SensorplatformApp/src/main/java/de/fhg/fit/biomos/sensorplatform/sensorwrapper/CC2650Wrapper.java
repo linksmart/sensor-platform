@@ -1,6 +1,8 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector;
 import de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib;
@@ -13,7 +15,7 @@ import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
  */
 public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
 
-  // private static final Logger LOG = LoggerFactory.getLogger(CC2650Wrapper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(CC2650Wrapper.class);
 
   private final CC2650SampleCollector cc2650Collector;
 
@@ -49,7 +51,7 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
         this.cc2650Collector.addToQueue(this.sensor.calculateMovementSample(this.dtf.print(new DateTime()), data));
         break;
       default:
-        // LOG.error("unexpected handle notification " + handle + " : " + rawHexValues);
+        LOG.error("unexpected handle notification " + handle + " : " + rawHexValues);
         break;
     }
   }

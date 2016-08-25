@@ -17,6 +17,7 @@ import de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.SecurityManager;
 import de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
+import de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service;
 import de.fhg.fit.biomos.sensorplatform.restservices.ControllerService;
 import de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService;
 import de.fhg.fit.biomos.sensorplatform.restservices.InfoService;
@@ -42,6 +43,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(InfoService.class);
     bind(HeartRateService.class);
     bind(PulseOximeterService.class);
+    bind(CC2650Service.class);
 
     String webinterfaceName = this.properties.getProperty("webinterface.name");
     String targetPlatform = this.properties.getProperty("target.platform");

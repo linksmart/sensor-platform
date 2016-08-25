@@ -111,7 +111,7 @@ public class CC2650Service {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getMovementSamples() {
-    LOG.info("/cc2650/temperature called");
+    LOG.info("/cc2650/movement called");
     DBsession s = this.db.getSession();
     List<CC2650MovementSample> sampleList = s.getCC2650MovementSamples();
     s.close();
