@@ -1,7 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector;
-import de.fhg.fit.biomos.sensorplatform.sensors.AbstractPulseOximeterSensor;
+import de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor;
 
 /**
  *

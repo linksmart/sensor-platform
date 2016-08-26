@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.sensors;
+package de.fhg.fit.biomos.sensorplatform.sensor;
 
 import java.util.List;
 

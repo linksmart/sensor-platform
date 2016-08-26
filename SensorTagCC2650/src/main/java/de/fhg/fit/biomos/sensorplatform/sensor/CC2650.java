@@ -13,7 +13,6 @@ import de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
-import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
@@ -29,11 +28,11 @@ public class CC2650 extends Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(CC2650.class);
 
-  public static final String IRTEMPERATURE = "irtemperature";
-  public static final String HUMIDITY = "humidity";
-  public static final String AMBIENTLIGHT = "ambientlight";
-  public static final String PRESSURE = "pressure";
-  public static final String MOVEMENT = "movement";
+  private static final String IRTEMPERATURE = "irtemperature";
+  private static final String HUMIDITY = "humidity";
+  private static final String AMBIENTLIGHT = "ambientlight";
+  private static final String PRESSURE = "pressure";
+  private static final String MOVEMENT = "movement";
 
   private static final int ACCELERATION_RESOLUTION = 16;
 
@@ -260,9 +259,6 @@ public class CC2650 extends Sensor {
       enablePressureNotification(streamToSensor, charWriteCmd, enableNotification, this.settings.getString(PRESSURE));
     }
     if (this.settings.has(MOVEMENT)) {
-      // FIXME Currently there are presets defined for the configuration
-      // the acceleration range is fixed at -16, +16 G
-      // activate all measurements (up to 9 values) at once
       enableMovementNotification(streamToSensor, charWriteCmd, enableNotification, this.settings.getString(MOVEMENT),
           CC2650lib.VALUE_MOVEMENT_ACTIVATE_ALL_16G);
     }
@@ -285,7 +281,6 @@ public class CC2650 extends Sensor {
       disablePressureNotification(streamToSensor, charWriteCmd, disableNotification);
     }
     if (this.settings.has(MOVEMENT)) {
-      // FIXME static deactivate configuration
       disableMovementNotification(streamToSensor, charWriteCmd, disableNotification, CC2650lib.VALUE_MOVEMENT_DEACTIVATE_ALL_16G);
     }
   }
@@ -415,8 +410,6 @@ public class CC2650 extends Sensor {
    */
   private float getAccelerationY(String data) {
     return Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
-    // legacy TODO compare/test
-    // return Math.round((Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16) * 1.0f) / (32768 / ACCELERATION_RESOLUTION) * 100) / 100.0f;
   }
 
   /**

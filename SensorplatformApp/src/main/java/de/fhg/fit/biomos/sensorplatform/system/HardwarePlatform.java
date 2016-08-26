@@ -8,4 +8,6 @@ public interface HardwarePlatform {
 
   public void setLEDstateERROR();
 
+  public void connectToMobileInternet();
+
 }

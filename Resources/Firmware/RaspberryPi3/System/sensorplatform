@@ -1,0 +1,28 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          Sensorplatform application
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     3 4 5
+# Default-Stop:      0 1 2 6
+# Short-Description: Starts the sensorplatform application.
+# Description:       
+### END INIT INFO
+ 
+# Actions
+case "$1" in
+    start)
+		cd /home/pi/Sensorplatform
+        java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
+        ;;
+    stop)
+        killall java
+        ;;
+    restart)
+        killall java
+		cd /home/pi/Sensorplatform
+        java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
+        ;;
+esac
+ 
+exit 0

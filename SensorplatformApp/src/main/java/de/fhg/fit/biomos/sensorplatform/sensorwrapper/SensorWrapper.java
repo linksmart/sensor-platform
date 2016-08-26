@@ -1,6 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
-import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
+import de.fhg.fit.biomos.sensorplatform.sensor.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 
 /**

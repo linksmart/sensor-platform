@@ -1,7 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
-import de.fhg.fit.biomos.sensorplatform.sensors.AbstractHeartRateSensor;
+import de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor;
 
 /**
  *

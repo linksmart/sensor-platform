@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.sensors;
+package de.fhg.fit.biomos.sensorplatform.sensor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,6 +191,9 @@ public abstract class AbstractHeartRateSensor extends Sensor implements HeartRat
     Matcher m = PATTERN_RR.matcher(rrIntervalsHex);
     while (m.find()) {
       String tmp = m.group(0);
+      // FIXME rr_value=((double)rr_value/1024.0)*1000.0;
+      // float f = Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2)) / 1024;
+      // f = f * 1000;
       rrIntervals.add(Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16));
     }
 

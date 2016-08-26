@@ -122,6 +122,8 @@ public class Controller implements Runnable {
     LOG.info("initialise controller");
     LOG.info("restart bluetooth device");
     unblockController();
+    LOG.info("connect to mobile internet");
+    this.hwPlatform.connectToMobileInternet();
     if (!this.recordingInfo.exists()) {
       LOG.info("no recording period was interrupted");
       this.hwPlatform.setLEDstateSTANDBY();

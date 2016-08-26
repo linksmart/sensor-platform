@@ -39,7 +39,7 @@ public class BluetoothctlImpl implements Runnable {
   private static final Pattern PATTERN_DEVICE = Pattern.compile("\\[(\\w+)\\] Device (\\w{2}:\\w{2}:\\w{2}:\\w{2}:\\w{2}:\\w{2})");
   private static final String CONNECTED = "Connection successful";
   private static final String CONNECT_ERROR = "Failed to connect";
-  private static final String DISCONNECTED = "Successful disconnected";
+  // private static final String DISCONNECTED = "Successful disconnected";
 
   private final List<String> detectedDevices = new ArrayList<String>();
 

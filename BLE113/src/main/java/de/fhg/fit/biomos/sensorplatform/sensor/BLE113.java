@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.BLE113lib;
-import de.fhg.fit.biomos.sensorplatform.sensors.AbstractPulseOximeterSensor;
+import de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;

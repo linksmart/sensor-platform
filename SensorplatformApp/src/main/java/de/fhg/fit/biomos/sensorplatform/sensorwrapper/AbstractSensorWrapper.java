@@ -4,7 +4,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import de.fhg.fit.biomos.sensorplatform.sensors.Sensor;
+import de.fhg.fit.biomos.sensorplatform.sensor.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 
@@ -17,10 +17,10 @@ public abstract class AbstractSensorWrapper<T extends Sensor> implements SensorW
 
   protected final DateTimeFormatter dtf;
 
-  protected long lastNotificationTimestamp;
-  protected Gatttool gatttool;
-
+  protected final Gatttool gatttool;
   protected final T sensor;
+
+  protected long lastNotificationTimestamp;
 
   public AbstractSensorWrapper(T sensor, String timestampFormat) {
     this.sensor = sensor;

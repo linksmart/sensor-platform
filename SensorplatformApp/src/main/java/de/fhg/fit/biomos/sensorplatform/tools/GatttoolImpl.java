@@ -78,7 +78,6 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       this.streamToSensor.write(CMD_SEC_LEVEL + " " + this.secLevel);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
-      // Thread.sleep(1000);
       LOG.info("security level set to " + this.secLevel);
     } catch (IOException e) {
       LOG.error("creating gatttool process failed", e);
