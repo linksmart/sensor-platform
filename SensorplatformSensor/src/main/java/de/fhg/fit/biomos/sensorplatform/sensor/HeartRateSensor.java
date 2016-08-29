@@ -26,6 +26,6 @@ public interface HeartRateSensor {
 
   public List<Integer> getRRintervals(int index, String rawHexValues);
 
-  public HeartRateSample calculateHeartRateData(String timestamp, String rawHexValues);
+  public HeartRateSample calculateHeartRateData(String timestamp, String handle, String rawHexValues);
 
 }

@@ -8,9 +8,9 @@ import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
  * @author Daniel Pyka
  *
  */
-public interface SensorWrapper {
+public interface SensorWrapper<T extends Sensor<?>> {
 
-  public Sensor getSensor();
+  public T getSensor();
 
   public Gatttool getGatttool();
 

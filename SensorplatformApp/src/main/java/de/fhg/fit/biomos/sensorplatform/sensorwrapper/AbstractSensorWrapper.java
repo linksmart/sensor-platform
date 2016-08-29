@@ -13,7 +13,7 @@ import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
  * @author Daniel Pyka
  *
  */
-public abstract class AbstractSensorWrapper<T extends Sensor> implements SensorWrapper, SensorNotificationDataObserver {
+public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements SensorWrapper<T>, SensorNotificationDataObserver {
 
   protected final DateTimeFormatter dtf;
 
@@ -42,7 +42,7 @@ public abstract class AbstractSensorWrapper<T extends Sensor> implements SensorW
   }
 
   @Override
-  public Sensor getSensor() {
+  public T getSensor() {
     return this.sensor;
   }
 

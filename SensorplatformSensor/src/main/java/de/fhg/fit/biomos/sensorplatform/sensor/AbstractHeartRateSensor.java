@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
@@ -26,7 +27,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  * @author Daniel Pyka
  *
  */
-public abstract class AbstractHeartRateSensor extends Sensor implements HeartRateSensor {
+public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrary> implements HeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractHeartRateSensor.class);
 
@@ -39,8 +40,9 @@ public abstract class AbstractHeartRateSensor extends Sensor implements HeartRat
 
   private static final Pattern PATTERN_RR = Pattern.compile("(\\w{2}\\s\\w{2})+");
 
-  public AbstractHeartRateSensor(SensorName name, String bdAddress, AddressType addressType, SecurityLevel securityLevel, JSONObject sensorConfiguration) {
-    super(name, bdAddress, addressType, securityLevel, sensorConfiguration);
+  public AbstractHeartRateSensor(HeartRateGattLibrary heartRateGattLibrary, SensorName name, String bdAddress, AddressType addressType,
+      SecurityLevel securityLevel, JSONObject sensorConfiguration) {
+    super(heartRateGattLibrary, name, bdAddress, addressType, securityLevel, sensorConfiguration);
   }
 
   /**
@@ -201,7 +203,12 @@ public abstract class AbstractHeartRateSensor extends Sensor implements HeartRat
   }
 
   @Override
-  public HeartRateSample calculateHeartRateData(String timestamp, String rawHexValues) {
+  public HeartRateSample calculateHeartRateData(String timestamp, String handle, String rawHexValues) {
+    if (!handle.equals(this.gattLibrary.getHandleHeartRateMeasurement())) {
+      LOG.warn("unexpected handle address " + handle + " " + rawHexValues);
+      return null;
+    }
+
     HeartRateSample hrs = new HeartRateSample(timestamp, this.bdAddress);
 
     if (isSkinContactDetectionSupported(rawHexValues)) {

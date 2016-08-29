@@ -24,7 +24,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  * @author Daniel Pyka
  *
  */
-public class CC2650 extends Sensor {
+public class CC2650 extends Sensor<CC2650lib> {
 
   private static final Logger LOG = LoggerFactory.getLogger(CC2650.class);
 
@@ -40,7 +40,7 @@ public class CC2650 extends Sensor {
   private static final SecurityLevel securityLevel = SecurityLevel.LOW;
 
   public CC2650(SensorName name, String bdAddress, JSONObject settings) {
-    super(name, bdAddress, addressType, securityLevel, settings);
+    super(new CC2650lib(), name, bdAddress, addressType, securityLevel, settings);
   }
 
   /**
@@ -48,13 +48,13 @@ public class CC2650 extends Sensor {
    */
   private void enableTemperatureNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + period);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_IR_TEMPERATURE_PERIOD + " " + period);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_IR_TEMPERATURE_ENABLE + " " + this.gattLibrary.ENABLE_MEASUREMENT);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + enableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + enableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("enable temperature notification");
@@ -68,13 +68,13 @@ public class CC2650 extends Sensor {
    */
   private void disableTemperatureNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + disableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_IR_TEMPERATURE_NOTIFICATION + " " + disableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_IR_TEMPERATURE_ENABLE + " " + this.gattLibrary.DISABLE_MEASUREMENT);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_IR_TEMPERATURE_PERIOD + " " + CC2650lib.INTERVAL_IR_TEMPERATURE_1000MS_DEFAULT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_IR_TEMPERATURE_PERIOD + " " + this.gattLibrary.INTERVAL_IR_TEMPERATURE_1000MS_DEFAULT);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("disable temperature notification");
@@ -88,13 +88,13 @@ public class CC2650 extends Sensor {
    */
   private void enableHumidityNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + period);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_HUMIDITY_PERIOD + " " + period);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_HUMIDITY_ENABLE + " " + this.gattLibrary.ENABLE_MEASUREMENT);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_NOTIFICATION + " " + enableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_HUMIDITY_NOTIFICATION + " " + enableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("enable humidity notification");
@@ -108,13 +108,13 @@ public class CC2650 extends Sensor {
    */
   private void disableHumidityNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_NOTIFICATION + " " + disableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_HUMIDITY_NOTIFICATION + " " + disableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_HUMIDITY_ENABLE + " " + this.gattLibrary.DISABLE_MEASUREMENT);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_HUMIDITY_PERIOD + " " + CC2650lib.INTERVAL_HUMIDITY_1000MS_DEFAULT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_HUMIDITY_PERIOD + " " + this.gattLibrary.INTERVAL_HUMIDITY_1000MS_DEFAULT);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("disable humidity notification");
@@ -128,13 +128,13 @@ public class CC2650 extends Sensor {
    */
   private void enableAmbientlightNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + period);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_AMBIENTLIGHT_PERIOD + " " + period);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_AMBIENTLIGHT_ENABLE + " " + this.gattLibrary.ENABLE_MEASUREMENT);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + enableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + enableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("enable ambientlight notification");
@@ -148,13 +148,13 @@ public class CC2650 extends Sensor {
    */
   private void disableAmbientlightNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + disableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_AMBIENTLIGHT_NOTIFICATION + " " + disableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_AMBIENTLIGHT_ENABLE + " " + this.gattLibrary.DISABLE_MEASUREMENT);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_AMBIENTLIGHT_PERIOD + " " + CC2650lib.INTERVAL_AMBIENTLIGHT_800MS_DEFAULT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_AMBIENTLIGHT_PERIOD + " " + this.gattLibrary.INTERVAL_AMBIENTLIGHT_800MS_DEFAULT);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("disable ambientlight notification");
@@ -168,13 +168,13 @@ public class CC2650 extends Sensor {
    */
   private void enablePressureNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + period);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_PRESSURE_PERIOD + " " + period);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_ENABLE + " " + CC2650lib.ENABLE_MEASUREMENT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_PRESSURE_ENABLE + " " + this.gattLibrary.ENABLE_MEASUREMENT);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_NOTIFICATION + " " + enableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_PRESSURE_NOTIFICATION + " " + enableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("enable pressure notification");
@@ -188,13 +188,13 @@ public class CC2650 extends Sensor {
    */
   private void disablePressureNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_NOTIFICATION + " " + disableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_PRESSURE_NOTIFICATION + " " + disableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_ENABLE + " " + CC2650lib.DISABLE_MEASUREMENT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_PRESSURE_ENABLE + " " + this.gattLibrary.DISABLE_MEASUREMENT);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_PRESSURE_PERIOD + " " + CC2650lib.INTERVAL_PRESSURE_1000MS_DEFAULT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_PRESSURE_PERIOD + " " + this.gattLibrary.INTERVAL_PRESSURE_1000MS_DEFAULT);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("disable pressure notification");
@@ -209,13 +209,13 @@ public class CC2650 extends Sensor {
    */
   private void enableMovementNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period, String configuration) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + period);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_MOVEMENT_PERIOD + " " + period);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_ENABLE + " " + configuration);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_MOVEMENT_ENABLE + " " + configuration);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_NOTIFICATION + " " + enableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_MOVEMENT_NOTIFICATION + " " + enableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("enable movement notification");
@@ -229,13 +229,13 @@ public class CC2650 extends Sensor {
    */
   private void disableMovementNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification, String configuration) {
     try {
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_NOTIFICATION + " " + disableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_MOVEMENT_NOTIFICATION + " " + disableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_ENABLE + " " + configuration);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_MOVEMENT_ENABLE + " " + configuration);
       streamToSensor.newLine();
       streamToSensor.flush();
-      streamToSensor.write(charWriteCmd + " " + CC2650lib.HANDLE_MOVEMENT_PERIOD + " " + CC2650lib.INTERVAL_MOVEMENT_1000MS_DEFAULT);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.HANDLE_MOVEMENT_PERIOD + " " + this.gattLibrary.INTERVAL_MOVEMENT_1000MS_DEFAULT);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("disable movement notification");
@@ -260,7 +260,7 @@ public class CC2650 extends Sensor {
     }
     if (this.settings.has(MOVEMENT)) {
       enableMovementNotification(streamToSensor, charWriteCmd, enableNotification, this.settings.getString(MOVEMENT),
-          CC2650lib.VALUE_MOVEMENT_ACTIVATE_ALL_16G);
+          this.gattLibrary.VALUE_MOVEMENT_ACTIVATE_ALL_16G);
     }
   }
 
@@ -281,7 +281,7 @@ public class CC2650 extends Sensor {
       disablePressureNotification(streamToSensor, charWriteCmd, disableNotification);
     }
     if (this.settings.has(MOVEMENT)) {
-      disableMovementNotification(streamToSensor, charWriteCmd, disableNotification, CC2650lib.VALUE_MOVEMENT_DEACTIVATE_ALL_16G);
+      disableMovementNotification(streamToSensor, charWriteCmd, disableNotification, this.gattLibrary.VALUE_MOVEMENT_DEACTIVATE_ALL_16G);
     }
   }
 
@@ -463,9 +463,14 @@ public class CC2650 extends Sensor {
    *          the current timestamp from the sensorwrapper.
    * @param data
    *          sensor notification data without spaces
+   * @param handle
+   *          handle of the notification
    * @return CC2650TemperatureSample
    */
-  public CC2650TemperatureSample calculateTemperatureData(String timestamp, String data) {
+  public CC2650TemperatureSample calculateTemperatureData(String timestamp, String handle, String data) {
+    if (!handle.equals(this.gattLibrary.HANDLE_IR_TEMPERATURE_VALUE)) {
+      return null;
+    }
     CC2650TemperatureSample temperatureSample = new CC2650TemperatureSample(timestamp, this.bdAddress);
     temperatureSample.setObjectTemperature(getIRtemperatureFromTemperatureSensor(data));
     temperatureSample.setDieTemperature(getDieTemperatureFromTemperatureSensor(data));
@@ -479,9 +484,14 @@ public class CC2650 extends Sensor {
    *          the current timestamp from the sensorwrapper.
    * @param data
    *          sensor notification data without spaces
+   * @param handle
+   *          handle of the notification
    * @return CC2650HumiditySample
    */
-  public CC2650HumiditySample calculateHumidityData(String timestamp, String data) {
+  public CC2650HumiditySample calculateHumidityData(String timestamp, String handle, String data) {
+    if (!handle.equals(this.gattLibrary.HANDLE_HUMIDITY_VALUE)) {
+      return null;
+    }
     CC2650HumiditySample humiditySample = new CC2650HumiditySample(timestamp, this.bdAddress);
     humiditySample.setTemperature(getTemperatureFromHumiditySensor(data));
     humiditySample.setHumidity(getRelativeHumidty(data));
@@ -495,9 +505,14 @@ public class CC2650 extends Sensor {
    *          the current timestamp from the sensorwrapper.
    * @param data
    *          sensor notification data without spaces
+   * @param handle
+   *          handle of the notification
    * @return CC2650PressureSample
    */
-  public CC2650PressureSample calculatePressureData(String timestamp, String data) {
+  public CC2650PressureSample calculatePressureData(String timestamp, String handle, String data) {
+    if (!handle.equals(this.gattLibrary.HANDLE_PRESSURE_VALUE)) {
+      return null;
+    }
     CC2650PressureSample pressureSample = new CC2650PressureSample(timestamp, this.bdAddress);
     pressureSample.setTemperature(getTemperatureFromBarometricPressureSensor(data));
     pressureSample.setPressure(getPressure(data));
@@ -511,9 +526,14 @@ public class CC2650 extends Sensor {
    *          the current timestamp from the sensorwrapper.
    * @param data
    *          sensor notification data without spaces
+   * @param handle
+   *          handle of the notification
    * @return CC2650AmbientlightSample
    */
-  public CC2650AmbientlightSample calculateAmbientlightData(String timestamp, String data) {
+  public CC2650AmbientlightSample calculateAmbientlightData(String timestamp, String handle, String data) {
+    if (!handle.equals(this.gattLibrary.HANDLE_AMBIENTLIGHT_VALUE)) {
+      return null;
+    }
     CC2650AmbientlightSample ambientlightSample = new CC2650AmbientlightSample(timestamp, this.bdAddress);
     ambientlightSample.setAmbientlight(getAmbientLight(data));
     return ambientlightSample;
@@ -526,9 +546,14 @@ public class CC2650 extends Sensor {
    *          the current timestamp from the sensorwrapper.
    * @param data
    *          sensor notification data without spaces
+   * @param handle
+   *          handle of the notification
    * @return CC2650MovementSample
    */
-  public CC2650MovementSample calculateMovementSample(String timestamp, String data) {
+  public CC2650MovementSample calculateMovementSample(String timestamp, String handle, String data) {
+    if (!handle.equals(this.gattLibrary.HANDLE_MOVEMENT_VALUE)) {
+      return null;
+    }
     CC2650MovementSample movementSample = new CC2650MovementSample(timestamp, this.bdAddress);
     movementSample.setRotationX(getRotationX(data));
     movementSample.setRotationY(getRotationY(data));

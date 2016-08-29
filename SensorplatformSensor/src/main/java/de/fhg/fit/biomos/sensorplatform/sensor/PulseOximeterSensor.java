@@ -32,6 +32,6 @@ public interface PulseOximeterSensor {
 
   public short getPulseAmplitudeIndex(String rawHexValues);
 
-  public PulseOximeterSample calculatePulseOximeterData(String timestamp, String rawHexValues);
+  public PulseOximeterSample calculatePulseOximeterData(String timestamp, String handle, String rawHexValues);
 
 }

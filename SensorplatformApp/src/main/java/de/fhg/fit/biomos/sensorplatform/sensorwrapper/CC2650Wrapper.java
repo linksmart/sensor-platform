@@ -5,7 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector;
-import de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
+import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
 
 /**
@@ -27,33 +31,33 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
   @Override
   public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
     this.lastNotificationTimestamp = System.currentTimeMillis();
-
     String data = rawHexValues.replace(" ", "");
-    switch (handle) {
-      case CC2650lib.HANDLE_IR_TEMPERATURE_VALUE:
-        // LOG.info("new temperature notification received");
-        this.cc2650Collector.addToQueue(this.sensor.calculateTemperatureData(this.dtf.print(new DateTime()), data));
-        break;
-      case CC2650lib.HANDLE_HUMIDITY_VALUE:
-        // LOG.info("new humidity notification received");
-        this.cc2650Collector.addToQueue(this.sensor.calculateHumidityData(this.dtf.print(new DateTime()), data));
-        break;
-      case CC2650lib.HANDLE_AMBIENTLIGHT_VALUE:
-        // LOG.info("new ambientlight notification received");
-        this.cc2650Collector.addToQueue(this.sensor.calculateAmbientlightData(this.dtf.print(new DateTime()), data));
-        break;
-      case CC2650lib.HANDLE_PRESSURE_VALUE:
-        // LOG.info("new pressure notification received");
-        this.cc2650Collector.addToQueue(this.sensor.calculatePressureData(this.dtf.print(new DateTime()), data));
-        break;
-      case CC2650lib.HANDLE_MOVEMENT_VALUE:
-        // LOG.info("new movement notification received");
-        this.cc2650Collector.addToQueue(this.sensor.calculateMovementSample(this.dtf.print(new DateTime()), data));
-        break;
-      default:
-        LOG.error("unexpected handle notification " + handle + " : " + rawHexValues);
-        break;
+    CC2650TemperatureSample temperatureSample;
+    if ((temperatureSample = this.sensor.calculateTemperatureData(this.dtf.print(new DateTime()), handle, data)) != null) {
+      this.cc2650Collector.addToQueue(temperatureSample);
+      return;
     }
+    CC2650HumiditySample humiditySample;
+    if ((humiditySample = this.sensor.calculateHumidityData(this.dtf.print(new DateTime()), handle, data)) != null) {
+      this.cc2650Collector.addToQueue(humiditySample);
+      return;
+    }
+    CC2650PressureSample pressureSample;
+    if ((pressureSample = this.sensor.calculatePressureData(this.dtf.print(new DateTime()), handle, data)) != null) {
+      this.cc2650Collector.addToQueue(pressureSample);
+      return;
+    }
+    CC2650AmbientlightSample lightSample;
+    if ((lightSample = this.sensor.calculateAmbientlightData(this.dtf.print(new DateTime()), handle, data)) != null) {
+      this.cc2650Collector.addToQueue(lightSample);
+      return;
+    }
+    CC2650MovementSample movementSample;
+    if ((movementSample = this.sensor.calculateMovementSample(this.dtf.print(new DateTime()), handle, data)) != null) {
+      this.cc2650Collector.addToQueue(movementSample);
+      return;
+    }
+    LOG.warn("unexpected handle address " + handle + " " + rawHexValues);
   }
 
 }

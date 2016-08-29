@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib;
-import de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
@@ -26,7 +25,7 @@ public class TomTomHRM extends AbstractHeartRateSensor {
   private static final SecurityLevel securityLevel = SecurityLevel.LOW;
 
   public TomTomHRM(SensorName name, String bdAddress, JSONObject sensorConfiguration) {
-    super(name, bdAddress, addressType, securityLevel, sensorConfiguration);
+    super(new TomTomHRMlib(), name, bdAddress, addressType, securityLevel, sensorConfiguration);
   }
 
   /**
@@ -42,7 +41,7 @@ public class TomTomHRM extends AbstractHeartRateSensor {
    */
   private void enableHeartRateNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + TomTomHRMlib.HANDLE_HEART_RATE_NOTIFICATION + " " + enableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.getHandleHeartRateNotification() + " " + enableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("enable heart rate notification");
@@ -63,7 +62,7 @@ public class TomTomHRM extends AbstractHeartRateSensor {
    */
   private void disableHeartRateNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + TomTomHRMlib.HANDLE_HEART_RATE_NOTIFICATION + " " + disableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.getHandleHeartRateNotification() + " " + disableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("disable heart rate notification");

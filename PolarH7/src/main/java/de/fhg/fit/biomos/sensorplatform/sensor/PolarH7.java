@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.sensors;
+package de.fhg.fit.biomos.sensorplatform.sensor;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class PolarH7 extends AbstractHeartRateSensor {
   private static final SecurityLevel securityLevel = SecurityLevel.LOW;
 
   public PolarH7(SensorName name, String bdAddress, JSONObject sensorConfiguration) {
-    super(name, bdAddress, addressType, securityLevel, sensorConfiguration);
+    super(new PolarH7lib(), name, bdAddress, addressType, securityLevel, sensorConfiguration);
   }
 
   /**
@@ -42,7 +42,7 @@ public class PolarH7 extends AbstractHeartRateSensor {
    */
   private void enableHeartRateNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + enableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.getHandleHeartRateNotification() + " " + enableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("enable heart rate and rr-interval notification");
@@ -63,7 +63,7 @@ public class PolarH7 extends AbstractHeartRateSensor {
    */
   private void disableHeartRateNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + PolarH7lib.HANDLE_HEART_RATE_NOTIFICATION + " " + disableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.getHandleHeartRateNotification() + " " + disableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("disable heart rate and rr-interval notification");

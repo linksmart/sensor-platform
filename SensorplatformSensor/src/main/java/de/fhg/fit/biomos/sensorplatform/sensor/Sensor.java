@@ -2,6 +2,7 @@ package de.fhg.fit.biomos.sensorplatform.sensor;
 
 import org.json.JSONObject;
 
+import de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
@@ -12,15 +13,17 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  * @author Daniel Pyka
  *
  */
-public abstract class Sensor implements SensorCommands {
+public abstract class Sensor<T extends GattLibrary> implements SensorCommands {
 
+  protected final T gattLibrary;
   protected final SensorName name;
   protected final String bdAddress;
   protected final AddressType addressType;
   protected final SecurityLevel securityLevel;
   protected final JSONObject settings;
 
-  public Sensor(SensorName name, String bdAddress, AddressType addressType, SecurityLevel securityLevel, JSONObject settings) {
+  public Sensor(T gattLibrary, SensorName name, String bdAddress, AddressType addressType, SecurityLevel securityLevel, JSONObject settings) {
+    this.gattLibrary = gattLibrary;
     this.name = name;
     this.bdAddress = bdAddress;
     this.addressType = addressType;

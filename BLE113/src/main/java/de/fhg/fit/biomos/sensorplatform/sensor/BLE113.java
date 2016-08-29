@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.BLE113lib;
-import de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
@@ -26,12 +25,12 @@ public class BLE113 extends AbstractPulseOximeterSensor {
   private static final SecurityLevel securityLevel = SecurityLevel.MEDIUM;
 
   public BLE113(SensorName name, String bdAddress, JSONObject settings) {
-    super(name, bdAddress, addressType, securityLevel, settings);
+    super(new BLE113lib(), name, bdAddress, addressType, securityLevel, settings);
   }
 
   private void enablePulseOximeterNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + BLE113lib.HANDLE_PULSE_OXIMETER_NOTIFICATION + " " + enableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.getHandlePulseOximeterNotification() + " " + enableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("enable pulse oximeter notification");
@@ -42,7 +41,7 @@ public class BLE113 extends AbstractPulseOximeterSensor {
 
   private void disablePulseOximeterNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
-      streamToSensor.write(charWriteCmd + " " + BLE113lib.HANDLE_PULSE_OXIMETER_NOTIFICATION + " " + disableNotification);
+      streamToSensor.write(charWriteCmd + " " + this.gattLibrary.getHandlePulseOximeterNotification() + " " + disableNotification);
       streamToSensor.newLine();
       streamToSensor.flush();
       LOG.info("disable pulse oximeter notification");
