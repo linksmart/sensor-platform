@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that.
+ * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that. Creates DBsession for database interactions.
  *
  * @author Daniel Pyka
  *

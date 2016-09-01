@@ -43,7 +43,7 @@ public class SensorObserver implements Runnable {
             try {
               Thread.sleep(2000); // give bluez time to update itself
             } catch (InterruptedException e) {
-              e.printStackTrace();
+              LOG.error("sleep failed", e);
             }
           }
         }

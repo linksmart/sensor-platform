@@ -3,8 +3,8 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 import java.util.UUID;
 
 /**
- * Polar H7 is the heart rate monitor for the chest strap. Skin contact with both electrodes to enable the device for a few seconds. The device indicates skin
- * contact and will shut down automatically after several seconds without skin contact.
+ * Polar H7 is a heart rate monitor. Skin contact with both electrodes to enable the device for a few seconds. The device indicates skin contact and will shut
+ * down automatically after several seconds without skin contact. PolarH7 is the only heart rate sensor which features RR-intervals.
  *
  * @author Daniel Pyka
  *

@@ -1,6 +1,8 @@
 package de.fhg.fit.biomos.sensorplatform.util;
 
 /**
+ * The names are used in the web interface and in the SensorWrapperFactory to reference to specific sensors. Those names are not necessarily the names which are
+ * displayed from scanning for bluetooth devices.
  *
  * @author Daniel Pyka
  *

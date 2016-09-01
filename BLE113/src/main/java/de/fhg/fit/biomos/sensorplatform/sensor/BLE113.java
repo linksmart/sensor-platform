@@ -35,7 +35,7 @@ public class BLE113 extends AbstractPulseOximeterSensor {
       streamToSensor.flush();
       LOG.info("enable pulse oximeter notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot enable pulse oximeter notification", e);
     }
   }
 
@@ -46,7 +46,7 @@ public class BLE113 extends AbstractPulseOximeterSensor {
       streamToSensor.flush();
       LOG.info("disable pulse oximeter notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot disable pulse oximeter notification", e);
     }
   }
 

@@ -17,6 +17,8 @@ import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample;
 
 /**
+ * Exposes basic functions for database interaction. It is instantiated by the DBcontroller (factory). Use one DBsession for one database interaction and throw
+ * it away afterwards.
  *
  * @author Daniel Pyka
  *

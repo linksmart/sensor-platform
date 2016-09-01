@@ -23,8 +23,6 @@ public interface Gatttool extends Runnable {
 
   public void addObs(SensorNotificationDataObserver sndo);
 
-  public void removeObs();
-
   public BufferedWriter getStreamToSensor();
 
   public SecurityLevel getSecurityLevel();

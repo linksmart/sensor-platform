@@ -23,15 +23,12 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   private static final String WVDIAL = "wvdial";
 
+  private static final Pattern ATCSQ = Pattern.compile("\\+CSQ: (\\d+),(\\d+)");
+  private static final Pattern PID_PPPD = Pattern.compile("Pid of pppd: (\\d+)");
   private static final Pattern LOCAL_IP = Pattern.compile("local\\s+IP\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern REMOTE_IP = Pattern.compile("remote\\s+IP\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern PRIMARY_DNS = Pattern.compile("primary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern SECONDARY_DNS = Pattern.compile("secondary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
-
-  private String local_ip = "";
-  private String remote_ip = "";
-  private String primary_dns = "";
-  private String secondary_dns = "";
 
   private enum LEDstate {
     STANDBY("timer"), RECORDING("heartbeat"), ERROR("none");
@@ -50,7 +47,6 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   public RaspberryPi3() {
-    //
   }
 
   @Override
@@ -103,30 +99,44 @@ public class RaspberryPi3 implements HardwarePlatform {
       // wvdial always writes to error stream...
       String line = null;
       while ((line = output.readLine()) != null) {
-        System.out.println(line);
+        // System.out.println(line);
         Matcher m1 = LOCAL_IP.matcher(line);
         Matcher m2 = REMOTE_IP.matcher(line);
         Matcher m3 = PRIMARY_DNS.matcher(line);
         Matcher m4 = SECONDARY_DNS.matcher(line);
-        if (m1.find()) {
-          this.local_ip = m1.group(1);
+        Matcher m5 = ATCSQ.matcher(line);
+        Matcher m6 = PID_PPPD.matcher(line);
+        if (m5.find()) {
+          LOG.info("signal quality is " + m5.group(1) + " CSQ or " + CSQtoDBM(m5.group(1)) + " dBm");
+          LOG.info("bit error rate (RxQual) is " + m5.group(2) + " (99: not supported)");
+        } else if (m6.find()) {
+          LOG.info("process id is " + m6.group(1));
+        } else if (m1.find()) {
+          LOG.info("local ip is " + m1.group(1));
         } else if (m2.find()) {
-          this.remote_ip = m2.group(1);
+          LOG.info("remote ip is " + m2.group(1));
         } else if (m3.find()) {
-          this.primary_dns = m3.group(1);
+          LOG.info("primary DNS is " + m3.group(1));
         } else if (m4.find()) {
-          this.secondary_dns = m4.group(1);
+          LOG.info("secondary DNS is " + m4.group(1));
           break;
         }
       }
       output.close();
-      LOG.info("local ip is " + this.local_ip);
-      LOG.info("remote ip is " + this.remote_ip);
-      LOG.info("primary DNS is " + this.primary_dns);
-      LOG.info("secondary DNS is " + this.secondary_dns);
-    } catch (IOException e) {
+      process.waitFor();
+    } catch (IOException | InterruptedException e) {
       LOG.error("getting local controller address failed", e);
     }
+  }
+
+  /**
+   *
+   * @param csq
+   *          first number of the output from modem command AT+CSQ
+   * @return unit in dBm
+   */
+  private int CSQtoDBM(String csq) {
+    return (-113) + new Integer(csq) * 2;
   }
 
 }

@@ -1,9 +1,8 @@
 package de.fhg.fit.biomos.sensorplatform.util;
 
-import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
-
 /**
+ * Bean class for a bluetooth device which was connected at least once. Information about the device and optional pairing/bonding keys are stored in
+ * /var/lib/bluetoth/.
  *
  * @author Daniel Pyka
  *

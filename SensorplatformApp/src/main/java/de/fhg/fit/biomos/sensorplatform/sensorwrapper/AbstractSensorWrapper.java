@@ -9,6 +9,7 @@ import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 
 /**
+ * Wrapper class, which brings together: sensor, gatttool and database.
  *
  * @author Daniel Pyka
  *

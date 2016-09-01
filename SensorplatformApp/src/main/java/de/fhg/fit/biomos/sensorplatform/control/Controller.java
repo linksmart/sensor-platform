@@ -45,6 +45,7 @@ public class Controller implements Runnable {
   private final SensorWrapperFactory swFactory;
   private final HardwarePlatform hwPlatform;
   private final SecurityManager secman;
+  private final InternetConnectionManager inetman;
   private final HeartRateSampleCollector hrsCollector;
   private final PulseOximeterSampleCollector pulseCollector;
   private final CC2650SampleCollector cc2650Collector;
@@ -62,12 +63,14 @@ public class Controller implements Runnable {
   private boolean recording = false;
 
   @Inject
-  public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, SecurityManager secman, HeartRateSampleCollector hrsCollector,
-      PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector, @Named("timeout.sensor.connect") String timeoutConnect,
-      @Named("timeout.sensor.notification") String timeoutNotification, @Named("recording.info.filename") String recordingInfoFileName) {
+  public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, SecurityManager secman, InternetConnectionManager inetman,
+      HeartRateSampleCollector hrsCollector, PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector,
+      @Named("timeout.sensor.connect") String timeoutConnect, @Named("timeout.sensor.notification") String timeoutNotification,
+      @Named("recording.info.filename") String recordingInfoFileName) {
     this.swFactory = swFactory;
     this.hwPlatform = hwPlatform;
     this.secman = secman;
+    this.inetman = inetman;
     this.hrsCollector = hrsCollector;
     this.pulseCollector = pulseCollector;
     this.cc2650Collector = cc2650Collector;
@@ -94,7 +97,8 @@ public class Controller implements Runnable {
     }
   }
 
-  public void unblockController() {
+  public void restartBluetoothController() {
+    LOG.info("restart bluetooth controller");
     Hciconfig hciconfig = new HciconfigImpl();
     hciconfig.down();
     try {
@@ -120,10 +124,8 @@ public class Controller implements Runnable {
    */
   public void initialise() {
     LOG.info("initialise controller");
-    LOG.info("restart bluetooth device");
-    unblockController();
-    LOG.info("connect to mobile internet");
-    // this.hwPlatform.connectToMobileInternet();
+    restartBluetoothController();
+    new Thread(this.inetman).start();
     if (!this.recordingInfo.exists()) {
       LOG.info("no recording period was interrupted");
       this.hwPlatform.setLEDstateSTANDBY();

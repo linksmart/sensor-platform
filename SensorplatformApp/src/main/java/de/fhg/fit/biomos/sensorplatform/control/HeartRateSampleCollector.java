@@ -26,7 +26,7 @@ public class HeartRateSampleCollector implements SampleCollector {
   private static final Logger LOG = LoggerFactory.getLogger(HeartRateSampleCollector.class);
 
   private static final int UPLOAD_THREAD_SLEEP_TIME_MS = 300;
-  private static final int UPLOAD_ATTEMPTS = 2;
+  private static final int UPLOAD_ATTEMPTS = 1;
 
   private final DBcontroller dbc;
   private final Uploader uploader;

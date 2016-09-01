@@ -28,7 +28,6 @@ public class Cubieboard3 implements HardwarePlatform {
     // TODO Auto-generated method stub
 
   }
-  // TODO
 
   @Override
   public void connectToMobileInternet() {

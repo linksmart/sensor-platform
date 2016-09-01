@@ -46,7 +46,7 @@ public class TomTomHRM extends AbstractHeartRateSensor {
       streamToSensor.flush();
       LOG.info("enable heart rate notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot enable heart rate notification", e);
     }
   }
 
@@ -67,7 +67,7 @@ public class TomTomHRM extends AbstractHeartRateSensor {
       streamToSensor.flush();
       LOG.info("disable heart rate notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot disable heart rate notification", e);
     }
   }
 

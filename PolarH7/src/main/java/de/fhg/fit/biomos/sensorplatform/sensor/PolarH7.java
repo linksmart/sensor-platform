@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
-import de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
@@ -47,7 +46,7 @@ public class PolarH7 extends AbstractHeartRateSensor {
       streamToSensor.flush();
       LOG.info("enable heart rate and rr-interval notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot enable heart rate notification", e);
     }
   }
 
@@ -68,7 +67,7 @@ public class PolarH7 extends AbstractHeartRateSensor {
       streamToSensor.flush();
       LOG.info("disable heart rate and rr-interval notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot disable heart rate notification", e);
     }
   }
 

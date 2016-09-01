@@ -100,11 +100,6 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   }
 
   @Override
-  public void removeObs() {
-    deleteObserver();
-  }
-
-  @Override
   public void run() {
     try {
       String line = null;

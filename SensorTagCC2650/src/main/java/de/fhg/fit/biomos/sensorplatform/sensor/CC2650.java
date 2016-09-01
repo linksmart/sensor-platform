@@ -59,7 +59,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("enable temperature notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot enable temperature notification", e);
     }
   }
 
@@ -79,7 +79,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("disable temperature notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot disable temperature notification", e);
     }
   }
 
@@ -99,7 +99,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("enable humidity notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot enable humidity notification", e);
     }
   }
 
@@ -119,7 +119,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("disable humidity notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot disable humidity notification", e);
     }
   }
 
@@ -139,7 +139,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("enable ambientlight notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot enable ambientlight notification", e);
     }
   }
 
@@ -159,7 +159,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("disable ambientlight notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot disable ambientlight notification", e);
     }
   }
 
@@ -179,7 +179,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("enable pressure notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot enable pressure notification", e);
     }
   }
 
@@ -199,7 +199,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("disable pressure notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot disable pressure notification", e);
     }
   }
 
@@ -220,7 +220,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("enable movement notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot enable movement notification", e);
     }
   }
 
@@ -240,7 +240,7 @@ public class CC2650 extends Sensor<CC2650lib> {
       streamToSensor.flush();
       LOG.info("disable movement notification");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("cannot disable movement notification", e);
     }
   }
 

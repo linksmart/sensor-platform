@@ -48,7 +48,7 @@ public class ControllerService {
       this.controller.startup(uptime * 1000, requestConverted, true);
       return Response.ok().build();
     } catch (JSONException e) {
-      e.printStackTrace();
+      LOG.error("bad json from sensorplatform webinterface", e);
       return Response.serverError().build();
     }
   }

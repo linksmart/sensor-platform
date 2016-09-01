@@ -1,7 +1,8 @@
 package de.fhg.fit.biomos.sensorplatform.util;
 
 /**
- * Used for gatttool as additional parameter. See gatttool -h
+ * Used for gatttool as additional parameter. See gatttool -h. There is another inconsistency: gatttool does not know a address type static, so random is used
+ * in this case, public would not work.
  *
  * @author Daniel Pyka
  *

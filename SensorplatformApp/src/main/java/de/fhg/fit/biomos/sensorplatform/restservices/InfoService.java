@@ -9,6 +9,8 @@ import javax.ws.rs.core.Response;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -18,6 +20,8 @@ import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 @Path("/info")
 public class InfoService {
+
+  private static final Logger LOG = LoggerFactory.getLogger(InfoService.class);
 
   private final Controller controller;
   private final Uploader uploader;
@@ -44,7 +48,7 @@ public class InfoService {
       }
       response.put("sensorplatform", this.sensorplatform);
     } catch (JSONException e) {
-      e.printStackTrace();
+      LOG.error("bad json response", e);
       Response.serverError().build();
     }
     return Response.ok(response).build();

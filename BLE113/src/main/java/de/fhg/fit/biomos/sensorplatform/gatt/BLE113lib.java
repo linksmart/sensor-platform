@@ -1,6 +1,9 @@
 package de.fhg.fit.biomos.sensorplatform.gatt;
 
 /**
+ * BLE 113 is a development board for bluetooth. A specific firmware is used in combination with the sensorplatform. The firmware forces bonding and encryption
+ * with no authentication (just works pairing). Furthermore, the firmware exposes a Bluetooth compliant pulse oximeter service with constant (fixed) data for
+ * SpO2 and puls rate.
  *
  * @author Daniel Pyka
  *
