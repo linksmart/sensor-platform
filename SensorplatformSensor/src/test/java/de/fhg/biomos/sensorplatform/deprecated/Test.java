@@ -1,10 +1,5 @@
 package de.fhg.biomos.sensorplatform.deprecated;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
-
 public abstract class Test {
 
   public static void main(String[] args) {
@@ -22,14 +17,14 @@ public abstract class Test {
     //
     // System.out.println(s.toString());
 
-    HeartRateSample hrs = new HeartRateSample("2016-07-20T20:20:20:600Z", "AA:BB:CC:DD:EE:FF");
-    hrs.setHeartRate(120);
-    List<Integer> l = new ArrayList<Integer>();
-    l.add(500);
-    l.add(501);
-    hrs.setRRintervals(l);
-
-    System.out.println(hrs.toString());
+    // HeartRateSample hrs = new HeartRateSample("2016-07-20T20:20:20:600Z", "AA:BB:CC:DD:EE:FF");
+    // hrs.setHeartRate(120);
+    // List<Float> l = new ArrayList<>();
+    // l.add(500.0f);
+    // l.add(501.0f);
+    // hrs.setRRintervals(l);
+    //
+    // System.out.println(hrs.toString());
   }
 
 }

@@ -6,9 +6,7 @@ import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 public interface HeartRateSensor {
 
-  public boolean is16BitValue(String rawHexValues);
-
-  public boolean is8BitValue(String rawHexValues);
+  public boolean is16BitHeartRateValue(String rawHexValues);
 
   public boolean isRRintervalDataAvailable(String rawHexValues);
 
@@ -24,7 +22,7 @@ public interface HeartRateSensor {
 
   public int getHeartRate16Bit(String rawHexValues);
 
-  public List<Integer> getRRintervals(int index, String rawHexValues);
+  public List<Float> getRRintervals(int index, String rawHexValues);
 
   public HeartRateSample calculateHeartRateData(String timestamp, String handle, String rawHexValues);
 

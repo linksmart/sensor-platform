@@ -31,7 +31,6 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractHeartRateSensor.class);
 
-  private static final byte UINT8 = 0;
   private static final byte UINT16 = 1;
   private static final byte SKIN_CONTACT_DETECTED = 1 << 1;
   private static final byte SKIN_CONTACT_SUPPORTED = 1 << 2;
@@ -53,26 +52,9 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
    * @return true if 16 bit, false if 8 bit
    */
   @Override
-  public boolean is16BitValue(String rawHexValues) {
+  public boolean is16BitHeartRateValue(String rawHexValues) {
     byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
     if ((config & UINT16) == UINT16) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * Check if the bit for 16 bit heart rate value is NOT set in the configuration byte.
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return true if 8 bit, false if 16 bit
-   */
-  @Override
-  public boolean is8BitValue(String rawHexValues) {
-    byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
-    if ((config & UINT8) == UINT8) {
       return true;
     } else {
       return false;
@@ -183,20 +165,20 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
    *          depends if the input string contains 8 or 16 bit heart rate value
    * @param rawHexValues
    *          raw notification data as hexadecimal from the sensor
-   * @return List&lt;Integer&gt; list of all rr intervals (can be none, one or more)
+   * @return List&lt;Float&gt; list of all rr intervals (can be none, one or more)
    */
   @Override
-  public List<Integer> getRRintervals(int index, String rawHexValues) {
-    List<Integer> rrIntervals = new ArrayList<Integer>();
+  public List<Float> getRRintervals(int index, String rawHexValues) {
+    List<Float> rrIntervals = new ArrayList<>();
     String rrIntervalsHex = rawHexValues.substring(index);
 
     Matcher m = PATTERN_RR.matcher(rrIntervalsHex);
     while (m.find()) {
       String tmp = m.group(0);
-      // FIXME rr_value=((double)rr_value/1024.0)*1000.0;
-      // float f = Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2)) / 1024;
-      // f = f * 1000;
-      rrIntervals.add(Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16));
+      rrIntervals.add(((float) Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16) / 1024) * 1000);
+      // resolution is 1/1024
+      // legacy:
+      // rrIntervals.add(Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16));
     }
 
     return rrIntervals;
@@ -217,28 +199,7 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
       }
     }
 
-    if (is8BitValue(rawHexValues)) {
-      hrs.setHeartRate(getHeartRate8Bit(rawHexValues));
-      if (isEnergyExpendedPresent(rawHexValues)) {
-        hrs.setEnergyExpended(getEnergyExpended(6, rawHexValues));
-        if (isRRintervalDataAvailable(rawHexValues)) {
-          hrs.setRRintervals(getRRintervals(12, rawHexValues));
-          // CC HH EE EE RR RR RR RR
-        } else {
-          hrs.setRRintervals("[]");
-          // CC HH EE EE
-        }
-      } else {
-        hrs.setEnergyExpended(0);
-        if (isRRintervalDataAvailable(rawHexValues)) {
-          hrs.setRRintervals(getRRintervals(6, rawHexValues));
-          // CC HH RR RR RR RR
-        } else {
-          hrs.setRRintervals("[]");
-          // CC HH
-        }
-      }
-    } else {
+    if (is16BitHeartRateValue(rawHexValues)) {
       hrs.setHeartRate(getHeartRate16Bit(rawHexValues));
       if (isEnergyExpendedPresent(rawHexValues)) {
         hrs.setEnergyExpended(getEnergyExpended(9, rawHexValues));
@@ -259,7 +220,27 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
           // CC HH HH
         }
       }
-
+    } else {
+      hrs.setHeartRate(getHeartRate8Bit(rawHexValues));
+      if (isEnergyExpendedPresent(rawHexValues)) {
+        hrs.setEnergyExpended(getEnergyExpended(6, rawHexValues));
+        if (isRRintervalDataAvailable(rawHexValues)) {
+          hrs.setRRintervals(getRRintervals(12, rawHexValues));
+          // CC HH EE EE RR RR RR RR
+        } else {
+          hrs.setRRintervals("[]");
+          // CC HH EE EE
+        }
+      } else {
+        hrs.setEnergyExpended(0);
+        if (isRRintervalDataAvailable(rawHexValues)) {
+          hrs.setRRintervals(getRRintervals(6, rawHexValues));
+          // CC HH RR RR RR RR
+        } else {
+          hrs.setRRintervals("[]");
+          // CC HH
+        }
+      }
     }
 
     return hrs;

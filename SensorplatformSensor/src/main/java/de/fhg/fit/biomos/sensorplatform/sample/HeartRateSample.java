@@ -107,7 +107,7 @@ public class HeartRateSample implements Serializable {
     this.rrIntervals = rrIntervals;
   }
 
-  public void setRRintervals(List<Integer> rrIntervals) {
+  public void setRRintervals(List<Float> rrIntervals) {
     this.rrIntervals = rrIntervals.toString();
   }
 
