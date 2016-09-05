@@ -16,7 +16,7 @@ import java.util.UUID;
 public class CC2650lib implements GattLibrary {
   //@formatter:off
 
-  public final String DEFAULT_BDADDRESS = "A0:E6:F8:B6:37:05";
+  public static final String DEFAULT_BDADDRESS = "A0:E6:F8:B6:37:05";
 
   // primary services
   public final UUID TEMPERATURE = UUID.fromString("f000aa00-0451-4000-b000-000000000000");

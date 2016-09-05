@@ -176,9 +176,6 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
     while (m.find()) {
       String tmp = m.group(0);
       rrIntervals.add(((float) Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16) / 1024) * 1000);
-      // resolution is 1/1024
-      // legacy:
-      // rrIntervals.add(Integer.parseInt(tmp.substring(3, 5) + tmp.substring(0, 2), 16));
     }
 
     return rrIntervals;

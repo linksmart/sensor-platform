@@ -365,7 +365,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return rotation on the X axis.
    */
   private float getRotationX(String data) {
-    return Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16) * 1.0f / (65536 / 500);
+    return ((short) Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16)) * 1.0f / (65536 / 500);
   }
 
   /**
@@ -376,7 +376,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return rotation on the Y axis.
    */
   private float getRotationY(String data) {
-    return Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16) * 1.0f / (65536 / 500);
+    return ((short) Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16)) * 1.0f / (65536 / 500);
   }
 
   /**
@@ -387,7 +387,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return rotation on the Z axis.
    */
   private float getRotationZ(String data) {
-    return Integer.parseInt(data.substring(10, 12) + data.substring(8, 10), 16) * 1.0f / (65536 / 500);
+    return ((short) Integer.parseInt(data.substring(10, 12) + data.substring(8, 10), 16)) * 1.0f / (65536 / 500);
   }
 
   /**
@@ -398,7 +398,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return acceleration on the X axis.
    */
   private float getAccelerationX(String data) {
-    return Integer.parseInt(data.substring(14, 16) + data.substring(12, 14), 16) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
+    return ((short) Integer.parseInt(data.substring(14, 16) + data.substring(12, 14), 16)) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
   }
 
   /**
@@ -409,7 +409,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return acceleration on the Y axis.
    */
   private float getAccelerationY(String data) {
-    return Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
+    return ((short) Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16)) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
   }
 
   /**
@@ -420,7 +420,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return acceleration on the Z axis.
    */
   private float getAccelerationZ(String data) {
-    return 1.0f * Integer.parseInt(data.substring(22, 24) + data.substring(20, 22), 16) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
+    return ((short) Integer.parseInt(data.substring(22, 24) + data.substring(20, 22), 16)) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
   }
 
   /**
@@ -431,7 +431,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return magnetism on the X axis.
    */
   private float getMagnetismX(String data) {
-    return 1.0f * Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16);
+    return 1.0f * ((short) Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16));
   }
 
   /**
@@ -442,7 +442,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return magnetism on the Y axis.
    */
   private float getMagnetismY(String data) {
-    return 1.0f * Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16);
+    return 1.0f * ((short) Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16));
   }
 
   /**
@@ -453,7 +453,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return magnetism on the Z axis.
    */
   private float getMagnetismZ(String data) {
-    return Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
+    return 1.0f * ((short) Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16));
   }
 
   /**

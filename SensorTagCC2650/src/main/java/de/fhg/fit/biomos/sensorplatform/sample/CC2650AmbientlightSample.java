@@ -61,7 +61,7 @@ public class CC2650AmbientlightSample implements Serializable {
     this.bdAddress = bdAddress;
   }
 
-  public float getAmbientlight() {
+  public Float getAmbientlight() {
     return this.ambientlight;
   }
 
