@@ -1,6 +1,5 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
-import java.net.NetworkInterface;
 import java.net.SocketException;
 
 import org.slf4j.Logger;
@@ -34,9 +33,9 @@ public class InternetConnectionManager implements Runnable {
   public void run() {
     while (!Thread.currentThread().isInterrupted()) {
       try {
-        printPPP0Information();
+        this.hwPlatform.printInternetInterfaceInfo();
       } catch (SocketException | NullPointerException e) {
-        LOG.info("interface ppp0 not running - starting pppd now");
+        LOG.info("interface not running - starting daemon now");
         this.hwPlatform.connectToMobileInternet();
       }
       try {
@@ -47,11 +46,6 @@ public class InternetConnectionManager implements Runnable {
     }
     // we should never reach this line during runtime
     LOG.info("thread finished");
-  }
-
-  public void printPPP0Information() throws SocketException, NullPointerException {
-    NetworkInterface inet = NetworkInterface.getByName("ppp0");
-    LOG.info(inet.getDisplayName() + " " + inet.getInetAddresses().nextElement().getHostAddress() + " " + inet.isUp());
   }
 
 }

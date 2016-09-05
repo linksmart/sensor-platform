@@ -1,5 +1,9 @@
 package de.fhg.fit.biomos.sensorplatform.system;
 
+import java.net.SocketException;
+
+import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
+
 /**
  * Funtions that is OS or board dependent.
  *
@@ -13,6 +17,10 @@ public interface HardwarePlatform {
   public void setLEDstateRECORDING();
 
   public void setLEDstateERROR();
+
+  public Hciconfig getBluetoothController();
+
+  public void printInternetInterfaceInfo() throws SocketException, NullPointerException;
 
   public void connectToMobileInternet();
 

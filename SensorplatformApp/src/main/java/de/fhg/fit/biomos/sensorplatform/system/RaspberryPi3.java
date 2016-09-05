@@ -6,11 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
+import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
 
 public class RaspberryPi3 implements HardwarePlatform {
 
@@ -30,6 +35,10 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final Pattern PRIMARY_DNS = Pattern.compile("primary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern SECONDARY_DNS = Pattern.compile("secondary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
 
+  private static final String INTERNET_INTERFACE_NAME = "ppp0";
+
+  private final Hciconfig hciconfig;
+
   private enum LEDstate {
     STANDBY("timer"), RECORDING("heartbeat"), ERROR("none");
 
@@ -47,6 +56,7 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   public RaspberryPi3() {
+    this.hciconfig = new HciconfigImpl();
   }
 
   @Override
@@ -89,6 +99,17 @@ public class RaspberryPi3 implements HardwarePlatform {
     } catch (FileNotFoundException e) {
       LOG.error("cannot write to board LED file (no sudo)", e);
     }
+  }
+
+  @Override
+  public Hciconfig getBluetoothController() {
+    return this.hciconfig;
+  }
+
+  @Override
+  public void printInternetInterfaceInfo() throws SocketException, NullPointerException {
+    NetworkInterface inet = NetworkInterface.getByName(INTERNET_INTERFACE_NAME);
+    LOG.info(inet.getDisplayName() + " " + inet.getInetAddresses().nextElement().getHostAddress() + " " + inet.isUp());
   }
 
   @Override

@@ -17,8 +17,6 @@ import com.google.inject.name.Named;
 
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
-import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
-import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
@@ -99,14 +97,13 @@ public class Controller implements Runnable {
 
   public void restartBluetoothController() {
     LOG.info("restart bluetooth controller");
-    Hciconfig hciconfig = new HciconfigImpl();
-    hciconfig.down();
+    this.hwPlatform.getBluetoothController().down();
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {
       LOG.error("sleep failed");
     }
-    hciconfig.up();
+    this.hwPlatform.getBluetoothController().up();
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {

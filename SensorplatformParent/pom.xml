@@ -54,6 +54,15 @@
                 <webinterface.timestamp.format>YYYY-MM-dd'T'HH:mm:ss.SSS'Z'</webinterface.timestamp.format>
             </properties>
         </profile>
+        
+        <profile>
+            <id>webhrs</id>
+            <properties>
+                <webinterface.name>WebHrs</webinterface.name>
+                <webinterface.data.url>TODO dyndns url</webinterface.data.url>
+                <webinterface.timestamp.format>YYYY-MM-dd'T'HH:mm:ss.SSS'Z'</webinterface.timestamp.format>
+            </properties>
+        </profile>
 
     </profiles>
 
@@ -304,6 +313,15 @@
         <contributor>
             <name>Anja Linnemann</name>
             <email>anja.linnemann@fit.fraunhofer.de</email>
+            <organization>Fraunhofer FIT</organization>
+            <organizationUrl>http://www.fit.fraunhofer.de</organizationUrl>
+            <roles>
+                <role>Project manager</role>
+            </roles>
+        </contributor>
+		<contributor>
+            <name>Benjamin Greiner</name>
+            <email>benjamin.greiner@fit.fraunhofer.de</email>
             <organization>Fraunhofer FIT</organization>
             <organizationUrl>http://www.fit.fraunhofer.de</organizationUrl>
             <roles>

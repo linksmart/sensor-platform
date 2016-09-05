@@ -13,9 +13,9 @@ import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
  * @author Daniel Pyka
  *
  */
-public class GatttoolImplMockData extends ObservableSensorNotificationData implements Gatttool {
+public class GatttoolMock extends ObservableSensorNotificationData implements Gatttool {
 
-  public GatttoolImplMockData() {
+  public GatttoolMock() {
     // TODO Auto-generated constructor stub
   }
 

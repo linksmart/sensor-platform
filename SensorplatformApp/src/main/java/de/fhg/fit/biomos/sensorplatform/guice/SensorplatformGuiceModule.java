@@ -25,8 +25,10 @@ import de.fhg.fit.biomos.sensorplatform.restservices.InfoService;
 import de.fhg.fit.biomos.sensorplatform.restservices.PulseOximeterService;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3;
+import de.fhg.fit.biomos.sensorplatform.system.Windows;
 import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
+import de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader;
 
 public class SensorplatformGuiceModule extends AbstractModule {
 
@@ -55,6 +57,10 @@ public class SensorplatformGuiceModule extends AbstractModule {
         bind(TeLiProUploader.class).in(Singleton.class);
         bind(Uploader.class).to(TeLiProUploader.class);
         break;
+      case "WebHrs":
+        LOG.info("webinterface is " + webinterfaceName);
+        bind(WebHrsUploader.class).in(Singleton.class);
+        bind(Uploader.class).to(WebHrsUploader.class);
       case "${webinterface.name}":
         LOG.warn("No webinterface maven profile specified");
         bind(Uploader.class).toProvider(Providers.of(null));
@@ -74,6 +80,11 @@ public class SensorplatformGuiceModule extends AbstractModule {
       case "cubieboard3":
         LOG.error("Cubieboard 3 not yet supported");
         System.exit(-1);
+        break;
+      case "windows":
+        LOG.info("target platform is " + targetPlatform);
+        bind(Windows.class).in(Singleton.class);
+        bind(HardwarePlatform.class).to(Windows.class);
         break;
       default:
         LOG.error("unknown target platform " + targetPlatform);

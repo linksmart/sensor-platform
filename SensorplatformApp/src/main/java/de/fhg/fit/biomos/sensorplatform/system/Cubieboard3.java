@@ -1,5 +1,10 @@
 package de.fhg.fit.biomos.sensorplatform.system;
 
+import java.net.SocketException;
+
+import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
+import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
+
 /**
  *
  * @author Daniel Pyka
@@ -25,6 +30,17 @@ public class Cubieboard3 implements HardwarePlatform {
 
   @Override
   public void setLEDstateERROR() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public Hciconfig getBluetoothController() {
+    return new HciconfigImpl();
+  }
+
+  @Override
+  public void printInternetInterfaceInfo() throws SocketException, NullPointerException {
     // TODO Auto-generated method stub
 
   }
