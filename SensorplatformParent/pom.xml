@@ -54,7 +54,7 @@
                 <webinterface.timestamp.format>YYYY-MM-dd'T'HH:mm:ss.SSS'Z'</webinterface.timestamp.format>
             </properties>
         </profile>
-        
+
         <profile>
             <id>webhrs</id>
             <properties>
@@ -84,7 +84,8 @@
         <jersey.version>1.19.1</jersey.version>
         <httpclient.version>4.5.2</httpclient.version>
         <hsqldb.version>2.3.4</hsqldb.version>
-        <hibernate.version>5.2.1.Final</hibernate.version>
+        <hibernate.version>5.2.2.Final</hibernate.version>
+        <commonsio.version>2.4</commonsio.version>
 
         <!-- web server running on the sensorplatform for configuration -->
         <webapp.port>8080</webapp.port>
@@ -223,11 +224,21 @@
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-c3p0</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
             <!-- >dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpasyncclient</artifactId>
                 <version>4.1.2</version>
             </dependency-->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commonsio.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -319,7 +330,7 @@
                 <role>Project manager</role>
             </roles>
         </contributor>
-		<contributor>
+        <contributor>
             <name>Benjamin Greiner</name>
             <email>benjamin.greiner@fit.fraunhofer.de</email>
             <organization>Fraunhofer FIT</organization>

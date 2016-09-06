@@ -60,7 +60,8 @@ public class CC2650Test {
     Assert.assertEquals("0x003c", this.cc2650.gattLibrary.HANDLE_MOVEMENT_ENABLE);
     Assert.assertEquals("0x003e", this.cc2650.gattLibrary.HANDLE_MOVEMENT_PERIOD);
 
-    // TODO add handles for enable movement
+    Assert.assertEquals("7f:03", this.cc2650.gattLibrary.VALUE_MOVEMENT_ACTIVATE_ALL_16G);
+    Assert.assertEquals("00:03", this.cc2650.gattLibrary.VALUE_MOVEMENT_DEACTIVATE_ALL_16G);
   }
 
   @Test

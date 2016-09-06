@@ -118,7 +118,7 @@ public class CC2650SampleCollector implements SampleCollector {
 
   private void storeSample(CC2650PressureSample sample) {
     DBsession dbs = this.dbc.getSession();
-    dbs.saveCC2650PressureAample(sample);
+    dbs.saveCC2650PressureSample(sample);
     dbs.commit();
     dbs.close();
   }

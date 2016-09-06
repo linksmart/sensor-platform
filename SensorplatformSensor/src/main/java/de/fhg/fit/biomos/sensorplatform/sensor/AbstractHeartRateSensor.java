@@ -159,7 +159,7 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
   }
 
   /**
-   * This method should not be called directly!
+   * Calculate the RR values.
    *
    * @param index
    *          depends if the input string contains 8 or 16 bit heart rate value

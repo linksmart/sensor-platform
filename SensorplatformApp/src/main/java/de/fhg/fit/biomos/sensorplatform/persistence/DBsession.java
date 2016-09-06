@@ -49,6 +49,11 @@ public class DBsession {
     }
   }
 
+  @SuppressWarnings("deprecation")
+  public void shutdown() {
+    this.session.createSQLQuery("SHUTDOWN").executeUpdate();
+  }
+
   public void close() {
     this.session.close();
     this.session = null;
@@ -58,8 +63,8 @@ public class DBsession {
     this.session.save(hrs);
   }
 
-  public void savePulseOximeterSample(PulseOximeterSample hrs) {
-    this.session.save(hrs);
+  public void savePulseOximeterSample(PulseOximeterSample pos) {
+    this.session.save(pos);
   }
 
   public void saveCC2650AmbientlightSample(CC2650AmbientlightSample sample) {
@@ -74,7 +79,7 @@ public class DBsession {
     this.session.save(sample);
   }
 
-  public void saveCC2650PressureAample(CC2650PressureSample sample) {
+  public void saveCC2650PressureSample(CC2650PressureSample sample) {
     this.session.save(sample);
   }
 
