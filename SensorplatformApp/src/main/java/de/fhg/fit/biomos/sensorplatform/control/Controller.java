@@ -181,7 +181,7 @@ public class Controller implements Runnable {
       int expectedSensorCount = this.swList.size();
       int presentSensorCount = connectDevices();
 
-      if (presentSensorCount < expectedSensorCount) {
+      if ((presentSensorCount < expectedSensorCount) || this.swList.isEmpty()) {
         LOG.info("abort startup!");
         finish();
         return;
