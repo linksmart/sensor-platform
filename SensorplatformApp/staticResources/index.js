@@ -19,16 +19,13 @@ window.setInterval(function() {
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
 			response = JSON.parse(request.responseText);
-			if (response["status"]) {
-				$("#status").text("(recording)");
-			} else {
-				$("#status").text("(not recording)");
-			}
+			$("#recording").text(response["recording"]);
 			$("#device").text(response["sensorplatform"]);
 			$("#uploader").text(response["uploader"]);
+			$("#mobileinet").text(response["mobileinternet"]);
 		}
 		if (request.readyState == 4 && request.status == 500) {
-			$("#status").text("(server error)");
+			$("#recording").text("(server error)");
 			$("#device").text("(server error)");
 			$("#uploader").text("(server error)");
 		}

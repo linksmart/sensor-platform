@@ -9,8 +9,9 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+@Deprecated
 public class TimeTest {
-
+  @Deprecated
   public static void main(String[] args) throws InterruptedException {
     SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd'T'HH:mm:ss.SSS'Z'");
     sdf.setTimeZone(TimeZone.getTimeZone("Zulu"));

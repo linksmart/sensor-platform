@@ -74,30 +74,30 @@ public class SensorWrapperFactory {
           case PolarH7:
             HeartRateSensorWrapper polarh7Wrapper = new HeartRateSensorWrapper(new PolarH7(name, bdAddress, settings), this.databaseTimeStampFormat,
                 this.hrsCollector);
-            this.hrsCollector.setStartFlag(true);
+            this.hrsCollector.setActiveFlag(true);
             sensorWrapperList.add(polarh7Wrapper);
             break;
           case AdidasHRM:
             HeartRateSensorWrapper adidasHrmWrapper = new HeartRateSensorWrapper(new AdidasMiCoachHRM(name, bdAddress, settings), this.databaseTimeStampFormat,
                 this.hrsCollector);
-            this.hrsCollector.setStartFlag(true);
+            this.hrsCollector.setActiveFlag(true);
             sensorWrapperList.add(adidasHrmWrapper);
             break;
           case TomTomHRM:
             HeartRateSensorWrapper tomtomHrmWrapper = new HeartRateSensorWrapper(new TomTomHRM(name, bdAddress, settings), this.databaseTimeStampFormat,
                 this.hrsCollector);
-            this.hrsCollector.setStartFlag(true);
+            this.hrsCollector.setActiveFlag(true);
             sensorWrapperList.add(tomtomHrmWrapper);
             break;
           case CC2650:
             CC2650Wrapper cc2650Wrapper = new CC2650Wrapper(new CC2650(name, bdAddress, settings), this.databaseTimeStampFormat, this.cc2650Collector);
-            this.cc2650Collector.setStartFlag(true);
+            this.cc2650Collector.setActiveFlag(true);
             sensorWrapperList.add(cc2650Wrapper);
             break;
           case BLE113:
             PulseOximeterSensorWrapper ble113Wrapper = new PulseOximeterSensorWrapper(new BLE113(name, bdAddress, settings), this.databaseTimeStampFormat,
                 this.pulseCollector);
-            this.pulseCollector.setStartFlag(true);
+            this.pulseCollector.setActiveFlag(true);
             sensorWrapperList.add(ble113Wrapper);
             break;
           default:

@@ -33,23 +33,23 @@ public class HeartRateSampleCollector implements SampleCollector {
 
   private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
 
-  private boolean start;
+  private boolean active;
 
   @Inject
   public HeartRateSampleCollector(DBcontroller dbc, @Nullable Uploader uploader) {
     this.dbc = dbc;
-    this.start = false;
+    this.active = false;
     this.uploader = uploader;
   }
 
   @Override
-  public boolean getStartFlag() {
-    return this.start;
+  public boolean getActiveFlag() {
+    return this.active;
   }
 
   @Override
-  public void setStartFlag(boolean start) {
-    this.start = start;
+  public void setActiveFlag(boolean active) {
+    this.active = active;
   }
 
   public void addToQueue(HeartRateSample hrs) {
@@ -93,7 +93,7 @@ public class HeartRateSampleCollector implements SampleCollector {
     if (this.uploader != null) {
       this.uploader.login();
     }
-    while (!Thread.currentThread().isInterrupted()) {
+    while (this.active) {
       if (!this.queue.isEmpty()) {
         HeartRateSample hrs = this.queue.peek();
         if (this.uploader != null) {
@@ -106,7 +106,6 @@ public class HeartRateSampleCollector implements SampleCollector {
           Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
         } catch (InterruptedException e) {
           LOG.info("interrupt received from Controller");
-          Thread.currentThread().interrupt();
         }
       }
     }
@@ -115,7 +114,6 @@ public class HeartRateSampleCollector implements SampleCollector {
       LOG.info("queue size: " + this.queue.size());
       storeSample(this.queue.poll());
     }
-    this.start = false;
     LOG.info("thread finished");
   }
 

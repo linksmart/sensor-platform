@@ -1,9 +1,14 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
+/**
+ *
+ * @author Daniel Pyka
+ *
+ */
 public interface SampleCollector extends Runnable {
 
-  public boolean getStartFlag();
+  public boolean getActiveFlag();
 
-  public void setStartFlag(boolean start);
+  public void setActiveFlag(boolean active);
 
 }

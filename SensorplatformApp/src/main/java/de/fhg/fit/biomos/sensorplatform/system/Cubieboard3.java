@@ -40,9 +40,9 @@ public class Cubieboard3 implements HardwarePlatform {
   }
 
   @Override
-  public void printInternetInterfaceInfo() throws SocketException, NullPointerException {
+  public boolean printInternetInterfaceInfo() throws SocketException, NullPointerException {
     // TODO Auto-generated method stub
-
+    return false;
   }
 
   @Override

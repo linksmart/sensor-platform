@@ -5,6 +5,7 @@ package de.fhg.fit.biomos.sensorplatform.deprecated;
  * @author Daniel Pyka
  *
  */
+@Deprecated
 public abstract class GattPermissions {
 
   // characteristics properties

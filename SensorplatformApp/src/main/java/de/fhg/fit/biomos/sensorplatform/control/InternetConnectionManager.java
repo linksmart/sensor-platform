@@ -23,19 +23,26 @@ public class InternetConnectionManager implements Runnable {
   private final Long internetCheckInterval;
   private final HardwarePlatform hwPlatform;
 
+  private boolean mobileInternet = false;
+
   @Inject
   public InternetConnectionManager(@Named("internet.check.interval") String internetCheckInterval, HardwarePlatform hwPlatform) {
     this.internetCheckInterval = new Long(internetCheckInterval) * 1000;
     this.hwPlatform = hwPlatform;
   }
 
+  public boolean isConnectedToMobileInternet() {
+    return this.mobileInternet;
+  }
+
   @Override
   public void run() {
     while (!Thread.currentThread().isInterrupted()) {
       try {
-        this.hwPlatform.printInternetInterfaceInfo();
+        this.mobileInternet = this.hwPlatform.printInternetInterfaceInfo();
       } catch (SocketException | NullPointerException e) {
         LOG.info("interface not running - starting daemon now");
+        this.mobileInternet = false;
         this.hwPlatform.connectToMobileInternet();
       }
       try {

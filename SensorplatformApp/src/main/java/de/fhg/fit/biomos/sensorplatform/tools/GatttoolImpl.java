@@ -111,13 +111,13 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
           notifyObserver(m.group(1), m.group(2));
         } else if (line.contains("successful")) {
           this.state = State.CONNECTED;
-          LOG.info(this.state.name());
+          LOG.info("state is " + this.state.name());
         } else if (line.contains("disconnect")) {
           this.state = State.DISCONNECTED;
-          LOG.info(this.state.name());
+          LOG.info("state is " + this.state.name());
         } else if (line.contains("refused")) {
           this.state = State.DISCONNECTED;
-          LOG.info(this.state.name());
+          LOG.info("state is " + this.state.name());
         }
       }
       this.streamToSensor.close();

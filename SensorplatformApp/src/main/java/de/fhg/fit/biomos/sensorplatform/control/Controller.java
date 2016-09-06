@@ -223,15 +223,15 @@ public class Controller implements Runnable {
     this.sensorObserverThread = new Thread(this.sensorObserver);
     this.sensorObserverThread.start();
     LOG.info("start hrs collector thread");
-    if (this.hrsCollector.getStartFlag()) {
+    if (this.hrsCollector.getActiveFlag()) {
       this.hrsCollectorThread = new Thread(this.hrsCollector);
       this.hrsCollectorThread.start();
     }
-    if (this.pulseCollector.getStartFlag()) {
+    if (this.pulseCollector.getActiveFlag()) {
       this.pulseCollectorThread = new Thread(this.pulseCollector);
       this.pulseCollectorThread.start();
     }
-    if (this.cc2650Collector.getStartFlag()) {
+    if (this.cc2650Collector.getActiveFlag()) {
       this.cc2650CollectorThread = new Thread(this.cc2650Collector);
       this.cc2650CollectorThread.start();
     }
@@ -252,13 +252,16 @@ public class Controller implements Runnable {
     }
     LOG.info("stop threads");
     this.sensorObserverThread.interrupt();
-    if (this.hrsCollector.getStartFlag()) {
+    if (this.hrsCollector.getActiveFlag()) {
+      this.hrsCollector.setActiveFlag(false);
       this.hrsCollectorThread.interrupt();
     }
-    if (this.pulseCollector.getStartFlag()) {
+    if (this.pulseCollector.getActiveFlag()) {
+      this.pulseCollector.setActiveFlag(false);
       this.pulseCollectorThread.interrupt();
     }
-    if (this.cc2650Collector.getStartFlag()) {
+    if (this.cc2650Collector.getActiveFlag()) {
+      this.cc2650Collector.setActiveFlag(false);
       this.cc2650CollectorThread.interrupt();
     }
     finish();

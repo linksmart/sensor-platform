@@ -25,7 +25,7 @@ public class CC2650SampleCollector implements SampleCollector {
 
   private static final Logger LOG = LoggerFactory.getLogger(CC2650SampleCollector.class);
 
-  private static final int SLEEP_TIME_MS = 200;
+  private static final int SLEEP_TIME_MS = 300;
 
   private final DBcontroller dbc;
 
@@ -35,50 +35,46 @@ public class CC2650SampleCollector implements SampleCollector {
   private final Queue<CC2650AmbientlightSample> queueAmb = new LinkedList<CC2650AmbientlightSample>();
   private final Queue<CC2650MovementSample> queueMov = new LinkedList<CC2650MovementSample>();
 
-  private boolean start;
+  private boolean active;
 
   @Inject
   public CC2650SampleCollector(DBcontroller dbc) {
     this.dbc = dbc;
-    this.start = false;
+    this.active = false;
   }
 
   @Override
-  public boolean getStartFlag() {
-    return this.start;
+  public boolean getActiveFlag() {
+    return this.active;
   }
 
   @Override
-  public void setStartFlag(boolean start) {
-    this.start = start;
+  public void setActiveFlag(boolean active) {
+    this.active = active;
   }
 
   @Override
   public void run() {
-    while (!Thread.currentThread().isInterrupted()) {
+    while (this.active) {
       if (!this.queueTemp.isEmpty()) {
         storeSample(this.queueTemp.poll());
-      }
-      if (!this.queueHum.isEmpty()) {
+      } else if (!this.queueHum.isEmpty()) {
         storeSample(this.queueHum.poll());
-      }
-      if (!this.queuePress.isEmpty()) {
+      } else if (!this.queuePress.isEmpty()) {
         storeSample(this.queuePress.poll());
-      }
-      if (!this.queueAmb.isEmpty()) {
+      } else if (!this.queueAmb.isEmpty()) {
         storeSample(this.queueAmb.poll());
-      }
-      if (!this.queueMov.isEmpty()) {
+      } else if (!this.queueMov.isEmpty()) {
         storeSample(this.queueMov.poll());
-      }
-      try {
-        Thread.sleep(SLEEP_TIME_MS);
-      } catch (InterruptedException e) {
-        LOG.info("interrupt received from Controller");
-        Thread.currentThread().interrupt();
+      } else {
+        try {
+          Thread.sleep(SLEEP_TIME_MS);
+        } catch (InterruptedException e) {
+          LOG.info("interrupt received from Controller");
+          Thread.currentThread().interrupt();
+        }
       }
     }
-    this.start = false;
     LOG.info("thread finished");
   }
 

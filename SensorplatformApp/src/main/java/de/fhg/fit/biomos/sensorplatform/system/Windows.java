@@ -64,9 +64,10 @@ public class Windows implements HardwarePlatform {
   }
 
   @Override
-  public void printInternetInterfaceInfo() throws SocketException, NullPointerException {
+  public boolean printInternetInterfaceInfo() throws SocketException, NullPointerException {
     NetworkInterface inet = NetworkInterface.getByName(INTERNET_INTERFACE_NAME);
     LOG.info(inet.getDisplayName() + " " + inet.getInetAddresses().nextElement().getHostAddress() + " " + inet.isUp());
+    return inet.isUp();
   }
 
   @Override

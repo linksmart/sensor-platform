@@ -20,7 +20,7 @@ public interface HardwarePlatform {
 
   public Hciconfig getBluetoothController();
 
-  public void printInternetInterfaceInfo() throws SocketException, NullPointerException;
+  public boolean printInternetInterfaceInfo() throws SocketException, NullPointerException;
 
   public void connectToMobileInternet();
 

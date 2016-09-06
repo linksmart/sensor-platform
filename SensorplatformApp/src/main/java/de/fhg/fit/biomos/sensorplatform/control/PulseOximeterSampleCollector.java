@@ -16,45 +16,44 @@ public class PulseOximeterSampleCollector implements SampleCollector {
 
   private static final Logger LOG = LoggerFactory.getLogger(PulseOximeterSampleCollector.class);
 
-  private static final int SLEEP_TIME_MS = 200;
+  private static final int SLEEP_TIME_MS = 300;
 
   private final DBcontroller dbc;
 
   private final Queue<PulseOximeterSample> queue = new LinkedList<PulseOximeterSample>();
 
-  private boolean start;
+  private boolean active;
 
   @Inject
   public PulseOximeterSampleCollector(DBcontroller dbc) {
     this.dbc = dbc;
-    this.start = false;
+    this.active = false;
   }
 
   @Override
-  public boolean getStartFlag() {
-    return this.start;
+  public boolean getActiveFlag() {
+    return this.active;
   }
 
   @Override
-  public void setStartFlag(boolean start) {
-    this.start = start;
+  public void setActiveFlag(boolean active) {
+    this.active = active;
   }
 
   @Override
   public void run() {
-    while (!Thread.currentThread().isInterrupted()) {
+    while (this.active) {
       if (!this.queue.isEmpty()) {
         storeSample(this.queue.poll());
-      }
-
-      try {
-        Thread.sleep(SLEEP_TIME_MS);
-      } catch (InterruptedException e) {
-        LOG.info("interrupt received from Controller");
-        Thread.currentThread().interrupt();
+      } else {
+        try {
+          Thread.sleep(SLEEP_TIME_MS);
+        } catch (InterruptedException e) {
+          LOG.info("interrupt received from Controller");
+          Thread.currentThread().interrupt();
+        }
       }
     }
-    this.start = false;
     LOG.info("thread finished");
   }
 

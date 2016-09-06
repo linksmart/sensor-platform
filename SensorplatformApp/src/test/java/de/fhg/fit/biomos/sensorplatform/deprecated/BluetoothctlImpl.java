@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Pyka
  *
  */
+@Deprecated
 public class BluetoothctlImpl implements Runnable {
 
   private static final Logger LOG = LoggerFactory.getLogger(BluetoothctlImpl.class);
@@ -48,6 +49,7 @@ public class BluetoothctlImpl implements Runnable {
 
   private String localController = null;
 
+  @Deprecated
   public BluetoothctlImpl() {
     try {
       Process process = null;
@@ -70,6 +72,7 @@ public class BluetoothctlImpl implements Runnable {
   }
 
   @Override
+  @Deprecated
   public void run() {
     try {
       String line = null;
@@ -90,14 +93,17 @@ public class BluetoothctlImpl implements Runnable {
     }
   }
 
+  @Deprecated
   public String getLocalControllerAddress() {
     return this.localController;
   }
 
+  @Deprecated
   public List<String> getFoundDevices() {
     return this.detectedDevices;
   }
 
+  @Deprecated
   public void init(BluetoothAgent btAgent) {
     powerOff();
     try {
@@ -109,6 +115,7 @@ public class BluetoothctlImpl implements Runnable {
     setAgent(btAgent);
   }
 
+  @Deprecated
   private void powerOn() {
     try {
       this.streamToBluetoothctl.write(BTCTL_POWER_ON);
@@ -120,6 +127,7 @@ public class BluetoothctlImpl implements Runnable {
     }
   }
 
+  @Deprecated
   private void powerOff() {
     try {
       this.streamToBluetoothctl.write(BTCTL_POWER_OFF);
@@ -131,6 +139,7 @@ public class BluetoothctlImpl implements Runnable {
     }
   }
 
+  @Deprecated
   private void setAgent(BluetoothAgent btAgent) {
     try {
       this.streamToBluetoothctl.write(BTCTL_AGENT + " " + btAgent);
@@ -145,6 +154,7 @@ public class BluetoothctlImpl implements Runnable {
     }
   }
 
+  @Deprecated
   public void scanFor(String bdAddressToFind) {
     try {
       this.streamToBluetoothctl.write(BTCTL_SCAN_ON);
@@ -160,6 +170,7 @@ public class BluetoothctlImpl implements Runnable {
     }
   }
 
+  @Deprecated
   private void scanOff() {
     try {
       this.streamToBluetoothctl.write(BTCTL_SCAN_OFF);
@@ -171,6 +182,7 @@ public class BluetoothctlImpl implements Runnable {
     }
   }
 
+  @Deprecated
   public boolean connect(String bdAddress) {
     try {
       this.streamToBluetoothctl.write(BTCTL_CONNECT + " " + bdAddress);
@@ -192,6 +204,7 @@ public class BluetoothctlImpl implements Runnable {
     return false;
   }
 
+  @Deprecated
   public void disconnect(String bdAddress) {
     try {
       this.streamToBluetoothctl.write(BTCTL_DISCONNECT + " " + bdAddress);
@@ -202,6 +215,7 @@ public class BluetoothctlImpl implements Runnable {
     }
   }
 
+  @Deprecated
   public void pair(String bdAddress) {
     try {
       this.streamToBluetoothctl.write(BTCTL_PAIR + " " + bdAddress);
@@ -212,6 +226,7 @@ public class BluetoothctlImpl implements Runnable {
     }
   }
 
+  @Deprecated
   public void remove(String bdAddress) {
     try {
       this.streamToBluetoothctl.write(BTCTL_REMOVE + " " + bdAddress);
@@ -222,6 +237,7 @@ public class BluetoothctlImpl implements Runnable {
     }
   }
 
+  @Deprecated
   public void exit() {
     try {
       this.streamToBluetoothctl.write(BTCTL_EXIT);

@@ -5,7 +5,7 @@ timestamp VARCHAR(30) NOT NULL,
 device VARCHAR(17) NOT NULL,
 heartrate Integer NOT NULL,
 energyexpended Integer NOT NULL,
-rrintervals VARCHAR(30) NOT NULL
+rrintervals VARCHAR(100) NOT NULL
 )
 
 CREATE TABLE PulseOximeterSample (
