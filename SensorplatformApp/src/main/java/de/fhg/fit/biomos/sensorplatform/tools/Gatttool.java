@@ -35,8 +35,6 @@ public interface Gatttool extends Runnable {
 
   public void disconnectBlocking();
 
-  public void disconnect();
-
   public void exitGatttool();
 
 }

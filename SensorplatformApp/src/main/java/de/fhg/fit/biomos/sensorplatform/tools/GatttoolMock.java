@@ -9,7 +9,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 
 /**
  * Used for windows for testing.
- * 
+ *
  * @author Daniel Pyka
  *
  */
@@ -69,12 +69,6 @@ public class GatttoolMock extends ObservableSensorNotificationData implements Ga
 
   @Override
   public void disconnectBlocking() {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void disconnect() {
     // TODO Auto-generated method stub
 
   }

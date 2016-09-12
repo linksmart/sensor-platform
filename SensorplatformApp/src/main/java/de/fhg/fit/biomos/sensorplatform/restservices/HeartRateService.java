@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import de.fhg.fit.biomos.sensorplatform.control.Controller;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
@@ -30,11 +31,13 @@ public class HeartRateService {
 
   private static final Logger LOG = LoggerFactory.getLogger(HeartRateService.class);
 
+  private final Controller controller;
   private final DBcontroller db;
 
   @Inject
-  public HeartRateService(DBcontroller db) {
+  public HeartRateService(Controller controller, DBcontroller db) {
     this.db = db;
+    this.controller = controller;
   }
 
   @GET
@@ -101,6 +104,17 @@ public class HeartRateService {
       LOG.error("bad heart rate samples format", e);
       return Response.serverError().build();
     }
+  }
+
+  @Path("/manualupload")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response manualHrsUpload() {
+    LOG.info("/hrs/manualupload called");
+    DBsession s = this.db.getSession();
+    this.controller.manualHrsUpload(s.getNotTransmittedHeartRateSamples());
+    s.close();
+    return Response.ok().build();
   }
 
 }

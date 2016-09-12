@@ -59,7 +59,7 @@
             <id>webhrs</id>
             <properties>
                 <webinterface.name>WebHrs</webinterface.name>
-                <webinterface.data.url>TODO dyndns url</webinterface.data.url>
+                <webinterface.data.url>http://webhrs.ddnss.de:12345/hrs/upload</webinterface.data.url>
                 <webinterface.timestamp.format>YYYY-MM-dd'T'HH:mm:ss.SSS'Z'</webinterface.timestamp.format>
             </properties>
         </profile>

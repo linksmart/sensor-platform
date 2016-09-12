@@ -194,18 +194,6 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   }
 
   @Override
-  public void disconnect() {
-    try {
-      this.streamToSensor.write(CMD_DISCONNECT);
-      this.streamToSensor.newLine();
-      this.streamToSensor.flush();
-      LOG.info("disconnected from " + this.bdAddress);
-    } catch (IOException e) {
-      LOG.error("disconnect failed", e);
-    }
-  }
-
-  @Override
   public void exitGatttool() {
     try {
       this.streamToSensor.write(CMD_EXIT);

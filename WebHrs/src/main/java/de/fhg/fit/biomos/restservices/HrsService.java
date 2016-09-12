@@ -27,6 +27,10 @@ public class HrsService {
   @Produces(MediaType.TEXT_PLAIN)
   public Response hrs(JSONObject request) {
     LOG.info("/hrs/upload called");
+    if (request.has("type") && request.has("sampleType") && request.has("quantityType") && request.has("value") && request.has("unit")
+        && request.has("startDate") && request.has("endDate") && request.has("metadata")) {
+
+    }
     System.out.println(request);
     return Response.ok().build();
   }

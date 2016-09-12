@@ -65,6 +65,7 @@ event system_boot(major, minor, patch, build, ll_version, protocol_version, hw)
 
     # enable bondable mode
     call sm_set_bondable_mode(1)
+	# sm_configure(3,sm_io_capability_displayonly)
     
     # initialize connection status to empty (not connected, etc.)
 	memset(connection_info(0), 0, 10)

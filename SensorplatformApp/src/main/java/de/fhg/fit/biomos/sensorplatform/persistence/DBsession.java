@@ -60,31 +60,31 @@ public class DBsession {
   }
 
   public void saveHeartRateSample(HeartRateSample hrs) {
-    this.session.save(hrs);
+    this.session.saveOrUpdate(hrs);
   }
 
   public void savePulseOximeterSample(PulseOximeterSample pos) {
-    this.session.save(pos);
+    this.session.saveOrUpdate(pos);
   }
 
   public void saveCC2650AmbientlightSample(CC2650AmbientlightSample sample) {
-    this.session.save(sample);
+    this.session.saveOrUpdate(sample);
   }
 
   public void saveCC2650HumiditySample(CC2650HumiditySample sample) {
-    this.session.save(sample);
+    this.session.saveOrUpdate(sample);
   }
 
   public void saveCC2650MovementSample(CC2650MovementSample sample) {
-    this.session.save(sample);
+    this.session.saveOrUpdate(sample);
   }
 
   public void saveCC2650PressureSample(CC2650PressureSample sample) {
-    this.session.save(sample);
+    this.session.saveOrUpdate(sample);
   }
 
   public void saveCC2650TemperatureSample(CC2650TemperatureSample sample) {
-    this.session.save(sample);
+    this.session.saveOrUpdate(sample);
   }
 
   @SuppressWarnings("unchecked")

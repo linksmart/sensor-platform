@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
@@ -290,5 +291,25 @@ public class Controller implements Runnable {
     for (AbstractSensorWrapper<?> asw : this.swList) {
       asw.getGatttool().exitGatttool();
     }
+  }
+
+  public void manualHrsUpload(List<HeartRateSample> hrss) {
+    this.recording = true;
+    this.hrsCollector.setActiveFlag(true);
+    this.hrsCollectorThread = new Thread(this.hrsCollector);
+    this.hrsCollectorThread.start();
+    for (HeartRateSample hrs : hrss) {
+      this.hrsCollector.addToQueue(hrs);
+    }
+    while (this.hrsCollector.getNumberOfHrsInQueue() > 0) {
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        LOG.error("sleep failed", e);
+      }
+    }
+    this.hrsCollector.setActiveFlag(false);
+    this.hrsCollectorThread.interrupt();
+    this.recording = false;
   }
 }

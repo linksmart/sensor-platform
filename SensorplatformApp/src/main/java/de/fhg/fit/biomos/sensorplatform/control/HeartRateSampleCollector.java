@@ -56,6 +56,10 @@ public class HeartRateSampleCollector implements SampleCollector {
     this.queue.add(hrs);
   }
 
+  public int getNumberOfHrsInQueue() {
+    return this.queue.size();
+  }
+
   private void uploadSample(HeartRateSample hrs) {
     int attempt = 1;
     while (attempt <= UPLOAD_ATTEMPTS) {

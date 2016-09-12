@@ -84,9 +84,23 @@ function deleteAllHrs() {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
+			getHumbersHrs();
 		}
 	};
 	request.open("GET", "hrs/delete", true);
+	request.send();
+}
+
+function manualHrsUpload() {
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			console.log("manual hrs upload successful");
+			getNumbersHrs();
+			loadHrs();
+		}
+	};
+	request.open("GET", "hrs/manualupload", true);
 	request.send();
 }
 
