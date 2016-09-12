@@ -39,6 +39,8 @@ dim tmp(5)
 dim bond_count
 dim bond_enum_counter
 
+dim passkeybuffer(6)
+
 # connection_info structure:
 # - 0: connected/encrypted/bonded flag (bits 0, 1, 2)
 # - 1: disconnection action flags (bit 0 = add to whitelist, bit 1 = resume unfiltered advertising)
@@ -62,10 +64,20 @@ event system_boot(major, minor, patch, build, ll_version, protocol_version, hw)
     # - P0_0 is used to restart advertising without filters if we currently are not
     # - P0_1 is used to clear all bonding/whitelist info and start fresh
     call hardware_io_port_config_irq(0, $03, 0)
+	
+	# Set display to command mode
+	call hardware_io_port_write(1,$3,$1)
+	call hardware_io_port_config_direction(1,$7)
+	# Initialize the display (see NHDC0216CZFSWFBW3V3 data sheet)
+	call hardware_spi_transfer(0,11,"\x30\x30\x30\x39\x14\x56\x6d\x70\x0c\x06\x01")
+	# Set display to data mode
+	# Write something to the display
+	call hardware_io_port_write(1,$3,$3)
+	call hardware_spi_transfer(0,16,"BLE113 Pulse Oxi")
 
     # enable bondable mode
+	call sm_set_parameters(1, 6, sm_io_capability_displayonly)
     call sm_set_bondable_mode(1)
-	# sm_configure(3,sm_io_capability_displayonly)
     
     # initialize connection status to empty (not connected, etc.)
 	memset(connection_info(0), 0, 10)
@@ -92,6 +104,14 @@ event system_boot(major, minor, patch, build, ll_version, protocol_version, hw)
         call gap_set_mode(gap_general_discoverable, gap_undirected_connectable)
         call system_endpoint_tx(system_endpoint_uart1, 32, "Started UNFILTERED advertising\r\n")
     end if
+	
+	if bond_count > 0 then
+		call hardware_io_port_write(1,$3,$1)
+		call hardware_spi_transfer(0,1,"\xc0")
+		call hardware_io_port_write(1,$3,$3)
+		call hardware_spi_transfer(0,16, "Bonded\!         ")
+	end if
+	
 	# update the oxi
 	call hardware_set_soft_timer(32768, 2, 0)
 end
@@ -180,6 +200,21 @@ event hardware_soft_timer(handle)
     end if
 end
 
+event sm_passkey_display(handle, passkey)
+	passkeybuffer(0:1) = (passkey / 100000) + (passkey / 1000000 * -10) + 48
+	passkeybuffer(1:1) = (passkey / 10000) + (passkey / 100000 * -10) + 48
+	passkeybuffer(2:1) = (passkey / 1000) + (passkey / 10000 * -10) + 48
+	passkeybuffer(3:1) = (passkey / 100) + (passkey / 1000 * -10) + 48
+	passkeybuffer(4:1) = (passkey / 10) + (passkey / 100 * -10) + 48
+	passkeybuffer(5:1) = passkey + (passkey / 10 * -10) + 48
+
+	call hardware_io_port_write(1,$3,$1)
+	call hardware_spi_transfer(0,1,"\xc0")
+	call hardware_io_port_write(1,$3,$3)
+	call hardware_spi_transfer(0,6, passkeybuffer(0:6))
+	call hardware_spi_transfer(0,10, "          ")
+end
+
 event connection_disconnected(handle, result)
     # disconnected
     call system_endpoint_tx(system_endpoint_uart1, 14, "Disconnected\r\n")
@@ -230,6 +265,10 @@ event sm_bond_status(bond, keysize, mitm, keys)
         end if
     else
         # already connected, so that means we just bonded
+		call hardware_io_port_write(1,$3,$1)
+		call hardware_spi_transfer(0,1,"\xc0")
+		call hardware_io_port_write(1,$3,$3)
+		call hardware_spi_transfer(0,16, "Bonded\!         ")
 
         # update connection status (bonded = true)
         connection_info(0:1) = connection_info(0:1) | 4
@@ -272,6 +311,13 @@ event sm_bonding_fail(handle, result)
     temp_buf(1:1) = ((result >> 8) & $f) + 48 + ((result >> 8) & $f)/10*7
     temp_buf(2:1) = ((result >> 4) & $f) + 48 + ((result >> 4) & $f)/10*7
     temp_buf(3:1) = (result & $f) + 48 + (result & $f)/10*7
+	
+	call hardware_io_port_write(1,$3,$1)
+	call hardware_spi_transfer(0,1,"\xc0")
+	call hardware_io_port_write(1,$3,$3)
+	call hardware_spi_transfer(0,12, "Error code: ")
+	call hardware_spi_transfer(0,4, temp_buf(0:4))
+	
     call system_endpoint_tx(system_endpoint_uart1, 4, temp_buf(0:4))
     call system_endpoint_tx(system_endpoint_uart1, 2, "\r\n")
     

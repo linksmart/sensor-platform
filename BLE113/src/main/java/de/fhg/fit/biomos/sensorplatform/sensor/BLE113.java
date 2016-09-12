@@ -22,7 +22,7 @@ public class BLE113 extends AbstractPulseOximeterSensor {
   private static final Logger LOG = LoggerFactory.getLogger(BLE113.class);
 
   private static final AddressType addressType = AddressType.PUBLIC;
-  private static final SecurityLevel securityLevel = SecurityLevel.MEDIUM;
+  private static final SecurityLevel securityLevel = SecurityLevel.HIGH;
 
   public BLE113(SensorName name, String bdAddress, JSONObject settings) {
     super(new BLE113lib(), name, bdAddress, addressType, securityLevel, settings);
