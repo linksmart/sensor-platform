@@ -61,6 +61,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
         LOG.info("webinterface is " + webinterfaceName);
         bind(WebHrsUploader.class).in(Singleton.class);
         bind(Uploader.class).to(WebHrsUploader.class);
+        break;
       case "${webinterface.name}":
         LOG.warn("No webinterface maven profile specified");
         bind(Uploader.class).toProvider(Providers.of(null));

@@ -69,6 +69,10 @@ public class HeartRateSampleCollector implements SampleCollector {
           hrs.setTransmitted(true);
           // LOG.info("sample transmission successful");
           return;
+        case HttpStatus.SC_OK:
+          hrs.setTransmitted(true);
+          // LOG.info("sample transmission successful");
+          return;
         case HttpStatus.SC_UNAUTHORIZED:
           LOG.error("transmission unauthorized - attempting to log in again");
           this.uploader.login();

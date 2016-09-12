@@ -293,14 +293,22 @@ public class Controller implements Runnable {
     }
   }
 
+  /**
+   * Upload all heart rate samples which are not yet transmitted to the webinterface.
+   *
+   * @param hrss
+   *          not yet transmitted heart rate samples from the database
+   */
   public void manualHrsUpload(List<HeartRateSample> hrss) {
     this.recording = true;
     this.hrsCollector.setActiveFlag(true);
     this.hrsCollectorThread = new Thread(this.hrsCollector);
     this.hrsCollectorThread.start();
+    LOG.info("put all heart rate samples in the upload queue");
     for (HeartRateSample hrs : hrss) {
       this.hrsCollector.addToQueue(hrs);
     }
+    LOG.info("wait until queue is processed (empty) in the other thread");
     while (this.hrsCollector.getNumberOfHrsInQueue() > 0) {
       try {
         Thread.sleep(1000);
