@@ -25,6 +25,7 @@ import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 
 /**
+ * Only supports "Just works" pairing, no user interaction for passkey.
  *
  * @author Daniel Pyka
  *

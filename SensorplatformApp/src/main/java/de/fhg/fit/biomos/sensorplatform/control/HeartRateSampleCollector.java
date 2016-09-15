@@ -33,23 +33,23 @@ public class HeartRateSampleCollector implements SampleCollector {
 
   private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
 
-  private boolean active;
+  private boolean used;
 
   @Inject
   public HeartRateSampleCollector(DBcontroller dbc, @Nullable Uploader uploader) {
     this.dbc = dbc;
-    this.active = false;
+    this.used = false;
     this.uploader = uploader;
   }
 
   @Override
-  public boolean getActiveFlag() {
-    return this.active;
+  public boolean isUsed() {
+    return this.used;
   }
 
   @Override
-  public void setActiveFlag(boolean active) {
-    this.active = active;
+  public void setUsed(boolean used) {
+    this.used = used;
   }
 
   public void addToQueue(HeartRateSample hrs) {
@@ -101,7 +101,7 @@ public class HeartRateSampleCollector implements SampleCollector {
     if (this.uploader != null) {
       this.uploader.login();
     }
-    while (this.active) {
+    while (this.used) {
       if (!this.queue.isEmpty()) {
         HeartRateSample hrs = this.queue.peek();
         if (this.uploader != null) {

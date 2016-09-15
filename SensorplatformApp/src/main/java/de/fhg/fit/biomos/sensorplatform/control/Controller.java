@@ -49,13 +49,13 @@ public class Controller implements Runnable {
   private final PulseOximeterSampleCollector pulseCollector;
   private final CC2650SampleCollector cc2650Collector;
 
-  private SensorObserver sensorObserver;
+  private SensorOverseer sensorOverseer;
 
   private Thread hrsCollectorThread;
   private Thread pulseCollectorThread;
   private Thread cc2650CollectorThread;
   private Thread controllerThread;
-  private Thread sensorObserverThread;
+  private Thread sensorOverseerThread;
   private List<AbstractSensorWrapper<?>> swList;
 
   private long uptimeMillis;
@@ -220,19 +220,19 @@ public class Controller implements Runnable {
 
   private void startThreads() {
     LOG.info("start observer");
-    this.sensorObserver = new SensorObserver(this.timeoutNotification, this.swList);
-    this.sensorObserverThread = new Thread(this.sensorObserver);
-    this.sensorObserverThread.start();
+    this.sensorOverseer = new SensorOverseer(this.timeoutNotification, this.swList);
+    this.sensorOverseerThread = new Thread(this.sensorOverseer);
+    this.sensorOverseerThread.start();
     LOG.info("start hrs collector thread");
-    if (this.hrsCollector.getActiveFlag()) {
+    if (this.hrsCollector.isUsed()) {
       this.hrsCollectorThread = new Thread(this.hrsCollector);
       this.hrsCollectorThread.start();
     }
-    if (this.pulseCollector.getActiveFlag()) {
+    if (this.pulseCollector.isUsed()) {
       this.pulseCollectorThread = new Thread(this.pulseCollector);
       this.pulseCollectorThread.start();
     }
-    if (this.cc2650Collector.getActiveFlag()) {
+    if (this.cc2650Collector.isUsed()) {
       this.cc2650CollectorThread = new Thread(this.cc2650Collector);
       this.cc2650CollectorThread.start();
     }
@@ -252,17 +252,17 @@ public class Controller implements Runnable {
       LOG.warn("interrupt received - recording period finished");
     }
     LOG.info("stop threads");
-    this.sensorObserverThread.interrupt();
-    if (this.hrsCollector.getActiveFlag()) {
-      this.hrsCollector.setActiveFlag(false);
+    this.sensorOverseerThread.interrupt();
+    if (this.hrsCollector.isUsed()) {
+      this.hrsCollector.setUsed(false);
       this.hrsCollectorThread.interrupt();
     }
-    if (this.pulseCollector.getActiveFlag()) {
-      this.pulseCollector.setActiveFlag(false);
+    if (this.pulseCollector.isUsed()) {
+      this.pulseCollector.setUsed(false);
       this.pulseCollectorThread.interrupt();
     }
-    if (this.cc2650Collector.getActiveFlag()) {
-      this.cc2650Collector.setActiveFlag(false);
+    if (this.cc2650Collector.isUsed()) {
+      this.cc2650Collector.setUsed(false);
       this.cc2650CollectorThread.interrupt();
     }
     finish();
@@ -286,7 +286,7 @@ public class Controller implements Runnable {
       asw.disableLogging();
     }
     for (AbstractSensorWrapper<?> asw : this.swList) {
-      asw.getGatttool().disconnectBlocking();
+      asw.getGatttool().disconnect();
     }
     for (AbstractSensorWrapper<?> asw : this.swList) {
       asw.getGatttool().exitGatttool();
@@ -301,7 +301,7 @@ public class Controller implements Runnable {
    */
   public void manualHrsUpload(List<HeartRateSample> hrss) {
     this.recording = true;
-    this.hrsCollector.setActiveFlag(true);
+    this.hrsCollector.setUsed(true);
     this.hrsCollectorThread = new Thread(this.hrsCollector);
     this.hrsCollectorThread.start();
     LOG.info("put all heart rate samples in the upload queue");
@@ -316,7 +316,7 @@ public class Controller implements Runnable {
         LOG.error("sleep failed", e);
       }
     }
-    this.hrsCollector.setActiveFlag(false);
+    this.hrsCollector.setUsed(false);
     this.hrsCollectorThread.interrupt();
     this.recording = false;
   }

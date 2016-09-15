@@ -32,15 +32,15 @@ Password: raspberry
 6.7 Advanced Options >> Hostname
 6.8 Advanced Options >> Memory Split >> 16
 6.9 Expand File System
-6.10 Finish >> Reboot
+6.10 Finish >> Reboot >> Yes
 
 7. User account setup
-7.1 Type in "sudo -i" for the root shell
+7.1 Login as pi, type in "sudo -i" for the root shell
 7.2 Add a new user administrator, add him to group sudo: "useradd -m administrator -G sudo" (do not choose another name)
 ##### other groups required? pi has some more:
 ##### adm dialout cdrom audio video plugdev games users input netdev spi i2c gpio
 7.3 Set a password for administrator "passwd administrator"
-7.4 Set a password for root "passd root"
+7.4 Set a password for root "passwd root"
 7.5 Log out by typing "exit" and again "exit"
 7.6 Log in as root
 7.7 Delete the default user pi "deluser -remove-home pi"
@@ -56,21 +56,21 @@ Password: raspberry
 7.12 Do not allow root login via SSH
 	"sudo sed -i -- 's/PermitRootLogin without-password/PermitRootLogin no/g' /etc/ssh/sshd_config"
 
-8. Update packages
-TODO sudo apt-mark hold bluez ???
-8.1 "sudo apt update"
-8.2 "sudo apt upgrade"
-8.3 Install git "sudo apt install git"
-8.4 "sudo reboot" and log in as administrator again
-
-9. (optional) setup for network (Sensorplatform Fraunhofer FIT example configuration)
-9.1 Setting the hostname is sufficient for connecting to the internet in the internal network of Fraunhofer FIT
-9.2 static ip:
+8. (optional) setup for network (Sensorplatform Fraunhofer FIT example configuration)
+8.1 Setting the hostname is sufficient for connecting to the internet in the internal network of Fraunhofer FIT
+8.2 static ip:
 	echo "interface eth0" >> /etc/dhcpcd.conf (keep quotes in this section, replace eth0 with wlan0 in case of wifi)
 	echo "static ip_address=129.26.160.38/21" >> /etc/dhcpcd.conf (replace 129.26.160.38/21 with your settings, /21 is CIDR notation for net mask, equivalent to 255.255.248.0)
 	echo "static routers=129.26.160.1" >> /etc/dhcpcd.conf (replace 129.26.160.1 with your data)
 	echo "static domain_name_servers=129.26.165.177" >> /etc/dhcpcd.conf (replace 129.26.165.177 with your data)
-9.3 wifi login credentials: wpa_passphrase "ssid" "pw" >> /etc/wpa_supplicant/wpa_supplicant.conf (replace ssid and pw with your actual data)
+8.3 wifi login credentials: wpa_passphrase "ssid" "pw" >> /etc/wpa_supplicant/wpa_supplicant.conf (replace ssid and pw with your actual data)
+	
+9. Update packages
+TODO sudo apt-mark hold bluez ???
+9.1 "sudo apt update"
+9.2 "sudo apt upgrade"
+9.3 Install git "sudo apt install git"
+9.4 "sudo reboot" and log in as administrator again
 
 10. "sudo reboot" and log in as administrator again
 

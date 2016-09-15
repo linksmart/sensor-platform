@@ -22,27 +22,27 @@ public class PulseOximeterSampleCollector implements SampleCollector {
 
   private final Queue<PulseOximeterSample> queue = new LinkedList<PulseOximeterSample>();
 
-  private boolean active;
+  private boolean used;
 
   @Inject
   public PulseOximeterSampleCollector(DBcontroller dbc) {
     this.dbc = dbc;
-    this.active = false;
+    this.used = false;
   }
 
   @Override
-  public boolean getActiveFlag() {
-    return this.active;
+  public boolean isUsed() {
+    return this.used;
   }
 
   @Override
-  public void setActiveFlag(boolean active) {
-    this.active = active;
+  public void setUsed(boolean used) {
+    this.used = used;
   }
 
   @Override
   public void run() {
-    while (this.active) {
+    while (this.used) {
       if (!this.queue.isEmpty()) {
         storeSample(this.queue.poll());
       } else {

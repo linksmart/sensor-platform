@@ -7,8 +7,8 @@ package de.fhg.fit.biomos.sensorplatform.control;
  */
 public interface SampleCollector extends Runnable {
 
-  public boolean getActiveFlag();
+  public boolean isUsed();
 
-  public void setActiveFlag(boolean active);
+  public void setUsed(boolean active);
 
 }

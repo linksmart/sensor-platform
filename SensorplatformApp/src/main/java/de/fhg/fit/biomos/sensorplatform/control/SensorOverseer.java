@@ -14,9 +14,9 @@ import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
  * @author Daniel Pyka
  *
  */
-public class SensorObserver implements Runnable {
+public class SensorOverseer implements Runnable {
 
-  private static final Logger LOG = LoggerFactory.getLogger(SensorObserver.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SensorOverseer.class);
 
   private final List<AbstractSensorWrapper<?>> wrapperWithLostSensor = new ArrayList<AbstractSensorWrapper<?>>();
 
@@ -24,7 +24,7 @@ public class SensorObserver implements Runnable {
 
   private final int noNotificationTriggerTime;
 
-  public SensorObserver(int noNotificationTriggerTime, List<AbstractSensorWrapper<?>> swList) {
+  public SensorOverseer(int noNotificationTriggerTime, List<AbstractSensorWrapper<?>> swList) {
     this.noNotificationTriggerTime = noNotificationTriggerTime;
     this.swList = swList;
   }
@@ -37,14 +37,9 @@ public class SensorObserver implements Runnable {
       for (AbstractSensorWrapper<?> asw : this.swList) {
         if ((currentTime - asw.getLastNotifactionTimestamp()) > (this.noNotificationTriggerTime * 1000)) {
           if (!this.wrapperWithLostSensor.contains(asw)) {
-            this.wrapperWithLostSensor.add(asw);
             LOG.warn(asw.toString() + "did not send a notification within " + this.noNotificationTriggerTime + "s");
-            asw.getGatttool().disconnectBlocking();
-            try {
-              Thread.sleep(2000); // give bluez time to update itself
-            } catch (InterruptedException e) {
-              LOG.error("sleep failed", e);
-            }
+            this.wrapperWithLostSensor.add(asw);
+            asw.getGatttool().disconnect();
           }
         }
       }

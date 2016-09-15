@@ -75,8 +75,10 @@ event system_boot(major, minor, patch, build, ll_version, protocol_version, hw)
 	call hardware_io_port_write(1,$3,$3)
 	call hardware_spi_transfer(0,16,"BLE113 Pulse Oxi")
 
-    # enable bondable mode
+    # define keysize = 6 and pairing method
+	# display token on the development board, type in token on sensorplatform
 	call sm_set_parameters(1, 6, sm_io_capability_displayonly)
+	# enable bondable mode
     call sm_set_bondable_mode(1)
     
     # initialize connection status to empty (not connected, etc.)

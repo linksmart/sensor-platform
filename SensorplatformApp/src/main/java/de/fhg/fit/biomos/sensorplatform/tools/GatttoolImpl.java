@@ -47,12 +47,6 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   public static final String ENABLE_NOTIFICATION = "01:00";
   public static final String DISABLE_NOTIFICATION = "00:00";
 
-  // TODO optimise for later use (ATTENTION: typo "F"ailed may be fixed in future releases)
-  // private static final String BLUEZ_RESPONSE_CONNECT = "Connection successful";
-  // private static final String BLUEZ_RESPONSE_INPUT_MIRRORED_DISCONNECT = "disconnect";
-  // private static final String BLUEZ_RESPONSE_DISCONNECTED = "Command Failed: Disconnect";
-  // private static final String BLUEZ_RESPONSE_CONNECT_ERROR = "Error: connect error: Connection refused (111)";
-
   private static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
 
   private final String bdAddress;
@@ -105,21 +99,18 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       String line = null;
       while ((line = GatttoolImpl.this.streamFromSensor.readLine()) != null) {
         // System.out.println("!!! " + line); // extreme debugging
-        // FIXME optimise for performance here, make more dynamic
         Matcher m = NOTIFICATION_DATA.matcher(line);
         if (m.find()) {
           notifyObserver(m.group(1), m.group(2));
         } else if (line.contains("successful")) {
           this.state = State.CONNECTED;
           LOG.info("state is " + this.state.name());
-        } else if (line.contains("disconnect")) {
-          this.state = State.DISCONNECTED;
-          LOG.info("state is " + this.state.name());
         } else if (line.contains("refused")) {
           this.state = State.DISCONNECTED;
           LOG.info("state is " + this.state.name());
         }
       }
+      LOG.warn("closing gatttool streams");
       this.streamToSensor.close();
       this.streamFromSensor.close();
     } catch (IOException e) {
@@ -167,11 +158,10 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   @Override
   public void reconnect() {
     try {
-      this.state = State.RECONNECTING;
-      LOG.info(this.state.name());
       this.streamToSensor.write(CMD_CONNECT);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
+      this.state = State.RECONNECTING;
       LOG.info("Attempting to reconnect to sensor for ca. 40s (nonblocking)");
     } catch (IOException e) {
       LOG.error("reconnect failed", e);
@@ -179,17 +169,15 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   }
 
   @Override
-  public void disconnectBlocking() {
+  public void disconnect() {
     try {
-      this.streamToSensor.write(CMD_DISCONNECT); // mirrored to streamFromSensor, this will be read because no disconnect event message in bluez
+      this.streamToSensor.write(CMD_DISCONNECT);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
-      while (this.state == State.CONNECTED) {
-        Thread.sleep(50);
-      }
+      this.state = State.DISCONNECTED;
       LOG.info("disconnected from " + this.bdAddress);
-    } catch (IOException | InterruptedException e) {
-      LOG.error("disconnect (blocking) failed", e);
+    } catch (IOException e) {
+      LOG.error("disconnect failed", e);
     }
   }
 

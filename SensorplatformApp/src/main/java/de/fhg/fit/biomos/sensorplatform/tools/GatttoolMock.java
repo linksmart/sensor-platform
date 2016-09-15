@@ -68,7 +68,7 @@ public class GatttoolMock extends ObservableSensorNotificationData implements Ga
   }
 
   @Override
-  public void disconnectBlocking() {
+  public void disconnect() {
     // TODO Auto-generated method stub
 
   }

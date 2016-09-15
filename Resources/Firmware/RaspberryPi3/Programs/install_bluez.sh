@@ -44,7 +44,7 @@ systemctl status bluetooth
 
 # delete down
 echo "Cleanup"
-rm -r /home/${username}/bluez
+rm -r /home/${username}/Downloads/bluez
 
 echo "Finished installing Bluez"
 exit 0
