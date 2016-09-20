@@ -14,6 +14,24 @@
 <title>Sensorplatform</title>
 </head>
 <body>
+
+    <div id="message" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body">
+                    <span id="modalmessage"></span>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-default" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <H1>Sensorplatform</H1>
@@ -145,6 +163,7 @@
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12">
+            <h5>LED: slow blinking=no recording, heartbeat blinking=recording, off=recording, at least one sensor disconnected</h5>
             <h5>
                 Device: <span id="device">(unknown)</span>
             </h5>
@@ -157,6 +176,7 @@
             <h5>
                 Mobile Internet: <span id="mobileinet">(unknown)</span>
             </h5>
+
 
         </div>
 

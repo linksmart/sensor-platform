@@ -51,4 +51,9 @@ public abstract class Sensor<T extends GattLibrary> implements SensorCommands {
     return this.settings;
   }
 
+  @Override
+  public String toString() {
+    return this.name + " " + this.bdAddress;
+  }
+
 }

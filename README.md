@@ -70,9 +70,9 @@ TODO sudo apt-mark hold bluez ???
 9.1 "sudo apt update"
 9.2 "sudo apt upgrade"
 9.3 Install git "sudo apt install git"
-9.4 "sudo reboot" and log in as administrator again
+9.4 "sudo reboot"
 
-10. "sudo reboot" and log in as administrator again
+10. Log in as administrator again
 
 11. "cd /home/administrator/Repositories"
 11.1 "git clone http://scm.fit.fraunhofer.de:8080/scm/git/Sensorplatform Sensorplatform"

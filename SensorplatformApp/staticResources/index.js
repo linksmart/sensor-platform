@@ -36,7 +36,7 @@ window.setInterval(function() {
 
 function writeExampleConfig() {
 	$("#configview").val(JSON.stringify(exampleConfig, undefined, 4));
-	$("#uptime").val(10);
+	$("#uptime").val(600);
 }
 
 function startRecording() {
@@ -50,7 +50,9 @@ function startRecording() {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
-			console.log("Recording now!");
+			response = JSON.parse(request.responseText);
+			$("#modalmessage").text(response["result"]);
+			$('#message').modal('show');
 		}
 	};
 	request.open("POST", "controller/start", true);
@@ -102,6 +104,8 @@ function manualHrsUpload() {
 	};
 	request.open("GET", "hrs/manualupload", true);
 	request.send();
+	$("#modalmessage").text("This may take a while...");
+	$('#message').modal('show');
 }
 
 function getNumbersHrs() {

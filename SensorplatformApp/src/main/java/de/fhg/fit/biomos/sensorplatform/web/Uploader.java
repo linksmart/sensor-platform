@@ -1,5 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.web;
 
+import java.io.IOException;
+
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
@@ -16,6 +18,13 @@ public interface Uploader {
 
   public void login();
 
-  public int sendHeartRateSample(HeartRateSample hrs);
+  /**
+   *
+   * @param hrs
+   * @return http response code
+   * @throws IOException
+   *           reserved for http client exception
+   */
+  public int sendHeartRateSample(HeartRateSample hrs) throws IOException;
 
 }

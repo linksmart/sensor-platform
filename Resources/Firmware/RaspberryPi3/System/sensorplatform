@@ -3,8 +3,8 @@
 # Provides:          Sensorplatform application
 # Required-Start:    
 # Required-Stop:     
-# Default-Start:     3 4 5
-# Default-Stop:      0 1 2 6
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
 # Short-Description: Starts the sensorplatform application.
 # Description:       
 ### END INIT INFO
@@ -12,6 +12,7 @@
 # Actions
 case "$1" in
     start)
+		/opt/vc/bin/tvservice –o 
 		cd /home/pi/Sensorplatform
         java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
         ;;
@@ -20,6 +21,7 @@ case "$1" in
         ;;
     restart)
         killall java
+		/opt/vc/bin/tvservice –o
 		cd /home/pi/Sensorplatform
         java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
         ;;

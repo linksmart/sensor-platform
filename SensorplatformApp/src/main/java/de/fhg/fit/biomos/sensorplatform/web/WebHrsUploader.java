@@ -87,7 +87,7 @@ public class WebHrsUploader implements Uploader {
   }
 
   @Override
-  public int sendHeartRateSample(HeartRateSample hrs) {
+  public int sendHeartRateSample(HeartRateSample hrs) throws IOException {
     HttpPost post = new HttpPost(this.dataAddress);
     post.setHeader("User-Agent", this.userAgent);
 
@@ -95,15 +95,10 @@ public class WebHrsUploader implements Uploader {
     StringEntity requestEntity = new StringEntity(content.toString(), ContentType.create("application/json", "UTF-8"));
     post.setEntity(requestEntity);
 
-    try {
-      CloseableHttpResponse response = this.httpclient.execute(post);
-      int statusCode = response.getStatusLine().getStatusCode();
-      response.close();
-      return statusCode;
-    } catch (IOException e) {
-      LOG.info("transmission failed", e);
-      return -1;
-    }
+    CloseableHttpResponse response = this.httpclient.execute(post);
+    int statusCode = response.getStatusLine().getStatusCode();
+    response.close();
+    return statusCode;
   }
 
 }

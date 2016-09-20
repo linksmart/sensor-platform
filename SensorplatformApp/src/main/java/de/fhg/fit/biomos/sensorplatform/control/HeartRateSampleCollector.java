@@ -1,5 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -63,28 +64,29 @@ public class HeartRateSampleCollector implements SampleCollector {
   private void uploadSample(HeartRateSample hrs) {
     int attempt = 1;
     while (attempt <= UPLOAD_ATTEMPTS) {
-      int statusCode = this.uploader.sendHeartRateSample(hrs);
-      switch (statusCode) {
-        case HttpStatus.SC_CREATED:
-          hrs.setTransmitted(true);
-          // LOG.info("sample transmission successful");
-          return;
-        case HttpStatus.SC_OK:
-          hrs.setTransmitted(true);
-          // LOG.info("sample transmission successful");
-          return;
-        case HttpStatus.SC_UNAUTHORIZED:
-          LOG.error("transmission unauthorized - attempting to log in again");
-          this.uploader.login();
-          break;
-        case -1:
-          // in case of exception, printed to console in Uploader
-          attempt++;
-          break;
-        default:
-          LOG.error("transmission failed, error code: " + statusCode);
-          attempt++;
-          break;
+      try {
+        int statusCode = this.uploader.sendHeartRateSample(hrs);
+        switch (statusCode) {
+          case HttpStatus.SC_CREATED:
+            hrs.setTransmitted(true);
+            // LOG.info("sample transmission successful");
+            return;
+          case HttpStatus.SC_OK:
+            hrs.setTransmitted(true);
+            // LOG.info("sample transmission successful");
+            return;
+          case HttpStatus.SC_UNAUTHORIZED:
+            LOG.error("transmission unauthorized - attempting to log in again");
+            this.uploader.login();
+            break;
+          default:
+            LOG.error("transmission failed, error code: " + statusCode);
+            attempt++;
+            break;
+        }
+      } catch (IOException e) {
+        LOG.error("http client execute (sample transmission) failed", e.getMessage());
+        attempt++;
       }
     }
   }
@@ -94,6 +96,15 @@ public class HeartRateSampleCollector implements SampleCollector {
     dbs.saveHeartRateSample(hrs);
     dbs.commit();
     dbs.close();
+  }
+
+  public void run2() {
+    if (this.uploader != null) {
+      this.uploader.login();
+    }
+    while (this.used) {
+
+    }
   }
 
   @Override

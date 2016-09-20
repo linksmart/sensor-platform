@@ -18,6 +18,7 @@ import com.google.inject.name.Named;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
+import de.fhg.fit.biomos.sensorplatform.tools.Gatttool.State;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
@@ -33,6 +34,12 @@ import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 public class Controller implements Runnable {
 
   private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
+
+  private static final String START_SUCCESS_NEW = "A new recording period was started successfully!";
+  private static final String START_SUCCESS_CONTINUE = "The recording period was started successfully for the remaining time!";
+  private static final String START_ALREADY_RUNNING = "A recording period is already running!";
+  private static final String START_SENSOR_NOT_AVAILABLE = "A sensor is not available: ";
+  private static final String START_NO_SENSORS_IN_CONFIGURATION = "There are no sensors in the configuration!";
 
   private static final String RECORDING_END_TIME = "endtime";
   private static final String CONFIGURATION = "configuration";
@@ -135,8 +142,9 @@ public class Controller implements Runnable {
         long diff = new Long(recProperties.getProperty(RECORDING_END_TIME)) - System.currentTimeMillis();
         LOG.info("time difference is: " + Long.toString(diff) + " milliseconds");
         if (diff > 0) {
-          LOG.info("a recording period was interrupted, which is not finished yet - trying to resume");
-          startup(diff, new JSONArray(recProperties.getProperty(CONFIGURATION)), false);
+          LOG.info("a recording period was interrupted, which is not finished yet - resume");
+          String result = startRecordingPeriod(diff, new JSONArray(recProperties.getProperty(CONFIGURATION)), false);
+          LOG.info(result);
         } else {
           LOG.info("a recording period was interrupted but it is finished now - delete file");
           this.recordingInfo.delete();
@@ -169,58 +177,73 @@ public class Controller implements Runnable {
     }
   }
 
-  public void startup(long uptimeMillis, JSONArray sensorConfiguration, boolean saveConfiguration) {
+  /**
+   *
+   * @param uptimeMillis
+   * @param sensorConfiguration
+   * @param isNewConfiguration
+   * @return String a message for the frontend
+   */
+  public String startRecordingPeriod(long uptimeMillis, JSONArray sensorConfiguration, boolean isNewConfiguration) {
     if (!this.recording) {
       this.recording = true;
       this.uptimeMillis = uptimeMillis;
-      if (saveConfiguration) {
+      if (isNewConfiguration) {
         saveSensorplatformConfiguration(sensorConfiguration);
       }
-      LOG.info("startup called");
+      LOG.info("starting a new recording period");
       this.swList = this.swFactory.createSensorWrapper(sensorConfiguration);
 
-      int expectedSensorCount = this.swList.size();
-      int presentSensorCount = connectDevices();
-
-      if ((presentSensorCount < expectedSensorCount) || this.swList.isEmpty()) {
-        LOG.info("abort startup!");
+      if (this.swList.size() == 0) {
+        LOG.info("there are no SensorWrapper for this recording period - abort!");
         finish();
-        return;
+        return START_NO_SENSORS_IN_CONFIGURATION;
+      }
+
+      LOG.info("connecting to sensors");
+      for (Iterator<AbstractSensorWrapper<?>> iterator = this.swList.iterator(); iterator.hasNext();) {
+        AbstractSensorWrapper<?> asw = iterator.next();
+        boolean isConnected = asw.getGatttool().connectBlocking(this.timeoutConnect);
+        if (!isConnected) {
+          LOG.info(asw.getSensor().toString() + " is not available");
+          if (isNewConfiguration) {
+            LOG.info("sensor has to be available at start - abort!");
+            finish();
+            return START_SENSOR_NOT_AVAILABLE + asw.getSensor().toString();
+          } else {
+            System.out.println("Controller 206 " + asw.getGatttool().getInternalState());
+            LOG.info("SensorOverseer will handle reconnection attempts for the remaining time");
+          }
+        }
       }
 
       enableLogging();
       startThreads();
       this.hwPlatform.setLEDstateRECORDING();
       LOG.info("sensorplatform is recording");
+      if (isNewConfiguration) {
+        return START_SUCCESS_NEW;
+      } else {
+        return START_SUCCESS_CONTINUE;
+      }
     } else {
       LOG.error("data recording ongoing. No other startup allowed! Skipped!");
+      return START_ALREADY_RUNNING;
     }
-  }
-
-  private int connectDevices() {
-    LOG.info("connecting to sensors");
-    for (Iterator<AbstractSensorWrapper<?>> iterator = this.swList.iterator(); iterator.hasNext();) {
-      AbstractSensorWrapper<?> sensorWrapper = iterator.next();
-      boolean isConnected = sensorWrapper.getGatttool().connectBlocking(this.timeoutConnect);
-      if (!isConnected) {
-        LOG.info("device removed from list");
-        sensorWrapper.getGatttool().exitGatttool();
-        iterator.remove();
-      }
-    }
-    return this.swList.size();
   }
 
   private void enableLogging() {
     LOG.info("enable logging");
     for (AbstractSensorWrapper<?> asw : this.swList) {
-      asw.enableLogging();
+      if (asw.getGatttool().getInternalState() == State.CONNECTED) {
+        asw.enableLogging();
+      }
     }
   }
 
   private void startThreads() {
     LOG.info("start observer");
-    this.sensorOverseer = new SensorOverseer(this.timeoutNotification, this.swList);
+    this.sensorOverseer = new SensorOverseer(this.hwPlatform, this.timeoutNotification, this.swList);
     this.sensorOverseerThread = new Thread(this.sensorOverseer);
     this.sensorOverseerThread.start();
     LOG.info("start hrs collector thread");

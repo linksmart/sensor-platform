@@ -37,7 +37,7 @@ public class ControllerService {
   @Path("/start")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.TEXT_PLAIN)
+  @Produces(MediaType.APPLICATION_JSON)
   public Response start(JSONObject request) {
     LOG.info("/controller/start called");
     try {
@@ -45,8 +45,10 @@ public class ControllerService {
       // jetty uses only codehous json library
       // the rest of the application uses org.json library for cleaner code
       org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configuration").toString());
-      this.controller.startup(uptime * 1000, requestConverted, true);
-      return Response.ok().build();
+      String result = this.controller.startRecordingPeriod(uptime * 1000, requestConverted, true);
+      JSONObject response = new JSONObject();
+      response.put("result", result);
+      return Response.ok(response).build();
     } catch (JSONException e) {
       LOG.error("bad json from sensorplatform webinterface", e);
       return Response.serverError().build();

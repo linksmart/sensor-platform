@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormatter;
 import de.fhg.fit.biomos.sensorplatform.sensor.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.GatttoolCmd;
 
 /**
  * Wrapper class, which brings together: sensor, gatttool and database.
@@ -33,13 +34,13 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
 
   @Override
   public void enableLogging() {
-    this.sensor.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
+    this.sensor.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolCmd.CMD_CHAR_WRITE_CMD, GatttoolCmd.ENABLE_NOTIFICATION);
     this.lastNotificationTimestamp = System.currentTimeMillis();
   }
 
   @Override
   public void disableLogging() {
-    this.sensor.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
+    this.sensor.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolCmd.CMD_CHAR_WRITE_CMD, GatttoolCmd.DISABLE_NOTIFICATION);
   }
 
   @Override
@@ -55,11 +56,6 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
   @Override
   public long getLastNotifactionTimestamp() {
     return this.lastNotificationTimestamp;
-  }
-
-  @Override
-  public String toString() {
-    return this.sensor.getBDaddress() + " " + this.sensor.getName();
   }
 
 }

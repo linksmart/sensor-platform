@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.ObservableSensorNotificationData;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorNotificationDataObserver;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.GatttoolCmd;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 
 /**
@@ -24,30 +24,6 @@ import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 public class GatttoolImpl extends ObservableSensorNotificationData implements Gatttool {
 
   private static final Logger LOG = LoggerFactory.getLogger(GatttoolImpl.class);
-
-  private static final String GATTTTOOL_INTERACTIVE = "gatttool -I -t ";
-  private static final String CMD_EXIT = "exit";
-  private static final String CMD_CONNECT = "connect";
-  private static final String CMD_DISCONNECT = "disconnect";
-  public static final String CMD_PRIMARY = "primary";
-  public static final String CMD_INCLUDED = "included";
-  public static final String CMD_CHARACTERISTICS = "characteristics";
-  public static final String CMD_CHAR_DESC = "char-desc";
-  public static final String CMD_CHAR_READ_HND = "char-read-hnd";
-  public static final String CMD_CHAR_READ_UUID = "char-read-uuid";
-  public static final String CMD_CHAR_WRITE_REQ = "char-write-req";
-  public static final String CMD_CHAR_WRITE_CMD = "char-write-cmd";
-  public static final String CMD_SEC_LEVEL = "sec-level";
-  public static final String CMD_MTU = "mtu";
-
-  public static final String SEC_LEVEL_LOW = "low";
-  public static final String SEC_LEVEL_MEDIUM = "medium";
-  public static final String SEC_LEVEL_HIGH = "high";
-
-  public static final String ENABLE_NOTIFICATION = "01:00";
-  public static final String DISABLE_NOTIFICATION = "00:00";
-
-  private static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
 
   private final String bdAddress;
   private final AddressType addressType;
@@ -64,12 +40,12 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
     this.secLevel = secLevel;
     this.state = State.DISCONNECTED;
     try {
-      Process process = Runtime.getRuntime().exec(GATTTTOOL_INTERACTIVE + this.addressType.toString() + " -b " + this.bdAddress);
+      Process process = Runtime.getRuntime().exec(GatttoolCmd.GATTTTOOL_INTERACTIVE + this.addressType.toString() + " -b " + this.bdAddress);
       this.streamToSensor = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
       this.streamFromSensor = new BufferedReader(new InputStreamReader(process.getInputStream()));
       LOG.info("gatttool process for " + this.bdAddress + " created");
       LOG.info("address type is " + this.addressType);
-      this.streamToSensor.write(CMD_SEC_LEVEL + " " + this.secLevel);
+      this.streamToSensor.write(GatttoolCmd.CMD_SEC_LEVEL + " " + this.secLevel);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
       LOG.info("security level set to " + this.secLevel);
@@ -99,7 +75,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
       String line = null;
       while ((line = GatttoolImpl.this.streamFromSensor.readLine()) != null) {
         // System.out.println("!!! " + line); // extreme debugging
-        Matcher m = NOTIFICATION_DATA.matcher(line);
+        Matcher m = GatttoolCmd.NOTIFICATION_DATA.matcher(line);
         if (m.find()) {
           notifyObserver(m.group(1), m.group(2));
         } else if (line.contains("successful")) {
@@ -131,7 +107,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   @Override
   public boolean connectBlocking(int timeout) {
     try {
-      this.streamToSensor.write(CMD_CONNECT);
+      this.streamToSensor.write(GatttoolCmd.CMD_CONNECT);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
       LOG.info("attempting to connect to " + this.bdAddress + " for " + timeout + "s");
@@ -158,7 +134,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   @Override
   public void reconnect() {
     try {
-      this.streamToSensor.write(CMD_CONNECT);
+      this.streamToSensor.write(GatttoolCmd.CMD_CONNECT);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
       this.state = State.RECONNECTING;
@@ -171,7 +147,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   @Override
   public void disconnect() {
     try {
-      this.streamToSensor.write(CMD_DISCONNECT);
+      this.streamToSensor.write(GatttoolCmd.CMD_DISCONNECT);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
       this.state = State.DISCONNECTED;
@@ -184,7 +160,7 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   @Override
   public void exitGatttool() {
     try {
-      this.streamToSensor.write(CMD_EXIT);
+      this.streamToSensor.write(GatttoolCmd.CMD_EXIT);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
       LOG.info("exit gatttool");

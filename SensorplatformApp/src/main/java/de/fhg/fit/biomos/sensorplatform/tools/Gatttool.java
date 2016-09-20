@@ -21,7 +21,7 @@ public interface Gatttool extends Runnable {
 
   public State getInternalState();
 
-  public void addObs(SensorNotificationDataObserver sndo);
+  public void addObs(SensorNotificationDataObserver abstractSensorWrapper);
 
   public BufferedWriter getStreamToSensor();
 
