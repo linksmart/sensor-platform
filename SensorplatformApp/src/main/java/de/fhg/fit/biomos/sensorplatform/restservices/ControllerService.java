@@ -50,7 +50,7 @@ public class ControllerService {
       response.put("result", result);
       return Response.ok(response).build();
     } catch (JSONException e) {
-      LOG.error("bad json from sensorplatform webinterface", e);
+      LOG.error("bad json from sensorplatform webinterface", e.getMessage());
       return Response.serverError().build();
     }
   }

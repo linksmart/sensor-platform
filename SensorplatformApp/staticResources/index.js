@@ -86,7 +86,7 @@ function deleteAllHrs() {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
-			getHumbersHrs();
+			getNumbersHrs();
 		}
 	};
 	request.open("GET", "hrs/delete", true);
