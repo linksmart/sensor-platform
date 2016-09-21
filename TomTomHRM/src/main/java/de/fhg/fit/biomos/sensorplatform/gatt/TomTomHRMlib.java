@@ -11,7 +11,7 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 @SuppressWarnings("unused")
 public class TomTomHRMlib implements HeartRateGattLibrary {
 
-  public static final String DEFAULT_BDADDRESS_TOMTOM = "F4:2C:87:24:12:09";
+  public static final String DEFAULT_BDADDRESS = "F4:2C:87:24:12:09";
 
   // characteristics
   private final String HANDLE_DEVICE_NAME = "0x0003";

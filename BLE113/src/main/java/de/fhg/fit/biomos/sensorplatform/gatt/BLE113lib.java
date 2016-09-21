@@ -11,7 +11,7 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
 public class BLE113lib implements PulseOximeterGattLibrary {
   //@formatter:off
 
-  public static final String DEFAULT_BDADDRESS_ADIDAS = "00:07:80:6A:F2:51";
+  public static final String DEFAULT_BDADDRESS = "00:07:80:6A:F2:51";
 
   // characteristics
   public final String HANDLE_DEVICE_NAME = "0x0003";

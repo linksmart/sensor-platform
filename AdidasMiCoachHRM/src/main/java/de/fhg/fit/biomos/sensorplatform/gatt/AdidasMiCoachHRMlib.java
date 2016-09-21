@@ -10,7 +10,7 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
  */
 public class AdidasMiCoachHRMlib implements HeartRateGattLibrary {
 
-  public static final String DEFAULT_BDADDRESS_ADIDAS = "CB:A2:4A:FE:0F:DA";
+  public static final String DEFAULT_BDADDRESS = "CB:A2:4A:FE:0F:DA";
 
   // characteristics
   public final String HANDLE_DEVICE_NAME = "0x0003";
