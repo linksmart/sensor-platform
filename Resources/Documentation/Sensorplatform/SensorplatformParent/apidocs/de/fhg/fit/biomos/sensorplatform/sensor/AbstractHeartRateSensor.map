@@ -1,0 +1,14 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./AdidasMiCoachHRM.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM" alt="" coords="16,644,660,755"/>
+<area shape="rect" id="node1" href="./AdidasMiCoachHRM.html" title="&lt;TABLE&gt;" alt="" coords="5,639,671,760"/>
+<area shape="rect" id="node2_1" href="./TomTomHRM.html" title="de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM" alt="" coords="705,644,1349,755"/>
+<area shape="rect" id="node2" href="./TomTomHRM.html" title="&lt;TABLE&gt;" alt="" coords="695,639,1360,760"/>
+<area shape="rect" id="node3_2" href="./PolarH7.html" title="de.fhg.fit.biomos.sensorplatform.sensor.PolarH7" alt="" coords="1395,644,2033,755"/>
+<area shape="rect" id="node3" href="./PolarH7.html" title="&lt;TABLE&gt;" alt="" coords="1384,639,2044,760"/>
+<area shape="rect" id="node4_3" href="./Sensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.Sensor" alt="" coords="185,11,1069,277"/>
+<area shape="rect" id="node4" href="./Sensor.html" title="&lt;TABLE&gt;" alt="" coords="175,5,1080,283"/>
+<area shape="rect" id="node6_4" href="./AbstractHeartRateSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" alt="" coords="411,336,1643,585"/>
+<area shape="rect" id="node6" href="./AbstractHeartRateSensor.html" title="&lt;TABLE&gt;" alt="" coords="401,331,1654,591"/>
+<area shape="rect" id="node5_5" href="./HeartRateSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.HeartRateSensor" alt="" coords="1115,19,1739,269"/>
+<area shape="rect" id="node5" href="./HeartRateSensor.html" title="&lt;TABLE&gt;" alt="" coords="1105,14,1750,274"/>
+</map>

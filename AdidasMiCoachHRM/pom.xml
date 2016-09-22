@@ -9,7 +9,7 @@
     </parent>
     <artifactId>AdidasMiCoachHRM</artifactId>
     <name>AdidasMiCoachHRM</name>
-    <description>Adidas miCoach HRM Sensor</description>
+    <description>Adidas miCoach HRM</description>
 
     <dependencies>
         <dependency>

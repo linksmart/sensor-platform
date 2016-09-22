@@ -9,7 +9,7 @@
     </parent>
     <artifactId>SensorTagCC2650</artifactId>
     <name>SensorTagCC2650</name>
-    <description>Texas Instruments SensorTag CC2650 Sensor.</description>
+    <description>Texas Instruments SensorTag CC2650</description>
 
     <dependencies>
         <dependency>

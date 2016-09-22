@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./BLE113.html" title="de.fhg.fit.biomos.sensorplatform.sensor.BLE113" alt="" coords="549,800,1193,911"/>
+<area shape="rect" id="node1" href="./BLE113.html" title="&lt;TABLE&gt;" alt="" coords="539,795,1204,916"/>
+<area shape="rect" id="node2_1" href="./Sensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.Sensor" alt="" coords="16,45,900,312"/>
+<area shape="rect" id="node2" href="./Sensor.html" title="&lt;TABLE&gt;" alt="" coords="5,40,911,317"/>
+<area shape="rect" id="node4_2" href="./AbstractPulseOximeterSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor" alt="" coords="247,405,1495,741"/>
+<area shape="rect" id="node4" href="./AbstractPulseOximeterSensor.html" title="&lt;TABLE&gt;" alt="" coords="237,400,1506,747"/>
+<area shape="rect" id="node3_3" href="./PulseOximeterSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.PulseOximeterSensor" alt="" coords="945,11,1624,347"/>
+<area shape="rect" id="node3" href="./PulseOximeterSensor.html" title="&lt;TABLE&gt;" alt="" coords="935,5,1635,352"/>
+</map>

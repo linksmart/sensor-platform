@@ -9,7 +9,7 @@
     </parent>
     <artifactId>SensorplatformApp</artifactId>
     <name>SensorplatformApp</name>
-    <description>Software for an extendible platform used for aggregating and transfering sensor data.</description>
+    <description>Software for an extendible platform, used for aggregating and transfering sensor data, running on a Linux-based operating system.</description>
 
     <dependencies>
         <dependency>

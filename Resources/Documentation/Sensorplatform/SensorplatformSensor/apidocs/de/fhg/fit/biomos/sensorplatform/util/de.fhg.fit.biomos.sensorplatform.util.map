@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./SensorName.html" title="de.fhg.fit.biomos.sensorplatform.util.SensorName" alt="" coords="16,11,120,173"/>
+<area shape="rect" id="node1" href="./SensorName.html" title="&lt;TABLE&gt;" alt="" coords="5,5,131,179"/>
+<area shape="rect" id="node2_1" href="./SecurityLevel.html" title="de.fhg.fit.biomos.sensorplatform.util.SecurityLevel" alt="" coords="165,28,269,156"/>
+<area shape="rect" id="node2" href="./SecurityLevel.html" title="&lt;TABLE&gt;" alt="" coords="155,23,280,161"/>
+<area shape="rect" id="node3_2" href="./AddressType.html" title="de.fhg.fit.biomos.sensorplatform.util.AddressType" alt="" coords="315,28,419,156"/>
+<area shape="rect" id="node3" href="./AddressType.html" title="&lt;TABLE&gt;" alt="" coords="304,23,429,161"/>
+</map>

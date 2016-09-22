@@ -9,7 +9,7 @@
     </parent>
     <artifactId>BLE113</artifactId>
     <name>BLE113</name>
-    <description>BLE113 Development Board with specific firmware.</description>
+    <description>BLE113 Development Board with specific firmware, which simulates a very simple pulse oximeter sensor and enforces maximum Bluetooth 4.0 security.</description>
 
     <dependencies>
         <dependency>

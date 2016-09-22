@@ -1,0 +1,10 @@
+de.fhg.fit.biomos.sensorplatform.control
+de.fhg.fit.biomos.sensorplatform.guice
+de.fhg.fit.biomos.sensorplatform.main
+de.fhg.fit.biomos.sensorplatform.persistence
+de.fhg.fit.biomos.sensorplatform.restservices
+de.fhg.fit.biomos.sensorplatform.sensorwrapper
+de.fhg.fit.biomos.sensorplatform.system
+de.fhg.fit.biomos.sensorplatform.tools
+de.fhg.fit.biomos.sensorplatform.util
+de.fhg.fit.biomos.sensorplatform.web

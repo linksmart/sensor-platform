@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./CC2650lib.html" title="de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib" alt="" coords="16,579,537,2579"/>
+<area shape="rect" id="node1" href="./CC2650lib.html" title="&lt;TABLE&gt;" alt="" coords="5,573,548,2584"/>
+<area shape="rect" id="node2_1" href="./PulseOximeterGattLibrary.html" title="de.fhg.fit.biomos.sensorplatform.gatt.PulseOximeterGattLibrary" alt="" coords="583,1523,890,1634"/>
+<area shape="rect" id="node2" href="./PulseOximeterGattLibrary.html" title="&lt;TABLE&gt;" alt="" coords="573,1518,901,1639"/>
+<area shape="rect" id="node3_2" href="./HeartRateGattLibrary.html" title="de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary" alt="" coords="935,1523,1215,1634"/>
+<area shape="rect" id="node3" href="./HeartRateGattLibrary.html" title="&lt;TABLE&gt;" alt="" coords="925,1518,1226,1639"/>
+<area shape="rect" id="node4_3" href="./GattLibrary.html" title="de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary" alt="" coords="489,11,985,520"/>
+<area shape="rect" id="node4" href="./GattLibrary.html" title="&lt;TABLE&gt;" alt="" coords="478,5,995,525"/>
+</map>

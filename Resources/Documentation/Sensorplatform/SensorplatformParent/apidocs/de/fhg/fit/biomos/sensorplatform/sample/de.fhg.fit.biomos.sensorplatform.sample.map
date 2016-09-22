@@ -1,0 +1,16 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./CC2650TemperatureSample.html" title="de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample" alt="" coords="16,132,440,416"/>
+<area shape="rect" id="node1" href="./CC2650TemperatureSample.html" title="&lt;TABLE&gt;" alt="" coords="5,127,451,421"/>
+<area shape="rect" id="node2_1" href="./CC2650PressureSample.html" title="de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample" alt="" coords="486,132,890,416"/>
+<area shape="rect" id="node2" href="./CC2650PressureSample.html" title="&lt;TABLE&gt;" alt="" coords="475,127,901,421"/>
+<area shape="rect" id="node3_2" href="./CC2650MovementSample.html" title="de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample" alt="" coords="935,11,1347,537"/>
+<area shape="rect" id="node3" href="./CC2650MovementSample.html" title="&lt;TABLE&gt;" alt="" coords="925,5,1358,543"/>
+<area shape="rect" id="node4_3" href="./CC2650HumiditySample.html" title="de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample" alt="" coords="1393,132,1797,416"/>
+<area shape="rect" id="node4" href="./CC2650HumiditySample.html" title="&lt;TABLE&gt;" alt="" coords="1382,127,1807,421"/>
+<area shape="rect" id="node5_4" href="./CC2650AmbientlightSample.html" title="de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample" alt="" coords="1843,149,2267,399"/>
+<area shape="rect" id="node5" href="./CC2650AmbientlightSample.html" title="&lt;TABLE&gt;" alt="" coords="1832,144,2277,404"/>
+<area shape="rect" id="node6_5" href="./PulseOximeterSample.html" title="de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample" alt="" coords="2312,132,2704,416"/>
+<area shape="rect" id="node6" href="./PulseOximeterSample.html" title="&lt;TABLE&gt;" alt="" coords="2301,127,2715,421"/>
+<area shape="rect" id="node7_6" href="./HeartRateSample.html" title="de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample" alt="" coords="2750,89,3117,459"/>
+<area shape="rect" id="node7" href="./HeartRateSample.html" title="&lt;TABLE&gt;" alt="" coords="2739,83,3127,465"/>
+</map>

@@ -242,6 +242,13 @@
         </dependencies>
     </dependencyManagement>
 
+    <distributionManagement>
+        <site>
+            <id>${project.artifactId}-site</id>
+            <url>${project.baseUri}</url>
+        </site>
+    </distributionManagement>
+    
     <reporting>
         <plugins>
             <plugin>
@@ -292,7 +299,6 @@
 
     <developers>
         <developer>
-            <id>daniel.pyka</id>
             <name>Daniel Pyka</name>
             <email>daniel.pyka@fit.fraunhofer.de</email>
             <organization>Fraunhofer FIT</organization>

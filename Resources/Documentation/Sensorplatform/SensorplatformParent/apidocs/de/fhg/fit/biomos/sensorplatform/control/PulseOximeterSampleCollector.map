@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" alt="" coords="91,11,265,121"/>
+<area shape="rect" id="node1" href="./SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="81,5,275,127"/>
+<area shape="rect" id="node2_1" href="./PulseOximeterSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector" alt="" coords="16,180,340,325"/>
+<area shape="rect" id="node2" href="./PulseOximeterSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="5,175,351,331"/>
+</map>

@@ -9,7 +9,7 @@
     </parent>
     <artifactId>SensorplatformSensor</artifactId>
     <name>SensorplatformSensor</name>
-    <description>Project for all sensors which are supported by the sensorplatform.</description>
+    <description>Project that defines a general abstraction for physical sensors that are used by the sensorplatform.</description>
 
     <dependencies>
         <dependency>

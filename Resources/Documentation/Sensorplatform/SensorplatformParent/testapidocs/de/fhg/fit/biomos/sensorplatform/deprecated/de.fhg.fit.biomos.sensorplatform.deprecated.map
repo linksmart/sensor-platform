@@ -1,0 +1,16 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./TimeTest.html" title="de.fhg.fit.biomos.sensorplatform.deprecated.TimeTest" alt="" coords="16,106,163,199"/>
+<area shape="rect" id="node1" href="./TimeTest.html" title="&lt;TABLE&gt;" alt="" coords="5,101,173,205"/>
+<area shape="rect" id="node2_1" href="./SecurityManager.html" title="de.fhg.fit.biomos.sensorplatform.deprecated.SecurityManager" alt="" coords="208,97,677,208"/>
+<area shape="rect" id="node2" href="./SecurityManager.html" title="&lt;TABLE&gt;" alt="" coords="197,92,688,213"/>
+<area shape="rect" id="node3_2" href="./GattPermissions.html" title="de.fhg.fit.biomos.sensorplatform.deprecated.GattPermissions" alt="" coords="723,11,1171,295"/>
+<area shape="rect" id="node3" href="./GattPermissions.html" title="&lt;TABLE&gt;" alt="" coords="712,5,1181,300"/>
+<area shape="rect" id="node4_3" href="./BluetoothDevice.html" title="de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothDevice" alt="" coords="1217,71,1898,234"/>
+<area shape="rect" id="node4" href="./BluetoothDevice.html" title="&lt;TABLE&gt;" alt="" coords="1206,66,1909,239"/>
+<area shape="rect" id="node5_4" href="./BluetoothctlImpl.html" title="de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothctlImpl" alt="" coords="1944,28,2195,277"/>
+<area shape="rect" id="node5" href="./BluetoothctlImpl.html" title="&lt;TABLE&gt;" alt="" coords="1933,23,2205,283"/>
+<area shape="rect" id="node6_5" href="./Bluetoothctl.html" title="de.fhg.fit.biomos.sensorplatform.deprecated.Bluetoothctl" alt="" coords="2241,28,2463,277"/>
+<area shape="rect" id="node6" href="./Bluetoothctl.html" title="&lt;TABLE&gt;" alt="" coords="2230,23,2474,283"/>
+<area shape="rect" id="node7_6" href="./BluetoothAgent.html" title="de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothAgent" alt="" coords="2509,54,2657,251"/>
+<area shape="rect" id="node7" href="./BluetoothAgent.html" title="&lt;TABLE&gt;" alt="" coords="2498,49,2667,257"/>
+</map>

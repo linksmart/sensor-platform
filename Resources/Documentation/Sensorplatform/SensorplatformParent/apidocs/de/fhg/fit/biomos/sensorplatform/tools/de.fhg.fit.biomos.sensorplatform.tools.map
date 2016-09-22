@@ -1,0 +1,20 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./VirtualPolarH7Mock.html" title="de.fhg.fit.biomos.sensorplatform.tools.VirtualPolarH7Mock" alt="" coords="16,267,596,481"/>
+<area shape="rect" id="node1" href="./VirtualPolarH7Mock.html" title="&lt;TABLE&gt;" alt="" coords="5,261,607,487"/>
+<area shape="rect" id="node2_1" href="./HcitoolImpl.html" title="de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl" alt="" coords="1221,327,1500,421"/>
+<area shape="rect" id="node2" href="./HcitoolImpl.html" title="&lt;TABLE&gt;" alt="" coords="1211,322,1511,426"/>
+<area shape="rect" id="node3_2" href="./Hcitool.html" title="de.fhg.fit.biomos.sensorplatform.tools.Hcitool" alt="" coords="1221,63,1501,156"/>
+<area shape="rect" id="node3" href="./Hcitool.html" title="&lt;TABLE&gt;" alt="" coords="1210,57,1511,161"/>
+<area shape="rect" id="node4_3" href="./HciconfigMock.html" title="de.fhg.fit.biomos.sensorplatform.tools.HciconfigMock" alt="" coords="1547,310,1745,438"/>
+<area shape="rect" id="node4" href="./HciconfigMock.html" title="&lt;TABLE&gt;" alt="" coords="1536,305,1756,443"/>
+<area shape="rect" id="node5_4" href="./HciconfigImpl.html" title="de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl" alt="" coords="1791,310,1989,438"/>
+<area shape="rect" id="node5" href="./HciconfigImpl.html" title="&lt;TABLE&gt;" alt="" coords="1780,305,2000,443"/>
+<area shape="rect" id="node6_5" href="./Hciconfig.html" title="de.fhg.fit.biomos.sensorplatform.tools.Hciconfig" alt="" coords="1547,45,1745,173"/>
+<area shape="rect" id="node6" href="./Hciconfig.html" title="&lt;TABLE&gt;" alt="" coords="1536,40,1756,179"/>
+<area shape="rect" id="node7_6" href="./GatttoolImpl.html" title="de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl" alt="" coords="641,267,1176,481"/>
+<area shape="rect" id="node7" href="./GatttoolImpl.html" title="&lt;TABLE&gt;" alt="" coords="631,261,1187,487"/>
+<area shape="rect" id="node8_7" href="./Gatttool.html" title="de.fhg.fit.biomos.sensorplatform.tools.Gatttool" alt="" coords="397,11,818,208"/>
+<area shape="rect" id="node8" href="./Gatttool.html" title="&lt;TABLE&gt;" alt="" coords="386,5,829,213"/>
+<area shape="rect" id="node9_8" href="./Gatttool.State.html" title="de.fhg.fit.biomos.sensorplatform.tools.Gatttool.State" alt="" coords="1791,45,1912,173"/>
+<area shape="rect" id="node9" href="./Gatttool.State.html" title="&lt;TABLE&gt;" alt="" coords="1780,40,1923,179"/>
+</map>

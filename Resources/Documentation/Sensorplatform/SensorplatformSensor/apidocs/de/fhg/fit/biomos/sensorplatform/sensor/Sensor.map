@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./SensorCommands.html" title="de.fhg.fit.biomos.sensorplatform.sensor.SensorCommands" alt="" coords="957,11,1609,121"/>
+<area shape="rect" id="node1" href="./SensorCommands.html" title="&lt;TABLE&gt;" alt="" coords="946,5,1619,127"/>
+<area shape="rect" id="node2_1" href="./Sensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.Sensor" alt="" coords="841,180,1725,447"/>
+<area shape="rect" id="node2" href="./Sensor.html" title="&lt;TABLE&gt;" alt="" coords="830,175,1735,452"/>
+<area shape="rect" id="node3_2" href="./AbstractPulseOximeterSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor" alt="" coords="16,505,1264,841"/>
+<area shape="rect" id="node3" href="./AbstractPulseOximeterSensor.html" title="&lt;TABLE&gt;" alt="" coords="5,500,1275,847"/>
+<area shape="rect" id="node4_3" href="./AbstractHeartRateSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" alt="" coords="1309,549,2541,798"/>
+<area shape="rect" id="node4" href="./AbstractHeartRateSensor.html" title="&lt;TABLE&gt;" alt="" coords="1299,543,2552,803"/>
+</map>
