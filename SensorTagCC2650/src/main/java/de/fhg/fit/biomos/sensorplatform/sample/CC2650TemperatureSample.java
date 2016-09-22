@@ -9,6 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Entity class for temperature samples.
+ * 
+ * @author Daniel Pyka
+ *
+ */
 @Entity
 @Table(name = "CC2650TemperatureSample")
 public class CC2650TemperatureSample implements Serializable {

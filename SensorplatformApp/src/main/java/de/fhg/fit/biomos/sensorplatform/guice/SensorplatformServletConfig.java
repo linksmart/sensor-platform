@@ -13,6 +13,8 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
 
 /**
+ * Servlet configuration for Guice used with Jetty. Everytime a REST call arrives under a defined URL, a new object is created, injected and thrown away by the
+ * carbage collector after processing the response.
  *
  * @author Daniel Pyka
  *
@@ -22,6 +24,11 @@ public class SensorplatformServletConfig extends GuiceServletContextListener {
   private Injector injector;
   private final Properties properties;
 
+  /**
+   *
+   * @param properties
+   *          Properties loaded from the file
+   */
   public SensorplatformServletConfig(Properties properties) {
     this.properties = properties;
   }
@@ -42,13 +49,12 @@ public class SensorplatformServletConfig extends GuiceServletContextListener {
     return this.injector;
   }
 
+  /**
+   * Explicitly initialise the controller at startup. This will check the last state of the sensorplatform. In parallel, the web server is started.
+   */
   private void initialiseController() {
     Controller controller = this.injector.getInstance(Controller.class);
     controller.initialise();
-  }
-
-  public Injector getCreatedInjector() {
-    return this.injector;
   }
 
 }

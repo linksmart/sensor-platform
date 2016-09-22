@@ -7,8 +7,8 @@ import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor;
 
 /**
- * SensorWrapper for all heart rate sensors which are compliant to the Bluetooth specification.
- * 
+ * SensorWrapper for all heart rate sensors which are compliant with the Bluetooth specification.
+ *
  * @author Daniel Pyka
  *
  */

@@ -23,8 +23,8 @@ import de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
- * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory. The class <b>must</b> be used as a
- * singleton. Configured with <b>GUICE</b> to enforce that.
+ * Factory for creating sensor objects. It is recommended to NOT create sensor objects directly but only through the factory.<br>
+ * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -54,16 +54,16 @@ public class SensorWrapperFactory {
   }
 
   /**
+   * Gets a description as JSONArray. Creates corresponding objects from that. This is similiar to reflection. Sensorname Enum must be used.
    *
    * @param sensorConfiguration
-   *          configuration from the web application.
-   * @return A list of all sensorwrappers to use during recording.
+   *          configuration from the web application
+   * @return A list of all sensorwrappers to use during recording
    */
   public List<AbstractSensorWrapper<?>> createSensorWrapper(JSONArray sensorConfiguration) {
     LOG.info("creating sensorwrappers");
     List<AbstractSensorWrapper<?>> sensorWrapperList = new ArrayList<AbstractSensorWrapper<?>>();
     for (int i = 0; i < sensorConfiguration.length(); i++) {
-
       try {
         JSONObject sensorConfigEntry = sensorConfiguration.getJSONObject(i);
         SensorName name = SensorName.valueOf(sensorConfigEntry.getString(NAME));

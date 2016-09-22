@@ -20,7 +20,8 @@ import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
 import de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample;
 
 /**
- *
+ * REST service for pulse oximeter sample database interaction.
+ * 
  * @author Daniel Pyka
  *
  */

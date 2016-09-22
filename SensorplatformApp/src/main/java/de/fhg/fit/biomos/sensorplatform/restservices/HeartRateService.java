@@ -22,7 +22,8 @@ import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
- *
+ * REST service for heart rate samples database interaction.
+ * 
  * @author Daniel Pyka
  *
  */

@@ -17,6 +17,12 @@ import org.slf4j.LoggerFactory;
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
 
+/**
+ * Functionality for the Sensorplatform running on a Raspberry Pi 3 with Raspbian (lite).
+ *
+ * @author Daniel Pyka
+ *
+ */
 public class RaspberryPi3 implements HardwarePlatform {
 
   private static final Logger LOG = LoggerFactory.getLogger(RaspberryPi3.class);

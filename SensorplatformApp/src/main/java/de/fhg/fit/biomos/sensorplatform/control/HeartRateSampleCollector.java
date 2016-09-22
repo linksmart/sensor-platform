@@ -18,6 +18,8 @@ import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
+ * HeartRateSampleCollector stores heart rate samples to the database and it is able to upload those samples to an external webinterface.<br>
+ * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -53,14 +55,31 @@ public class HeartRateSampleCollector implements SampleCollector {
     this.used = used;
   }
 
+  /**
+   * Add a heart rate sample to the queue for storing it in the database and uploading.
+   *
+   * @param hrs
+   *          HeartRateSample retrieved from the sensor
+   */
   public void addToQueue(HeartRateSample hrs) {
     this.queue.add(hrs);
   }
 
+  /**
+   * Expose the total number of all heart rate samples in the queue for the manual upload in Controller.
+   *
+   * @return number of heart rate samples
+   */
   public int getNumberOfHrsInQueue() {
     return this.queue.size();
   }
 
+  /**
+   * Try to upload a HeartRateSample to an external webinterface.
+   *
+   * @param hrs
+   *          HeartRateSample from the queue
+   */
   private void uploadSample(HeartRateSample hrs) {
     int attempt = 1;
     while (attempt <= UPLOAD_ATTEMPTS) {
@@ -91,6 +110,12 @@ public class HeartRateSampleCollector implements SampleCollector {
     }
   }
 
+  /**
+   * Save a heart rate sample to the database.
+   *
+   * @param sample
+   *          a HeartRateSample from the queue
+   */
   private void storeSample(HeartRateSample hrs) {
     DBsession dbs = this.dbc.getSession();
     dbs.saveHeartRateSample(hrs);
@@ -98,15 +123,10 @@ public class HeartRateSampleCollector implements SampleCollector {
     dbs.close();
   }
 
-  public void run2() {
-    if (this.uploader != null) {
-      this.uploader.login();
-    }
-    while (this.used) {
-
-    }
-  }
-
+  /**
+   * Try to upload a sample and store it afterwards in this order. Transmission flag is set accordingly. By using this algorithm, the load of the database is
+   * minimised.
+   */
   @Override
   public void run() {
     if (this.uploader != null) {

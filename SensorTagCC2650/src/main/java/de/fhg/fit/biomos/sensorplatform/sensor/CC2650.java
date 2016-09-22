@@ -45,6 +45,15 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   /**
    * Enable temperature sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param enableNotification
+   *          as defined in the bluetooth specification (01:00)
+   * @param period
+   *          as defined in the sensor configuration
    */
   private void enableTemperatureNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
@@ -65,6 +74,13 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   /**
    * Disable temperature sensor measurement, notification and reset the notification peroid to the default value.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param disableNotification
+   *          as defined in the bluetooth specification (00:00)
    */
   private void disableTemperatureNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
@@ -85,6 +101,15 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   /**
    * Enable humidity sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param enableNotification
+   *          as defined in the bluetooth specification (01:00)
+   * @param period
+   *          as defined in the sensor configuration
    */
   private void enableHumidityNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
@@ -105,6 +130,13 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   /**
    * Disable humidity sensor measurement, notification and reset the notification peroid to the default value.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param disableNotification
+   *          as defined in the bluetooth specification (00:00)
    */
   private void disableHumidityNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
@@ -125,6 +157,15 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   /**
    * Enable ambientlight sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param enableNotification
+   *          as defined in the bluetooth specification (01:00)
+   * @param period
+   *          as defined in the sensor configuration
    */
   private void enableAmbientlightNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
@@ -145,6 +186,13 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   /**
    * Disable ambientlight sensor measurement, notification and reset the notification peroid to the default value.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param disableNotification
+   *          as defined in the bluetooth specification (00:00)
    */
   private void disableAmbientlightNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
@@ -165,6 +213,15 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   /**
    * Enable pressure sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param enableNotification
+   *          as defined in the bluetooth specification (01:00)
+   * @param period
+   *          as defined in the sensor configuration
    */
   private void enablePressureNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period) {
     try {
@@ -185,6 +242,13 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   /**
    * Disable pressure sensor measurement, notification and reset the notification peroid to the default value.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param disableNotification
+   *          as defined in the bluetooth specification (00:00)
    */
   private void disablePressureNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
@@ -206,6 +270,16 @@ public class CC2650 extends Sensor<CC2650lib> {
   /**
    * Enable movement sensor measurement, notification and set the notification peroid to the value given by the sensor configuration.</br>
    *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param enableNotification
+   *          as defined in the bluetooth specification (01:00)
+   * @param period
+   *          as defined in the sensor configuration
+   * @param configuration
+   *          bitmask to enable specific axis
    */
   private void enableMovementNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification, String period, String configuration) {
     try {
@@ -226,6 +300,15 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   /**
    * Disable movement sensor measurement, notification and reset the notification peroid to the default value.
+   *
+   * @param streamToSensor
+   *          gatttool input stream
+   * @param charWriteCmd
+   *          gatttool write command
+   * @param disableNotification
+   *          as defined in the bluetooth specification (00:00)
+   * @param configuration
+   *          bitmask to disable specific axis
    */
   private void disableMovementNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification, String configuration) {
     try {
@@ -286,7 +369,10 @@ public class CC2650 extends Sensor<CC2650lib> {
   }
 
   /**
+   * Calculate the IR temperature (object) from the temperature sensor.
+   *
    * @param data
+   *          hexadecimal values without whitespaces
    * @return Temperature in degrees Celsius (°C)
    */
   private float getIRtemperatureFromTemperatureSensor(String data) {
@@ -295,7 +381,10 @@ public class CC2650 extends Sensor<CC2650lib> {
   }
 
   /**
+   * Calculate the die temperature (chip) from the temperature sensor.
+   *
    * @param data
+   *          hexadecimal values without whitespaces
    * @return Temperature in degrees Celsius (°C)
    */
   private float getDieTemperatureFromTemperatureSensor(String data) {
@@ -304,9 +393,10 @@ public class CC2650 extends Sensor<CC2650lib> {
   }
 
   /**
-   * The conversion and adjustment calculations is done in firmware of the sensor.
+   * Calculate the temperature from the barometric sensor. The conversion and adjustment calculations is done in firmware of the sensor.
    *
    * @param data
+   *          hexadecimal values without whitespaces
    * @return Temperature in degrees Celsius (°C)
    */
   private float getTemperatureFromBarometricPressureSensor(String data) {
@@ -315,9 +405,10 @@ public class CC2650 extends Sensor<CC2650lib> {
   }
 
   /**
-   * The conversion and adjustment calculations is done in firmware of the sensor.
+   * Calculate the pressure. The conversion and adjustment calculations is done in firmware of the sensor.
    *
    * @param data
+   *          hexadecimal values without whitespaces
    * @return Pressure in hectopascal (hPa)
    */
   private float getPressure(String data) {
@@ -326,8 +417,10 @@ public class CC2650 extends Sensor<CC2650lib> {
   }
 
   /**
+   * Calculate the temperature from the humidity sensor.
    *
    * @param data
+   *          hexadecimal values without whitespaces
    * @return Temperature in degrees Celsius (°C)
    */
   private float getTemperatureFromHumiditySensor(String data) {
@@ -336,8 +429,10 @@ public class CC2650 extends Sensor<CC2650lib> {
   }
 
   /**
+   * Calculate the relative humidity.
    *
    * @param data
+   *          hexadecimal values without whitespaces
    * @return Relative Humidity (%RH)
    */
   private float getRelativeHumidty(String data) {
@@ -346,8 +441,10 @@ public class CC2650 extends Sensor<CC2650lib> {
   }
 
   /**
+   * Calculate the ambient light.
    *
    * @param data
+   *          hexadecimal values without whitespaces
    * @return Light intensity in LUX
    */
   private float getAmbientLight(String data) {
@@ -361,8 +458,8 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate the rotation on the X axis.
    *
    * @param data
-   *          raw sensor notification data without spaces
-   * @return rotation on the X axis.
+   *          hexadecimal values without whitespaces
+   * @return rotation on the X axis
    */
   private float getRotationX(String data) {
     return ((short) Integer.parseInt(data.substring(2, 4) + data.substring(0, 2), 16)) * 1.0f / (65536 / 500);
@@ -372,8 +469,8 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate the rotation on the Y axis.
    *
    * @param data
-   *          raw sensor notification data without spaces
-   * @return rotation on the Y axis.
+   *          hexadecimal values without whitespaces
+   * @return rotation on the Y axis
    */
   private float getRotationY(String data) {
     return ((short) Integer.parseInt(data.substring(6, 8) + data.substring(4, 6), 16)) * 1.0f / (65536 / 500);
@@ -383,8 +480,8 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate the rotation on the Z axis.
    *
    * @param data
-   *          raw sensor notification data without spaces
-   * @return rotation on the Z axis.
+   *          hexadecimal values without whitespaces
+   * @return rotation on the Z axis
    */
   private float getRotationZ(String data) {
     return ((short) Integer.parseInt(data.substring(10, 12) + data.substring(8, 10), 16)) * 1.0f / (65536 / 500);
@@ -394,8 +491,8 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate the acceleration on the X axis.
    *
    * @param data
-   *          raw sensor notification data without spaces
-   * @return acceleration on the X axis.
+   *          hexadecimal values without whitespaces
+   * @return acceleration on the X axis
    */
   private float getAccelerationX(String data) {
     return ((short) Integer.parseInt(data.substring(14, 16) + data.substring(12, 14), 16)) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
@@ -405,8 +502,8 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate the acceleration on the Y axis.
    *
    * @param data
-   *          raw sensor notification data without spaces
-   * @return acceleration on the Y axis.
+   *          hexadecimal values without whitespaces
+   * @return acceleration on the Y axis
    */
   private float getAccelerationY(String data) {
     return ((short) Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16)) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
@@ -416,8 +513,8 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate the acceleration on the Z axis.
    *
    * @param data
-   *          raw sensor notification data without spaces
-   * @return acceleration on the Z axis.
+   *          hexadecimal values without whitespaces
+   * @return acceleration on the Z axis
    */
   private float getAccelerationZ(String data) {
     return ((short) Integer.parseInt(data.substring(22, 24) + data.substring(20, 22), 16)) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
@@ -427,8 +524,8 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate the magnetism on the X axis.
    *
    * @param data
-   *          raw sensor notification data without spaces
-   * @return magnetism on the X axis.
+   *          hexadecimal values without whitespaces
+   * @return magnetism on the X axis
    */
   private float getMagnetismX(String data) {
     return 1.0f * ((short) Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16));
@@ -438,8 +535,8 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate the magnetism on the Y axis.
    *
    * @param data
-   *          raw sensor notification data without spaces
-   * @return magnetism on the Y axis.
+   *          hexadecimal values without whitespaces
+   * @return magnetism on the Y axis
    */
   private float getMagnetismY(String data) {
     return 1.0f * ((short) Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16));
@@ -449,8 +546,8 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate the magnetism on the Z axis.
    *
    * @param data
-   *          raw sensor notification data without spaces
-   * @return magnetism on the Z axis.
+   *          hexadecimal values without whitespaces
+   * @return magnetism on the Z axis
    */
   private float getMagnetismZ(String data) {
     return 1.0f * ((short) Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16));
@@ -460,12 +557,12 @@ public class CC2650 extends Sensor<CC2650lib> {
    * Calculate a temperature sample for the given notification data.
    *
    * @param timestamp
-   *          the current timestamp from the sensorwrapper.
+   *          the current timestamp from the sensorwrapper
    * @param data
-   *          sensor notification data without spaces
+   *          hexadecimal values without whitespaces
    * @param handle
    *          handle of the notification
-   * @return CC2650TemperatureSample
+   * @return CC2650TemperatureSample for further processing
    */
   public CC2650TemperatureSample calculateTemperatureData(String timestamp, String handle, String data) {
     if (!handle.equals(this.gattLibrary.HANDLE_IR_TEMPERATURE_VALUE)) {
@@ -486,7 +583,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    *          sensor notification data without spaces
    * @param handle
    *          handle of the notification
-   * @return CC2650HumiditySample
+   * @return CC2650HumiditySample for further processing
    */
   public CC2650HumiditySample calculateHumidityData(String timestamp, String handle, String data) {
     if (!handle.equals(this.gattLibrary.HANDLE_HUMIDITY_VALUE)) {
@@ -507,7 +604,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    *          sensor notification data without spaces
    * @param handle
    *          handle of the notification
-   * @return CC2650PressureSample
+   * @return CC2650PressureSample for further processing
    */
   public CC2650PressureSample calculatePressureData(String timestamp, String handle, String data) {
     if (!handle.equals(this.gattLibrary.HANDLE_PRESSURE_VALUE)) {
@@ -528,7 +625,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    *          sensor notification data without spaces
    * @param handle
    *          handle of the notification
-   * @return CC2650AmbientlightSample
+   * @return CC2650AmbientlightSample for further processing
    */
   public CC2650AmbientlightSample calculateAmbientlightData(String timestamp, String handle, String data) {
     if (!handle.equals(this.gattLibrary.HANDLE_AMBIENTLIGHT_VALUE)) {
@@ -548,7 +645,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    *          sensor notification data without spaces
    * @param handle
    *          handle of the notification
-   * @return CC2650MovementSample
+   * @return CC2650MovementSample for further processing
    */
   public CC2650MovementSample calculateMovementSample(String timestamp, String handle, String data) {
     if (!handle.equals(this.gattLibrary.HANDLE_MOVEMENT_VALUE)) {

@@ -11,6 +11,11 @@ import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
+ * Abstraction for pulse oximeter sensors, which are using the GATT characteristics (0x2A37). Every new pulse oximeter sensor, which is compliant with the
+ * Bluetooth specification, may inherit from this class. Only a small subset of functions is implemented yet!!
+ *
+ * @see <a href= "https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.plx_continuous_measurement.xml">Heart Rate
+ *      Measurement</a>
  *
  * @author Daniel Pyka
  *

@@ -1,7 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.util;
 
 /**
- * Bean class for devices detected by a low energy scan (hcitool lescan).
+ * Bean class for devices detected by a Hcitool low energy scan.
  *
  * @author Daniel Pyka
  *

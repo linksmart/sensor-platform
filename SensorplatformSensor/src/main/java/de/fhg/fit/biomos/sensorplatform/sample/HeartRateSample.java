@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Stores all available data from a single heart rate sample.
+ * Entity class for heart rate samples.
  *
  * @author Daniel Pyka
  *

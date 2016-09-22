@@ -9,6 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Entity class für movement samples.
+ * 
+ * @author Daniel Pyka
+ *
+ */
 @Entity
 @Table(name = "CC2650MovementSample")
 public class CC2650MovementSample implements Serializable {

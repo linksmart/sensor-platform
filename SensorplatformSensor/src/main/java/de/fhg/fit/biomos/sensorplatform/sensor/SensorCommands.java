@@ -3,7 +3,8 @@ package de.fhg.fit.biomos.sensorplatform.sensor;
 import java.io.BufferedWriter;
 
 /**
- * Defines methods, which are called from the corresponding SensorWrapper.
+ * Defines methods, which are called from the corresponding SensorWrapper. Currently only two commands are supported, enable and disable notifications. Other
+ * commands can be added in the future (for example reading battery status).
  *
  * @author Daniel Pyka
  *

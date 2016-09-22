@@ -18,14 +18,14 @@ import de.fhg.fit.biomos.sensorplatform.util.GatttoolCmd;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 
 /**
- * Used for windows for testing.
+ * This will simulate a gatttool with Polar H7 for running the Sensorplatform application on a Windows machine. For testing purposes only!!
  *
  * @author Daniel Pyka
  *
  */
-public class GatttoolMock extends ObservableSensorNotificationData implements Gatttool {
+public class VirtualPolarH7Mock extends ObservableSensorNotificationData implements Gatttool {
 
-  private static final Logger LOG = LoggerFactory.getLogger(GatttoolMock.class);
+  private static final Logger LOG = LoggerFactory.getLogger(VirtualPolarH7Mock.class);
 
   private final String bdAddress;
   private final AddressType addressType;
@@ -37,7 +37,7 @@ public class GatttoolMock extends ObservableSensorNotificationData implements Ga
   private BufferedWriter streamToSensor = null;
   private BufferedReader streamFromSensor = null;
 
-  public GatttoolMock(String bdAddress, AddressType addressType, SecurityLevel secLevel) {
+  public VirtualPolarH7Mock(String bdAddress, AddressType addressType, SecurityLevel secLevel) {
     this.bdAddress = bdAddress;
     this.addressType = addressType;
     this.secLevel = secLevel;
@@ -75,16 +75,6 @@ public class GatttoolMock extends ObservableSensorNotificationData implements Ga
   @Override
   public BufferedWriter getStreamToSensor() {
     return this.streamToSensor;
-  }
-
-  @Override
-  public SecurityLevel getSecurityLevel() {
-    return this.secLevel;
-  }
-
-  @Override
-  public AddressType getAddressType() {
-    return this.addressType;
   }
 
   @Override

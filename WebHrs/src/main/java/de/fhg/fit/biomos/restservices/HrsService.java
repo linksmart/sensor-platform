@@ -12,7 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * REST service for uploading heart rate data. It uses the same type of JSON as the TeliPro webinterface.
+ * 
  * @author Daniel Pyka
  *
  */

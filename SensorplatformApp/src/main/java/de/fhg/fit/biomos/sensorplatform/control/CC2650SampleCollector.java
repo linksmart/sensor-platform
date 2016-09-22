@@ -17,6 +17,8 @@ import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
 
 /**
+ * CC2650SampleCollector stores different types of CC2650 Samples to the database.<br>
+ * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -53,6 +55,9 @@ public class CC2650SampleCollector implements SampleCollector {
     this.used = used;
   }
 
+  /**
+   * Regularly check if there are samples in queue. If so, save them in the database.
+   */
   @Override
   public void run() {
     while (this.used) {
@@ -78,26 +83,62 @@ public class CC2650SampleCollector implements SampleCollector {
     LOG.info("thread finished");
   }
 
+  /**
+   * Add a temperature sample to the queue for storing it in the database.
+   *
+   * @param sample
+   *          a CC2650TemperatureSample retrieved from the sensor
+   */
   public void addToQueue(CC2650TemperatureSample sample) {
     this.queueTemp.add(sample);
   }
 
+  /**
+   * Add a humidity sample to the queue for storing it in the database.
+   *
+   * @param sample
+   *          a CC2650HumiditySample retrieved from the sensor
+   */
   public void addToQueue(CC2650HumiditySample sample) {
     this.queueHum.add(sample);
   }
 
+  /**
+   * Add a pressure sample to the queue for storing it in the database.
+   *
+   * @param sample
+   *          a CC2650PressureSample retrieved from the sensor
+   */
   public void addToQueue(CC2650PressureSample sample) {
     this.queuePress.add(sample);
   }
 
+  /**
+   * Add an ambientlight sample to the queue for storing it in the database.
+   *
+   * @param sample
+   *          a CC2650AmbientlightSample retrieved from the sensor
+   */
   public void addToQueue(CC2650AmbientlightSample sample) {
     this.queueAmb.add(sample);
   }
 
+  /**
+   * Add a movement sample to the queue for storing it in the database.
+   *
+   * @param sample
+   *          a CC2650MovementSample retrieved from the sensor
+   */
   public void addToQueue(CC2650MovementSample sample) {
     this.queueMov.add(sample);
   }
 
+  /**
+   * Save a temperature sample to the database.
+   *
+   * @param sample
+   *          a CC2650TemperatureSample from the queue
+   */
   private void storeSample(CC2650TemperatureSample sample) {
     DBsession dbs = this.dbc.getSession();
     dbs.saveCC2650TemperatureSample(sample);
@@ -105,6 +146,12 @@ public class CC2650SampleCollector implements SampleCollector {
     dbs.close();
   }
 
+  /**
+   * Save a humidity sample to the database.
+   *
+   * @param sample
+   *          a CC2650HumiditySample from the queue
+   */
   private void storeSample(CC2650HumiditySample sample) {
     DBsession dbs = this.dbc.getSession();
     dbs.saveCC2650HumiditySample(sample);
@@ -112,6 +159,12 @@ public class CC2650SampleCollector implements SampleCollector {
     dbs.close();
   }
 
+  /**
+   * Save a pressure sample to the database.
+   *
+   * @param sample
+   *          a CC2650PressureSample from the queue
+   */
   private void storeSample(CC2650PressureSample sample) {
     DBsession dbs = this.dbc.getSession();
     dbs.saveCC2650PressureSample(sample);
@@ -119,6 +172,12 @@ public class CC2650SampleCollector implements SampleCollector {
     dbs.close();
   }
 
+  /**
+   * Save an ambientlight sample to the database.
+   *
+   * @param sample
+   *          a CC2650AmbientlightSample from the queue
+   */
   private void storeSample(CC2650AmbientlightSample sample) {
     DBsession dbs = this.dbc.getSession();
     dbs.saveCC2650AmbientlightSample(sample);
@@ -126,6 +185,12 @@ public class CC2650SampleCollector implements SampleCollector {
     dbs.close();
   }
 
+  /**
+   * Save a movement sample to the database.
+   *
+   * @param sample
+   *          a CC2650MovementSample from the queue
+   */
   private void storeSample(CC2650MovementSample sample) {
     DBsession dbs = this.dbc.getSession();
     dbs.saveCC2650MovementSample(sample);

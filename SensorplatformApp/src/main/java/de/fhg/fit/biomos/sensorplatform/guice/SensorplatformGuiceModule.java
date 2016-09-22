@@ -15,7 +15,6 @@ import de.fhg.fit.biomos.sensorplatform.control.Controller;
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.InternetConnectionManager;
 import de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector;
-import de.fhg.fit.biomos.sensorplatform.control.SecurityManager;
 import de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
 import de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service;
@@ -30,12 +29,25 @@ import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 import de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader;
 
+/**
+ * 1. Make properties (loaded from a file) available to all classes for which dependency injection is used.<br>
+ * 2. Bind specific classes to interface classes dynamically (based on project configuration).<br>
+ * 3. Bind core functionality classes as Singleton.
+ *
+ * @author Daniel Pyka
+ *
+ */
 public class SensorplatformGuiceModule extends AbstractModule {
 
   private static final Logger LOG = LoggerFactory.getLogger(SensorplatformGuiceModule.class);
 
   private final Properties properties;
 
+  /**
+   *
+   * @param properties
+   *          loaded from the file
+   */
   public SensorplatformGuiceModule(Properties properties) {
     this.properties = properties;
   }
@@ -99,7 +111,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);
     bind(DBcontroller.class).in(Singleton.class);
-    bind(SecurityManager.class).in(Singleton.class);
+    // bind(SecurityManager.class).in(Singleton.class);
     bind(InternetConnectionManager.class).in(Singleton.class);
     try {
       Names.bindProperties(binder(), this.properties);

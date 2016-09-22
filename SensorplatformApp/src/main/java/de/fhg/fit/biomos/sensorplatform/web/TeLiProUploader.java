@@ -26,8 +26,7 @@ import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
  * Communication class for the TeLiPro webinterface. It basically provides a REST interface for logging in, which returns a cookie for authorisation and another
- * REST interface for sending samples.<br>
- * The class <b>must</b> be used as a singleton. Uses <b>GUICE</b> to enforce that.
+ * REST interface for sending samples.
  *
  * @author Daniel Pyka
  *

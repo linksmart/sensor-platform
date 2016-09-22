@@ -19,13 +19,11 @@ import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool.State;
-import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 
 /**
- * This class defines the control flow of the sensorplatform.<br>
- * <br>
+ * This class defines the general control flow of the sensorplatform.<br>
  * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
@@ -50,7 +48,6 @@ public class Controller implements Runnable {
 
   private final SensorWrapperFactory swFactory;
   private final HardwarePlatform hwPlatform;
-  private final SecurityManager secman;
   private final InternetConnectionManager inetman;
   private final HeartRateSampleCollector hrsCollector;
   private final PulseOximeterSampleCollector pulseCollector;
@@ -69,13 +66,11 @@ public class Controller implements Runnable {
   private boolean recording = false;
 
   @Inject
-  public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, SecurityManager secman, InternetConnectionManager inetman,
-      HeartRateSampleCollector hrsCollector, PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector,
-      @Named("timeout.sensor.connect") String timeoutConnect, @Named("timeout.sensor.notification") String timeoutNotification,
-      @Named("recording.info.filename") String recordingInfoFileName) {
+  public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, InternetConnectionManager inetman, HeartRateSampleCollector hrsCollector,
+      PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector, @Named("timeout.sensor.connect") String timeoutConnect,
+      @Named("timeout.sensor.notification") String timeoutNotification, @Named("recording.info.filename") String recordingInfoFileName) {
     this.swFactory = swFactory;
     this.hwPlatform = hwPlatform;
-    this.secman = secman;
     this.inetman = inetman;
     this.hrsCollector = hrsCollector;
     this.pulseCollector = pulseCollector;
@@ -103,6 +98,10 @@ public class Controller implements Runnable {
     }
   }
 
+  /**
+   * Restart the local Bluetooth controller to fix some nasty bugs. For the Raspberry Pi 3 this is mandatory, otherwise pairing and bonding is not working
+   * correctly.
+   */
   public void restartBluetoothController() {
     LOG.info("restart bluetooth controller");
     this.hwPlatform.getBluetoothController().down();
@@ -119,13 +118,19 @@ public class Controller implements Runnable {
     }
   }
 
+  /**
+   * Scan for Bluetooth Low Energy devices.
+   *
+   * @param scanDuration
+   *          scan duration in seconds
+   * @return a list of discovered Bluetooth Low Energy devices.
+   */
   public List<DetectedDevice> scan(int scanDuration) {
-    Hcitool hcitool = new HcitoolImpl(scanDuration);
-    return hcitool.scan();
+    return new HcitoolImpl().scan(scanDuration);
   }
 
   /**
-   * Called on program startup from main thread. Check if sensorplatform was shut down during recording. Try to resume recording after next start.
+   * Called on program startup from main thread. Check if sensorplatform was shut down during recording. Try to resume recording if necessary.
    */
   public void initialise() {
     LOG.info("initialise controller");
@@ -157,9 +162,10 @@ public class Controller implements Runnable {
   }
 
   /**
-   * Save the sensor configuration and the timestamp of the recording period end in a properties file.
+   * Save the sensor configuration and the timestamp of the recording period END in a properties file.
    *
    * @param sensorConfiguration
+   *          the sensor configuration for a recording period
    */
   private void saveSensorplatformConfiguration(JSONArray sensorConfiguration) {
     long timestamp = System.currentTimeMillis();
@@ -178,10 +184,14 @@ public class Controller implements Runnable {
   }
 
   /**
+   * Start a new recording period. Multiple checks are done before doing so.
    *
    * @param uptimeMillis
+   *          recording period time in milliseconds
    * @param sensorConfiguration
+   *          the sensor configuration for a recording period
    * @param isNewConfiguration
+   *          a flag which defines if a recording period is new or resumed after restart
    * @return String a message for the frontend
    */
   public String startRecordingPeriod(long uptimeMillis, JSONArray sensorConfiguration, boolean isNewConfiguration) {
@@ -232,6 +242,9 @@ public class Controller implements Runnable {
     }
   }
 
+  /**
+   * Enable logging (notifications) for all sensors of the recording period.
+   */
   private void enableLogging() {
     LOG.info("enable logging");
     for (AbstractSensorWrapper<?> asw : this.swList) {
@@ -241,6 +254,10 @@ public class Controller implements Runnable {
     }
   }
 
+  /**
+   * Start a new SensorOverseer and Overseer thread, start threads of used SampleCollectors and start the Controller thread which will sleep for the time of the
+   * recording period.
+   */
   private void startThreads() {
     LOG.info("start observer");
     this.sensorOverseer = new SensorOverseer(this.hwPlatform, this.timeoutNotification, this.swList);
@@ -265,6 +282,9 @@ public class Controller implements Runnable {
     LOG.info("all threads started");
   }
 
+  /**
+   * Sleep for the time of the recording period. Close everything gracefully afterwards.
+   */
   @Override
   public void run() {
     try {
@@ -291,6 +311,9 @@ public class Controller implements Runnable {
     finish();
   }
 
+  /**
+   * Close gatttools, delete recording file and update the LED to standby.
+   */
   private void finish() {
     shutdownGatttools();
     this.recordingInfo.delete();
@@ -301,7 +324,7 @@ public class Controller implements Runnable {
 
   /**
    * Shut down sub-processes and threads of the sensorplatform <b>gracefully</b>. This avoids zombie gatttool processes which may block sensors and other
-   * <b>bad</b> things!
+   * possible <b>bad</b> things!
    */
   private void shutdownGatttools() {
     LOG.info("shutting down threads and processes gracefully");
@@ -320,7 +343,7 @@ public class Controller implements Runnable {
    * Upload all heart rate samples which are not yet transmitted to the webinterface.
    *
    * @param hrss
-   *          not yet transmitted heart rate samples from the database
+   *          all not yet transmitted HeartRateSamples from the database
    */
   public void manualHrsUpload(List<HeartRateSample> hrss) {
     this.recording = true;

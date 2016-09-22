@@ -5,7 +5,7 @@ package de.fhg.fit.biomos.sensorplatform.util;
  * low: no encryption, no authentication<br>
  * medium: encrpytion, no authentication<br>
  * high: encryption and authentication<br>
- * There is one more possiblity from the bluetooth specification: no encryption but authentication. I do not know how this is represented in Bluez.
+ * There is one more possiblity from the bluetooth specification: no encryption but authentication. I do not know how this is represented in Bluez gattool.
  *
  * @author Daniel Pyka
  *

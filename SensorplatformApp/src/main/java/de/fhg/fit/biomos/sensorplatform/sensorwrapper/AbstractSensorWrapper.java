@@ -10,7 +10,7 @@ import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.GatttoolCmd;
 
 /**
- * Wrapper class, which brings together: sensor, gatttool and database.
+ * Wrapper class for handling Sensor, Gatttool and SampleCollector.
  *
  * @author Daniel Pyka
  *
@@ -24,6 +24,13 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
 
   protected long lastNotificationTimestamp;
 
+  /**
+   *
+   * @param sensor
+   *          Sensor which is used by the Wrapper
+   * @param timestampFormat
+   *          a specified time stamp format which is used for samples
+   */
   public AbstractSensorWrapper(T sensor, String timestampFormat) {
     this.sensor = sensor;
     this.dtf = DateTimeFormat.forPattern(timestampFormat).withZone(DateTimeZone.UTC);

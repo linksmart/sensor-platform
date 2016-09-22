@@ -13,6 +13,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
+ * Abstraction for the physical sensor. Defines HOW specific functions of the sensor are activated/deactivated.
  *
  * @author Daniel Pyka
  *
@@ -28,6 +29,17 @@ public class BLE113 extends AbstractPulseOximeterSensor {
     super(new BLE113lib(), name, bdAddress, addressType, securityLevel, settings);
   }
 
+  /**
+   * Enable pulse oximeter notification of the sensor. Notification period is fixed at 1/s . The measurement does not need to be activated explicitly as in the
+   * SensorTag, only the notification. This sensor measures normal SpO2 and pulse rate values.
+   *
+   * @param streamToSensor
+   *          the stream to the gatttool
+   * @param charWriteCmd
+   *          the gatttool command for writing to a handle
+   * @param enableNotification
+   *          the bitmask for enabling notifications
+   */
   private void enablePulseOximeterNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     try {
       streamToSensor.write(charWriteCmd + " " + this.gattLibrary.getHandlePulseOximeterNotification() + " " + enableNotification);
@@ -39,6 +51,16 @@ public class BLE113 extends AbstractPulseOximeterSensor {
     }
   }
 
+  /**
+   * Disable heart rate notification of the sensor.
+   *
+   * @param streamToSensor
+   *          the stream to the gatttool
+   * @param charWriteCmd
+   *          the gatttool command for writing to a handle
+   * @param disableNotification
+   *          the bitmask for disabling notifications
+   */
   private void disablePulseOximeterNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {
       streamToSensor.write(charWriteCmd + " " + this.gattLibrary.getHandlePulseOximeterNotification() + " " + disableNotification);

@@ -15,7 +15,8 @@ import de.fhg.fit.biomos.sensorplatform.util.GatttoolCmd;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
- * Test for sensor commands enable and disable notifications.
+ * Test for sensor commands enable and disable notifications. Instead of creating a process und using its stream, a ByteArrayOutputStream is used to capture the
+ * content.
  *
  * @author Daniel Pyka
  *

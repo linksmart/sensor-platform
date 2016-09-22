@@ -22,10 +22,18 @@ public class DBcontroller {
     LOG.info("connected to database");
   }
 
+  /**
+   * Any database interaction is performed via DBsession object. No direct interaction with SessionFactory allowed.
+   *
+   * @return DBsession for database interaction
+   */
   public DBsession getSession() {
     return new DBsession(this.sessionFactory.openSession());
   }
 
+  /**
+   * Close the SessionFactory. Only used in the test.
+   */
   public void close() {
     this.sessionFactory.close();
     LOG.info("disconnected from database");

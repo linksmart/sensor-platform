@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.control;
+package de.fhg.fit.biomos.sensorplatform.deprecated;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,19 +17,15 @@ import com.google.inject.Inject;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
-import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
-import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
-import de.fhg.fit.biomos.sensorplatform.util.BluetoothDevice;
-import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 
 /**
- * Only supports "Just works" pairing, no user interaction for passkey.
  *
  * @author Daniel Pyka
  *
  */
+@Deprecated
 public class SecurityManager {
 
   private static final Logger LOG = LoggerFactory.getLogger(SecurityManager.class);
@@ -150,6 +146,14 @@ public class SecurityManager {
     return dev;
   }
 
+  /**
+   * Do not use!!!
+   * 
+   * @param asw
+   * @return
+   * @throws IOException
+   */
+  @Deprecated
   public AbstractSensorWrapper<?> pairDevice(AbstractSensorWrapper<?> asw) throws IOException {
     for (BluetoothDevice btDev : this.knownDevices) {
       if (btDev.getBDAddress().equals(asw.getSensor().getBDaddress())) {
@@ -160,17 +164,17 @@ public class SecurityManager {
     }
     LOG.info("device " + asw.getSensor().getBDaddress() + " is unknown");
     String bdAddress = asw.getSensor().getBDaddress();
-    Hcitool hcitool = new HcitoolImpl(5);
-    for (DetectedDevice device : hcitool.getDetectedDevices()) {
-      if (device.getBdAddress().equals(bdAddress)) {
-        hcitool.pair(bdAddress);
-        BluetoothDevice btDev = parse(getInfoFilePath(asw.getSensor().getBDaddress()), asw.getSensor().getBDaddress());
-        this.knownDevices.add(btDev);
-        return asw;
-      }
-    }
-    hcitool.scan();
-    hcitool.pair(bdAddress);
+    // Hcitool hcitool = new HcitoolImpl(5);
+    // for (DetectedDevice device : hcitool.getDetectedDevices()) {
+    // if (device.getBdAddress().equals(bdAddress)) {
+    // hcitool.pair(bdAddress);
+    // BluetoothDevice btDev = parse(getInfoFilePath(asw.getSensor().getBDaddress()), asw.getSensor().getBDaddress());
+    // this.knownDevices.add(btDev);
+    // return asw;
+    // }
+    // }
+    // hcitool.scan();
+    // hcitool.pair(bdAddress);
 
     BluetoothDevice btDev = parse(getInfoFilePath(asw.getSensor().getBDaddress()), asw.getSensor().getBDaddress());
     this.knownDevices.add(btDev);

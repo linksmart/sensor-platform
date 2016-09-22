@@ -22,7 +22,7 @@ import com.google.inject.name.Named;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
- * Uploader for test webinterface as a backup solution. Uses the same data format as TeLiPro but without authorization.
+ * This implementation of Uploader is used for a private webserver as a backup solution and for testing.
  *
  * @author Daniel Pyka
  *

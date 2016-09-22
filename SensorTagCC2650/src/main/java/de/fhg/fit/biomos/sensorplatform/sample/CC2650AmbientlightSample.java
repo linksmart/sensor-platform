@@ -9,6 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Entity class for ambient light samples.
+ * 
+ * @author Daniel Pyka
+ *
+ */
 @Entity
 @Table(name = "CC2650AmbientlightSample")
 public class CC2650AmbientlightSample implements Serializable {

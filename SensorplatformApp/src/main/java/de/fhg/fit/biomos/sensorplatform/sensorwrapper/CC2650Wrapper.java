@@ -13,6 +13,7 @@ import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
 
 /**
+ * SensorWrapper specifically used for the CC2650 sensor and CC2650SampleCollector.
  *
  * @author Daniel Pyka
  *

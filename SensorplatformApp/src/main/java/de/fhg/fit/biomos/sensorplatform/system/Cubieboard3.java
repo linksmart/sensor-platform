@@ -6,6 +6,7 @@ import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
 
 /**
+ * Functionality for the Sensorplatform running on a Cubieboard 3. Most of the stuff is NYI.
  *
  * @author Daniel Pyka
  *

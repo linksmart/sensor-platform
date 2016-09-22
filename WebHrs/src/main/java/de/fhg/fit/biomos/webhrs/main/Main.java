@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
 /**
+ * Start a very simple Jetty web server with only one REST service for uploading heart rate data. The same data structure as used by TeLiPro webinterface is
+ * expected.
  *
  * @author Daniel Pyka
  *
@@ -23,6 +25,9 @@ public class Main {
     new Main().start();
   }
 
+  /**
+   * start the webserver.
+   */
   private void start() {
 
     Server server = new Server(PORT);

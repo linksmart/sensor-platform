@@ -3,6 +3,12 @@ package de.fhg.fit.biomos.sensorplatform.tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Mock control class for hciconfig for using the Windows installation of the sensorplatform. On Windows there is no hciconfig.
+ *
+ * @author Daniel Pyka
+ *
+ */
 public class HciconfigMock implements Hciconfig {
 
   private static final Logger LOG = LoggerFactory.getLogger(HciconfigMock.class);

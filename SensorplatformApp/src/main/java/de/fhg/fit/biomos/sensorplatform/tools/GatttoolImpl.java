@@ -95,16 +95,6 @@ public class GatttoolImpl extends ObservableSensorNotificationData implements Ga
   }
 
   @Override
-  public SecurityLevel getSecurityLevel() {
-    return this.secLevel;
-  }
-
-  @Override
-  public AddressType getAddressType() {
-    return this.addressType;
-  }
-
-  @Override
   public boolean connectBlocking(int timeout) {
     try {
       this.streamToSensor.write(GatttoolCmd.CMD_CONNECT);

@@ -4,9 +4,9 @@ import java.util.UUID;
 
 /**
  * Texas Instruments SensorTag CC2650<br>
- * This sensor provides measurements for the following parameters: temperature, humidity, ambientlight, pressure, and movement. Press the button on the right
- * side to wake up from standby mode and start advertising itself for 120 seconds. The LED will flash at 1Hz during this time. Afterwards, the SensorTag returns
- * to power saving mode again. The LED does not blink if any device is connected the SensorTag.
+ * This sensor provides measurements for the following parameters: temperature, humidity, ambientlight, pressure, and movement. By pressing the button on the
+ * right, the sensor will advertise itself for 120 seconds and it will return to sleep mode afterwards. The LED will flash at 1Hz during this time. Afterwards,
+ * the SensorTag returns to power saving mode again. The LED does not blink if a device is connected to the sensor.
  *
  * @see <a href="http://processors.wiki.ti.com/index.php/CC2650_SensorTag_User's_Guide">CC2650 SensorTag User's Guide</a>
  *

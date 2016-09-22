@@ -10,7 +10,7 @@ import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigMock;
 
 /**
- * For a local installation on a windows machine..
+ * For a local installation on a windows machine. Only for testing parts of the application.
  *
  * @author Daniel Pyka
  *

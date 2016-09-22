@@ -16,9 +16,8 @@ import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
- * Abstraction for heart rate sensors, which are using the GATT characteristics (0x2A37). The raw heart rate values as hexadecimal contains a configuration byte
- * as prefix. Dependent on the bits set in this byte, the additional values are interpreted accordingly. The purpose of this class is to provide methods for
- * checking the configuration byte and the conversion of the hexadecimal data to readable values.
+ * Abstraction for heart rate sensors, which are using the GATT characteristics (0x2A37). Every new heart rate sensor, which is compliant with the Bluetooth
+ * specification, may inherit from this class.
  *
  * @see <a href=
  *      "https://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml">Heart
@@ -44,13 +43,6 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
     super(heartRateGattLibrary, name, bdAddress, addressType, securityLevel, sensorConfiguration);
   }
 
-  /**
-   * Check if the bit for 16 bit heart rate value is set in the configuration byte.
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return true if 16 bit, false if 8 bit
-   */
   @Override
   public boolean is16BitHeartRateValue(String rawHexValues) {
     byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
@@ -61,13 +53,6 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
     }
   }
 
-  /**
-   * Check if the bit for rr intervals is set in the configuration byte.
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return true if the rr in
-   */
   @Override
   public boolean isRRintervalDataAvailable(String rawHexValues) {
     byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
@@ -78,13 +63,6 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
     }
   }
 
-  /**
-   * Check if the bit for skin contact detection support is set in the configuration byte.
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return true if skin contact detection support is available, false otherwise
-   */
   @Override
   public boolean isSkinContactDetectionSupported(String rawHexValues) {
     byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
@@ -95,13 +73,6 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
     }
   }
 
-  /**
-   * Check if the bit for skin contact detection is set in the configuration byte.
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return true if skin contact detection is available, false otherwise
-   */
   @Override
   public boolean isSkinContactDetected(String rawHexValues) {
     byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
@@ -112,13 +83,6 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
     }
   }
 
-  /**
-   * Check if the bit for energy expended is set in the configuration byte.
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return true if energy expended is available, false otherwise
-   */
   @Override
   public boolean isEnergyExpendedPresent(String rawHexValues) {
     byte config = Byte.parseByte(rawHexValues.substring(0, 2), 16);
@@ -134,39 +98,16 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
     return Integer.parseInt(rawHexValues.substring(index + 3, index + 5) + rawHexValues.substring(index, index + 2), 16);
   }
 
-  /**
-   * Calculate the heart rate (8 bit).
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return int heart rate
-   */
   @Override
   public int getHeartRate8Bit(String rawHexValues) {
     return Integer.parseInt(rawHexValues.substring(3, 5), 16);
   }
 
-  /**
-   * Calculate the heart rate (16 bit).
-   *
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return int heart rate
-   */
   @Override
   public int getHeartRate16Bit(String rawHexValues) {
     return Integer.parseInt(rawHexValues.substring(6, 8) + rawHexValues.substring(3, 5), 16);
   }
 
-  /**
-   * Calculate the RR values.
-   *
-   * @param index
-   *          depends if the input string contains 8 or 16 bit heart rate value
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return List&lt;Float&gt; list of all rr intervals (can be none, one or more)
-   */
   @Override
   public List<Float> getRRintervals(int index, String rawHexValues) {
     List<Float> rrIntervals = new ArrayList<>();

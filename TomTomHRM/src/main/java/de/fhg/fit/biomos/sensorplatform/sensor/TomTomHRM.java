@@ -13,7 +13,8 @@ import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
- *
+ * Abstraction for the physical sensor. Defines HOW specific functions of the sensor are activated/deactivated.
+ * 
  * @author Daniel Pyka
  *
  */

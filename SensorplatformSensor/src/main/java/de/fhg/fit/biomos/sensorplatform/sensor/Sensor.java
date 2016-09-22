@@ -8,7 +8,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
- * Abstraction for all sensors which may communicate with the sensorplatform.
+ * Abstraction for all sensors which may communicate with the sensorplatform. Contains general information like the name, bluetooth address and so on.
  *
  * @author Daniel Pyka
  *

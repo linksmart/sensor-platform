@@ -1,12 +1,16 @@
-package de.fhg.fit.biomos.sensorplatform.util;
+package de.fhg.fit.biomos.sensorplatform.deprecated;
+
+import de.fhg.fit.biomos.sensorplatform.util.AddressType;
+import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 
 /**
  * Bean class for a bluetooth device which was connected at least once. Information about the device and optional pairing/bonding keys are stored in
- * /var/lib/bluetoth/.
+ * /var/lib/bluetoth/... . Do not use!
  *
  * @author Daniel Pyka
  *
  */
+@Deprecated
 public class BluetoothDevice {
   private final String deviceName;
   private final String bdAddress;

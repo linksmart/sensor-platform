@@ -13,6 +13,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
+ * Abstraction for the physical sensor. Defines HOW specific functions of the sensor are activated/deactivated.
  *
  * @author Daniel Pyka
  *
@@ -30,7 +31,14 @@ public class AdidasMiCoachHRM extends AbstractHeartRateSensor {
 
   /**
    * Enable heart rate notification of the sensor. Notification period is fixed at 1/s . The measurement does not need to be activated explicitly as in the
-   * SensorTag. This sensor only measures the heart rate, no rr-interval.
+   * SensorTag, only the notification. This sensor only measures the heart rate, no rr-interval.
+   *
+   * @param streamToSensor
+   *          the stream to the gatttool
+   * @param charWriteCmd
+   *          the gatttool command for writing to a handle
+   * @param enableNotification
+   *          the bitmask for enabling notifications
    */
   private void enableHeartRateNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     try {
@@ -45,6 +53,13 @@ public class AdidasMiCoachHRM extends AbstractHeartRateSensor {
 
   /**
    * Disable heart rate notification of the sensor.
+   *
+   * @param streamToSensor
+   *          the stream to the gatttool
+   * @param charWriteCmd
+   *          the gatttool command for writing to a handle
+   * @param disableNotification
+   *          the bitmask for disabling notifications
    */
   private void disableHeartRateNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     try {

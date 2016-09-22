@@ -14,7 +14,8 @@ import org.slf4j.LoggerFactory;
 import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 
 /**
- *
+ * Implementation of control class hcitool for Linux.
+ * 
  * @author Daniel Pyka
  *
  */
@@ -22,77 +23,19 @@ public class HcitoolImpl implements Hcitool {
 
   private static final Logger LOG = LoggerFactory.getLogger(HcitoolImpl.class);
 
-  private static final String HCITOOL = "hcitool";
-  private static final String CONNECT = "lecc";
-  private static final String DISCONNECT = "ledc";
-
   private static final Pattern NEWDEVICE = Pattern.compile("(\\w{2}:\\w{2}:\\w{2}:\\w{2}:\\w{2}:\\w{2}) (.*)");
-  private static final Pattern CONNECTION_SUCCESSFUL = Pattern.compile("Connection handle (\\d+)");
-
-  private final int scanDuration;
-  private final String LESCAN;
 
   private final List<DetectedDevice> detectedDeviceList = new ArrayList<DetectedDevice>();
 
-  public HcitoolImpl(int scanDuration) {
-    this.scanDuration = scanDuration;
-    this.LESCAN = "timeout -s SIGINT " + this.scanDuration + "s hcitool lescan";
+  public HcitoolImpl() {
   }
 
   @Override
-  public String connect(String bdAddress) {
-    try {
-      Process process = Runtime.getRuntime().exec(HCITOOL + " " + CONNECT + " " + bdAddress);
-      BufferedReader streamFromHcitool = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      try {
-        String line = null;
-        while ((line = streamFromHcitool.readLine()) != null) {
-          Matcher m = CONNECTION_SUCCESSFUL.matcher(line);
-          if (m.find()) {
-            LOG.info("connection handle " + m.group(1));
-            return m.group(1);
-          }
-        }
-      } catch (IOException e) {
-        LOG.error("Cannot read from hcitool process", e);
-      }
-      process.waitFor();
-      streamFromHcitool.close();
-    } catch (IOException | InterruptedException e) {
-      LOG.error("connect failed", e);
-    }
-    return "";
-  }
-
-  @Override
-  public void pair(String bdAddress) {
-    String handle = connect(bdAddress);
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      LOG.error("sleep between pairing steps failed", e);
-    }
-    disconnect(handle);
-  }
-
-  @Override
-  public void disconnect(String handle) {
-    if (handle != null) {
-      try {
-        Runtime.getRuntime().exec(HCITOOL + " " + DISCONNECT + " " + handle).waitFor();
-        LOG.info("disconnected from device");
-      } catch (IOException | InterruptedException e) {
-        LOG.error("disconnect failed", e);
-      }
-    }
-  }
-
-  @Override
-  public List<DetectedDevice> scan() {
+  public List<DetectedDevice> scan(int duration) {
     this.detectedDeviceList.clear();
     try {
-      LOG.info("scanning for " + this.scanDuration + " seconds...");
-      Process process = Runtime.getRuntime().exec(this.LESCAN);
+      LOG.info("scanning for " + duration + " seconds...");
+      Process process = Runtime.getRuntime().exec("timeout -s SIGINT " + duration + "s hcitool lescan");
       BufferedReader streamFromHcitool = new BufferedReader(new InputStreamReader(process.getInputStream()));
       String line = null;
       while ((line = streamFromHcitool.readLine()) != null) {
@@ -107,11 +50,6 @@ public class HcitoolImpl implements Hcitool {
     } catch (IOException | InterruptedException e) {
       LOG.error("scan failed", e);
     }
-    return this.detectedDeviceList;
-  }
-
-  @Override
-  public List<DetectedDevice> getDetectedDevices() {
     return this.detectedDeviceList;
   }
 

@@ -24,6 +24,7 @@ import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
 
 /**
+ * REST service for retrieving CC2650 samples. Called from the frontend.
  *
  * @author Daniel Pyka
  *

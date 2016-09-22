@@ -11,6 +11,9 @@ import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 
 /**
+ * A new instance of SensorOverseer is used for every recording period. This will check when a SensorWrapper received the last notification. If a certain time
+ * frame is exceeded, the sensor is considered offline but the Gatttool is still up and running. The SensorOverseer will handle reconnection attempts until it
+ * is reconnected or the recording period is finished. This checking is running in a separate thread during recording.
  *
  * @author Daniel Pyka
  *
@@ -27,12 +30,24 @@ public class SensorOverseer implements Runnable {
 
   private final HardwarePlatform hwPlatform;
 
+  /**
+   *
+   * @param hwPlatform
+   *          provided by Controller and Guice
+   * @param noNotificationTriggerTime
+   *          time in seconds
+   * @param swList
+   *          the AbstractSensorWrapper of the current recording period
+   */
   public SensorOverseer(HardwarePlatform hwPlatform, int noNotificationTriggerTime, List<AbstractSensorWrapper<?>> swList) {
     this.hwPlatform = hwPlatform;
     this.noNotificationTriggerTime = noNotificationTriggerTime;
     this.swList = swList;
   }
 
+  /**
+   * Background thread during recording.
+   */
   @Override
   public void run() {
     LOG.info("start supervising");

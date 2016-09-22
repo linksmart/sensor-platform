@@ -10,7 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
+ * Entity class for pulse oximeter samples.
+ * 
  * @author Daniel Pyka
  *
  */

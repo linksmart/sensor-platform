@@ -7,6 +7,7 @@ import de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor;
 
 /**
+ * SensorWrapper for all pulse oximeter sensors which are compliant with the Bluetooth specification.
  *
  * @author Daniel Pyka
  *

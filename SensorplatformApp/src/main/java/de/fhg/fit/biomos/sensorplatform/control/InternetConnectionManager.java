@@ -11,7 +11,8 @@ import com.google.inject.name.Named;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 
 /**
- * Handles everything related to mobile internet connection.
+ * Handles everything related to mobile internet connection.<br>
+ * The class <b>must</b> be used as a singleton. Configured with <b>GUICE</b> to enforce that.
  *
  * @author Daniel Pyka
  *
@@ -35,6 +36,9 @@ public class InternetConnectionManager implements Runnable {
     return this.mobileInternet;
   }
 
+  /**
+   * Basically a background thread which regularly checks if the webinterface for mobile internet is up and running. Starts mobile internet if not running.
+   */
   @Override
   public void run() {
     while (!Thread.currentThread().isInterrupted()) {

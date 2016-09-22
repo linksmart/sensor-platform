@@ -9,6 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Entity class for humidity samples.
+ * 
+ * @author Daniel Pyka
+ *
+ */
 @Entity
 @Table(name = "CC2650HumiditySample")
 public class CC2650HumiditySample implements Serializable {

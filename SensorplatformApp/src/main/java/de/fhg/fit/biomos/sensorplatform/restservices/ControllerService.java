@@ -22,6 +22,12 @@ import com.google.inject.Inject;
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
 import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 
+/**
+ * REST service for sending commands to the Sensorplatform Controller. Used by the frontend. Commands supported: start, stop, scan
+ *
+ * @author Daniel Pyka
+ *
+ */
 @Path("/controller")
 public class ControllerService {
 

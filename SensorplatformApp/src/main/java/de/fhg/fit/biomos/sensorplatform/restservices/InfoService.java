@@ -19,6 +19,12 @@ import de.fhg.fit.biomos.sensorplatform.control.Controller;
 import de.fhg.fit.biomos.sensorplatform.control.InternetConnectionManager;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
+/**
+ * A REST service which is called regularly by the frontend to get informationen about the internal state of the Sensorplatform.
+ * 
+ * @author Daniel Pyka
+ *
+ */
 @Path("/info")
 public class InfoService {
 
