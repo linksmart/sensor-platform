@@ -6,7 +6,8 @@ import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 
 /**
- * Defines functions which are dependant on the board hardware or low level configuration of the operating system.
+ * Defines functions which are dependant on the board hardware or low level configuration of the operating system. Is used as a factory for creating specific
+ * gatttools.
  *
  * @author Daniel Pyka
  *

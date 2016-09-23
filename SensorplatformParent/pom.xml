@@ -33,14 +33,6 @@
         </profile>
 
         <profile>
-            <id>windows</id>
-            <properties>
-                <http.useragent.boardname>Sensorplatform Windows</http.useragent.boardname>
-                <target.platform>windows</target.platform>
-            </properties>
-        </profile>
-
-        <profile>
             <id>telipro</id>
             <properties>
                 <webinterface.name>TeLiPro</webinterface.name>
@@ -97,8 +89,6 @@
         <database.path>db/sensorplatform</database.path>
         <database.username>sensorplatform</database.username>
         <database.password>123456</database.password>
-        <!-- stores information about a recording period in case of power loss -->
-        <recording.info.filename>recording.properties</recording.info.filename>
     </properties>
 
     <modules>

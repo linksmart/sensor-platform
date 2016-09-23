@@ -57,4 +57,13 @@ public class SensorplatformServletConfig extends GuiceServletContextListener {
     controller.initialise();
   }
 
+  /**
+   * Expose the injector for testing.
+   * 
+   * @return Injector Guice injector
+   */
+  public Injector getCreatedInjector() {
+    return this.injector;
+  }
+
 }

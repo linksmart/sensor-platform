@@ -44,6 +44,8 @@ public class ServerStarter {
 
   private final SensorplatformServletConfig sensorplatformServletConfig;
 
+  private Server server;
+
   public ServerStarter(Properties properties, SensorplatformServletConfig sensorplatformServletConfig) {
     this.properties = properties;
     this.sensorplatformServletConfig = sensorplatformServletConfig;
@@ -54,7 +56,7 @@ public class ServerStarter {
    */
   public void start() {
     int port = Integer.parseInt(this.properties.getProperty("webapp.port"));
-    Server server = new Server();
+    this.server = new Server();
 
     HttpConfiguration https = new HttpConfiguration();
     https.addCustomizer(new SecureRequestCustomizer());
@@ -62,10 +64,10 @@ public class ServerStarter {
     sslContextFactory.setKeyStorePath(ClassLoader.getSystemResource(this.properties.getProperty("keystore.filename")).toExternalForm());
     sslContextFactory.setKeyStorePassword(this.properties.getProperty("keystore.password"));
     sslContextFactory.setKeyManagerPassword(this.properties.getProperty("keystore.password"));
-    ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
+    ServerConnector sslConnector = new ServerConnector(this.server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
     sslConnector.setPort(port);
 
-    server.setConnectors(new ServerConnector[] { sslConnector });
+    this.server.setConnectors(new ServerConnector[] { sslConnector });
 
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
     context.setContextPath("/");
@@ -100,18 +102,26 @@ public class ServerStarter {
     csh.addConstraintMapping(cm);
     csh.setLoginService(hls);
 
-    server.addBean(hls);
+    this.server.addBean(hls);
 
     HandlerList handlers = new HandlerList();
     handlers.setHandlers(new Handler[] { resourceHandler, context });
     csh.setHandler(handlers);
-    server.setHandler(csh);
+    this.server.setHandler(csh);
 
     try {
-      server.start();
+      this.server.start();
     } catch (Exception e) {
       ServerStarter.LOG.error("Could not start the server:", e);
       System.exit(16);
+    }
+  }
+
+  public void stop() {
+    try {
+      this.server.stop();
+    } catch (Exception e) {
+      LOG.error("cannot stop server", e);
     }
   }
 

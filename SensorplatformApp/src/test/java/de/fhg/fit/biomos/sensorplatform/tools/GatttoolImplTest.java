@@ -6,7 +6,7 @@ import java.io.OutputStreamWriter;
 
 import org.json.JSONObject;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
@@ -22,11 +22,11 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  */
 public class GatttoolImplTest {
 
-  private static PolarH7 polarh7;
+  private PolarH7 polarh7;
 
-  @BeforeClass
-  public static void setup() {
-    polarh7 = new PolarH7(SensorName.PolarH7, PolarH7lib.DEFAULT_BDADDRESS, new JSONObject());
+  @Before
+  public void setup() {
+    this.polarh7 = new PolarH7(SensorName.PolarH7, PolarH7lib.DEFAULT_BDADDRESS, new JSONObject());
   }
 
   @Test
@@ -34,11 +34,11 @@ public class GatttoolImplTest {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     BufferedWriter streamToSensor = new BufferedWriter(new OutputStreamWriter(baos));
 
-    GatttoolImplTest.polarh7.enableAllNotification(streamToSensor, Gatttool.CMD_CHAR_WRITE_CMD, Gatttool.ENABLE_NOTIFICATION);
+    this.polarh7.enableAllNotification(streamToSensor, GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
     Assert.assertEquals("char-write-cmd 0x0013 01:00", new String(baos.toByteArray()).replace("\n", "").replace("\r", ""));
     baos.reset();
 
-    GatttoolImplTest.polarh7.disableAllNotification(streamToSensor, Gatttool.CMD_CHAR_WRITE_CMD, Gatttool.DISABLE_NOTIFICATION);
+    this.polarh7.disableAllNotification(streamToSensor, GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
     Assert.assertEquals("char-write-cmd 0x0013 00:00", new String(baos.toByteArray()).replace("\n", "").replace("\r", ""));
     baos.reset();
   }

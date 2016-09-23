@@ -175,7 +175,9 @@ public class Controller implements Runnable {
       if (this.recordingInfo.exists()) {
         this.recordingInfo.delete();
       }
-      recProperties.store(new FileOutputStream(this.recordingInfo), null);
+      FileOutputStream fos = new FileOutputStream(this.recordingInfo);
+      recProperties.store(fos, null);
+      fos.close();
       LOG.info("recording properties stored");
     } catch (IOException e) {
       LOG.error("failed to store recording properties", e);
@@ -220,7 +222,6 @@ public class Controller implements Runnable {
             finish();
             return START_SENSOR_NOT_AVAILABLE + asw.getSensor().toString();
           } else {
-            System.out.println("Controller 206 " + asw.getGatttool().getInternalState());
             LOG.info("SensorOverseer will handle reconnection attempts for the remaining time");
           }
         }
