@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Pyka
  *
  */
-public class HciconfigMock implements Hciconfig {
+public class HciconfigVirtual implements Hciconfig {
 
-  private static final Logger LOG = LoggerFactory.getLogger(HciconfigMock.class);
+  private static final Logger LOG = LoggerFactory.getLogger(HciconfigVirtual.class);
 
-  public HciconfigMock() {
+  public HciconfigVirtual() {
   }
 
   @Override

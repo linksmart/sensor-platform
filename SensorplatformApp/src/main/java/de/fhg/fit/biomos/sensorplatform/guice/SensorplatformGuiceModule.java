@@ -111,7 +111,6 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);
     bind(DBcontroller.class).in(Singleton.class);
-    // bind(SecurityManager.class).in(Singleton.class);
     bind(InternetConnectionManager.class).in(Singleton.class);
     try {
       Names.bindProperties(binder(), this.properties);

@@ -11,6 +11,7 @@ import de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
+import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 
 /**
  * SensorWrapper specifically used for the CC2650 sensor and CC2650SampleCollector.
@@ -30,7 +31,7 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
   }
 
   @Override
-  public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
+  public void newNotificationData(Gatttool gatttool, String handle, String rawHexValues) {
     this.lastNotificationTimestamp = System.currentTimeMillis();
     String data = rawHexValues.replace(" ", "");
     CC2650TemperatureSample temperatureSample;

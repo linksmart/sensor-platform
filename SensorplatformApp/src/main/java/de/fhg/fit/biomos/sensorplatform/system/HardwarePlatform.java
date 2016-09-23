@@ -3,6 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.system;
 import java.net.SocketException;
 
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
+import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 
 /**
  * Defines functions which are dependant on the board hardware or low level configuration of the operating system.
@@ -33,6 +34,13 @@ public interface HardwarePlatform {
    * @return Hciconfig object for interacting with hciconfig console tool
    */
   public Hciconfig getBluetoothController();
+
+  /**
+   * Get the hcitool command line tool.
+   *
+   * @return Hcitool object for interacting with hcitool console tool
+   */
+  public Hcitool getHcitool();
 
   /**
    * Print infos about the interface which is used by the mobile internet connection.

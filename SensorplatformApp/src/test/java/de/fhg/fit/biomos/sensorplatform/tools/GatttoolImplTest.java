@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib;
 import de.fhg.fit.biomos.sensorplatform.sensor.PolarH7;
-import de.fhg.fit.biomos.sensorplatform.util.GatttoolCmd;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
@@ -35,11 +34,11 @@ public class GatttoolImplTest {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     BufferedWriter streamToSensor = new BufferedWriter(new OutputStreamWriter(baos));
 
-    GatttoolImplTest.polarh7.enableAllNotification(streamToSensor, GatttoolCmd.CMD_CHAR_WRITE_CMD, GatttoolCmd.ENABLE_NOTIFICATION);
+    GatttoolImplTest.polarh7.enableAllNotification(streamToSensor, Gatttool.CMD_CHAR_WRITE_CMD, Gatttool.ENABLE_NOTIFICATION);
     Assert.assertEquals("char-write-cmd 0x0013 01:00", new String(baos.toByteArray()).replace("\n", "").replace("\r", ""));
     baos.reset();
 
-    GatttoolImplTest.polarh7.disableAllNotification(streamToSensor, GatttoolCmd.CMD_CHAR_WRITE_CMD, GatttoolCmd.DISABLE_NOTIFICATION);
+    GatttoolImplTest.polarh7.disableAllNotification(streamToSensor, Gatttool.CMD_CHAR_WRITE_CMD, Gatttool.DISABLE_NOTIFICATION);
     Assert.assertEquals("char-write-cmd 0x0013 00:00", new String(baos.toByteArray()).replace("\n", "").replace("\r", ""));
     baos.reset();
   }

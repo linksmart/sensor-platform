@@ -2,8 +2,13 @@ package de.fhg.fit.biomos.sensorplatform.system;
 
 import java.net.SocketException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
+import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
+import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
 
 /**
  * Functionality for the Sensorplatform running on a Cubieboard 3. Most of the stuff is NYI.
@@ -13,8 +18,14 @@ import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
  */
 public class Cubieboard3 implements HardwarePlatform {
 
+  private static final Logger LOG = LoggerFactory.getLogger(Cubieboard3.class);
+
+  private final Hciconfig hciconfig;
+  private final Hcitool hcitool;
+
   public Cubieboard3() {
-    // TODO Auto-generated constructor stub
+    this.hciconfig = new HciconfigImpl();
+    this.hcitool = new HcitoolImpl();
   }
 
   @Override
@@ -37,7 +48,12 @@ public class Cubieboard3 implements HardwarePlatform {
 
   @Override
   public Hciconfig getBluetoothController() {
-    return new HciconfigImpl();
+    return this.hciconfig;
+  }
+
+  @Override
+  public Hcitool getHcitool() {
+    return this.hcitool;
   }
 
   @Override

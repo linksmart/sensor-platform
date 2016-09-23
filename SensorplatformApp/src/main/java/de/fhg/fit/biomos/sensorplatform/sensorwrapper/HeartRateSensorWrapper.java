@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor;
+import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 
 /**
  * SensorWrapper for all heart rate sensors which are compliant with the Bluetooth specification.
@@ -22,7 +23,7 @@ public class HeartRateSensorWrapper extends AbstractSensorWrapper<AbstractHeartR
   }
 
   @Override
-  public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
+  public void newNotificationData(Gatttool gatttool, String handle, String rawHexValues) {
     // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 

@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
+import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
+import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
 
 /**
  * Functionality for the Sensorplatform running on a Raspberry Pi 3 with Raspbian (lite).
@@ -44,6 +46,7 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final String INTERNET_INTERFACE_NAME = "ppp0";
 
   private final Hciconfig hciconfig;
+  private final Hcitool hcitool;
 
   private enum LEDstate {
     STANDBY("timer"), RECORDING("heartbeat"), ERROR("none");
@@ -63,6 +66,7 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   public RaspberryPi3() {
     this.hciconfig = new HciconfigImpl();
+    this.hcitool = new HcitoolImpl();
   }
 
   @Override
@@ -110,6 +114,11 @@ public class RaspberryPi3 implements HardwarePlatform {
   @Override
   public Hciconfig getBluetoothController() {
     return this.hciconfig;
+  }
+
+  @Override
+  public Hcitool getHcitool() {
+    return this.hcitool;
   }
 
   @Override

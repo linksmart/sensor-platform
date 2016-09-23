@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
-import de.fhg.fit.biomos.sensorplatform.tools.HciconfigMock;
+import de.fhg.fit.biomos.sensorplatform.tools.HciconfigVirtual;
+import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
+import de.fhg.fit.biomos.sensorplatform.tools.HcitoolVirtual;
 
 /**
  * For a local installation on a windows machine. Only for testing parts of the application.
@@ -22,6 +24,7 @@ public class Windows implements HardwarePlatform {
   private static final String INTERNET_INTERFACE_NAME = "eth3";
 
   private final Hciconfig hciconfig;
+  private final Hcitool hcitool;
 
   private enum LEDstate {
     STANDBY("timer"), RECORDING("heartbeat"), ERROR("none");
@@ -40,7 +43,8 @@ public class Windows implements HardwarePlatform {
   }
 
   public Windows() {
-    this.hciconfig = new HciconfigMock();
+    this.hciconfig = new HciconfigVirtual();
+    this.hcitool = new HcitoolVirtual();
   }
 
   @Override
@@ -61,6 +65,11 @@ public class Windows implements HardwarePlatform {
   @Override
   public Hciconfig getBluetoothController() {
     return this.hciconfig;
+  }
+
+  @Override
+  public Hcitool getHcitool() {
+    return this.hcitool;
   }
 
   @Override

@@ -18,8 +18,7 @@ import com.google.inject.name.Named;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
-import de.fhg.fit.biomos.sensorplatform.tools.Gatttool.State;
-import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
+import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 
 /**
@@ -126,7 +125,7 @@ public class Controller implements Runnable {
    * @return a list of discovered Bluetooth Low Energy devices.
    */
   public List<DetectedDevice> scan(int scanDuration) {
-    return new HcitoolImpl().scan(scanDuration);
+    return this.hwPlatform.getHcitool().scan(scanDuration);
   }
 
   /**
@@ -248,7 +247,7 @@ public class Controller implements Runnable {
   private void enableLogging() {
     LOG.info("enable logging");
     for (AbstractSensorWrapper<?> asw : this.swList) {
-      if (asw.getGatttool().getInternalState() == State.CONNECTED) {
+      if (asw.getGatttool().getInternalState() == Gatttool.State.CONNECTED) {
         asw.enableLogging();
       }
     }

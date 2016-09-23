@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor;
+import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 
 /**
  * SensorWrapper for all pulse oximeter sensors which are compliant with the Bluetooth specification.
@@ -22,7 +23,7 @@ public class PulseOximeterSensorWrapper extends AbstractSensorWrapper<AbstractPu
   }
 
   @Override
-  public void newNotificationData(ObservableSensorNotificationData observable, String handle, String rawHexValues) {
+  public void newNotificationData(Gatttool gatttool, String handle, String rawHexValues) {
     // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 

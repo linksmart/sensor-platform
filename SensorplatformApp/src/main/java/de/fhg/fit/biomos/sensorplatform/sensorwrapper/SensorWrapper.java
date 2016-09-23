@@ -37,4 +37,23 @@ public interface SensorWrapper<T extends Sensor<?>> {
    */
   public void disableLogging();
 
+  /**
+   * Get a meaningful time stamp when the last notification has arrived.
+   *
+   * @return long time stamp milliseconds
+   */
+  public long getLastNotifactionTimestamp();
+
+  /**
+   * Notifiy the observer when a new sensor notification has arrived.
+   *
+   * @param observable
+   *          source object of this notification
+   * @param handle
+   *          hexadecimal handle number of the notification as an identifier
+   * @param rawHexValues
+   *          hexadecimal values of the notification delivered by gatttool
+   */
+  public void newNotificationData(Gatttool observable, String handle, String rawHexValues);
+
 }
