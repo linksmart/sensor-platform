@@ -56,33 +56,55 @@
                             </div>
 
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <p>
-                                    <b>Sensors</b>
-                                </p>
-                                <p>PolarH7 (00:22:D0:AA:1F:B1)</p>
-                                <p>TomTomHRM (F4:2C:87:24:12:09)</p>
-                                <p>AdidasHRM (CB:A2:4A:FE:0F:DA)</p>
-                                <p>CC2650 (A0:E6:F8:B6:37:05)</p>
-                                <p>BLE113 (00:07:80:6A:F2:51)</p>
-                                <p>
-                                    <b>Settings (only for CC2650)</b>
-                                </p>
-                                <p>irtemperature/ humidity/ ambientlight/ pressure/ movement</p>
-                                <p>(64 | 50 [hexadecimal] ^= 1Hz)</p>
-                                <p>
-                                    <b>Recording time (seconds)</b>
-                                </p>
-                                <p>
-                                    <input id="uptime" class="form-control"></input>
-                                </p>
-                                <p>
-                                    <b>Control</b>
-                                </p>
-                                <p>
-                                    <button type="button" class="btn btn-default" id="example" onclick="writeExampleConfig()">Example configuration</button>
-                                    <button type="button" class="btn btn-default" onclick="startRecording()">Start</button>
-                                    <button type="button" class="btn btn-default" onclick="stopRecording()">Stop</button>
-                                </p>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <p>
+                                        <b>Sensors</b>
+                                    </p>
+                                    <p>PolarH7 (00:22:D0:AA:1F:B1)</p>
+                                    <p>TomTomHRM (F4:2C:87:24:12:09)</p>
+                                    <p>AdidasHRM (CB:A2:4A:FE:0F:DA)</p>
+                                    <p>CC2650 (A0:E6:F8:B6:37:05)</p>
+                                    <p>BLE113 (00:07:80:6A:F2:51)</p>
+                                    <p>
+                                        <b>Settings (only for CC2650)</b>
+                                    </p>
+                                    <p>irtemperature/ humidity/ ambientlight/ pressure/ movement</p>
+                                    <p>(64 | 50 [hexadecimal] ^= 1Hz)</p>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4">
+                                    <p>
+                                        <b>Uptime [s]</b>
+                                    </p>
+                                    <p>
+                                        <input id="uptime" class="form-control"></input>
+                                    </p>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4">
+                                    <p>
+                                        <b>First name</b>
+                                    </p>
+                                    <p>
+                                        <input id="firstname" class="form-control"></input>
+                                    </p>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4">
+                                    <p>
+                                        <b>Last name</b>
+                                    </p>
+                                    <p>
+                                        <input id="lastname" class="form-control"></input>
+                                    </p>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <p>
+                                        <b>Control</b>
+                                    </p>
+                                    <p>
+                                        <button type="button" class="btn btn-default" id="example" onclick="writeExampleConfig()">Example configuration</button>
+                                        <button type="button" class="btn btn-default" onclick="startRecording()">Start</button>
+                                        <button type="button" class="btn btn-default" onclick="stopRecording()">Stop</button>
+                                    </p>
+                                </div>
                             </div>
 
                         </div>

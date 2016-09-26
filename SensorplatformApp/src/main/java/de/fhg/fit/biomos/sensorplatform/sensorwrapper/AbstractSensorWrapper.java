@@ -21,6 +21,9 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
   protected final Gatttool gatttool;
   protected final T sensor;
 
+  protected final String firstname;
+  protected final String lastname;
+
   protected long lastNotificationTimestamp;
 
   /**
@@ -29,11 +32,17 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
    *          Sensor which is used by the Wrapper
    * @param timestampFormat
    *          a specified time stamp format which is used for samples
+   * @param firstname
+   *          the first name of the sensorplatform user
+   * @param lastname
+   *          the last name of the sensorplatform user
    */
-  public AbstractSensorWrapper(T sensor, String timestampFormat) {
+  public AbstractSensorWrapper(T sensor, String timestampFormat, String firstname, String lastname) {
     this.sensor = sensor;
     this.gatttool = new GatttoolImpl(sensor.getBDaddress(), sensor.getAddressType(), sensor.getSecurityLevel());
     this.dtf = DateTimeFormat.forPattern(timestampFormat).withZone(DateTimeZone.UTC);
+    this.firstname = firstname;
+    this.lastname = lastname;
     this.gatttool.setObserver(this);
     new Thread(this.gatttool).start();
   }

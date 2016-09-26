@@ -17,8 +17,9 @@ public class HeartRateSensorWrapper extends AbstractSensorWrapper<AbstractHeartR
 
   protected final HeartRateSampleCollector hrsCollector;
 
-  public HeartRateSensorWrapper(AbstractHeartRateSensor sensor, String timestampFormat, HeartRateSampleCollector hrsCollector) {
-    super(sensor, timestampFormat);
+  public HeartRateSensorWrapper(AbstractHeartRateSensor sensor, String timestampFormat, String firstname, String lastname,
+      HeartRateSampleCollector hrsCollector) {
+    super(sensor, timestampFormat, firstname, lastname);
     this.hrsCollector = hrsCollector;
   }
 
@@ -29,6 +30,8 @@ public class HeartRateSensorWrapper extends AbstractSensorWrapper<AbstractHeartR
 
     HeartRateSample hrs = this.sensor.calculateHeartRateData(this.dtf.print(new DateTime()), handle, rawHexValues);
     if (hrs != null) {
+      hrs.setFirstname(this.firstname);
+      hrs.setLastname(this.lastname);
       this.hrsCollector.addToQueue(hrs);
     }
   }

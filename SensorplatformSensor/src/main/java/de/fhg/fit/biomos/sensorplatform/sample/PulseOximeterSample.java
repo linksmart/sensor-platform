@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 /**
  * Entity class for pulse oximeter samples.
- * 
+ *
  * @author Daniel Pyka
  *
  */
@@ -28,6 +28,10 @@ public class PulseOximeterSample implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
+  @Column(name = "firstname")
+  private String firstname;
+  @Column(name = "lastname")
+  private String lastname;
   @Column(name = "timestamp")
   private String timestamp;
   @Column(name = "device")
@@ -51,6 +55,22 @@ public class PulseOximeterSample implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getFirstname() {
+    return this.firstname;
+  }
+
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
+  }
+
+  public String getLastname() {
+    return this.lastname;
+  }
+
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
   }
 
   public String getTimestamp() {
@@ -87,8 +107,9 @@ public class PulseOximeterSample implements Serializable {
 
   @Override
   public String toString() {
-    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"value\":" + "{\"spo2\":{\"value\":"
-        + this.SpO2 + ",\"unit\":\"" + PERCENT + "\"},\"pulserate\":{\"value\":" + this.PulseRate + ",\"unit\":\"" + BPM + "\"}}}";
+    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"firstname\":\"" + this.firstname + "\",\"lastname\":\"" + this.lastname
+        + "\",\"device\":\"" + this.bdAddress + "\",\"value\":" + "{\"spo2\":{\"value\":" + this.SpO2 + ",\"unit\":\"" + PERCENT
+        + "\"},\"pulserate\":{\"value\":" + this.PulseRate + ",\"unit\":\"" + BPM + "\"}}}";
   }
 
 }

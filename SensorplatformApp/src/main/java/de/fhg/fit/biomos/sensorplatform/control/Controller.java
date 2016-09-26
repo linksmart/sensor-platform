@@ -38,6 +38,8 @@ public class Controller implements Runnable {
   private static final String START_SENSOR_NOT_AVAILABLE = "A sensor is not available: ";
   private static final String START_NO_SENSORS_IN_CONFIGURATION = "There are no sensors in the configuration!";
 
+  private static final String RECORDING_FIRSTNAME = "firstname";
+  private static final String RECORDING_LASTNAME = "lastname";
   private static final String RECORDING_END_TIME = "endtime";
   private static final String CONFIGURATION = "configuration";
 
@@ -147,7 +149,8 @@ public class Controller implements Runnable {
         LOG.info("time difference is: " + Long.toString(diff) + " milliseconds");
         if (diff > 0) {
           LOG.info("a recording period was interrupted, which is not finished yet - resume");
-          String result = startRecordingPeriod(diff, new JSONArray(recProperties.getProperty(CONFIGURATION)), false);
+          String result = startRecordingPeriod(diff, recProperties.getProperty(RECORDING_FIRSTNAME), recProperties.getProperty(RECORDING_LASTNAME),
+              new JSONArray(recProperties.getProperty(CONFIGURATION)), false);
           LOG.info(result);
         } else {
           LOG.info("a recording period was interrupted but it is finished now - delete file");
@@ -163,13 +166,19 @@ public class Controller implements Runnable {
   /**
    * Save the sensor configuration and the timestamp of the recording period END in a properties file.
    *
+   * @param firstname
+   *          the first name of the sensorplatform user
+   * @param lastname
+   *          the last name of the sensorplatform user
    * @param sensorConfiguration
    *          the sensor configuration for a recording period
    */
-  private void saveSensorplatformConfiguration(JSONArray sensorConfiguration) {
+  private void saveSensorplatformConfiguration(String firstname, String lastname, JSONArray sensorConfiguration) {
     long timestamp = System.currentTimeMillis();
     Properties recProperties = new Properties();
     recProperties.put(RECORDING_END_TIME, Long.toString(timestamp + this.uptimeMillis));
+    recProperties.put(RECORDING_FIRSTNAME, firstname);
+    recProperties.put(RECORDING_LASTNAME, lastname);
     recProperties.put(CONFIGURATION, sensorConfiguration.toString());
     try {
       if (this.recordingInfo.exists()) {
@@ -189,21 +198,25 @@ public class Controller implements Runnable {
    *
    * @param uptimeMillis
    *          recording period time in milliseconds
+   * @param firstname
+   *          the first name of the sensorplatform user
+   * @param lastname
+   *          the last name of the sensorplatform user
    * @param sensorConfiguration
    *          the sensor configuration for a recording period
    * @param isNewConfiguration
    *          a flag which defines if a recording period is new or resumed after restart
    * @return String a message for the frontend
    */
-  public String startRecordingPeriod(long uptimeMillis, JSONArray sensorConfiguration, boolean isNewConfiguration) {
+  public String startRecordingPeriod(long uptimeMillis, String firstname, String lastname, JSONArray sensorConfiguration, boolean isNewConfiguration) {
     if (!this.recording) {
       this.recording = true;
       this.uptimeMillis = uptimeMillis;
       if (isNewConfiguration) {
-        saveSensorplatformConfiguration(sensorConfiguration);
+        saveSensorplatformConfiguration(firstname, lastname, sensorConfiguration);
       }
       LOG.info("starting a new recording period");
-      this.swList = this.swFactory.createSensorWrapper(sensorConfiguration);
+      this.swList = this.swFactory.createSensorWrapper(sensorConfiguration, firstname, lastname);
 
       if (this.swList.size() == 0) {
         LOG.info("there are no SensorWrapper for this recording period - abort!");
@@ -226,7 +239,6 @@ public class Controller implements Runnable {
           }
         }
       }
-
       enableLogging();
       startThreads();
       this.hwPlatform.setLEDstateRECORDING();

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 /**
  * Entity class for ambient light samples.
- * 
+ *
  * @author Daniel Pyka
  *
  */
@@ -27,6 +27,10 @@ public class CC2650AmbientlightSample implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
+  @Column(name = "firstname")
+  private String firstname;
+  @Column(name = "lastname")
+  private String lastname;
   @Column(name = "timestamp")
   private String timestamp;
   @Column(name = "device")
@@ -49,6 +53,22 @@ public class CC2650AmbientlightSample implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getFirstname() {
+    return this.firstname;
+  }
+
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
+  }
+
+  public String getLastname() {
+    return this.lastname;
+  }
+
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
   }
 
   public String getTimestamp() {
@@ -77,8 +97,8 @@ public class CC2650AmbientlightSample implements Serializable {
 
   @Override
   public String toString() {
-    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"ambientlight\":{\"value\":"
-        + this.ambientlight + ",\"unit\":\"" + UNIT_LUX + "\"}}";
+    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"firstname\":\"" + this.firstname + "\",\"lastname\":\"" + this.lastname
+        + "\",\"device\":\"" + this.bdAddress + "\",\"ambientlight\":{\"value\":" + this.ambientlight + ",\"unit\":\"" + UNIT_LUX + "\"}}";
   }
 
 }

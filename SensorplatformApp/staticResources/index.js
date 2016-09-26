@@ -37,13 +37,19 @@ window.setInterval(function() {
 function writeExampleConfig() {
 	$("#configview").val(JSON.stringify(exampleConfig, undefined, 4));
 	$("#uptime").val(600);
+	$("#firstname").val("Gustavo");
+	$("#lastname").val("Aragon");
 }
 
 function startRecording() {
 	var uptime = $("#uptime").val();
+	var firstname = $("#firstname").val();
+	var lastname = $("#lastname").val();
 	var configuration = JSON.parse($("#configview").val());
 	var requestentity = {
 		"uptime" : uptime,
+		"firstname": firstname,
+		"lastname": lastname,
 		"configuration" : configuration
 	};
 

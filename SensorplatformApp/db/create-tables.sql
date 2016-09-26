@@ -1,5 +1,7 @@
 CREATE TABLE HeartRateSample (
 id BIGINT IDENTITY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
 transmitted boolean NOT NULL,
 timestamp VARCHAR(30) NOT NULL,
 device VARCHAR(17) NOT NULL,
@@ -10,6 +12,8 @@ rrintervals VARCHAR(100) NOT NULL
 
 CREATE TABLE PulseOximeterSample (
 id BIGINT IDENTITY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
 timestamp VARCHAR(30) NOT NULL,
 device VARCHAR(17) NOT NULL,
 spo2 INTEGER NOT NULL,
@@ -18,6 +22,8 @@ pulserate INTEGER NOT NULL
 
 CREATE TABLE CC2650TemperatureSample (
 id BIGINT IDENTITY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
 timestamp VARCHAR(30) NOT NULL,
 device VARCHAR(17) NOT NULL,
 objecttemperature FLOAT NOT NULL,
@@ -26,6 +32,8 @@ dietemperature FLOAT NOT NULL
 
 CREATE TABLE CC2650PressureSample (
 id BIGINT IDENTITY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
 timestamp VARCHAR(30) NOT NULL,
 device VARCHAR(17) NOT NULL,
 temperature FLOAT NOT NULL,
@@ -34,6 +42,8 @@ pressure FLOAT NOT NULL
 
 CREATE TABLE CC2650HumiditySample (
 id BIGINT IDENTITY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
 timestamp VARCHAR(30) NOT NULL,
 device VARCHAR(17) NOT NULL,
 temperature FLOAT NOT NULL,
@@ -42,6 +52,8 @@ humidity FLOAT NOT NULL
 
 CREATE TABLE CC2650AmbientlightSample (
 id BIGINT IDENTITY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
 timestamp VARCHAR(30) NOT NULL,
 device VARCHAR(17) NOT NULL,
 ambientlight FLOAT NOT NULL
@@ -49,6 +61,8 @@ ambientlight FLOAT NOT NULL
 
 CREATE TABLE CC2650MovementSample (
 id BIGINT IDENTITY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
 timestamp VARCHAR(30) NOT NULL,
 device VARCHAR(17) NOT NULL,
 rotationX FLOAT,

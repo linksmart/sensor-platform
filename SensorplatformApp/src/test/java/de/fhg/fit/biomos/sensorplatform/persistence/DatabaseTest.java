@@ -51,29 +51,40 @@ public class DatabaseTest {
     s.commit();
     s.close();
     HeartRateSample hrs1 = new HeartRateSample("2016-09-01T08:45:30.555Z", "11:22:33:44:55:66");
+    hrs1.setFirstname("TestFirstName");
+    hrs1.setLastname("TestLastName");
     hrs1.setHeartRate(255);
     hrs1.setEnergyExpended(0);
     hrs1.setRRintervals(Arrays.asList(new Float[] { 235.3f, 235.3f, 235.3f, 235.3f }));
     hrs1.setTransmitted(true);
     HeartRateSample hrs2 = new HeartRateSample("2016-08-31T08:45:30.555Z", "11:22:33:44:55:66");
+    hrs2.setFirstname("TestFirstName");
+    hrs2.setLastname("TestLastName");
     hrs2.setHeartRate(120);
     hrs2.setEnergyExpended(0);
     hrs2.setRRintervals(Arrays.asList(new Float[] { 500.0f, 500.0f }));
     hrs2.setTransmitted(false);
     HeartRateSample hrs3 = new HeartRateSample("2016-08-30T08:45:30.555Z", "11:22:33:44:55:66");
+    hrs3.setFirstname("TestFirstName");
+    hrs3.setLastname("TestLastName");
     hrs3.setHeartRate(255);
     hrs3.setEnergyExpended(0);
     hrs3.setRRintervals(Arrays.asList(new Float[] { 235.3f, 235.3f, 235.3f, 235.3f }));
     hrs3.setTransmitted(false);
     HeartRateSample hrs4 = new HeartRateSample("2016-08-29T08:45:30.555Z", "11:22:33:44:55:66");
+    hrs4.setFirstname("TestFirstName");
+    hrs4.setLastname("TestLastName");
     hrs4.setHeartRate(60);
     hrs4.setEnergyExpended(0);
     hrs4.setRRintervals(Arrays.asList(new Float[] { 1000.0f }));
     hrs4.setTransmitted(true);
     HeartRateSample hrs5 = new HeartRateSample("2016-08-28T08:45:30.555Z", "11:22:33:44:55:66");
+    hrs5.setFirstname("TestFirstName");
+    hrs5.setLastname("TestLastName");
     hrs5.setHeartRate(240);
     hrs5.setEnergyExpended(0);
     hrs5.setRRintervals(Arrays.asList(new Float[] { 250.0f, 250.0f, 250.0f, 250.0f }));
+
     hrs5.setTransmitted(true);
     s = dbc.getSession();
     s.saveHeartRateSample(hrs1);
@@ -91,18 +102,28 @@ public class DatabaseTest {
     s.commit();
     s.close();
     PulseOximeterSample pos1 = new PulseOximeterSample("2016-08-27T08:45:30.555Z", "66:55:44:33:22:11");
+    pos1.setFirstname("TestFirstName");
+    pos1.setLastname("TestLastName");
     pos1.setPulseRate(60);
     pos1.setSpO2(95);
     PulseOximeterSample pos2 = new PulseOximeterSample("2016-08-26T08:45:30.555Z", "66:55:44:33:22:11");
+    pos2.setFirstname("TestFirstName");
+    pos2.setLastname("TestLastName");
     pos2.setPulseRate(120);
     pos2.setSpO2(96);
     PulseOximeterSample pos3 = new PulseOximeterSample("2016-08-25T08:45:30.555Z", "66:55:44:33:22:11");
+    pos3.setFirstname("TestFirstName");
+    pos3.setLastname("TestLastName");
     pos3.setPulseRate(180);
     pos3.setSpO2(97);
     PulseOximeterSample pos4 = new PulseOximeterSample("2016-08-24T08:45:30.555Z", "66:55:44:33:22:11");
+    pos4.setFirstname("TestFirstName");
+    pos4.setLastname("TestLastName");
     pos4.setPulseRate(240);
     pos4.setSpO2(98);
     PulseOximeterSample pos5 = new PulseOximeterSample("2016-08-23T08:45:30.555Z", "66:55:44:33:22:11");
+    pos5.setFirstname("TestFirstName");
+    pos5.setLastname("TestLastName");
     pos5.setPulseRate(90);
     pos5.setSpO2(99);
     s = dbc.getSession();
@@ -154,6 +175,8 @@ public class DatabaseTest {
     Assert.assertEquals(Integer.valueOf(255), hrs.getHeartRate());
     Assert.assertEquals(Integer.valueOf(0), hrs.getEnergyExpended());
     Assert.assertEquals("[235.3, 235.3, 235.3, 235.3]", hrs.getRRintervals());
+    Assert.assertEquals("TestFirstName", hrs.getFirstname());
+    Assert.assertEquals("TestLastName", hrs.getLastname());
     s.close();
   }
 
@@ -165,12 +188,16 @@ public class DatabaseTest {
     PulseOximeterSample pos = poss.get(2);
     Assert.assertEquals(Integer.valueOf(180), pos.getPulseRate());
     Assert.assertEquals(Integer.valueOf(97), pos.getSpO2());
+    Assert.assertEquals("TestFirstName", pos.getFirstname());
+    Assert.assertEquals("TestLastName", pos.getLastname());
     s.close();
   }
 
   @Test
   public void testCC2650TemperatureSample() {
     CC2650TemperatureSample sample = new CC2650TemperatureSample("2016-08-22T08:45:30.555Z", "AA:BB:CC:DD:EE:FF");
+    sample.setFirstname("TestFirstName");
+    sample.setLastname("TestLastName");
     sample.setDieTemperature(29.9f);
     sample.setObjectTemperature(35.7f);
     DBsession s = DatabaseTest.dbc.getSession();
@@ -185,12 +212,16 @@ public class DatabaseTest {
     Assert.assertEquals("AA:BB:CC:DD:EE:FF", sample.getBdAddress());
     Assert.assertEquals(Float.valueOf(29.9f), sample.getDieTemperature());
     Assert.assertEquals(Float.valueOf(35.7f), sample.getObjectTemperature());
+    Assert.assertEquals("TestFirstName", sample.getFirstname());
+    Assert.assertEquals("TestLastName", sample.getLastname());
     s.close();
   }
 
   @Test
   public void testCC2650HumiditySample() {
     CC2650HumiditySample sample = new CC2650HumiditySample("2016-08-21T08:45:30.555Z", "AA:BB:CC:DD:EE:FF");
+    sample.setFirstname("TestFirstName");
+    sample.setLastname("TestLastName");
     sample.setTemperature(32.2f);
     sample.setHumidity(58.3f);
     DBsession s = DatabaseTest.dbc.getSession();
@@ -205,12 +236,16 @@ public class DatabaseTest {
     Assert.assertEquals("AA:BB:CC:DD:EE:FF", sample.getBdAddress());
     Assert.assertEquals(Float.valueOf(32.2f), sample.getTemperature());
     Assert.assertEquals(Float.valueOf(58.3f), sample.getHumidity());
+    Assert.assertEquals("TestFirstName", sample.getFirstname());
+    Assert.assertEquals("TestLastName", sample.getLastname());
     s.close();
   }
 
   @Test
   public void testCC2650PressureSample() {
     CC2650PressureSample sample = new CC2650PressureSample("2016-08-20T08:45:30.555Z", "AA:BB:CC:DD:EE:FF");
+    sample.setFirstname("TestFirstName");
+    sample.setLastname("TestLastName");
     sample.setTemperature(25.1f);
     sample.setPressure(1002.4f);
     DBsession s = DatabaseTest.dbc.getSession();
@@ -225,12 +260,16 @@ public class DatabaseTest {
     Assert.assertEquals("AA:BB:CC:DD:EE:FF", sample.getBdAddress());
     Assert.assertEquals(Float.valueOf(25.1f), sample.getTemperature());
     Assert.assertEquals(Float.valueOf(1002.4f), sample.getPressure());
+    Assert.assertEquals("TestFirstName", sample.getFirstname());
+    Assert.assertEquals("TestLastName", sample.getLastname());
     s.close();
   }
 
   @Test
   public void testCC2650AmbientlightSample() {
     CC2650AmbientlightSample sample = new CC2650AmbientlightSample("2016-08-19T08:45:30.555Z", "AA:BB:CC:DD:EE:FF");
+    sample.setFirstname("TestFirstName");
+    sample.setLastname("TestLastName");
     sample.setAmbientlight(555.5f);
     DBsession s = DatabaseTest.dbc.getSession();
     s.saveCC2650AmbientlightSample(sample);
@@ -243,12 +282,16 @@ public class DatabaseTest {
     Assert.assertEquals("2016-08-19T08:45:30.555Z", sample.getTimestamp());
     Assert.assertEquals("AA:BB:CC:DD:EE:FF", sample.getBdAddress());
     Assert.assertEquals(Float.valueOf(555.5f), sample.getAmbientlight());
+    Assert.assertEquals("TestFirstName", sample.getFirstname());
+    Assert.assertEquals("TestLastName", sample.getLastname());
     s.close();
   }
 
   @Test
   public void testCC2650MovementSample() {
     CC2650MovementSample sample = new CC2650MovementSample("2016-08-18T08:45:30.555Z", "AA:BB:CC:DD:EE:FF");
+    sample.setFirstname("TestFirstName");
+    sample.setLastname("TestLastName");
     sample.setRotationX(1.7709924f);
     sample.setRotationY(0.4351145f);
     sample.setRotationZ(-1.4580153f);
@@ -277,6 +320,8 @@ public class DatabaseTest {
     Assert.assertEquals(Float.valueOf(-246.0f), sample.getMagnetismX());
     Assert.assertEquals(Float.valueOf(653.0f), sample.getMagnetismY());
     Assert.assertEquals(Float.valueOf(-88.0f), sample.getMagnetismZ());
+    Assert.assertEquals("TestFirstName", sample.getFirstname());
+    Assert.assertEquals("TestLastName", sample.getLastname());
     s.close();
   }
 }

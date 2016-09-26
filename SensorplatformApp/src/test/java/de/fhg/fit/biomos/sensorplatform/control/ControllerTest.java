@@ -88,7 +88,7 @@ public class ControllerTest {
   @Test
   public void testSensorWrapperFactory() {
     SensorWrapperFactory swFactory = injector.getInstance(SensorWrapperFactory.class);
-    aswList = swFactory.createSensorWrapper(configuration);
+    aswList = swFactory.createSensorWrapper(configuration, "TestFirstName", "TestLastName");
     Sensor<?> sensor = aswList.get(0).getSensor();
     Gatttool gatttool = aswList.get(0).getGatttool();
 
@@ -106,7 +106,7 @@ public class ControllerTest {
   public void testControllerWorkflow() {
     Controller controller = injector.getInstance(Controller.class);
     Assert.assertFalse(controller.isRecording());
-    controller.startRecordingPeriod(10000, configuration, true);
+    controller.startRecordingPeriod(10000, "TestFirstName", "TestLastName", configuration, true);
     Assert.assertTrue(controller.isRecording());
     Assert.assertTrue(new File("recording.properties").exists());
     try {

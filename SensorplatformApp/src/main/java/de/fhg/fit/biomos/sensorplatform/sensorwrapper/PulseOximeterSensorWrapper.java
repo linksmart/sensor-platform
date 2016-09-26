@@ -17,8 +17,9 @@ public class PulseOximeterSensorWrapper extends AbstractSensorWrapper<AbstractPu
 
   protected final PulseOximeterSampleCollector pulseOximeterSampleCollector;
 
-  public PulseOximeterSensorWrapper(AbstractPulseOximeterSensor sensor, String timestampFormat, PulseOximeterSampleCollector pulseOximeterSampleCollector) {
-    super(sensor, timestampFormat);
+  public PulseOximeterSensorWrapper(AbstractPulseOximeterSensor sensor, String timestampFormat, String firstname, String lastname,
+      PulseOximeterSampleCollector pulseOximeterSampleCollector) {
+    super(sensor, timestampFormat, firstname, lastname);
     this.pulseOximeterSampleCollector = pulseOximeterSampleCollector;
   }
 
@@ -27,9 +28,11 @@ public class PulseOximeterSensorWrapper extends AbstractSensorWrapper<AbstractPu
     // LOG.info("new notification received");
     this.lastNotificationTimestamp = System.currentTimeMillis();
 
-    PulseOximeterSample pulseOximeterSample = this.sensor.calculatePulseOximeterData(this.dtf.print(new DateTime()), handle, rawHexValues);
-    if (pulseOximeterSample != null) {
-      this.pulseOximeterSampleCollector.addToQueue(pulseOximeterSample);
+    PulseOximeterSample pos = this.sensor.calculatePulseOximeterData(this.dtf.print(new DateTime()), handle, rawHexValues);
+    if (pos != null) {
+      pos.setFirstname(this.firstname);
+      pos.setLastname(this.lastname);
+      this.pulseOximeterSampleCollector.addToQueue(pos);
     }
   }
 }

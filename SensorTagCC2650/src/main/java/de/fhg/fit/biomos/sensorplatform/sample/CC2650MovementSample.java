@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 /**
  * Entity class für movement samples.
- * 
+ *
  * @author Daniel Pyka
  *
  */
@@ -29,6 +29,10 @@ public class CC2650MovementSample implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
+  @Column(name = "firstname")
+  private String firstname;
+  @Column(name = "lastname")
+  private String lastname;
   @Column(name = "timestamp")
   private String timestamp;
   @Column(name = "device")
@@ -67,6 +71,22 @@ public class CC2650MovementSample implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getFirstname() {
+    return this.firstname;
+  }
+
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
+  }
+
+  public String getLastname() {
+    return this.lastname;
+  }
+
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
   }
 
   public String getTimestamp() {
@@ -159,11 +179,11 @@ public class CC2650MovementSample implements Serializable {
 
   @Override
   public String toString() {
-    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"device\":\"" + this.bdAddress + "\",\"value\":{\"rotation\":{\"value\":{\"x\":"
-        + this.rotationX + ",\"y\":" + this.rotationY + ",\"z\":" + this.rotationZ + "},\"unit\":\"" + UNIT_DEGREES_PER_SECOND
-        + "\"},\"acceleration\":{\"value\":{\"x\":" + this.accelerationX + ",\"y\":" + this.accelerationY + ",\"z\":" + this.accelerationZ + "},\"unit\":\""
-        + UNIT_GRAVITY + "\"},\"magnetism\":{\"value\":{\"x\":" + this.magnetismX + ",\"y\":" + this.magnetismY + ",\"z\":" + this.magnetismZ + "},\"unit\":\""
-        + UNIT_MICROTESLA + "\"}}}";
+    return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"firstname\":\"" + this.firstname + "\",\"lastname\":\"" + this.lastname
+        + "\",\"device\":\"" + this.bdAddress + "\",\"value\":{\"rotation\":{\"value\":{\"x\":" + this.rotationX + ",\"y\":" + this.rotationY + ",\"z\":"
+        + this.rotationZ + "},\"unit\":\"" + UNIT_DEGREES_PER_SECOND + "\"},\"acceleration\":{\"value\":{\"x\":" + this.accelerationX + ",\"y\":"
+        + this.accelerationY + ",\"z\":" + this.accelerationZ + "},\"unit\":\"" + UNIT_GRAVITY + "\"},\"magnetism\":{\"value\":{\"x\":" + this.magnetismX
+        + ",\"y\":" + this.magnetismY + ",\"z\":" + this.magnetismZ + "},\"unit\":\"" + UNIT_MICROTESLA + "\"}}}";
   }
 
 }

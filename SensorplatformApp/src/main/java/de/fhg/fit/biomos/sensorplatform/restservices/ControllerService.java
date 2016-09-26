@@ -48,10 +48,12 @@ public class ControllerService {
     LOG.info("/controller/start called");
     try {
       int uptime = request.getInt("uptime");
+      String firstname = request.getString("firstname");
+      String lastname = request.getString("lastname");
       // jetty uses only codehous json library
       // the rest of the application uses org.json library for cleaner code
       org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configuration").toString());
-      String result = this.controller.startRecordingPeriod(uptime * 1000, requestConverted, true);
+      String result = this.controller.startRecordingPeriod(uptime * 1000, firstname, lastname, requestConverted, true);
       JSONObject response = new JSONObject();
       response.put("result", result);
       return Response.ok(response).build();

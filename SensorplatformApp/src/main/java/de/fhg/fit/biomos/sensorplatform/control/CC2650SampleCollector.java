@@ -37,6 +37,9 @@ public class CC2650SampleCollector implements SampleCollector {
   private final Queue<CC2650AmbientlightSample> queueAmb = new LinkedList<CC2650AmbientlightSample>();
   private final Queue<CC2650MovementSample> queueMov = new LinkedList<CC2650MovementSample>();
 
+  private final String firstname = "unknown";
+  private final String lastname = "unknown";
+
   private boolean used;
 
   @Inject
