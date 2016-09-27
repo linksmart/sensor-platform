@@ -135,7 +135,7 @@ public class Controller implements Runnable {
    */
   public void initialise() {
     LOG.info("initialise controller");
-    restartBluetoothController();
+    // restartBluetoothController(); // no pairing supported from within this application
     new Thread(this.inetman).start();
     if (!this.recordingInfo.exists()) {
       LOG.info("no recording period was interrupted");

@@ -21,7 +21,7 @@ import de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample;
 
 /**
  * Test cases for mapping between database and POJO classes. Testing of database queries. This test backups the old database (directory copy) and is working on
- * an empty one. After tests, the backup database is restored.
+ * an empty one. After tests, the backup database is restored. It is recommended to run this test with an empty database.
  *
  * @author Daniel Pyka
  *
