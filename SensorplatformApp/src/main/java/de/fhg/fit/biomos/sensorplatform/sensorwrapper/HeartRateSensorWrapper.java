@@ -3,6 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 import org.joda.time.DateTime;
 
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
+import de.fhg.fit.biomos.sensorplatform.control.SampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
@@ -21,6 +22,11 @@ public class HeartRateSensorWrapper extends AbstractSensorWrapper<AbstractHeartR
       HeartRateSampleCollector hrsCollector) {
     super(sensor, timestampFormat, firstname, lastname);
     this.hrsCollector = hrsCollector;
+  }
+
+  @Override
+  public SampleCollector getSampleCollector() {
+    return this.hrsCollector;
   }
 
   @Override

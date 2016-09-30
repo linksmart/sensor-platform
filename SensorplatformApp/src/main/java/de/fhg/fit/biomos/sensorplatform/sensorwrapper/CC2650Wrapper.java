@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector;
+import de.fhg.fit.biomos.sensorplatform.control.SampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample;
 import de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample;
@@ -28,6 +29,11 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
   public CC2650Wrapper(CC2650 cc2650, String timeStampFormat, String firstname, String lastname, CC2650SampleCollector cc2650Collector) {
     super(cc2650, timeStampFormat, firstname, lastname);
     this.cc2650Collector = cc2650Collector;
+  }
+
+  @Override
+  public SampleCollector getSampleCollector() {
+    return this.cc2650Collector;
   }
 
   @Override

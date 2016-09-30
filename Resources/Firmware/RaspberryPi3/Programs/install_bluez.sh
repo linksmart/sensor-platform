@@ -3,7 +3,7 @@
 # always run as sudo
 
 # newest version (19.07.2016)
-version="5.41"
+version="5.42"
 url="http://www.kernel.org/pub/linux/bluetooth/bluez-${version}.tar.xz"
 
 username=administrator

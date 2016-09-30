@@ -1,5 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
+import de.fhg.fit.biomos.sensorplatform.control.SampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sensor.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 
@@ -26,6 +27,8 @@ public interface SensorWrapper<T extends Sensor<?>> {
    * @return Gatttool the object which handles the gatttool process
    */
   public Gatttool getGatttool();
+
+  public SampleCollector getSampleCollector();
 
   /**
    * Start getting notification data from the sensor.

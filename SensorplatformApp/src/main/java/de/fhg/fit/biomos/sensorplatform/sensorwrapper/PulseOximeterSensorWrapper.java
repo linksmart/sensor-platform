@@ -3,6 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 import org.joda.time.DateTime;
 
 import de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector;
+import de.fhg.fit.biomos.sensorplatform.control.SampleCollector;
 import de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample;
 import de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
@@ -21,6 +22,11 @@ public class PulseOximeterSensorWrapper extends AbstractSensorWrapper<AbstractPu
       PulseOximeterSampleCollector pulseOximeterSampleCollector) {
     super(sensor, timestampFormat, firstname, lastname);
     this.pulseOximeterSampleCollector = pulseOximeterSampleCollector;
+  }
+
+  @Override
+  public SampleCollector getSampleCollector() {
+    return this.pulseOximeterSampleCollector;
   }
 
   @Override

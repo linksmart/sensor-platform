@@ -261,6 +261,7 @@ public class Controller implements Runnable {
     LOG.info("enable logging");
     for (AbstractSensorWrapper<?> asw : this.swList) {
       if (asw.getGatttool().getInternalState() == Gatttool.State.CONNECTED) {
+        asw.getSampleCollector().setUsed(true);
         asw.enableLogging();
       }
     }
