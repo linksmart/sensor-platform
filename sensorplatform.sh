@@ -1,50 +1,36 @@
 #!/bin/sh
 
 cmd=$1
-platform=$2
+
+username=administrator
 
 case ${cmd} in
-	"setup")
-		case ${platform} in
-			"raspberrypi3")
-				cd Resources/Firmware/RaspberryPi3/Programs
-				sh install_java.sh
-				sh install_maven.sh
-				sh install_bluez.sh
-				sh install_iptables.sh
-				;;
-			"cubieboard3")
-				;;
-			"windows")
-				echo "Nothing to do"
-				;;
-			*)
-				echo "setup (raspberrypi3|cubieboard3)"
-				;;
-		esac
-		;;
 	"install")
-		case ${platform} in
-			"raspberrypi3")
-				cd SensorplatformParent
-				mvn clean install -P raspberrypi3,telipro
-				;;
-			"cubieboard3")
-				;;
-			"windows")
-				;;
-			*)
-				echo "install (raspberrypi3|cubieboard3|windows)"
-				;;
-		esac
-		;;
-	"export")
+		sh Resources/Firmware/RaspberryPi3/Programs/install_java_maven.sh
+		sh Resources/Firmware/RaspberryPi3/Programs/install_bluez.sh
+		sh Resources/Firmware/RaspberryPi3/Programs/install_wvdial.sh
+		
+		cd ../SensorplatformApp
+		cp -r db /home/${username}/Sensorplatform
+		cp -r staticResources /home/${username}/Sensorplatform
+		mkdir /home/${username}/Sensorplatform/bin
+		cd target/resources
+		cp *.jar /home/${username}/Sensorplatform/bin
+		cd ../../..
+		cp Resources/Firmware/RaspberyyPi3/System/run.sh /home/${username}/Sensorplatform
+		cp Resources/Firmware/RaspberyyPi3/System/debug.sh /home/${username}/Sensorplatform
+		
+		cp Resources/Firmware/RaspberyyPi3/System/sensorplatform /etc/init.d
+		update-rc.d /etc/init.d/sensorplatform defaults
 		;;
 	"run")
+		/etc/init.d/sensorplatform stop
+		cd /home/${username}/Sensorplatform
+		sh run.sh
 		;;
 	*)
 		echo "This is the Sensorplatform script for setting up the software and environment!"
-		echo "Usage (setup|install|export|run) [raspberrypi3|cubieboard|windows]"
+		echo "Usage (install|run)"
 		;;
 esac
 

@@ -31,8 +31,7 @@ Password: raspberry
 6.6 Wait for Network at Boot >> No
 6.7 Advanced Options >> Hostname
 6.8 Advanced Options >> Memory Split >> 16
-6.9 Expand File System
-6.10 Finish >> Reboot >> Yes
+6.9 Finish >> Reboot >> Yes
 
 7. User account setup
 7.1 Login as pi, type in "sudo -i" for the root shell
@@ -53,6 +52,7 @@ Password: raspberry
 	"mkdir Sensorplatform"
 7.11 Allow administrator to use sudo without password check (password will be required ones)
 	"sudo sed -i -- 's/pi/administrator/g' /etc/sudoers"
+	Confirm with your password one time
 7.12 Do not allow root login via SSH
 	"sudo sed -i -- 's/PermitRootLogin without-password/PermitRootLogin no/g' /etc/ssh/sshd_config"
 
@@ -79,35 +79,17 @@ TODO sudo apt-mark hold bluez ???
 	Use some valid login credentials here
 11.2 "cd Sensorplatform"
 
-12. Install Java and Maven "sudo sh Resources/Firmware/RaspberryPi3/Programs/install_java_maven.sh"
+12. Install the sensorplatform project
+12.1 "cd SensorplatformParent"
+12.2 "mvn clean install -P raspberrypi3,webhrs"
+	(raspberrypi3|cubieboard) (webhrs|telipro) see pom.xml for additional infos about profiles
 
-13. Install Bluez "sudo sh Resources/Firmware/RaspberryPi3/Programs/install_bluez.sh"
+11.3 You will find a file sensorplatform.sh top-level, which will do the remaining installation
+	Run it with sudo "sudo sh sensorplatform.sh install"
 
-14. Install Iptables "sudo sh Resources/Firmware/RaspberryPi3/Programs/install_iptables.sh"
 
-15. "sudo reboot" >> log in as administrator >> "cd /home/administrator/Repositories/Sensorplatform"
+12. Reboot the sensorplatform "sudo reboot"
 
-16. Maven clean install with Profiles
-16.1 cd SensorplatformParent
-16.2 mvn clean install -Praspberrypi3,telipro
-
-16. Export
-16.1 "cd .."
-16.2 "sudo sensorplatform.sh --export"
-
-TODO
-init.d shell script
-Sensorplatform:
-bin
-db
-static resources
-what about keystore file?
-
-16.3 "sudo reboot"
-16.4 The sensorplatform application will now start automatically after boot
-
-17. Open https://sensorplatform.fit.fraunhofer.de:8080 in Chrome/Firefox/Edge(or https://129.26.160.38:8080 in case of static IP)
-
-## Local Windows Installation Guide
-
-Since there are no Linux command line tools available on windows, test classes with mock-data are used.
+The sensorplatform application will now start automatically at each boot. The webapplication is accessible from
+https://sensorplatform.fit.fraunhofer.de:8080
+https://129.26.160.38:8080 or another IP

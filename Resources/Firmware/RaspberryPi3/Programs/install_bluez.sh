@@ -42,9 +42,10 @@ systemctl enable bluetooth
 # print result at the end, should be new version now
 systemctl status bluetooth
 
-# delete down
+# delete downloaded file
 echo "Cleanup"
-rm -r /home/${username}/Downloads/bluez
+cd ..
+rm -r /home/${username}/Downloads/bluez-${version}
 
 echo "Finished installing Bluez"
 exit 0

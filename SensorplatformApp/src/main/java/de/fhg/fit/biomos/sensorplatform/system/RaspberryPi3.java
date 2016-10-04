@@ -161,6 +161,7 @@ public class RaspberryPi3 implements HardwarePlatform {
       }
       output.close();
       process.waitFor();
+      LOG.info("wvdial finished");
     } catch (IOException | InterruptedException e) {
       LOG.error("getting local controller address failed", e);
     }

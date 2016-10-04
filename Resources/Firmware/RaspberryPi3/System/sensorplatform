@@ -11,19 +11,19 @@
  
 # Actions
 case "$1" in
-    start)
-		/opt/vc/bin/tvservice –o 
-		cd /home/pi/Sensorplatform
-        java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
+	start)
+		/opt/vc/bin/tvservice -o 
+		cd /home/administrator/Sensorplatform
+        /lib/jvm/jdk1.8.0_101/bin/java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
         ;;
     stop)
         killall java
         ;;
     restart)
         killall java
-		/opt/vc/bin/tvservice –o
-		cd /home/pi/Sensorplatform
-        java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
+		/opt/vc/bin/tvservice -o
+		cd /home/administrator/Sensorplatform
+        /lib/jvm/jdk1.8.0_101/bin/java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
         ;;
 esac
  
