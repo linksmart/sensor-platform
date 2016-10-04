@@ -1,8 +1,8 @@
 #! /bin/sh
 
-remoteloginname='pi'
+remoteloginname='administrator'
 remotehost='129.26.160.38'
-targetdirectory='/home/pi/Sensorplatform'
+targetdirectory='/home/administrator/Sensorplatform'
 
 case "$1" in
 	upload)

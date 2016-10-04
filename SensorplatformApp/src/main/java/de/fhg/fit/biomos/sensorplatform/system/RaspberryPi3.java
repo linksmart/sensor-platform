@@ -160,8 +160,9 @@ public class RaspberryPi3 implements HardwarePlatform {
         }
       }
       output.close();
+      process.destroy(); // after upgrading the OS wvdial does not terminate anymore, force it
       process.waitFor();
-      LOG.info("wvdial finished");
+      LOG.info("wvdial terminated");
     } catch (IOException | InterruptedException e) {
       LOG.error("getting local controller address failed", e);
     }

@@ -1,8 +1,8 @@
 #!/bin/sh
 
-remoteloginname='pi'
+remoteloginname='administrator'
 remotehost='sensorplatform.fit.fraunhofer.de'
-targetdirectory='/home/pi/Sensorplatform/bin'
+targetdirectory='/home/administrator/Sensorplatform/bin'
 
 #run="ssh ${remoteloginname}@${remotehost} mkdir -p ${targetdirectory}"
 #echo "Executing: ${run}"
