@@ -233,7 +233,7 @@
             <url>${project.baseUri}</url>
         </site>
     </distributionManagement>
-    
+
     <reporting>
         <plugins>
             <plugin>

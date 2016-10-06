@@ -81,31 +81,33 @@ public class HeartRateSampleCollector implements SampleCollector {
    *          HeartRateSample from the queue
    */
   private void uploadSample(HeartRateSample hrs) {
-    int attempt = 1;
-    while (attempt <= UPLOAD_ATTEMPTS) {
-      try {
-        int statusCode = this.uploader.sendHeartRateSample(hrs);
-        switch (statusCode) {
-          case HttpStatus.SC_CREATED:
-            hrs.setTransmitted(true);
-            // LOG.info("sample transmission successful");
-            return;
-          case HttpStatus.SC_OK:
-            hrs.setTransmitted(true);
-            // LOG.info("sample transmission successful");
-            return;
-          case HttpStatus.SC_UNAUTHORIZED:
-            LOG.error("transmission unauthorized - attempting to log in again");
-            this.uploader.login();
-            break;
-          default:
-            LOG.error("transmission failed, error code: " + statusCode);
-            attempt++;
-            break;
+    if (this.uploader != null) {
+      int attempt = 1;
+      while (attempt <= UPLOAD_ATTEMPTS) {
+        try {
+          int statusCode = this.uploader.sendHeartRateSample(hrs);
+          switch (statusCode) {
+            case HttpStatus.SC_CREATED:
+              hrs.setTransmitted(true);
+              // LOG.info("sample transmission successful");
+              return;
+            case HttpStatus.SC_OK:
+              hrs.setTransmitted(true);
+              // LOG.info("sample transmission successful");
+              return;
+            case HttpStatus.SC_UNAUTHORIZED:
+              LOG.error("transmission unauthorized - attempting to log in again");
+              this.uploader.login();
+              break;
+            default:
+              LOG.error("transmission failed, error code: " + statusCode);
+              attempt++;
+              break;
+          }
+        } catch (IOException e) {
+          LOG.error("http client execute (sample transmission) failed", e.getMessage());
+          attempt++;
         }
-      } catch (IOException e) {
-        LOG.error("http client execute (sample transmission) failed", e.getMessage());
-        attempt++;
       }
     }
   }
@@ -133,13 +135,16 @@ public class HeartRateSampleCollector implements SampleCollector {
       this.uploader.login();
     }
     while (this.used) {
-      if (!this.queue.isEmpty()) {
-        HeartRateSample hrs = this.queue.peek();
-        if (this.uploader != null) {
-          uploadSample(hrs);
+      if (this.queue.size() >= 100) {
+        LOG.info("queue size is " + this.queue.size());
+        while (!this.queue.isEmpty()) {
+          storeSample(this.queue.poll());
         }
+      }
+      if (!this.queue.isEmpty()) {
+        HeartRateSample hrs = this.queue.poll();
+        uploadSample(hrs);
         storeSample(hrs);
-        this.queue.poll();
       } else {
         try {
           Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);

@@ -209,6 +209,7 @@ public class Controller implements Runnable {
    * @return String a message for the frontend
    */
   public String startRecordingPeriod(long uptimeMillis, String firstname, String lastname, JSONArray sensorConfiguration, boolean isNewConfiguration) {
+    boolean allSensorsAvailable = true;
     if (!this.recording) {
       this.recording = true;
       this.uptimeMillis = uptimeMillis;
@@ -236,12 +237,15 @@ public class Controller implements Runnable {
             return START_SENSOR_NOT_AVAILABLE + asw.getSensor().toString();
           } else {
             LOG.info("SensorOverseer will handle reconnection attempts for the remaining time");
+            allSensorsAvailable = false;
           }
         }
       }
       enableLogging();
       startThreads();
-      this.hwPlatform.setLEDstateRECORDING();
+      if (allSensorsAvailable) {
+        this.hwPlatform.setLEDstateRECORDING();
+      }
       LOG.info("sensorplatform is recording");
       if (isNewConfiguration) {
         return START_SUCCESS_NEW;
@@ -249,7 +253,7 @@ public class Controller implements Runnable {
         return START_SUCCESS_CONTINUE;
       }
     } else {
-      LOG.error("data recording ongoing. No other startup allowed! Skipped!");
+      LOG.info("data recording ongoing. No other startup allowed! Skipped!");
       return START_ALREADY_RUNNING;
     }
   }

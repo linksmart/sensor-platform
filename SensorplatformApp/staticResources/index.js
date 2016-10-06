@@ -45,7 +45,19 @@ function startRecording() {
 	var uptime = $("#uptime").val();
 	var firstname = $("#firstname").val();
 	var lastname = $("#lastname").val();
-	var configuration = JSON.parse($("#configview").val());
+	var uptime = $("#uptime").val();
+	if (uptime == ""){
+		$("#modalmessage").text("No uptime specified!");
+		$('#message').modal('show');
+		return;
+	}
+	try {
+		var configuration = JSON.parse($("#configview").val());
+	} catch (err) {
+		$("#modalmessage").text("Bad sensor configuration JSON syntax!");
+		$('#message').modal('show');
+		return;
+	}
 	var requestentity = {
 		"uptime" : uptime,
 		"firstname": firstname,
