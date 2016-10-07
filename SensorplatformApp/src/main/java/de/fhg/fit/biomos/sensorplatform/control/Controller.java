@@ -49,7 +49,6 @@ public class Controller implements Runnable {
 
   private final SensorWrapperFactory swFactory;
   private final HardwarePlatform hwPlatform;
-  private final InternetConnectionManager inetman;
   private final HeartRateSampleCollector hrsCollector;
   private final PulseOximeterSampleCollector pulseCollector;
   private final CC2650SampleCollector cc2650Collector;
@@ -61,18 +60,18 @@ public class Controller implements Runnable {
   private Thread cc2650CollectorThread;
   private Thread controllerThread;
   private Thread sensorOverseerThread;
+  private Thread hwPlatformThread;
   private List<AbstractSensorWrapper<?>> swList;
 
   private long uptimeMillis;
   private boolean recording = false;
 
   @Inject
-  public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, InternetConnectionManager inetman, HeartRateSampleCollector hrsCollector,
+  public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, HeartRateSampleCollector hrsCollector,
       PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector, @Named("timeout.sensor.connect") String timeoutConnect,
       @Named("timeout.sensor.notification") String timeoutNotification, @Named("recording.info.filename") String recordingInfoFileName) {
     this.swFactory = swFactory;
     this.hwPlatform = hwPlatform;
-    this.inetman = inetman;
     this.hrsCollector = hrsCollector;
     this.pulseCollector = pulseCollector;
     this.cc2650Collector = cc2650Collector;
@@ -135,8 +134,9 @@ public class Controller implements Runnable {
    */
   public void initialise() {
     LOG.info("initialise controller");
-    // restartBluetoothController(); // no pairing supported from within this application
-    new Thread(this.inetman).start();
+    // restartBluetoothController(); // only for unbugging for pairing, no pairing supported from within this application
+    this.hwPlatformThread = new Thread(this.hwPlatform);
+    this.hwPlatformThread.start();
     if (!this.recordingInfo.exists()) {
       LOG.info("no recording period was interrupted");
       this.hwPlatform.setLEDstateSTANDBY();

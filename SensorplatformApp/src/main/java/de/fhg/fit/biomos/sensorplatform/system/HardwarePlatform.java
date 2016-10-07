@@ -1,18 +1,29 @@
 package de.fhg.fit.biomos.sensorplatform.system;
 
-import java.net.SocketException;
-
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 
 /**
- * Defines functions which are dependant on the board hardware or low level configuration of the operating system. Is used as a factory for creating specific
- * gatttools.
+ * Defines functions which are dependant on the board hardware or low level configuration of the operating system.
  *
  * @author Daniel Pyka
  *
  */
-public interface HardwarePlatform {
+public interface HardwarePlatform extends Runnable {
+
+  /**
+   * Check if the Sensorplatform is connected to mobile internet via a surf stick.
+   *
+   * @return true if connection is active, false otherwise
+   */
+  public boolean isConnectedToMobileInternet();
+
+  /**
+   * Get the signal quality from surf stick.
+   *
+   * @return int signal quality in dBm
+   */
+  public int getMobileInternetSignalQuality();
 
   /**
    * Set a LED on the board to blink slowly.
@@ -42,17 +53,6 @@ public interface HardwarePlatform {
    * @return Hcitool object for interacting with hcitool console tool
    */
   public Hcitool getHcitool();
-
-  /**
-   * Print infos about the interface which is used by the mobile internet connection.
-   *
-   * @return true if it is up, false otherwise
-   * @throws SocketException
-   *           if interface is not up and running
-   * @throws NullPointerException
-   *           if interface is not up and running
-   */
-  public boolean printInternetInterfaceInfo() throws SocketException, NullPointerException;
 
   /**
    * Use some driver to start a daemon process which handles mobile internet connection.

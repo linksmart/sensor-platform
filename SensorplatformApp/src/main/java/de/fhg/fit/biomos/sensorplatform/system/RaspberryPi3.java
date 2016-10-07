@@ -14,6 +14,9 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
@@ -35,6 +38,12 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final String BLINK_INTERVAL = "1000";
 
   private static final String WVDIAL = "wvdial";
+  private static final String COMGT = "comgt sig";
+
+  private static final String QUALITY_MARGINAL = "marginal";
+  private static final String QUALITY_OK = "OK";
+  private static final String QUALITY_GOOD = "good";
+  private static final String QUALITY_EXCELLENT = "excellent";
 
   private static final Pattern ATCSQ = Pattern.compile("\\+CSQ: (\\d+),(\\d+)");
   private static final Pattern PID_PPPD = Pattern.compile("Pid of pppd: (\\d+)");
@@ -43,10 +52,16 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final Pattern PRIMARY_DNS = Pattern.compile("primary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern SECONDARY_DNS = Pattern.compile("secondary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
 
+  private static final Pattern COMGT_SIGNALSTRENGTH = Pattern.compile("Signal Quality: (\\d+),(\\d+)");
+
   private static final String INTERNET_INTERFACE_NAME = "ppp0";
 
   private final Hciconfig hciconfig;
   private final Hcitool hcitool;
+
+  private final Long internetCheckInterval;
+  private boolean mobileInternet;
+  private int signalQuality = 99;
 
   private enum LEDstate {
     STANDBY("timer"), RECORDING("heartbeat"), ERROR("none");
@@ -64,9 +79,46 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   }
 
-  public RaspberryPi3() {
+  @Inject
+  public RaspberryPi3(@Named("internet.check.interval") String internetCheckInterval) {
+    this.internetCheckInterval = new Long(internetCheckInterval) * 1000;
+    this.mobileInternet = false;
     this.hciconfig = new HciconfigImpl();
     this.hcitool = new HcitoolImpl();
+  }
+
+  @Override
+  public void run() {
+    while (!Thread.currentThread().isInterrupted()) {
+      try {
+        retrieveSignalQuality();
+      } catch (IOException | InterruptedException e) {
+        LOG.error("cannot retrieve signal quality", e);
+      }
+      try {
+        this.mobileInternet = hasMobileInternetConnection();
+      } catch (SocketException | NullPointerException e) {
+        LOG.info("interface not running - starting daemon now");
+        this.mobileInternet = false;
+        connectToMobileInternet();
+      }
+      try {
+        Thread.sleep(this.internetCheckInterval);
+      } catch (InterruptedException e) {
+        LOG.error("sleep failed", e);
+      }
+    }
+    LOG.info("daemon thread finished");
+  }
+
+  @Override
+  public boolean isConnectedToMobileInternet() {
+    return this.mobileInternet;
+  }
+
+  @Override
+  public int getMobileInternetSignalQuality() {
+    return this.signalQuality;
   }
 
   @Override
@@ -121,8 +173,34 @@ public class RaspberryPi3 implements HardwarePlatform {
     return this.hcitool;
   }
 
-  @Override
-  public boolean printInternetInterfaceInfo() throws SocketException, NullPointerException {
+  /**
+   * Retrieve the signal quality from the surf stick via a helper program comgt and store it in an internal variable.
+   */
+  private void retrieveSignalQuality() throws IOException, InterruptedException {
+    Process process = Runtime.getRuntime().exec(COMGT);
+    BufferedReader output = new BufferedReader(new InputStreamReader(process.getInputStream()));
+    String line = null;
+    while ((line = output.readLine()) != null) {
+      Matcher m = COMGT_SIGNALSTRENGTH.matcher(line);
+      if (m.find()) {
+        this.signalQuality = CSQtoDBM(m.group(1));
+        LOG.info("signal quality is " + this.signalQuality + " dBm, considered to be " + interpreteSignalQuality(m.group(1)));
+      }
+    }
+    output.close();
+    process.waitFor();
+  }
+
+  /**
+   * Check if the network interface for mobile internet is up and running.
+   *
+   * @return true if ppp0 is up, false otherwise
+   * @throws SocketException
+   *           if there is an error accessing a socket
+   * @throws NullPointerException
+   *           if ppp0 does not exist
+   */
+  private boolean hasMobileInternetConnection() throws SocketException, NullPointerException {
     NetworkInterface inet = NetworkInterface.getByName(INTERNET_INTERFACE_NAME);
     LOG.info(inet.getDisplayName() + " " + inet.getInetAddresses().nextElement().getHostAddress() + " " + inet.isUp());
     return inet.isUp();
@@ -176,6 +254,28 @@ public class RaspberryPi3 implements HardwarePlatform {
    */
   private int CSQtoDBM(String csq) {
     return (-113) + new Integer(csq) * 2;
+  }
+
+  /**
+   * Interprete the signal quality value.
+   *
+   * @param csq
+   *          raw csq value
+   * @return String marginal, OK, good, excellent
+   */
+  private String interpreteSignalQuality(String csq) {
+    int val = Integer.parseInt(csq);
+    if (val >= 0 && val < 10) {
+      return QUALITY_MARGINAL;
+    } else if (val > 9 && val < 15) {
+      return QUALITY_OK;
+    } else if (val > 14 && val < 20) {
+      return QUALITY_GOOD;
+    } else if (val > 19 && val <= 30) {
+      return QUALITY_EXCELLENT;
+    } else {
+      return "unknown range";
+    }
   }
 
 }

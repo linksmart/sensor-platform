@@ -158,7 +158,7 @@ public class GatttoolImpl implements Gatttool {
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
       this.state = State.RECONNECTING;
-      LOG.info("Attempting to reconnect to sensor for ca. 40s (nonblocking)");
+      LOG.info("Attempting to reconnect to sensor for 40s");
     } catch (IOException e) {
       LOG.error("reconnect failed", e);
     }

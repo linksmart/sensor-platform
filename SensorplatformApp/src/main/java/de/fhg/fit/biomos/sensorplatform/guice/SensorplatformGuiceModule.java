@@ -13,14 +13,12 @@ import com.google.inject.util.Providers;
 import de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.Controller;
 import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
-import de.fhg.fit.biomos.sensorplatform.control.InternetConnectionManager;
 import de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector;
 import de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
 import de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service;
 import de.fhg.fit.biomos.sensorplatform.restservices.ControllerService;
 import de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService;
-import de.fhg.fit.biomos.sensorplatform.restservices.InfoService;
 import de.fhg.fit.biomos.sensorplatform.restservices.PulseOximeterService;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3;
@@ -54,7 +52,6 @@ public class SensorplatformGuiceModule extends AbstractModule {
   @Override
   protected void configure() {
     bind(ControllerService.class);
-    bind(InfoService.class);
     bind(HeartRateService.class);
     bind(PulseOximeterService.class);
     bind(CC2650Service.class);
@@ -105,7 +102,6 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);
     bind(DBcontroller.class).in(Singleton.class);
-    bind(InternetConnectionManager.class).in(Singleton.class);
     try {
       Names.bindProperties(binder(), this.properties);
     } catch (Exception e) {

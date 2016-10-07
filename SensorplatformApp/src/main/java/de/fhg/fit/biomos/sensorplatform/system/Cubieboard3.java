@@ -1,7 +1,5 @@
 package de.fhg.fit.biomos.sensorplatform.system;
 
-import java.net.SocketException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +24,24 @@ public class Cubieboard3 implements HardwarePlatform {
   public Cubieboard3() {
     this.hciconfig = new HciconfigImpl();
     this.hcitool = new HcitoolImpl();
+  }
+
+  @Override
+  public void run() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public boolean isConnectedToMobileInternet() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public int getMobileInternetSignalQuality() {
+    // TODO Auto-generated method stub
+    return 0;
   }
 
   @Override
@@ -54,12 +70,6 @@ public class Cubieboard3 implements HardwarePlatform {
   @Override
   public Hcitool getHcitool() {
     return this.hcitool;
-  }
-
-  @Override
-  public boolean printInternetInterfaceInfo() throws SocketException, NullPointerException {
-    // TODO Auto-generated method stub
-    return false;
   }
 
   @Override

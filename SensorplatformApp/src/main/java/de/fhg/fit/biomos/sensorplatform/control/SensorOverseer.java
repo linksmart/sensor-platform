@@ -73,7 +73,7 @@ public class SensorOverseer implements Runnable {
             break;
           case DISCONNECTED:
             asw.getGatttool().reconnect();
-            LOG.info(asw.getSensor().toString() + " (still) not connected");
+            LOG.info(asw.getSensor().toString() + " still not connected");
             break;
           case CONNECTED:
             asw.enableLogging();

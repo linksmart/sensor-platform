@@ -23,6 +23,7 @@ window.setInterval(function() {
 			$("#device").text(response["sensorplatform"]);
 			$("#uploader").text(response["uploader"]);
 			$("#mobileinet").text(response["mobileinternet"]);
+			$("#signalquality").text(response["signalquality"]);
 		}
 		if (request.readyState == 4 && request.status == 500) {
 			$("#recording").text("(server error)");
@@ -30,7 +31,7 @@ window.setInterval(function() {
 			$("#uploader").text("(server error)");
 		}
 	};
-	request.open("GET", "info", true);
+	request.open("GET", "controller/info", true);
 	request.send();
 }, 3000);
 
