@@ -3,9 +3,12 @@ package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.sensor.Sensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
+import de.fhg.fit.biomos.sensorplatform.tools.Gatttool.Mode;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
 
 /**
@@ -16,6 +19,8 @@ import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
  */
 public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements SensorWrapper<T> {
 
+  private static final Logger LOG = LoggerFactory.getLogger(AbstractSensorWrapper.class);
+
   protected final DateTimeFormatter dtf;
 
   protected final Gatttool gatttool;
@@ -25,6 +30,8 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
   protected final String lastname;
 
   protected long lastNotificationTimestamp;
+
+  protected String requestedHandle;
 
   /**
    *
@@ -51,11 +58,13 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
   public void enableLogging() {
     this.sensor.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
     this.lastNotificationTimestamp = System.currentTimeMillis();
+    this.gatttool.setInternalMode(Mode.NOTIFICATION);
   }
 
   @Override
   public void disableLogging() {
     this.sensor.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
+    this.gatttool.setInternalMode(Mode.COMMANDMODE);
   }
 
   @Override
@@ -71,6 +80,18 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
   @Override
   public long getLastNotifactionTimestamp() {
     return this.lastNotificationTimestamp;
+  }
+
+  @Override
+  public void getBatteryLevel() {
+    this.requestedHandle = this.sensor.requestBatteryLevel(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_READ_HND);
+  }
+
+  @Override
+  public void newCommandData(Gatttool observable, String rawHexValues) {
+    if (this.requestedHandle.equals(this.sensor.getGattLibrary().getHandleBatteryLevel())) {
+      LOG.info("Battery level of {}: {}", this.sensor.getName(), this.sensor.calculateBatteryLevel(rawHexValues));
+    }
   }
 
 }

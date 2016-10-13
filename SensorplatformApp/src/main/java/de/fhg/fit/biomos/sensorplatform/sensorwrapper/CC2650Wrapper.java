@@ -75,7 +75,7 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
       this.cc2650Collector.addToQueue(movementSample);
       return;
     }
-    LOG.warn("unexpected handle address " + handle + " " + rawHexValues);
+    LOG.warn("unexpected handle address {} {}", handle, rawHexValues);
   }
 
 }

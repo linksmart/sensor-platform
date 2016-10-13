@@ -15,7 +15,7 @@ import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
 
 /**
  * Implementation of control class hcitool for Linux.
- * 
+ *
  * @author Daniel Pyka
  *
  */
@@ -34,7 +34,7 @@ public class HcitoolImpl implements Hcitool {
   public List<DetectedDevice> scan(int duration) {
     this.detectedDeviceList.clear();
     try {
-      LOG.info("scanning for " + duration + " seconds...");
+      LOG.info("scanning for {} seconds...", duration);
       Process process = Runtime.getRuntime().exec("timeout -s SIGINT " + duration + "s hcitool lescan");
       BufferedReader streamFromHcitool = new BufferedReader(new InputStreamReader(process.getInputStream()));
       String line = null;

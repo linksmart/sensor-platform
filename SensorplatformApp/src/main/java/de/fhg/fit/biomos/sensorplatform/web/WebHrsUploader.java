@@ -88,6 +88,7 @@ public class WebHrsUploader implements Uploader {
 
   @Override
   public int sendHeartRateSample(HeartRateSample hrs) throws IOException {
+    long before = System.currentTimeMillis();
     HttpPost post = new HttpPost(this.dataAddress);
     post.setHeader("User-Agent", this.userAgent);
 
@@ -98,6 +99,8 @@ public class WebHrsUploader implements Uploader {
     CloseableHttpResponse response = this.httpclient.execute(post);
     int statusCode = response.getStatusLine().getStatusCode();
     response.close();
+    long after = System.currentTimeMillis();
+    LOG.info("Http post request result {} in {} ms", statusCode, (after - before));
     return statusCode;
   }
 

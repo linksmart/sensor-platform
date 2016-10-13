@@ -35,4 +35,8 @@ public interface SensorCommands {
    */
   public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification);
 
+  public String requestBatteryLevel(BufferedWriter streamToSensor, String charReadCmd);
+
+  public int calculateBatteryLevel(String rawHexValue);
+
 }

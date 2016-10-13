@@ -61,12 +61,12 @@ public class SensorplatformGuiceModule extends AbstractModule {
 
     switch (webinterfaceName) {
       case "TeLiPro":
-        LOG.info("webinterface is " + webinterfaceName);
+        LOG.info("webinterface is {}", webinterfaceName);
         bind(TeLiProUploader.class).in(Singleton.class);
         bind(Uploader.class).to(TeLiProUploader.class);
         break;
       case "WebHrs":
-        LOG.info("webinterface is " + webinterfaceName);
+        LOG.info("webinterface is {}", webinterfaceName);
         bind(WebHrsUploader.class).in(Singleton.class);
         bind(Uploader.class).to(WebHrsUploader.class);
         break;
@@ -75,14 +75,14 @@ public class SensorplatformGuiceModule extends AbstractModule {
         bind(Uploader.class).toProvider(Providers.of(null));
         break;
       default:
-        LOG.error("unknown webinterface " + webinterfaceName);
+        LOG.error("unknown webinterface {}", webinterfaceName);
         bind(Uploader.class).toProvider(Providers.of(null));
         break;
     }
 
     switch (targetPlatform) {
       case "raspberrypi3":
-        LOG.info("target platform is " + targetPlatform);
+        LOG.info("target platform is {}", targetPlatform);
         bind(RaspberryPi3.class).in(Singleton.class);
         bind(HardwarePlatform.class).to(RaspberryPi3.class);
         break;
@@ -91,7 +91,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
         System.exit(-1);
         break;
       default:
-        LOG.error("unknown target platform " + targetPlatform);
+        LOG.error("unknown target platform {}", targetPlatform);
         System.exit(-1);
         break;
     }

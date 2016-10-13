@@ -23,7 +23,7 @@ import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
 
 /**
  * REST service for heart rate samples database interaction.
- * 
+ *
  * @author Daniel Pyka
  *
  */
@@ -113,9 +113,16 @@ public class HeartRateService {
   public Response manualHrsUpload() {
     LOG.info("/hrs/manualupload called");
     DBsession s = this.db.getSession();
-    this.controller.manualHrsUpload(s.getNotTransmittedHeartRateSamples());
+    String result = this.controller.manualHrsUpload(s.getNotTransmittedHeartRateSamples());
     s.close();
-    return Response.ok().build();
+    try {
+      JSONObject response = new JSONObject();
+      response.put("result", result);
+      return Response.ok(response).build();
+    } catch (JSONException e) {
+      LOG.error("bad controller result text", e);
+      return Response.serverError().build();
+    }
   }
 
 }

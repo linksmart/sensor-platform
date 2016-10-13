@@ -116,15 +116,14 @@ function manualHrsUpload() {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
-			console.log("manual hrs upload successful");
+			response = JSON.parse(request.responseText);
+			$("#modalmessage").text(response["result"]);
+			$('#message').modal('show');
 			getNumbersHrs();
-			loadHrs();
 		}
 	};
 	request.open("GET", "hrs/manualupload", true);
 	request.send();
-	$("#modalmessage").text("This may take a while...");
-	$('#message').modal('show');
 }
 
 function getNumbersHrs() {

@@ -1,6 +1,11 @@
 package de.fhg.fit.biomos.sensorplatform.sensor;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
@@ -14,6 +19,8 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  *
  */
 public abstract class Sensor<T extends GattLibrary> implements SensorCommands {
+
+  private static final Logger LOG = LoggerFactory.getLogger(Sensor.class);
 
   protected final T gattLibrary;
   protected final SensorName name;
@@ -29,6 +36,10 @@ public abstract class Sensor<T extends GattLibrary> implements SensorCommands {
     this.addressType = addressType;
     this.securityLevel = securityLevel;
     this.settings = settings;
+  }
+
+  public T getGattLibrary() {
+    return this.gattLibrary;
   }
 
   public SensorName getName() {
@@ -49,6 +60,29 @@ public abstract class Sensor<T extends GattLibrary> implements SensorCommands {
 
   public JSONObject getSettings() {
     return this.settings;
+  }
+
+  @Override
+  public String requestBatteryLevel(BufferedWriter streamToSensor, String charReadCmd) {
+    String handle = this.gattLibrary.getHandleBatteryLevel();
+    if (handle != null) {
+      try {
+        streamToSensor.write(charReadCmd + " " + handle);
+        streamToSensor.newLine();
+        streamToSensor.flush();
+        LOG.info("read battery level");
+      } catch (IOException e) {
+        LOG.error("cannot read battery level", e);
+      }
+    } else {
+      LOG.error("battery level is not supported by the gatt server");
+    }
+    return handle;
+  }
+
+  @Override
+  public int calculateBatteryLevel(String rawHexValues) {
+    return Integer.parseInt(rawHexValues, 16);
   }
 
   @Override

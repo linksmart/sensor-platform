@@ -30,6 +30,11 @@ public class BLE113lib implements PulseOximeterGattLibrary {
   }
 
   @Override
+  public String getHandleBatteryLevel() {
+    return null;
+  }
+
+  @Override
   public String getHandlePulseOximeterMeasurement() {
     return this.HANDLE_PULSE_OXIMETER_MEASUREMENT;
   }

@@ -47,6 +47,8 @@ public interface SensorWrapper<T extends Sensor<?>> {
    */
   public long getLastNotifactionTimestamp();
 
+  public void getBatteryLevel();
+
   /**
    * Notifiy the observer when a new sensor notification has arrived.
    *
@@ -58,5 +60,7 @@ public interface SensorWrapper<T extends Sensor<?>> {
    *          hexadecimal values of the notification delivered by gatttool
    */
   public void newNotificationData(Gatttool observable, String handle, String rawHexValues);
+
+  public void newCommandData(Gatttool observable, String rawHexValues);
 
 }

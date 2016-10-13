@@ -6,7 +6,7 @@ import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 
 /**
  * Defines a hardware abstraction layer to interact with the gatttool command line tool from Bluez.
- * 
+ *
  * @author Daniel Pyka
  *
  */
@@ -16,12 +16,20 @@ public interface Gatttool extends Runnable {
     CONNECTED, DISCONNECTED, RECONNECTING
   };
 
+  public enum Mode {
+    COMMANDMODE, NOTIFICATION
+  }
+
   /**
    * Expose the internal state of the Gatttool. SensorOverseer makes use of it.
    *
    * @return State the state the gatttool is currently in
    */
-  public Gatttool.State getInternalState();
+  public State getInternalState();
+
+  public Mode getInternalMode();
+
+  public void setInternalMode(Mode mode);
 
   /**
    * Expose process input stream to be used in a sensorobject.
@@ -37,16 +45,6 @@ public interface Gatttool extends Runnable {
    *          SensorWrapper is the observer
    */
   public void setObserver(AbstractSensorWrapper<?> observer);
-
-  /**
-   * Notify the SensorWrapper that a new notification has arrived in Gatttool.
-   *
-   * @param handle
-   *          handle address of the notification
-   * @param rawHexValues
-   *          hexadecimal values of the notification
-   */
-  public void notifyObserver(String handle, String rawHexValues);
 
   /**
    * Try to connect to a sensor.

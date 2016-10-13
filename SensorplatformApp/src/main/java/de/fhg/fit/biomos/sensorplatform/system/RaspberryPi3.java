@@ -133,7 +133,7 @@ public class RaspberryPi3 implements HardwarePlatform {
       pw = new PrintWriter(new File(LED0_DELAY_OFF));
       pw.write(BLINK_INTERVAL);
       pw.close();
-      LOG.info("LED " + LEDstate.STANDBY.name());
+      LOG.info("LED {}", LEDstate.STANDBY.name());
     } catch (FileNotFoundException e) {
       LOG.error("cannot write to board LED file (no sudo)", e);
     }
@@ -145,7 +145,7 @@ public class RaspberryPi3 implements HardwarePlatform {
       PrintWriter pw = new PrintWriter(new File(LED0_TRIGGER));
       pw.write(LEDstate.RECORDING.toString());
       pw.close();
-      LOG.info("LED " + LEDstate.RECORDING.name());
+      LOG.info("LED {}", LEDstate.RECORDING.name());
     } catch (FileNotFoundException e) {
       LOG.error("cannot write to board LED file (no sudo)", e);
     }
@@ -157,7 +157,7 @@ public class RaspberryPi3 implements HardwarePlatform {
       PrintWriter pw = new PrintWriter(new File(LED0_TRIGGER));
       pw.write(LEDstate.ERROR.toString());
       pw.close();
-      LOG.info("LED " + LEDstate.ERROR.name());
+      LOG.info("LED {}", LEDstate.ERROR.name());
     } catch (FileNotFoundException e) {
       LOG.error("cannot write to board LED file (no sudo)", e);
     }
@@ -183,8 +183,8 @@ public class RaspberryPi3 implements HardwarePlatform {
     while ((line = output.readLine()) != null) {
       Matcher m = COMGT_SIGNALSTRENGTH.matcher(line);
       if (m.find()) {
-        this.signalQuality = CSQtoDBM(m.group(1));
-        LOG.info("signal quality is " + this.signalQuality + " dBm, considered to be " + interpreteSignalQuality(m.group(1)));
+        this.signalQuality = asuToRssi(m.group(1));
+        LOG.info("signal quality is {}dBm, {}%, considered to be {}", this.signalQuality, asuToRssiPercent(m.group(1)), interpreteSignalQuality(m.group(1)));
       }
     }
     output.close();
@@ -202,7 +202,7 @@ public class RaspberryPi3 implements HardwarePlatform {
    */
   private boolean hasMobileInternetConnection() throws SocketException, NullPointerException {
     NetworkInterface inet = NetworkInterface.getByName(INTERNET_INTERFACE_NAME);
-    LOG.info(inet.getDisplayName() + " " + inet.getInetAddresses().nextElement().getHostAddress() + " " + inet.isUp());
+    LOG.info("{} {} {}", inet.getDisplayName(), inet.getInetAddresses().nextElement().getHostAddress(), inet.isUp());
     return inet.isUp();
   }
 
@@ -222,23 +222,23 @@ public class RaspberryPi3 implements HardwarePlatform {
         Matcher m5 = ATCSQ.matcher(line);
         Matcher m6 = PID_PPPD.matcher(line);
         if (m5.find()) {
-          LOG.info("signal quality is " + m5.group(1) + " CSQ or " + CSQtoDBM(m5.group(1)) + " dBm");
-          LOG.info("bit error rate (RxQual) is " + m5.group(2) + " (99: not supported)");
+          LOG.info("signal quality is {} ASU {}dBm {}%", m5.group(1), asuToRssi(m5.group(1)), asuToRssiPercent(m5.group(1)));
+          LOG.info("bit error rate is {} (99=not supported)", m5.group(2));
         } else if (m6.find()) {
-          LOG.info("process id is " + m6.group(1));
+          LOG.info("process id is {}", m6.group(1));
         } else if (m1.find()) {
-          LOG.info("local ip is " + m1.group(1));
+          LOG.info("local ip is {}", m1.group(1));
         } else if (m2.find()) {
-          LOG.info("remote ip is " + m2.group(1));
+          LOG.info("remote ip is {}", m2.group(1));
         } else if (m3.find()) {
-          LOG.info("primary DNS is " + m3.group(1));
+          LOG.info("primary DNS is {}", m3.group(1));
         } else if (m4.find()) {
-          LOG.info("secondary DNS is " + m4.group(1));
+          LOG.info("secondary DNS is {}", m4.group(1));
           break;
         }
       }
       output.close();
-      process.destroy(); // after upgrading the OS wvdial does not terminate anymore, force it
+      process.destroy();
       process.waitFor();
       LOG.info("wvdial terminated");
     } catch (IOException | InterruptedException e) {
@@ -248,33 +248,43 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   /**
    *
-   * @param csq
+   * @param asu
    *          first number of the output from modem command AT+CSQ
-   * @return unit in dBm
+   * @return RSSI in dBm
    */
-  private int CSQtoDBM(String csq) {
-    return (-113) + new Integer(csq) * 2;
+  private int asuToRssi(String asu) {
+    return (-113) + new Integer(asu) * 2;
+  }
+
+  /**
+   *
+   * @param asu
+   *          raw asu value
+   * @return signal quality percentage
+   */
+  private int asuToRssiPercent(String asu) {
+    return Math.round(new Float(asu) / 31 * 100);
   }
 
   /**
    * Interprete the signal quality value.
    *
-   * @param csq
-   *          raw csq value
-   * @return String marginal, OK, good, excellent
+   * @param asu
+   *          raw asu value
+   * @return String marginal, OK, good, excellent, invalid range
    */
-  private String interpreteSignalQuality(String csq) {
-    int val = Integer.parseInt(csq);
+  private String interpreteSignalQuality(String asu) {
+    int val = Integer.parseInt(asu);
     if (val >= 0 && val < 10) {
       return QUALITY_MARGINAL;
     } else if (val > 9 && val < 15) {
       return QUALITY_OK;
     } else if (val > 14 && val < 20) {
       return QUALITY_GOOD;
-    } else if (val > 19 && val <= 30) {
+    } else if (val > 19 && val <= 31) {
       return QUALITY_EXCELLENT;
     } else {
-      return "unknown range";
+      return "invalid range";
     }
   }
 

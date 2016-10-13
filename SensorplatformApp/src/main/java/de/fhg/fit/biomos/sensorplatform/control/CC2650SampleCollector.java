@@ -1,7 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +31,11 @@ public class CC2650SampleCollector implements SampleCollector {
 
   private final DBcontroller dbc;
 
-  private final Queue<CC2650TemperatureSample> queueTemp = new LinkedList<CC2650TemperatureSample>();
-  private final Queue<CC2650HumiditySample> queueHum = new LinkedList<CC2650HumiditySample>();
-  private final Queue<CC2650PressureSample> queuePress = new LinkedList<CC2650PressureSample>();
-  private final Queue<CC2650AmbientlightSample> queueAmb = new LinkedList<CC2650AmbientlightSample>();
-  private final Queue<CC2650MovementSample> queueMov = new LinkedList<CC2650MovementSample>();
-
-  private final String firstname = "unknown";
-  private final String lastname = "unknown";
+  private final Queue<CC2650TemperatureSample> queueTemp = new ConcurrentLinkedQueue<CC2650TemperatureSample>();
+  private final Queue<CC2650HumiditySample> queueHum = new ConcurrentLinkedQueue<CC2650HumiditySample>();
+  private final Queue<CC2650PressureSample> queuePress = new ConcurrentLinkedQueue<CC2650PressureSample>();
+  private final Queue<CC2650AmbientlightSample> queueAmb = new ConcurrentLinkedQueue<CC2650AmbientlightSample>();
+  private final Queue<CC2650MovementSample> queueMov = new ConcurrentLinkedQueue<CC2650MovementSample>();
 
   private boolean used;
 

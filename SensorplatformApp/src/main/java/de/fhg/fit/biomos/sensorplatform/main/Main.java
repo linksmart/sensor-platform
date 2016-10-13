@@ -30,7 +30,7 @@ public class Main {
   public Main() {
     try {
       this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFileName));
-      LOG.info("version is " + this.properties.getProperty("version"));
+      LOG.info("version {}", this.properties.getProperty("version"));
     } catch (IOException e) {
       LOG.error("cannot load properties");
       System.exit(1);

@@ -101,7 +101,7 @@ public class SensorWrapperFactory {
             sensorWrapperList.add(ble113Wrapper);
             break;
           default:
-            LOG.error("unknown sensor name " + name);
+            LOG.error("unknown sensor name {}", name);
             break;
         }
       } catch (Exception e) {

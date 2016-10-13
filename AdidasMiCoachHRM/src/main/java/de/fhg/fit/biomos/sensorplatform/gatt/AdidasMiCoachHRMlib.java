@@ -33,6 +33,11 @@ public class AdidasMiCoachHRMlib implements HeartRateGattLibrary {
   }
 
   @Override
+  public String getHandleBatteryLevel() {
+    return this.HANDLE_BATTERY_LEVEL;
+  }
+
+  @Override
   public String getHandleHeartRateMeasurement() {
     return this.HANDLE_HEART_RATE_MEASUREMENT;
   }

@@ -57,7 +57,7 @@ public class SensorOverseer implements Runnable {
       for (AbstractSensorWrapper<?> asw : this.swList) {
         if ((currentTime - asw.getLastNotifactionTimestamp()) > (this.noNotificationTriggerTime * 1000)) {
           if (!this.wrapperWithLostSensor.contains(asw)) {
-            LOG.warn(asw.getSensor().toString() + " did not send a notification within " + this.noNotificationTriggerTime + "s");
+            LOG.warn("{} did not send a notification within {}s", asw.getSensor(), this.noNotificationTriggerTime);
             this.wrapperWithLostSensor.add(asw);
             asw.getGatttool().reconnect();
             LOG.info("attempt to reconnect");
@@ -73,12 +73,12 @@ public class SensorOverseer implements Runnable {
             break;
           case DISCONNECTED:
             asw.getGatttool().reconnect();
-            LOG.info(asw.getSensor().toString() + " still not connected");
+            LOG.info("{} still not connected", asw.getSensor());
             break;
           case CONNECTED:
             asw.enableLogging();
             iterator.remove();
-            LOG.info(asw.getSensor().toString() + " reconnected successfully");
+            LOG.info("{} reconnected successfully", asw.getSensor());
             this.hwPlatform.setLEDstateRECORDING();
             break;
         }

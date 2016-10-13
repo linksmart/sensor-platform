@@ -173,4 +173,9 @@ public class CC2650lib implements GattLibrary {
     return this.HANDLE_DEVICE_NAME;
   }
 
+  @Override
+  public String getHandleBatteryLevel() {
+    return null;
+  }
+
 }

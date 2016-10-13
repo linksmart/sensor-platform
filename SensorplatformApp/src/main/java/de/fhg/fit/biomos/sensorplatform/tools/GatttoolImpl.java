@@ -43,41 +43,44 @@ public class GatttoolImpl implements Gatttool {
   public static final String ENABLE_NOTIFICATION = "01:00";
   public static final String DISABLE_NOTIFICATION = "00:00";
 
-  protected static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
+  private static final Pattern NOTIFICATION_DATA = Pattern.compile("Notification handle = (\\dx\\d{4}) value: (.+)$");
+  private static final Pattern COMMAND_DATA = Pattern.compile("Characteristic value\\/descriptor: (\\w+)$");
 
-  protected State state;
+  private State state;
+  private Mode mode;
 
-  protected AbstractSensorWrapper<?> observer;
+  private AbstractSensorWrapper<?> observer;
 
-  protected final String bdAddress;
-  protected final AddressType addressType;
-  protected final SecurityLevel secLevel;
+  private final String bdAddress;
+  private final AddressType addressType;
+  private final SecurityLevel secLevel;
 
-  protected BufferedWriter streamToSensor = null;
-  protected BufferedReader streamFromSensor = null;
+  private BufferedWriter streamToSensor = null;
+  private BufferedReader streamFromSensor = null;
 
   public GatttoolImpl(String bdAddress, AddressType addressType, SecurityLevel secLevel) {
     this.bdAddress = bdAddress;
     this.addressType = addressType;
     this.secLevel = secLevel;
     this.state = State.DISCONNECTED;
+    this.mode = Mode.COMMANDMODE;
     try {
       Process process = Runtime.getRuntime().exec(GATTTTOOL_INTERACTIVE + this.addressType.toString() + " -b " + this.bdAddress);
       this.streamToSensor = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
       this.streamFromSensor = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      LOG.info("gatttool process for " + this.bdAddress + " created");
-      LOG.info("address type is " + this.addressType);
+      LOG.info("gatttool process for {} created", this.bdAddress);
+      LOG.info("address type is {}", this.addressType);
       this.streamToSensor.write(CMD_SEC_LEVEL + " " + this.secLevel);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
-      LOG.info("security level set to " + this.secLevel);
+      LOG.info("security level set to {}", this.secLevel);
     } catch (IOException e) {
       LOG.error("creating gatttool process failed", e);
     }
   }
 
   /**
-   * Continuously read from the input stream of the gatttool process. React on specific patterns in the text (e.g. notifications).
+   * Continuously read from the input stream of the gatttool process. React on mode and specific patterns in the text (e.g. notifications).
    */
   @Override
   public void run() {
@@ -85,15 +88,13 @@ public class GatttoolImpl implements Gatttool {
       String line = null;
       while ((line = this.streamFromSensor.readLine()) != null) {
         // System.out.println("!!! " + line); // extreme debugging
-        Matcher m = NOTIFICATION_DATA.matcher(line);
-        if (m.find()) {
-          notifyObserver(m.group(1), m.group(2));
-        } else if (line.contains("successful")) {
-          this.state = State.CONNECTED;
-          LOG.info("state is " + this.state.name());
-        } else if (line.contains("refused")) {
-          this.state = State.DISCONNECTED;
-          LOG.info("state is " + this.state.name());
+        switch (this.mode) {
+          case COMMANDMODE:
+            processCommandData(line);
+            break;
+          case NOTIFICATION:
+            processNotificationData(line);
+            break;
         }
       }
       LOG.warn("closing gatttool streams");
@@ -104,9 +105,40 @@ public class GatttoolImpl implements Gatttool {
     }
   }
 
+  private void processCommandData(String line) {
+    Matcher m = COMMAND_DATA.matcher(line);
+    if (m.find()) {
+      // TODO pattern not working
+      this.observer.newCommandData(this, m.group(1));
+    } else if (line.contains("successful")) {
+      this.state = State.CONNECTED;
+      LOG.info("state is {}", this.state.name());
+    } else if (line.contains("refused")) {
+      this.state = State.DISCONNECTED;
+      LOG.info("state is {}", this.state.name());
+    }
+  }
+
+  private void processNotificationData(String line) {
+    Matcher m = NOTIFICATION_DATA.matcher(line);
+    if (m.find()) {
+      this.observer.newNotificationData(this, m.group(1), m.group(2));
+    }
+  }
+
   @Override
   public Gatttool.State getInternalState() {
     return this.state;
+  }
+
+  @Override
+  public Mode getInternalMode() {
+    return this.mode;
+  }
+
+  @Override
+  public void setInternalMode(Mode mode) {
+    this.mode = mode;
   }
 
   @Override
@@ -120,17 +152,12 @@ public class GatttoolImpl implements Gatttool {
   }
 
   @Override
-  public void notifyObserver(String handle, String rawHexValues) {
-    this.observer.newNotificationData(this, handle, rawHexValues);
-  }
-
-  @Override
   public boolean connectBlocking(int timeout) {
     try {
       this.streamToSensor.write(CMD_CONNECT);
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
-      LOG.info("attempting to connect to " + this.bdAddress + " for " + timeout + "s");
+      LOG.info("attempting to connect to {} for {}s", this.bdAddress, timeout);
 
       long startTime = System.currentTimeMillis();
       while ((System.currentTimeMillis() - startTime) < timeout * 1000) {
@@ -142,7 +169,7 @@ public class GatttoolImpl implements Gatttool {
       }
 
       if (this.state == State.DISCONNECTED) {
-        LOG.error("cannot connect to bluetooth device " + this.bdAddress);
+        LOG.error("cannot connect to bluetooth device {}", this.bdAddress);
       }
 
     } catch (IOException | InterruptedException e) {
@@ -153,6 +180,7 @@ public class GatttoolImpl implements Gatttool {
 
   @Override
   public void reconnect() {
+    this.mode = Mode.COMMANDMODE;
     try {
       this.streamToSensor.write(CMD_CONNECT);
       this.streamToSensor.newLine();
@@ -171,7 +199,7 @@ public class GatttoolImpl implements Gatttool {
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
       this.state = State.DISCONNECTED;
-      LOG.info("disconnected from " + this.bdAddress);
+      LOG.info("disconnected from {}", this.bdAddress);
     } catch (IOException e) {
       LOG.error("disconnect failed", e);
     }

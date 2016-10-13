@@ -125,7 +125,7 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
   @Override
   public HeartRateSample calculateHeartRateData(String timestamp, String handle, String rawHexValues) {
     if (!handle.equals(this.gattLibrary.getHandleHeartRateMeasurement())) {
-      LOG.warn("unexpected handle address " + handle + " " + rawHexValues);
+      LOG.warn("unexpected handle address {} {}", handle, rawHexValues);
       return null;
     }
 

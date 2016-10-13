@@ -38,6 +38,9 @@ public class Controller implements Runnable {
   private static final String START_SENSOR_NOT_AVAILABLE = "A sensor is not available: ";
   private static final String START_NO_SENSORS_IN_CONFIGURATION = "There are no sensors in the configuration!";
 
+  private static final String MANUAL_HRS_UPLOAD = "All not-transmitted heart rate samples uploaded.";
+  private static final String MANUAL_HRS_NO_DATA = "No samples available which are not yet transmitted.";
+
   private static final String RECORDING_FIRSTNAME = "firstname";
   private static final String RECORDING_LASTNAME = "lastname";
   private static final String RECORDING_END_TIME = "endtime";
@@ -241,6 +244,12 @@ public class Controller implements Runnable {
           }
         }
       }
+      // getBatteryLevel();
+      // try {
+      // Thread.sleep(1000);
+      // } catch (InterruptedException e) {
+      // LOG.error("sleep failed", e);
+      // }
       enableLogging();
       startThreads();
       if (allSensorsAvailable) {
@@ -255,6 +264,16 @@ public class Controller implements Runnable {
     } else {
       LOG.info("data recording ongoing. No other startup allowed! Skipped!");
       return START_ALREADY_RUNNING;
+    }
+  }
+
+  @SuppressWarnings("unused")
+  private void getBatteryLevel() {
+    LOG.info("get battery level");
+    for (AbstractSensorWrapper<?> asw : this.swList) {
+      if (asw.getGatttool().getInternalState() == Gatttool.State.CONNECTED) {
+        asw.getBatteryLevel();
+      }
     }
   }
 
@@ -305,7 +324,7 @@ public class Controller implements Runnable {
   @Override
   public void run() {
     try {
-      LOG.info("sleeping for " + this.uptimeMillis + " milliseconds");
+      LOG.info("sleeping for {} milliseconds", this.uptimeMillis);
       Thread.sleep(this.uptimeMillis);
       LOG.info("recording period finished regular");
     } catch (InterruptedException e) {
@@ -361,26 +380,29 @@ public class Controller implements Runnable {
    *
    * @param hrss
    *          all not yet transmitted HeartRateSamples from the database
+   * @return String message for the frontend
    */
-  public void manualHrsUpload(List<HeartRateSample> hrss) {
-    this.recording = true;
-    this.hrsCollector.setUsed(true);
-    this.hrsCollectorThread = new Thread(this.hrsCollector);
-    this.hrsCollectorThread.start();
-    LOG.info("put all heart rate samples in the upload queue");
-    for (HeartRateSample hrs : hrss) {
-      this.hrsCollector.addToQueue(hrs);
+  public String manualHrsUpload(List<HeartRateSample> hrss) {
+    if (isRecording()) {
+      LOG.warn("A recording period is running. No manual upload allowed!");
+      return START_ALREADY_RUNNING;
     }
-    LOG.info("wait until queue is processed (empty) in the other thread");
-    while (this.hrsCollector.getNumberOfHrsInQueue() > 0) {
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        LOG.error("sleep failed", e);
+    if (hrss.isEmpty()) {
+      LOG.warn("No not-transmitted hrs data. No manual upload required!");
+      return MANUAL_HRS_NO_DATA;
+    } else {
+      this.recording = true;
+      this.hrsCollector.setUsed(true);
+      LOG.info("put all heart rate samples in the upload queue");
+      for (HeartRateSample hrs : hrss) {
+        this.hrsCollector.addToQueue(hrs);
       }
+      LOG.info("wait until queue is processed");
+      this.hrsCollector.manualUpload();
+      LOG.info("manual hrs upload finished");
+      this.hrsCollector.setUsed(false);
+      this.recording = false;
+      return MANUAL_HRS_UPLOAD;
     }
-    this.hrsCollector.setUsed(false);
-    this.hrsCollectorThread.interrupt();
-    this.recording = false;
   }
 }

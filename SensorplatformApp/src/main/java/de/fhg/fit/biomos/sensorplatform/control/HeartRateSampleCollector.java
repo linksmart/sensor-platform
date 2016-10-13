@@ -1,8 +1,8 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.Nullable;
 
@@ -28,13 +28,13 @@ public class HeartRateSampleCollector implements SampleCollector {
 
   private static final Logger LOG = LoggerFactory.getLogger(HeartRateSampleCollector.class);
 
-  private static final int UPLOAD_THREAD_SLEEP_TIME_MS = 300;
-  private static final int UPLOAD_ATTEMPTS = 1;
+  private static final int MAXIMUM_HRS_IN_QUEUE = 100;
+  private static final int UPLOAD_THREAD_SLEEP_TIME_MS = 1000;
 
   private final DBcontroller dbc;
   private final Uploader uploader;
 
-  private final Queue<HeartRateSample> queue = new LinkedList<HeartRateSample>();
+  private final Queue<HeartRateSample> queue = new ConcurrentLinkedQueue<HeartRateSample>();
 
   private boolean used;
 
@@ -82,33 +82,28 @@ public class HeartRateSampleCollector implements SampleCollector {
    */
   private void uploadSample(HeartRateSample hrs) {
     if (this.uploader != null) {
-      int attempt = 1;
-      while (attempt <= UPLOAD_ATTEMPTS) {
-        try {
-          int statusCode = this.uploader.sendHeartRateSample(hrs);
-          switch (statusCode) {
-            case HttpStatus.SC_CREATED:
-              hrs.setTransmitted(true);
-              // LOG.info("sample transmission successful");
-              return;
-            case HttpStatus.SC_OK:
-              hrs.setTransmitted(true);
-              // LOG.info("sample transmission successful");
-              return;
-            case HttpStatus.SC_UNAUTHORIZED:
-              LOG.error("transmission unauthorized - attempting to log in again");
-              this.uploader.login();
-              break;
-            default:
-              LOG.error("transmission failed, error code: " + statusCode);
-              attempt++;
-              break;
-          }
-        } catch (IOException e) {
-          LOG.error("http client execute (sample transmission) failed", e.getMessage());
-          attempt++;
+      try {
+        int statusCode = this.uploader.sendHeartRateSample(hrs);
+        switch (statusCode) {
+          case HttpStatus.SC_CREATED:
+            hrs.setTransmitted(true);
+            break;
+          case HttpStatus.SC_OK:
+            hrs.setTransmitted(true);
+            break;
+          case HttpStatus.SC_UNAUTHORIZED:
+            LOG.error("transmission unauthorized - attempting to log in again");
+            this.uploader.login();
+            break;
+          default:
+            LOG.error("transmission failed, error code: {}", statusCode);
+            break;
         }
+      } catch (IOException e) {
+        LOG.error("http client execute (sample transmission) failed", e.getMessage());
       }
+    } else {
+      LOG.warn("no uploader specified");
     }
   }
 
@@ -135,30 +130,52 @@ public class HeartRateSampleCollector implements SampleCollector {
       this.uploader.login();
     }
     while (this.used) {
-      if (this.queue.size() >= 100) {
-        LOG.info("queue size is " + this.queue.size());
+      LOG.info("queue size is {}", this.queue.size());
+      if (this.queue.size() > MAXIMUM_HRS_IN_QUEUE) {
+        LOG.info("skipping upload - storing all hrs in queue to database");
+        long beforeFlush = System.currentTimeMillis();
         while (!this.queue.isEmpty()) {
           storeSample(this.queue.poll());
         }
+        long afterFlush = System.currentTimeMillis();
+        LOG.info("done in {} - trying to upload hrs again", (afterFlush - beforeFlush));
       }
       if (!this.queue.isEmpty()) {
         HeartRateSample hrs = this.queue.poll();
         uploadSample(hrs);
         storeSample(hrs);
-      } else {
-        try {
-          Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
-        } catch (InterruptedException e) {
-          LOG.info("interrupt received from Controller");
-        }
+        continue;
       }
+      try {
+        Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
+      } catch (InterruptedException e) {
+        LOG.info("interrupt received from Controller");
+      }
+
+    }
+    if (!this.queue.isEmpty()) {
+      LOG.info("storing all remaining samples");
+      LOG.info("queue size: {}", this.queue.size());
     }
     while (!this.queue.isEmpty()) {
-      LOG.info("storing all remaining samples");
-      LOG.info("queue size: " + this.queue.size());
       storeSample(this.queue.poll());
     }
     LOG.info("thread finished");
+  }
+
+  /**
+   * Method for uploading all heart rate samples in the queue to the specified webinterface. This method is intended to be blocking and only called from the
+   * webinterface.
+   */
+  public void manualUpload() {
+    if (this.uploader != null) {
+      this.uploader.login();
+    }
+    while (!this.queue.isEmpty()) {
+      HeartRateSample hrs = this.queue.poll();
+      uploadSample(hrs);
+      storeSample(hrs);
+    }
   }
 
 }

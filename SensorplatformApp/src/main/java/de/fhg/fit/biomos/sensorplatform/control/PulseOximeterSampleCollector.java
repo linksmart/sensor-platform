@@ -1,7 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class PulseOximeterSampleCollector implements SampleCollector {
 
   private final DBcontroller dbc;
 
-  private final Queue<PulseOximeterSample> queue = new LinkedList<PulseOximeterSample>();
+  private final Queue<PulseOximeterSample> queue = new ConcurrentLinkedQueue<PulseOximeterSample>();
 
   private boolean used;
 

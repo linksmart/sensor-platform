@@ -40,7 +40,7 @@ public class HciconfigImpl implements Hciconfig {
       while ((line = output.readLine()) != null) {
         Matcher m = BD_ADDRESS.matcher(line);
         if (m.find()) {
-          LOG.info("local controller address: " + m.group(1));
+          LOG.info("local controller address: {}", m.group(1));
           this.localBDaddress = m.group(1);
         }
       }

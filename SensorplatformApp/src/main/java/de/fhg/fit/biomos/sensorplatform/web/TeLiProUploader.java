@@ -115,7 +115,7 @@ public class TeLiProUploader implements Uploader {
         response.close();
         LOG.info("login successful");
       } else {
-        LOG.error("login failed, error code: " + statusCode);
+        LOG.error("login failed, error code: {}", statusCode);
         response.close();
       }
     } catch (IOException e) {

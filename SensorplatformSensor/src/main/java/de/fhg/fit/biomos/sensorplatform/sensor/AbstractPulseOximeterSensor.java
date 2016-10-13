@@ -114,7 +114,7 @@ public abstract class AbstractPulseOximeterSensor extends Sensor<PulseOximeterGa
   @Override
   public PulseOximeterSample calculatePulseOximeterData(String timestamp, String handle, String rawHexValues) {
     if (!handle.equals(this.gattLibrary.getHandlePulseOximeterMeasurement())) {
-      LOG.warn("unexpected handle address " + handle + " " + rawHexValues);
+      LOG.warn("unexpected handle address {} {}", handle, rawHexValues);
       return null;
     }
 

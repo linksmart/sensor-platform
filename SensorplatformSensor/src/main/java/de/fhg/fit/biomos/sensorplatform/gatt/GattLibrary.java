@@ -43,4 +43,6 @@ public interface GattLibrary {
 
   public String getHandleDeviceName();
 
+  public String getHandleBatteryLevel();
+
 }
