@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
 import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
+import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 
 /**
@@ -32,6 +33,7 @@ public class HeartRateSampleCollector implements SampleCollector {
   private static final int UPLOAD_THREAD_SLEEP_TIME_MS = 1000;
 
   private final DBcontroller dbc;
+  private final HardwarePlatform hwPlatform;
   private final Uploader uploader;
 
   private final Queue<HeartRateSample> queue = new ConcurrentLinkedQueue<HeartRateSample>();
@@ -39,10 +41,11 @@ public class HeartRateSampleCollector implements SampleCollector {
   private boolean used;
 
   @Inject
-  public HeartRateSampleCollector(DBcontroller dbc, @Nullable Uploader uploader) {
+  public HeartRateSampleCollector(DBcontroller dbc, HardwarePlatform hwPlatform, @Nullable Uploader uploader) {
     this.dbc = dbc;
-    this.used = false;
+    this.hwPlatform = hwPlatform;
     this.uploader = uploader;
+    this.used = false;
   }
 
   @Override
@@ -142,7 +145,9 @@ public class HeartRateSampleCollector implements SampleCollector {
       }
       if (!this.queue.isEmpty()) {
         HeartRateSample hrs = this.queue.poll();
-        uploadSample(hrs);
+        if (this.hwPlatform.isUploadPermitted()) {
+          uploadSample(hrs);
+        }
         storeSample(hrs);
         continue;
       }

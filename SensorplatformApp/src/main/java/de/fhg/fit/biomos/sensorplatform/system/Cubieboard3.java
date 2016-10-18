@@ -47,6 +47,18 @@ public class Cubieboard3 implements HardwarePlatform {
   }
 
   @Override
+  public void evaluateSignalQuality() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public boolean isUploadPermitted() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
   public void setLEDstateSTANDBY() {
     // TODO Auto-generated method stub
 

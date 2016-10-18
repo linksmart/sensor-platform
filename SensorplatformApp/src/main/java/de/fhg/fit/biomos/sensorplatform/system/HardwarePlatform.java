@@ -40,6 +40,19 @@ public interface HardwarePlatform extends Runnable {
   public int getECIOfromMobileInternet();
 
   /**
+   * Use various parameters to determine, if the surf stick is able to upload the heart rate data power efficient. This method is intended to set an internal
+   * upload permission flag in the concrete implementation of hardware platform.
+   */
+  public void evaluateSignalQuality();
+
+  /**
+   * Return the value of the internal upload permission flag.
+   *
+   * @return true in case of good mobile internet signal quality, false otherwise
+   */
+  public boolean isUploadPermitted();
+
+  /**
    * Set a LED on the board to blink slowly.
    */
   public void setLEDstateSTANDBY();

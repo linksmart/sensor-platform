@@ -54,7 +54,12 @@ public class RaspberryPi3 implements HardwarePlatform {
   private Thread surfstickThread;
 
   private final Long internetCheckInterval;
-  private final boolean mobileInternet;
+  private boolean mobileInternet;
+  private boolean uploadPermitted;
+
+  private final int criticalValueRSSI;
+  private final int criticalValueRSCP;
+  private final int criticalValueECIO;
 
   private enum LEDstate {
     STANDBY("timer"), RECORDING("heartbeat"), ERROR("none");
@@ -73,9 +78,14 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   @Inject
-  public RaspberryPi3(@Named("surfstick.check.interval") String internetCheckInterval) {
+  public RaspberryPi3(@Named("surfstick.check.interval") String internetCheckInterval, @Named("critical.value.rssi") String criticalValueRSSI,
+      @Named("critical.value.rscp") String criticalValueRSCP, @Named("critical.value.ecio") String criticalValueECIO) {
     this.internetCheckInterval = new Long(internetCheckInterval) * 1000;
     this.mobileInternet = false;
+    this.uploadPermitted = false;
+    this.criticalValueRSSI = Integer.parseInt(criticalValueRSSI);
+    this.criticalValueRSCP = Integer.parseInt(criticalValueRSCP);
+    this.criticalValueECIO = Integer.parseInt(criticalValueECIO);
     this.hciconfig = new HciconfigImpl();
     this.hcitool = new HcitoolImpl();
     this.surfstick = new Huawei_E352S_5();
@@ -94,11 +104,13 @@ public class RaspberryPi3 implements HardwarePlatform {
 
       if (this.surfstick.isAttached()) {
         if (hasMobileInternetConnection()) {
+          this.mobileInternet = true;
           if (!this.surfstick.isRunning()) {
             this.surfstickThread = new Thread(this.surfstick);
             this.surfstickThread.start();
           } else {
             this.surfstick.queryCSNR();
+            // evaluateSignalQuality();
           }
         } else {
           connectToMobileInternet();
@@ -135,6 +147,29 @@ public class RaspberryPi3 implements HardwarePlatform {
   @Override
   public int getECIOfromMobileInternet() {
     return this.surfstick.getECIO();
+  }
+
+  @Override
+  public void evaluateSignalQuality() {
+    // if (this.surfstick.getECIO() < this.criticalValueECIO || this.surfstick.getRSCP() < this.criticalValueRSCP
+    // || this.surfstick.getRSSI() < this.criticalValueRSSI) {
+    if (this.surfstick.getECIO() < this.criticalValueECIO) {
+      if (this.uploadPermitted) {
+        LOG.info(">>> upload suspended <<<");
+        this.uploadPermitted = false;
+      }
+    } else {
+      if (!this.uploadPermitted) {
+        LOG.info(">>> upload permitted <<<");
+        this.uploadPermitted = true;
+      }
+    }
+  }
+
+  @Override
+  public boolean isUploadPermitted() {
+    // return this.uploadPermitted;
+    return true;
   }
 
   @Override
