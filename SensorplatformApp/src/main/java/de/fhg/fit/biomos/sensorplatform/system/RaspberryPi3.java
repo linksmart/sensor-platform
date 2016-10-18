@@ -38,12 +38,7 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final String BLINK_INTERVAL = "1000";
 
   private static final String WVDIAL = "wvdial";
-  private static final String COMGT = "comgt sig";
-
-  private static final String QUALITY_MARGINAL = "marginal";
-  private static final String QUALITY_OK = "OK";
-  private static final String QUALITY_GOOD = "good";
-  private static final String QUALITY_EXCELLENT = "excellent";
+  private static final String INTERNET_INTERFACE_NAME = "ppp0";
 
   private static final Pattern ATCSQ = Pattern.compile("\\+CSQ: (\\d+),(\\d+)");
   private static final Pattern PID_PPPD = Pattern.compile("Pid of pppd: (\\d+)");
@@ -52,16 +47,14 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final Pattern PRIMARY_DNS = Pattern.compile("primary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern SECONDARY_DNS = Pattern.compile("secondary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
 
-  private static final Pattern COMGT_SIGNALSTRENGTH = Pattern.compile("Signal Quality: (\\d+),(\\d+)");
-
-  private static final String INTERNET_INTERFACE_NAME = "ppp0";
-
   private final Hciconfig hciconfig;
   private final Hcitool hcitool;
 
+  private final Huawei_E352S_5 surfstick;
+  private Thread surfstickThread;
+
   private final Long internetCheckInterval;
-  private boolean mobileInternet;
-  private int signalQuality = 99;
+  private final boolean mobileInternet;
 
   private enum LEDstate {
     STANDBY("timer"), RECORDING("heartbeat"), ERROR("none");
@@ -80,28 +73,41 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   @Inject
-  public RaspberryPi3(@Named("internet.check.interval") String internetCheckInterval) {
+  public RaspberryPi3(@Named("surfstick.check.interval") String internetCheckInterval) {
     this.internetCheckInterval = new Long(internetCheckInterval) * 1000;
     this.mobileInternet = false;
     this.hciconfig = new HciconfigImpl();
     this.hcitool = new HcitoolImpl();
+    this.surfstick = new Huawei_E352S_5();
   }
 
   @Override
   public void run() {
+    try {
+      this.surfstick.setupSerialPort();
+    } catch (IOException ioe) {
+      LOG.info("comgt crashed - serial port may not work correctly", ioe);
+    } catch (InterruptedException ie) {
+      LOG.info("wait for comgt failed", ie);
+    }
     while (!Thread.currentThread().isInterrupted()) {
-      try {
-        retrieveSignalQuality();
-      } catch (IOException | InterruptedException e) {
-        LOG.error("cannot retrieve signal quality", e);
+
+      if (this.surfstick.isAttached()) {
+        if (hasMobileInternetConnection()) {
+          if (!this.surfstick.isRunning()) {
+            this.surfstickThread = new Thread(this.surfstick);
+            this.surfstickThread.start();
+          } else {
+            this.surfstick.queryCSNR();
+          }
+        } else {
+          connectToMobileInternet();
+          continue;
+        }
+      } else {
+        LOG.warn("surfstick not attached");
       }
-      try {
-        this.mobileInternet = hasMobileInternetConnection();
-      } catch (SocketException | NullPointerException e) {
-        LOG.info("interface not running - starting daemon now");
-        this.mobileInternet = false;
-        connectToMobileInternet();
-      }
+
       try {
         Thread.sleep(this.internetCheckInterval);
       } catch (InterruptedException e) {
@@ -117,8 +123,18 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   @Override
-  public int getMobileInternetSignalQuality() {
-    return this.signalQuality;
+  public int getRSSIfromMobileInternet() {
+    return this.surfstick.getRSSI();
+  }
+
+  @Override
+  public int getRSCPfromMobileInternet() {
+    return this.surfstick.getRSCP();
+  }
+
+  @Override
+  public int getECIOfromMobileInternet() {
+    return this.surfstick.getECIO();
   }
 
   @Override
@@ -174,24 +190,6 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   /**
-   * Retrieve the signal quality from the surf stick via a helper program comgt and store it in an internal variable.
-   */
-  private void retrieveSignalQuality() throws IOException, InterruptedException {
-    Process process = Runtime.getRuntime().exec(COMGT);
-    BufferedReader output = new BufferedReader(new InputStreamReader(process.getInputStream()));
-    String line = null;
-    while ((line = output.readLine()) != null) {
-      Matcher m = COMGT_SIGNALSTRENGTH.matcher(line);
-      if (m.find()) {
-        this.signalQuality = asuToRssi(m.group(1));
-        LOG.info("signal quality is {}dBm, {}%, considered to be {}", this.signalQuality, asuToRssiPercent(m.group(1)), interpreteSignalQuality(m.group(1)));
-      }
-    }
-    output.close();
-    process.waitFor();
-  }
-
-  /**
    * Check if the network interface for mobile internet is up and running.
    *
    * @return true if ppp0 is up, false otherwise
@@ -200,21 +198,26 @@ public class RaspberryPi3 implements HardwarePlatform {
    * @throws NullPointerException
    *           if ppp0 does not exist
    */
-  private boolean hasMobileInternetConnection() throws SocketException, NullPointerException {
-    NetworkInterface inet = NetworkInterface.getByName(INTERNET_INTERFACE_NAME);
-    LOG.info("{} {} {}", inet.getDisplayName(), inet.getInetAddresses().nextElement().getHostAddress(), inet.isUp());
-    return inet.isUp();
+  private boolean hasMobileInternetConnection() {
+    try {
+      NetworkInterface inet = NetworkInterface.getByName(INTERNET_INTERFACE_NAME);
+      LOG.info("{} {} {}", inet.getDisplayName(), inet.getInetAddresses().nextElement().getHostAddress(), inet.isUp());
+      return true;
+    } catch (IOException | NullPointerException e) {
+      return false;
+    }
   }
 
   @Override
   public void connectToMobileInternet() {
+    LOG.info("Trying to connect to mobile internet");
     try {
       Process process = Runtime.getRuntime().exec(WVDIAL);
       BufferedReader output = new BufferedReader(new InputStreamReader(process.getErrorStream()));
       // wvdial always writes to error stream...
       String line = null;
       while ((line = output.readLine()) != null) {
-        // System.out.println(line);
+        // System.out.println(line); // extreme debugging
         Matcher m1 = LOCAL_IP.matcher(line);
         Matcher m2 = REMOTE_IP.matcher(line);
         Matcher m3 = PRIMARY_DNS.matcher(line);
@@ -222,7 +225,8 @@ public class RaspberryPi3 implements HardwarePlatform {
         Matcher m5 = ATCSQ.matcher(line);
         Matcher m6 = PID_PPPD.matcher(line);
         if (m5.find()) {
-          LOG.info("signal quality is {} ASU {}dBm {}%", m5.group(1), asuToRssi(m5.group(1)), asuToRssiPercent(m5.group(1)));
+          LOG.info("signal strength RSSI is {}, {}dBm, {}%", m5.group(1), this.surfstick.rssiASUtoDBM(Integer.parseInt(m5.group(1))),
+              this.surfstick.rssiASUtoDBMpercent(Integer.parseInt(m5.group(1))));
           LOG.info("bit error rate is {} (99=not supported)", m5.group(2));
         } else if (m6.find()) {
           LOG.info("process id is {}", m6.group(1));
@@ -240,51 +244,9 @@ public class RaspberryPi3 implements HardwarePlatform {
       output.close();
       process.destroy();
       process.waitFor();
-      LOG.info("wvdial terminated");
+      LOG.info("wvdial process terminated");
     } catch (IOException | InterruptedException e) {
       LOG.error("getting local controller address failed", e);
-    }
-  }
-
-  /**
-   *
-   * @param asu
-   *          first number of the output from modem command AT+CSQ
-   * @return RSSI in dBm
-   */
-  private int asuToRssi(String asu) {
-    return (-113) + new Integer(asu) * 2;
-  }
-
-  /**
-   *
-   * @param asu
-   *          raw asu value
-   * @return signal quality percentage
-   */
-  private int asuToRssiPercent(String asu) {
-    return Math.round(new Float(asu) / 31 * 100);
-  }
-
-  /**
-   * Interprete the signal quality value.
-   *
-   * @param asu
-   *          raw asu value
-   * @return String marginal, OK, good, excellent, invalid range
-   */
-  private String interpreteSignalQuality(String asu) {
-    int val = Integer.parseInt(asu);
-    if (val >= 0 && val < 10) {
-      return QUALITY_MARGINAL;
-    } else if (val > 9 && val < 15) {
-      return QUALITY_OK;
-    } else if (val > 14 && val < 20) {
-      return QUALITY_GOOD;
-    } else if (val > 19 && val <= 31) {
-      return QUALITY_EXCELLENT;
-    } else {
-      return "invalid range";
     }
   }
 

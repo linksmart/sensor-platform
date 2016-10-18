@@ -1,0 +1,11 @@
+RSCP: The “Received Signal Code Power” (RSCP) is the collected RF energy after the correlation / descrambling process, usually given in dBm.
+Only this code power is of interest for the following receiver stages when judging on the quality of the reception.
+
+Ec/Io: This is the ratio of the received energy per chip (= code bit) and the interference level, usually given in dB.
+In case no true interference is present, the interference level is equal to the noise level.
+
+Because of the system gain (see 1), the interference level can be higher than the wanted signal level.
+Therefore, at the coverage border, the value of Ec/I0 is usually negative.
+
+RSSI: The Received Signal Strength Indicator (RSSI) is a value that takes into account both RSCP and Ec/I0.
+It is usually given in dBm and can be calculated as follows: RSSI [dBm] = RSCP [dBm] – Ec/I0 [dB]

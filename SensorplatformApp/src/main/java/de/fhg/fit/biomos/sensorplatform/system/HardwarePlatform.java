@@ -19,11 +19,25 @@ public interface HardwarePlatform extends Runnable {
   public boolean isConnectedToMobileInternet();
 
   /**
-   * Get the signal quality from surf stick.
+   * Get the rssi value from the surf stick.
    *
-   * @return int signal quality in dBm
+   * @return int signal strength rssi in dBm
    */
-  public int getMobileInternetSignalQuality();
+  public int getRSSIfromMobileInternet();
+
+  /**
+   * Get the rscp value from the surf stick.
+   *
+   * @return int rscp value in dBm
+   */
+  public int getRSCPfromMobileInternet();
+
+  /**
+   * Get the Ec/Io value from the surf stick.
+   *
+   * @return int Ec/Io in dB
+   */
+  public int getECIOfromMobileInternet();
 
   /**
    * Set a LED on the board to blink slowly.
