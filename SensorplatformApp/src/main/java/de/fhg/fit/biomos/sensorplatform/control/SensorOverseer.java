@@ -50,7 +50,7 @@ public class SensorOverseer implements Runnable {
    */
   @Override
   public void run() {
-    LOG.info("start supervising");
+    LOG.info("start overseeing");
     while (!Thread.currentThread().isInterrupted()) {
       long currentTime = System.currentTimeMillis();
 

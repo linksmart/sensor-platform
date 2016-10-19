@@ -61,7 +61,7 @@ public class ControllerService {
     try {
       response.put("recording", this.controller.isRecording());
       response.put("mobileinternet", this.hwPlatform.isConnectedToMobileInternet());
-      response.put("rssi", this.hwPlatform.getRSSIfromMobileInternet());
+      response.put("rssi", this.hwPlatform.getOverallRSSIfromMobileInternet());
       response.put("rscp", this.hwPlatform.getRSCPfromMobileInternet());
       response.put("ecio", this.hwPlatform.getECIOfromMobileInternet());
       if (this.uploader != null) {

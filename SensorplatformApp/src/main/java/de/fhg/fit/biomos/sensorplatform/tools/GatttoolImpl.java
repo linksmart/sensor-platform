@@ -97,7 +97,7 @@ public class GatttoolImpl implements Gatttool {
             break;
         }
       }
-      LOG.warn("closing gatttool streams");
+      LOG.info("closing gatttool streams");
       this.streamToSensor.close();
       this.streamFromSensor.close();
     } catch (IOException e) {

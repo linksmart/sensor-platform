@@ -51,7 +51,7 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
     this.firstname = firstname;
     this.lastname = lastname;
     this.gatttool.setObserver(this);
-    new Thread(this.gatttool).start();
+    new Thread(this.gatttool, this.sensor.getName().name().toLowerCase()).start();
   }
 
   @Override

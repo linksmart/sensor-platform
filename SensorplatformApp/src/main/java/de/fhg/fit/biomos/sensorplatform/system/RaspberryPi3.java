@@ -40,8 +40,6 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final String WVDIAL = "wvdial";
   private static final String INTERNET_INTERFACE_NAME = "ppp0";
 
-  private static final Pattern ATCSQ = Pattern.compile("\\+CSQ: (\\d+),(\\d+)");
-  private static final Pattern PID_PPPD = Pattern.compile("Pid of pppd: (\\d+)");
   private static final Pattern LOCAL_IP = Pattern.compile("local\\s+IP\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern REMOTE_IP = Pattern.compile("remote\\s+IP\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern PRIMARY_DNS = Pattern.compile("primary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
@@ -96,7 +94,7 @@ public class RaspberryPi3 implements HardwarePlatform {
     try {
       this.surfstick.setupSerialPort();
     } catch (IOException ioe) {
-      LOG.info("comgt crashed - serial port may not work correctly", ioe);
+      LOG.info("comgt crashed - modem serial port may not work correctly", ioe);
     } catch (InterruptedException ie) {
       LOG.info("wait for comgt failed", ie);
     }
@@ -106,11 +104,11 @@ public class RaspberryPi3 implements HardwarePlatform {
         if (hasMobileInternetConnection()) {
           this.mobileInternet = true;
           if (!this.surfstick.isRunning()) {
-            this.surfstickThread = new Thread(this.surfstick);
+            this.surfstickThread = new Thread(this.surfstick, "serialport");
             this.surfstickThread.start();
           } else {
-            this.surfstick.queryCSNR();
-            // evaluateSignalQuality();
+            this.surfstick.querySYSINFO();
+            evaluateSignalQuality();
           }
         } else {
           connectToMobileInternet();
@@ -135,8 +133,8 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   @Override
-  public int getRSSIfromMobileInternet() {
-    return this.surfstick.getRSSI();
+  public int getOverallRSSIfromMobileInternet() {
+    return this.surfstick.getOverallRSSI();
   }
 
   @Override
@@ -151,16 +149,22 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   @Override
   public void evaluateSignalQuality() {
-    // if (this.surfstick.getECIO() < this.criticalValueECIO || this.surfstick.getRSCP() < this.criticalValueRSCP
-    // || this.surfstick.getRSSI() < this.criticalValueRSSI) {
+    // TODO evaluate on RSSI and RSCP too?
+    // What makes sense here?
     if (this.surfstick.getECIO() < this.criticalValueECIO) {
       if (this.uploadPermitted) {
-        LOG.info(">>> upload suspended <<<");
+        LOG.info("Ec/Io is too low: ", this.surfstick.getECIO());
+        LOG.info("----------");
+        LOG.info("suspend upload");
+        LOG.info("----------");
         this.uploadPermitted = false;
       }
     } else {
       if (!this.uploadPermitted) {
-        LOG.info(">>> upload permitted <<<");
+        LOG.info("Ec/Io is good again: ", this.surfstick.getECIO());
+        LOG.info("----------");
+        LOG.info("permit upload");
+        LOG.info("----------");
         this.uploadPermitted = true;
       }
     }
@@ -168,8 +172,7 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   @Override
   public boolean isUploadPermitted() {
-    // return this.uploadPermitted;
-    return true;
+    return this.uploadPermitted;
   }
 
   @Override
@@ -245,7 +248,7 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   @Override
   public void connectToMobileInternet() {
-    LOG.info("Trying to connect to mobile internet");
+    LOG.info("Trying to connect to mobile internet using wvdial");
     try {
       Process process = Runtime.getRuntime().exec(WVDIAL);
       BufferedReader output = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -257,15 +260,7 @@ public class RaspberryPi3 implements HardwarePlatform {
         Matcher m2 = REMOTE_IP.matcher(line);
         Matcher m3 = PRIMARY_DNS.matcher(line);
         Matcher m4 = SECONDARY_DNS.matcher(line);
-        Matcher m5 = ATCSQ.matcher(line);
-        Matcher m6 = PID_PPPD.matcher(line);
-        if (m5.find()) {
-          LOG.info("signal strength RSSI is {}, {}dBm, {}%", m5.group(1), this.surfstick.rssiASUtoDBM(Integer.parseInt(m5.group(1))),
-              this.surfstick.rssiASUtoDBMpercent(Integer.parseInt(m5.group(1))));
-          LOG.info("bit error rate is {} (99=not supported)", m5.group(2));
-        } else if (m6.find()) {
-          LOG.info("process id is {}", m6.group(1));
-        } else if (m1.find()) {
+        if (m1.find()) {
           LOG.info("local ip is {}", m1.group(1));
         } else if (m2.find()) {
           LOG.info("remote ip is {}", m2.group(1));

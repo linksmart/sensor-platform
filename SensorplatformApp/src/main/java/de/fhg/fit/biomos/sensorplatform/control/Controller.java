@@ -138,7 +138,7 @@ public class Controller implements Runnable {
   public void initialise() {
     LOG.info("initialise controller");
     // restartBluetoothController(); // only for unbugging for pairing, no pairing supported from within this application
-    this.hwPlatformThread = new Thread(this.hwPlatform);
+    this.hwPlatformThread = new Thread(this.hwPlatform, "hwPlatform");
     this.hwPlatformThread.start();
     if (!this.recordingInfo.exists()) {
       LOG.info("no recording period was interrupted");
@@ -297,23 +297,23 @@ public class Controller implements Runnable {
   private void startThreads() {
     LOG.info("start observer");
     this.sensorOverseer = new SensorOverseer(this.hwPlatform, this.timeoutNotification, this.swList);
-    this.sensorOverseerThread = new Thread(this.sensorOverseer);
+    this.sensorOverseerThread = new Thread(this.sensorOverseer, "overseer");
     this.sensorOverseerThread.start();
     LOG.info("start hrs collector thread");
     if (this.hrsCollector.isUsed()) {
-      this.hrsCollectorThread = new Thread(this.hrsCollector);
+      this.hrsCollectorThread = new Thread(this.hrsCollector, "hrsCollector");
       this.hrsCollectorThread.start();
     }
     if (this.pulseCollector.isUsed()) {
-      this.pulseCollectorThread = new Thread(this.pulseCollector);
+      this.pulseCollectorThread = new Thread(this.pulseCollector, "posCollector");
       this.pulseCollectorThread.start();
     }
     if (this.cc2650Collector.isUsed()) {
-      this.cc2650CollectorThread = new Thread(this.cc2650Collector);
+      this.cc2650CollectorThread = new Thread(this.cc2650Collector, "cc2650Collector");
       this.cc2650CollectorThread.start();
     }
     LOG.info("start controller thread");
-    this.controllerThread = new Thread(this);
+    this.controllerThread = new Thread(this, "controller");
     this.controllerThread.start();
     LOG.info("all threads started");
   }

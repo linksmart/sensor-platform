@@ -29,7 +29,7 @@ public class Cubieboard3 implements HardwarePlatform {
   }
 
   @Override
-  public int getRSSIfromMobileInternet() {
+  public int getOverallRSSIfromMobileInternet() {
     // TODO Auto-generated method stub
     return 0;
   }

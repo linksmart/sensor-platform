@@ -23,7 +23,7 @@ public interface HardwarePlatform extends Runnable {
    *
    * @return int signal strength rssi in dBm
    */
-  public int getRSSIfromMobileInternet();
+  public int getOverallRSSIfromMobileInternet();
 
   /**
    * Get the rscp value from the surf stick.
