@@ -18,9 +18,13 @@ case "$1" in
         ;;
     stop)
         killall java
+		killall wvdial
+		killall pppd
         ;;
     restart)
         killall java
+		killall wvdial
+		killall pppd
 		/opt/vc/bin/tvservice -o
 		cd /home/administrator/Sensorplatform
         /lib/jvm/jdk1.8.0_101/bin/java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &

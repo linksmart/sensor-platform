@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE;
 import de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils;
-import de.fhg.fit.biomos.sensorplatform.util.SignalUtils;
 
 /**
  * Class for modem interaction. Use it as a singleton member in HardwarePlatform. TODO Refactor it to be a abstract to support different kind of modems.
@@ -84,9 +83,9 @@ public class Huawei_E352S_5 implements Runnable {
         Matcher m4 = SYSINFO.matcher(line);
         if (m1.find()) {
           this.overall_rssi = Integer.parseInt(m1.group(1));
-          this.overall_rssi_dBm = SignalUtils.rssiASUtoDBM(this.overall_rssi);
-          LOG.info("Overall RSSI: {}, {}dBm, {}%", this.overall_rssi, SignalUtils.rssiASUtoDBM(this.overall_rssi),
-              SignalUtils.rssiASUtoDBMpercent(this.overall_rssi));
+          this.overall_rssi_dBm = GSM_GPRS_EDGE.rssiASUtoDBM(this.overall_rssi);
+          LOG.info("Overall RSSI: {}, {}dBm, {}%", this.overall_rssi, GSM_GPRS_EDGE.rssiASUtoDBM(this.overall_rssi),
+              GSM_GPRS_EDGE.rssiASUtoDBMpercent(this.overall_rssi));
         } else if (m2.find()) {
           if (this.dsflowprtCounter % 30 == 0) {
             this.connectionDuration = Integer.parseInt(m2.group(1), 16);

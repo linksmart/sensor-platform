@@ -38,4 +38,24 @@ public class GSM_GPRS_EDGE {
     }
   }
 
+  /**
+   *
+   * @param asu
+   *          first number of the output from modem command AT+CSQ
+   * @return RSSI in dBm
+   */
+  public static int rssiASUtoDBM(int asu) {
+    return (-113) + asu * 2;
+  }
+
+  /**
+   *
+   * @param asu
+   *          raw asu value
+   * @return signal strength rssi percentage
+   */
+  public static int rssiASUtoDBMpercent(int asu) {
+    return Math.round(new Float(asu) / 31 * 100);
+  }
+
 }
