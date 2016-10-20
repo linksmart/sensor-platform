@@ -2,6 +2,7 @@ package de.fhg.fit.biomos.sensorplatform.system;
 
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
+import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
 
 /**
  * Defines functions which are dependant on the board hardware or low level configuration of the operating system.
@@ -26,18 +27,11 @@ public interface HardwarePlatform extends Runnable {
   public int getOverallRSSIfromMobileInternet();
 
   /**
-   * Get the rscp value from the surf stick.
+   * Get the last bean with signal quality parameters.
    *
-   * @return int rscp value in dBm
+   * @return SignalQualityBean bean
    */
-  public int getRSCPfromMobileInternet();
-
-  /**
-   * Get the Ec/Io value from the surf stick.
-   *
-   * @return int Ec/Io in dB
-   */
-  public int getECIOfromMobileInternet();
+  public SignalQualityBean getSignalQualityBean();
 
   /**
    * Use various parameters to determine, if the surf stick is able to upload the heart rate data power efficient. This method is intended to set an internal

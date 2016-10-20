@@ -23,10 +23,10 @@ window.setInterval(function() {
 			$("#device").text(response["sensorplatform"]);
 			$("#uploader").text(response["uploader"]);
 			$("#mobileinet").text(response["mobileinternet"]);
-			$("#rssi").text(response["rssi"]);
+			$("#overallrssi").text(response["overallrssi"]);
 			$("#rscp").text(response["rscp"]);
 			$("#ecio").text(response["ecio"]);
-			$("#rssicalc").text(response["rscp"] - response["ecio"]);
+			$("#rssi").text(response["rssi"]);
 		}
 		if (request.readyState == 4 && request.status == 500) {
 			$("#recording").text("(server error)");

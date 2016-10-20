@@ -61,9 +61,10 @@ public class ControllerService {
     try {
       response.put("recording", this.controller.isRecording());
       response.put("mobileinternet", this.hwPlatform.isConnectedToMobileInternet());
-      response.put("rssi", this.hwPlatform.getOverallRSSIfromMobileInternet());
-      response.put("rscp", this.hwPlatform.getRSCPfromMobileInternet());
-      response.put("ecio", this.hwPlatform.getECIOfromMobileInternet());
+      response.put("overallrssi", this.hwPlatform.getOverallRSSIfromMobileInternet());
+      response.put("rscp", this.hwPlatform.getSignalQualityBean().getRSCP());
+      response.put("ecio", this.hwPlatform.getSignalQualityBean().getECIO());
+      response.put("rssi", this.hwPlatform.getSignalQualityBean().getRSSI());
       if (this.uploader != null) {
         response.put("uploader", this.uploader.getWebinterfaceName());
       } else {

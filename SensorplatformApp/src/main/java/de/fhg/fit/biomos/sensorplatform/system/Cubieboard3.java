@@ -2,6 +2,7 @@ package de.fhg.fit.biomos.sensorplatform.system;
 
 import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
+import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
 
 /**
  * Functionality for the Sensorplatform running on a Cubieboard 3. Most of the stuff is NYI.
@@ -35,15 +36,9 @@ public class Cubieboard3 implements HardwarePlatform {
   }
 
   @Override
-  public int getRSCPfromMobileInternet() {
+  public SignalQualityBean getSignalQualityBean() {
     // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public int getECIOfromMobileInternet() {
-    // TODO Auto-generated method stub
-    return 0;
+    return null;
   }
 
   @Override

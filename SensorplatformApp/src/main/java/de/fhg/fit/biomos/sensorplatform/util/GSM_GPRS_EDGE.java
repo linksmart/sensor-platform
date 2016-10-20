@@ -1,47 +1,56 @@
 package de.fhg.fit.biomos.sensorplatform.util;
 
+/**
+ * Helper class for calculation and interpretation of 2G rssi related values.
+ *
+ * @author Daniel Pyka
+ *
+ */
 public class GSM_GPRS_EDGE {
 
   public enum RSSI {
-    NONETWORK("no network"), GSM("GSM, connection losses expected"), GPRS_SLOW("GPRS, very low datarate"), GPRS_STABLE("GPRS, stable"), EDGE_STABLE(
-        "EDGE, stable"), EDGE_GOOD("EDGE, good"), EEDGE("E-EDGE, very good"), INVALID("invalid value");
+    EXCELLENT("excellent"), GOOD("good"), FAIR("fair"), POOR("poor"), NOSIGNAL("no signal"), INVALID("invalid value");
 
-    private final String type;
+    private final String quality;
 
-    private RSSI(String type) {
-      this.type = type;
+    private RSSI(String quality) {
+      this.quality = quality;
     }
 
     @Override
     public String toString() {
-      return this.type;
+      return this.quality;
     }
   }
 
-  public static RSSI evaluateRSSI(int asuDBM) {
-    if (asuDBM == -113) {
-      return RSSI.NONETWORK;
-    } else if (asuDBM > -113 && asuDBM <= 108) {
-      return RSSI.GSM;
-    } else if (asuDBM > -108 && asuDBM <= -102) {
-      return RSSI.GPRS_SLOW;
-    } else if (asuDBM > -102 && asuDBM <= -92) {
-      return RSSI.GPRS_STABLE;
-    } else if (asuDBM > -92 && asuDBM <= -82) {
-      return RSSI.EDGE_STABLE;
-    } else if (asuDBM > -82 && asuDBM <= -60) {
-      return RSSI.EDGE_GOOD;
-    } else if (asuDBM > -60 && asuDBM <= -51) {
-      return RSSI.EEDGE;
+  /**
+   * Rate the signal strength rssi.
+   *
+   * @param rssiDBM
+   *          rssi value in dBm
+   * @return RSSI a short description
+   */
+  public static RSSI evaluateRSSI(int rssiDBM) {
+    if (rssiDBM > -70) {
+      return RSSI.EXCELLENT;
+    } else if (rssiDBM < -70 && rssiDBM >= -85) {
+      return RSSI.GOOD;
+    } else if (rssiDBM < -85 && rssiDBM >= -100) {
+      return RSSI.FAIR;
+    } else if (rssiDBM < -100 && rssiDBM >= -110) {
+      return RSSI.POOR;
+    } else if (rssiDBM < -110 && rssiDBM >= -113) {
+      return RSSI.NOSIGNAL;
     } else {
       return RSSI.INVALID;
     }
   }
 
   /**
+   * Calculate the rssi value in dBm. The calculation is for 2G connections, but for convenience it is often used for 3G networks in the same way.
    *
    * @param asu
-   *          first number of the output from modem command AT+CSQ
+   *          raw asu value (0 to 31)
    * @return RSSI in dBm
    */
   public static int rssiASUtoDBM(int asu) {
@@ -49,10 +58,12 @@ public class GSM_GPRS_EDGE {
   }
 
   /**
+   * Calculate the percentage of the signal quality. The calculation is for 2G connections, but for convenience it is often used for 3G networks in the same
+   * way.
    *
    * @param asu
-   *          raw asu value
-   * @return signal strength rssi percentage
+   *          raw asu value (0 to 31)
+   * @return RSSI in percentage
    */
   public static int rssiASUtoDBMpercent(int asu) {
     return Math.round(new Float(asu) / 31 * 100);

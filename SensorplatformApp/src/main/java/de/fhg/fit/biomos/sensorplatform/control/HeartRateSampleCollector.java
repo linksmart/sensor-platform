@@ -37,6 +37,7 @@ public class HeartRateSampleCollector implements SampleCollector {
   private final Uploader uploader;
 
   private final Queue<HeartRateSample> queue = new ConcurrentLinkedQueue<HeartRateSample>();
+  private Queue<HeartRateSample> buffer;
 
   private boolean used;
 
@@ -56,6 +57,61 @@ public class HeartRateSampleCollector implements SampleCollector {
   @Override
   public void setUsed(boolean used) {
     this.used = used;
+  }
+
+  /**
+   * Try to upload a sample and store it afterwards in this order. Transmission flag is set accordingly. By using this algorithm, the load of the database is
+   * minimised.
+   */
+  @Override
+  public void run() {
+    if (this.uploader != null) {
+      this.uploader.login();
+    }
+    while (this.used) {
+      if (this.queue.size() > MAXIMUM_HRS_IN_QUEUE) {
+        long beforeFlush = System.currentTimeMillis();
+        this.buffer = new ConcurrentLinkedQueue<HeartRateSample>(this.queue);
+        LOG.info("queue is full ({})- buffering data, storing {} hrs in the database", this.queue.size(), this.buffer.size());
+        while (!this.buffer.isEmpty()) {
+          storeSample(this.buffer.poll());
+        }
+        this.buffer = null;
+        long afterFlush = System.currentTimeMillis();
+        LOG.info("done in {} - trying to upload hrs again", (afterFlush - beforeFlush));
+      }
+      if (!this.queue.isEmpty()) {
+        LOG.info("queue size is {}", this.queue.size());
+        HeartRateSample hrs = this.queue.poll();
+        if (this.hwPlatform.isUploadPermitted()) {
+          uploadSample(hrs);
+        }
+        storeSample(hrs);
+        continue;
+      }
+      try {
+        Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
+      } catch (InterruptedException e) {
+        LOG.info("interrupt received from Controller");
+      }
+    }
+    if (this.buffer != null) {
+      if (!this.buffer.isEmpty()) {
+        LOG.info("storing remaining hrs from the buffer");
+        LOG.info("buffer size: {}", this.queue.size());
+      }
+      while (!this.buffer.isEmpty()) {
+        storeSample(this.buffer.poll());
+      }
+    }
+    if (!this.queue.isEmpty()) {
+      LOG.info("storing remaining hrs from the queue");
+      LOG.info("queue size: {}", this.queue.size());
+    }
+    while (!this.queue.isEmpty()) {
+      storeSample(this.queue.poll());
+    }
+    LOG.info("thread finished");
   }
 
   /**
@@ -121,51 +177,6 @@ public class HeartRateSampleCollector implements SampleCollector {
     dbs.saveHeartRateSample(hrs);
     dbs.commit();
     dbs.close();
-  }
-
-  /**
-   * Try to upload a sample and store it afterwards in this order. Transmission flag is set accordingly. By using this algorithm, the load of the database is
-   * minimised.
-   */
-  @Override
-  public void run() {
-    if (this.uploader != null) {
-      this.uploader.login();
-    }
-    while (this.used) {
-      LOG.info("queue size is {}", this.queue.size());
-      if (this.queue.size() > MAXIMUM_HRS_IN_QUEUE) {
-        LOG.info("skipping upload - storing all hrs in queue to database");
-        long beforeFlush = System.currentTimeMillis();
-        while (!this.queue.isEmpty()) {
-          storeSample(this.queue.poll());
-        }
-        long afterFlush = System.currentTimeMillis();
-        LOG.info("done in {} - trying to upload hrs again", (afterFlush - beforeFlush));
-      }
-      if (!this.queue.isEmpty()) {
-        HeartRateSample hrs = this.queue.poll();
-        if (this.hwPlatform.isUploadPermitted()) {
-          uploadSample(hrs);
-        }
-        storeSample(hrs);
-        continue;
-      }
-      try {
-        Thread.sleep(UPLOAD_THREAD_SLEEP_TIME_MS);
-      } catch (InterruptedException e) {
-        LOG.info("interrupt received from Controller");
-      }
-
-    }
-    if (!this.queue.isEmpty()) {
-      LOG.info("storing all remaining samples");
-      LOG.info("queue size: {}", this.queue.size());
-    }
-    while (!this.queue.isEmpty()) {
-      storeSample(this.queue.poll());
-    }
-    LOG.info("thread finished");
   }
 
   /**

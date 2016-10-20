@@ -14,9 +14,11 @@ import org.slf4j.LoggerFactory;
 
 import de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE;
 import de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils;
+import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
 
 /**
- * Class for modem interaction. Use it as a singleton member in HardwarePlatform. TODO Refactor it to be a abstract to support different kind of modems.
+ * Class for modem interaction. Use it as a singleton member in HardwarePlatform. TODO Refactoring would be required: Add abstract class to support different
+ * kind of modems.
  *
  * @author Daniel Pyka
  *
@@ -38,10 +40,12 @@ public class Huawei_E352S_5 implements Runnable {
 
   private static final String COMGT_SERIAL = "comgt -d " + FILE + " sig";
 
+  private final HardwarePlatform hwPlatform;
+
   private int overall_rssi = 0;
   private int overall_rssi_dBm = -113;
-  private int rscp = -145;
-  private int ecio = -32;
+
+  private SignalQualityBean sqb = new SignalQualityBean(SignalQualityBean.RSCP_DEFAULT, SignalQualityBean.ECIO_DEFAULT);
 
   private int connectionDuration;
   private float measuredUploadSpeed_bps;
@@ -58,7 +62,8 @@ public class Huawei_E352S_5 implements Runnable {
 
   private boolean isRunning;
 
-  public Huawei_E352S_5() {
+  public Huawei_E352S_5(HardwarePlatform hwPlatform) {
+    this.hwPlatform = hwPlatform;
     this.isRunning = false;
   }
 
@@ -107,11 +112,13 @@ public class Huawei_E352S_5 implements Runnable {
           }
           this.dsflowprtCounter++;
         } else if (m3.find()) {
-          this.rscp = Integer.parseInt(m3.group(1));
-          this.ecio = Integer.parseInt(m3.group(2));
-          LOG.info("RSCP: {}dBm, Ec/Io: {}dB, RSSI: {}dBm, {}", this.rscp, this.ecio, this.rscp - this.ecio, GSM_GPRS_EDGE.evaluateRSSI(this.rscp - this.ecio));
+          this.sqb = new SignalQualityBean(Integer.parseInt(m3.group(1)), Integer.parseInt(m3.group(2)));
+          LOG.info("RSCP: {}dBm, Ec/Io: {}dB, RSSI: {}dBm, {}", this.sqb.getRSCP(), this.sqb.getECIO(), this.sqb.getRSSI(),
+              GSM_GPRS_EDGE.evaluateRSSI(this.sqb.getRSSI()));
+          this.hwPlatform.evaluateSignalQuality();
         } else if (m4.find()) {
-          LOG.info("Modem (mode, submode): {}, {}", HuaweiUtils.getSystemModeName(m4.group(4)), HuaweiUtils.getSystemSubmodeName(m4.group(7)));
+          LOG.info("Modem (mode, submode): {}, {}", HuaweiUtils.getSystemModeName(Integer.parseInt(m4.group(4))),
+              HuaweiUtils.getSystemSubmodeName(Integer.parseInt(m4.group(7))));
           this.queryCSNR();
         }
       }
@@ -129,12 +136,8 @@ public class Huawei_E352S_5 implements Runnable {
     return this.overall_rssi_dBm;
   }
 
-  public int getRSCP() {
-    return this.rscp;
-  }
-
-  public int getECIO() {
-    return this.ecio;
+  public SignalQualityBean getSQB() {
+    return this.sqb;
   }
 
   public void queryCSNR() {

@@ -21,6 +21,7 @@ import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
+import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
 
 /**
  * Functionality for the Sensorplatform running on a Raspberry Pi 3 with Raspbian (lite).
@@ -38,7 +39,9 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final String BLINK_INTERVAL = "1000";
 
   private static final String WVDIAL = "wvdial";
-  private static final String INTERNET_INTERFACE_NAME = "ppp0";
+  private static final String INTERFACE_MOBILE_INTERNET = "ppp0";
+  // private static final String INTERFACE_CABLE = "eth0";
+  // private static final String INTERFACE_WIFI = "wlan0";
 
   private static final Pattern LOCAL_IP = Pattern.compile("local\\s+IP\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern REMOTE_IP = Pattern.compile("remote\\s+IP\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
@@ -86,7 +89,7 @@ public class RaspberryPi3 implements HardwarePlatform {
     this.criticalValueECIO = Integer.parseInt(criticalValueECIO);
     this.hciconfig = new HciconfigImpl();
     this.hcitool = new HcitoolImpl();
-    this.surfstick = new Huawei_E352S_5();
+    this.surfstick = new Huawei_E352S_5(this);
   }
 
   @Override
@@ -108,13 +111,16 @@ public class RaspberryPi3 implements HardwarePlatform {
             this.surfstickThread.start();
           } else {
             this.surfstick.querySYSINFO();
-            evaluateSignalQuality();
           }
         } else {
+          this.uploadPermitted = false;
+          this.mobileInternet = false;
           connectToMobileInternet();
           continue;
         }
       } else {
+        this.uploadPermitted = false;
+        this.mobileInternet = false;
         LOG.warn("surfstick not attached");
       }
 
@@ -138,42 +144,39 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   @Override
-  public int getRSCPfromMobileInternet() {
-    return this.surfstick.getRSCP();
-  }
-
-  @Override
-  public int getECIOfromMobileInternet() {
-    return this.surfstick.getECIO();
+  public SignalQualityBean getSignalQualityBean() {
+    return this.surfstick.getSQB();
   }
 
   @Override
   public void evaluateSignalQuality() {
-    // TODO evaluate on RSSI and RSCP too?
-    // What makes sense here?
-    if (this.surfstick.getECIO() < this.criticalValueECIO) {
+
+    if (this.surfstick.getSQB().getECIO() < this.criticalValueECIO || this.surfstick.getSQB().getRSCP() < this.criticalValueRSCP
+        || this.surfstick.getSQB().getRSSI() < this.criticalValueRSSI) {
       if (this.uploadPermitted) {
-        LOG.info("Ec/Io is too low: ", this.surfstick.getECIO());
         LOG.info("----------");
         LOG.info("suspend upload");
+        LOG.info("Reason: RSCP: {}dBm, Ec/Io: {}dB, RSSI: {}dBm", this.surfstick.getSQB().getRSCP(), this.surfstick.getSQB().getECIO(),
+            this.surfstick.getSQB().getRSSI());
         LOG.info("----------");
         this.uploadPermitted = false;
       }
     } else {
       if (!this.uploadPermitted) {
-        LOG.info("Ec/Io is good again: ", this.surfstick.getECIO());
         LOG.info("----------");
         LOG.info("permit upload");
+        LOG.info("Reason: RSCP: {}dBm, Ec/Io: {}dB, RSSI: {}dBm", this.surfstick.getSQB().getRSCP(), this.surfstick.getSQB().getECIO(),
+            this.surfstick.getSQB().getRSSI());
         LOG.info("----------");
         this.uploadPermitted = true;
       }
     }
+
   }
 
   @Override
   public boolean isUploadPermitted() {
-    return true;
-    // return this.uploadPermitted;
+    return this.uploadPermitted;
   }
 
   @Override
@@ -239,13 +242,22 @@ public class RaspberryPi3 implements HardwarePlatform {
    */
   private boolean hasMobileInternetConnection() {
     try {
-      NetworkInterface inet = NetworkInterface.getByName(INTERNET_INTERFACE_NAME);
+      NetworkInterface inet = NetworkInterface.getByName(INTERFACE_MOBILE_INTERNET);
       LOG.info("{} {} {}", inet.getDisplayName(), inet.getInetAddresses().nextElement().getHostAddress(), inet.isUp());
       return true;
     } catch (IOException | NullPointerException e) {
       return false;
     }
   }
+
+  // private boolean hasCableNetworkInternetConnection() {
+  // try {
+  // NetworkInterface inet = NetworkInterface.getByName(INTERFACE_CABLE);
+  // return inet.isUp();
+  // } catch (IOException | NullPointerException e) {
+  // return false;
+  // }
+  // }
 
   @Override
   public void connectToMobileInternet() {
