@@ -79,7 +79,7 @@ public class Controller implements Runnable {
     this.pulseCollector = pulseCollector;
     this.cc2650Collector = cc2650Collector;
     this.timeoutConnect = new Integer(timeoutConnect);
-    this.timeoutNotification = new Integer(timeoutNotification) * 2;
+    this.timeoutNotification = new Integer(timeoutNotification);
     this.recordingInfo = new File(recordingInfoFileName);
   }
 
@@ -144,6 +144,7 @@ public class Controller implements Runnable {
       LOG.info("no recording period was interrupted");
       this.hwPlatform.setLEDstateSTANDBY();
     } else {
+      LOG.info("a recording period was interrupted");
       try {
         Properties recProperties = new Properties();
         recProperties.load(new FileInputStream(this.recordingInfo));
@@ -189,6 +190,7 @@ public class Controller implements Runnable {
       }
       FileOutputStream fos = new FileOutputStream(this.recordingInfo);
       recProperties.store(fos, null);
+      fos.flush();
       fos.close();
       LOG.info("recording properties stored");
     } catch (IOException e) {
@@ -217,6 +219,7 @@ public class Controller implements Runnable {
       this.recording = true;
       this.uptimeMillis = uptimeMillis;
       if (isNewConfiguration) {
+        LOG.info("storing recording information to file");
         saveSensorplatformConfiguration(firstname, lastname, sensorConfiguration);
       }
       LOG.info("starting a new recording period");
@@ -281,10 +284,10 @@ public class Controller implements Runnable {
    * Enable logging (notifications) for all sensors of the recording period.
    */
   private void enableLogging() {
-    LOG.info("enable logging");
     for (AbstractSensorWrapper<?> asw : this.swList) {
+      asw.getSampleCollector().setUsed(true);
       if (asw.getGatttool().getInternalState() == Gatttool.State.CONNECTED) {
-        asw.getSampleCollector().setUsed(true);
+        LOG.info("enable logging for {}", asw.getSensor().getName());
         asw.enableLogging();
       }
     }

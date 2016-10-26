@@ -528,7 +528,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return magnetism on the X axis
    */
   private float getMagnetismX(String data) {
-    return 1.0f * ((short) Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16));
+    return 1.0f * (short) Integer.parseInt(data.substring(26, 28) + data.substring(24, 26), 16);
   }
 
   /**
@@ -539,7 +539,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return magnetism on the Y axis
    */
   private float getMagnetismY(String data) {
-    return 1.0f * ((short) Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16));
+    return 1.0f * (short) Integer.parseInt(data.substring(30, 32) + data.substring(28, 30), 16);
   }
 
   /**
@@ -550,7 +550,7 @@ public class CC2650 extends Sensor<CC2650lib> {
    * @return magnetism on the Z axis
    */
   private float getMagnetismZ(String data) {
-    return 1.0f * ((short) Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16));
+    return 1.0f * (short) Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
   }
 
   /**

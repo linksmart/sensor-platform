@@ -41,7 +41,7 @@ public class SensorOverseer implements Runnable {
    */
   public SensorOverseer(HardwarePlatform hwPlatform, int noNotificationTriggerTime, List<AbstractSensorWrapper<?>> swList) {
     this.hwPlatform = hwPlatform;
-    this.noNotificationTriggerTime = noNotificationTriggerTime;
+    this.noNotificationTriggerTime = noNotificationTriggerTime * 1000;
     this.swList = swList;
   }
 
@@ -55,12 +55,12 @@ public class SensorOverseer implements Runnable {
       long currentTime = System.currentTimeMillis();
 
       for (AbstractSensorWrapper<?> asw : this.swList) {
-        if ((currentTime - asw.getLastNotifactionTimestamp()) > (this.noNotificationTriggerTime * 1000)) {
+        if ((currentTime - asw.getLastNotifactionTimestamp()) > (this.noNotificationTriggerTime)) {
           if (!this.wrapperWithLostSensor.contains(asw)) {
-            LOG.warn("{} did not send a notification within {}s", asw.getSensor(), this.noNotificationTriggerTime);
+            LOG.warn("{} did not send a notification within {} ms", asw.getSensor().getBDaddress(), this.noNotificationTriggerTime);
             this.wrapperWithLostSensor.add(asw);
             asw.getGatttool().reconnect();
-            LOG.info("attempt to reconnect");
+            LOG.info("attempting to reconnect");
             this.hwPlatform.setLEDstateERROR();
           }
         }
@@ -79,7 +79,9 @@ public class SensorOverseer implements Runnable {
             asw.enableLogging();
             iterator.remove();
             LOG.info("{} reconnected successfully", asw.getSensor());
-            this.hwPlatform.setLEDstateRECORDING();
+            if (this.wrapperWithLostSensor.isEmpty()) {
+              this.hwPlatform.setLEDstateRECORDING();
+            }
             break;
         }
       }
@@ -87,12 +89,12 @@ public class SensorOverseer implements Runnable {
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
-        LOG.info("interrupt received from Controller");
+        LOG.info("interrupt received from controller");
         Thread.currentThread().interrupt();
       }
     }
     this.wrapperWithLostSensor.clear();
-    LOG.info("observer thread finished");
+    LOG.info("overseer thread finished");
   }
 
 }

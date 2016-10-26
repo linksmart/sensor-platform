@@ -44,6 +44,7 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
     if ((temperatureSample = this.sensor.calculateTemperatureData(this.dtf.print(new DateTime()), handle, data)) != null) {
       temperatureSample.setFirstname(this.firstname);
       temperatureSample.setLastname(this.lastname);
+      // LOG.info(temperatureSample.toString());
       this.cc2650Collector.addToQueue(temperatureSample);
       return;
     }
@@ -51,6 +52,7 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
     if ((humiditySample = this.sensor.calculateHumidityData(this.dtf.print(new DateTime()), handle, data)) != null) {
       humiditySample.setFirstname(this.firstname);
       humiditySample.setLastname(this.lastname);
+      // LOG.info(humiditySample.toString());
       this.cc2650Collector.addToQueue(humiditySample);
       return;
     }
@@ -58,6 +60,7 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
     if ((pressureSample = this.sensor.calculatePressureData(this.dtf.print(new DateTime()), handle, data)) != null) {
       pressureSample.setFirstname(this.firstname);
       pressureSample.setLastname(this.lastname);
+      // LOG.info(pressureSample.toString());
       this.cc2650Collector.addToQueue(pressureSample);
       return;
     }
@@ -65,6 +68,7 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
     if ((lightSample = this.sensor.calculateAmbientlightData(this.dtf.print(new DateTime()), handle, data)) != null) {
       lightSample.setFirstname(this.firstname);
       lightSample.setLastname(this.lastname);
+      // LOG.info(lightSample.toString());
       this.cc2650Collector.addToQueue(lightSample);
       return;
     }
@@ -72,6 +76,7 @@ public class CC2650Wrapper extends AbstractSensorWrapper<CC2650> {
     if ((movementSample = this.sensor.calculateMovementSample(this.dtf.print(new DateTime()), handle, data)) != null) {
       movementSample.setFirstname(this.firstname);
       movementSample.setLastname(this.lastname);
+      // LOG.info(movementSample.toString());
       this.cc2650Collector.addToQueue(movementSample);
       return;
     }

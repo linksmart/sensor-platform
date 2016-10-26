@@ -50,6 +50,7 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
     this.dtf = DateTimeFormat.forPattern(timestampFormat).withZone(DateTimeZone.UTC);
     this.firstname = firstname;
     this.lastname = lastname;
+    this.lastNotificationTimestamp = 0;
     this.gatttool.setObserver(this);
     new Thread(this.gatttool, this.sensor.getName().name().toLowerCase()).start();
   }

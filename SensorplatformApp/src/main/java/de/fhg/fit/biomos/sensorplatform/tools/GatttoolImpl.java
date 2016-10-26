@@ -113,7 +113,7 @@ public class GatttoolImpl implements Gatttool {
     } else if (line.contains("successful")) {
       this.state = State.CONNECTED;
       LOG.info("state is {}", this.state.name());
-    } else if (line.contains("refused")) {
+    } else if (line.contains("refused") || line.contains("busy")) {
       this.state = State.DISCONNECTED;
       LOG.info("state is {}", this.state.name());
     }
@@ -169,7 +169,7 @@ public class GatttoolImpl implements Gatttool {
       }
 
       if (this.state == State.DISCONNECTED) {
-        LOG.error("cannot connect to bluetooth device {}", this.bdAddress);
+        LOG.error("cannot connect to {}", this.bdAddress);
       }
 
     } catch (IOException | InterruptedException e) {

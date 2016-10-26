@@ -8,12 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+@Deprecated
 public class DBraw {
 
-  private static final Logger LOG = LoggerFactory.getLogger(DBraw.class);
+  // private static final Logger LOG = LoggerFactory.getLogger(DBraw.class);
 
   private final Connection conn;
 

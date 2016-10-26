@@ -16,6 +16,8 @@ import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
  */
 public class HeartRateSensorWrapper extends AbstractSensorWrapper<AbstractHeartRateSensor> {
 
+  // private static final Logger LOG = LoggerFactory.getLogger(HeartRateSensorWrapper.class);
+
   protected final HeartRateSampleCollector hrsCollector;
 
   public HeartRateSensorWrapper(AbstractHeartRateSensor sensor, String timestampFormat, String firstname, String lastname,
@@ -38,6 +40,7 @@ public class HeartRateSensorWrapper extends AbstractSensorWrapper<AbstractHeartR
     if (hrs != null) {
       hrs.setFirstname(this.firstname);
       hrs.setLastname(this.lastname);
+      // LOG.info(hrs.toString());
       this.hrsCollector.addToQueue(hrs);
     }
   }

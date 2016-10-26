@@ -16,6 +16,8 @@ import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
  */
 public class PulseOximeterSensorWrapper extends AbstractSensorWrapper<AbstractPulseOximeterSensor> {
 
+  // private static final Logger LOG = LoggerFactory.getLogger(PulseOximeterSensorWrapper.class);
+
   protected final PulseOximeterSampleCollector pulseOximeterSampleCollector;
 
   public PulseOximeterSensorWrapper(AbstractPulseOximeterSensor sensor, String timestampFormat, String firstname, String lastname,
@@ -38,6 +40,7 @@ public class PulseOximeterSensorWrapper extends AbstractSensorWrapper<AbstractPu
     if (pos != null) {
       pos.setFirstname(this.firstname);
       pos.setLastname(this.lastname);
+      // LOG.info(pos.toString());
       this.pulseOximeterSampleCollector.addToQueue(pos);
     }
   }
