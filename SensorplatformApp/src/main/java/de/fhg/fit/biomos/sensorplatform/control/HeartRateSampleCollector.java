@@ -30,7 +30,7 @@ public class HeartRateSampleCollector implements SampleCollector {
   private static final Logger LOG = LoggerFactory.getLogger(HeartRateSampleCollector.class);
 
   private static final int MAXIMUM_HRS_IN_QUEUE = 100;
-  private static final int UPLOAD_THREAD_SLEEP_TIME_MS = 1000;
+  private static final int UPLOAD_THREAD_SLEEP_TIME_MS = 100;
 
   private final DBcontroller dbc;
   private final HardwarePlatform hwPlatform;
