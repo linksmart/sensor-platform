@@ -129,7 +129,7 @@ public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrar
       return null;
     }
 
-    HeartRateSample hrs = new HeartRateSample(timestamp, this.bdAddress);
+    HeartRateSample hrs = new HeartRateSample(timestamp, this.bdAddress, false);
 
     if (isSkinContactDetectionSupported(rawHexValues)) {
       if (!isSkinContactDetected(rawHexValues)) {

@@ -35,7 +35,7 @@ public class HeartRateSample implements Serializable {
   @Column(name = "lastname")
   private String lastname;
   @Column(name = "transmitted")
-  private Boolean transmitted = false;
+  private Boolean transmitted;
   @Column(name = "timestamp")
   private String timestamp;
   @Column(name = "device")
@@ -50,9 +50,10 @@ public class HeartRateSample implements Serializable {
   public HeartRateSample() {
   }
 
-  public HeartRateSample(String timeStamp, String bdAddress) {
+  public HeartRateSample(String timeStamp, String bdAddress, boolean transmitted) {
     this.timestamp = timeStamp;
     this.bdAddress = bdAddress;
+    this.transmitted = transmitted;
   }
 
   public Long getId() {
