@@ -14,7 +14,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
  * Abstraction for the physical sensor. Defines HOW specific functions of the sensor are activated/deactivated.
- * 
+ *
  * @author Daniel Pyka
  *
  */
@@ -22,11 +22,8 @@ public class PolarH7 extends AbstractHeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(PolarH7.class);
 
-  private static final AddressType addressType = AddressType.PUBLIC;
-  private static final SecurityLevel securityLevel = SecurityLevel.LOW;
-
   public PolarH7(SensorName name, String bdAddress, JSONObject sensorConfiguration) {
-    super(new PolarH7lib(), name, bdAddress, addressType, securityLevel, sensorConfiguration);
+    super(new PolarH7lib(), name, bdAddress, AddressType.PUBLIC, SecurityLevel.LOW, sensorConfiguration);
   }
 
   /**
@@ -73,12 +70,12 @@ public class PolarH7 extends AbstractHeartRateSensor {
   }
 
   @Override
-  public void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
+  public void enableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     enableHeartRateNotification(streamToSensor, charWriteCmd, enableNotification);
   }
 
   @Override
-  public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String diableNotification) {
+  public void disableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String diableNotification) {
     disableHeartRateNotification(streamToSensor, charWriteCmd, diableNotification);
   }
 

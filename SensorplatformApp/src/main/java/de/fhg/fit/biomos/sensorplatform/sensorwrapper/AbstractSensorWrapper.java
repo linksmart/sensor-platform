@@ -6,7 +6,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.sensor.Sensor;
+import de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool.Mode;
 import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
@@ -17,7 +17,7 @@ import de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl;
  * @author Daniel Pyka
  *
  */
-public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements SensorWrapper<T> {
+public abstract class AbstractSensorWrapper<T extends AbstractSensor<?>> implements SensorWrapper<T> {
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractSensorWrapper.class);
 
@@ -57,14 +57,14 @@ public abstract class AbstractSensorWrapper<T extends Sensor<?>> implements Sens
 
   @Override
   public void enableLogging() {
-    this.sensor.enableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
+    this.sensor.enableDataNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.ENABLE_NOTIFICATION);
     this.lastNotificationTimestamp = System.currentTimeMillis();
     this.gatttool.setInternalMode(Mode.NOTIFICATION);
   }
 
   @Override
   public void disableLogging() {
-    this.sensor.disableAllNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
+    this.sensor.disableDataNotification(this.gatttool.getStreamToSensor(), GatttoolImpl.CMD_CHAR_WRITE_CMD, GatttoolImpl.DISABLE_NOTIFICATION);
     this.gatttool.setInternalMode(Mode.COMMANDMODE);
   }
 

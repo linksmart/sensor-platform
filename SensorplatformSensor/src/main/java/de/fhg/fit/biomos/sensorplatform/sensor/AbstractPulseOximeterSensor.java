@@ -20,7 +20,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  * @author Daniel Pyka
  *
  */
-public abstract class AbstractPulseOximeterSensor extends Sensor<PulseOximeterGattLibrary> implements PulseOximeterSensor {
+public abstract class AbstractPulseOximeterSensor extends AbstractSensor<PulseOximeterGattLibrary> implements PulseOximeterSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractPulseOximeterSensor.class);
 

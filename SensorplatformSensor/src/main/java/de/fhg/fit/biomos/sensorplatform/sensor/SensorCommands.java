@@ -21,7 +21,7 @@ public interface SensorCommands {
    * @param enableNotification
    *          as defined in the bluetooth specification (01:00)
    */
-  public void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification);
+  public void enableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification);
 
   /**
    * Disable the measurement and notification of the sensor previously enabled.
@@ -33,7 +33,7 @@ public interface SensorCommands {
    * @param disableNotification
    *          as defined in the bluetooth specification (00:00)
    */
-  public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification);
+  public void disableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification);
 
   public String requestBatteryLevel(BufferedWriter streamToSensor, String charReadCmd);
 

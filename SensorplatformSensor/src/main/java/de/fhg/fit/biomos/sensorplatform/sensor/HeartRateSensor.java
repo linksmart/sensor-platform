@@ -59,17 +59,6 @@ public interface HeartRateSensor {
   public boolean isEnergyExpendedPresent(String rawHexValues);
 
   /**
-   * Calculate the energy expended value.
-   *
-   * @param index
-   *          depends on the configuration byte
-   * @param rawHexValues
-   *          raw notification data as hexadecimal from the sensor
-   * @return int energy expended value
-   */
-  public int getEnergyExpended(int index, String rawHexValues);
-
-  /**
    * Calculate the heart rate (8 bit).
    *
    * @param rawHexValues
@@ -86,6 +75,17 @@ public interface HeartRateSensor {
    * @return int heart rate value
    */
   public int getHeartRate16Bit(String rawHexValues);
+
+  /**
+   * Calculate the energy expended value.
+   *
+   * @param index
+   *          depends on the configuration byte
+   * @param rawHexValues
+   *          raw notification data as hexadecimal from the sensor
+   * @return int energy expended value
+   */
+  public int getEnergyExpended(int index, String rawHexValues);
 
   /**
    * Calculate the RR values as a list

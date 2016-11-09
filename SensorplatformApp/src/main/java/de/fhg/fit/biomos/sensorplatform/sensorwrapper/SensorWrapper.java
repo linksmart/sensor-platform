@@ -1,7 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.sensorwrapper;
 
 import de.fhg.fit.biomos.sensorplatform.control.SampleCollector;
-import de.fhg.fit.biomos.sensorplatform.sensor.Sensor;
+import de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 
 /**
@@ -12,7 +12,7 @@ import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
  * @author Daniel Pyka
  *
  */
-public interface SensorWrapper<T extends Sensor<?>> {
+public interface SensorWrapper<T extends AbstractSensor<?>> {
 
   /**
    * Expose the sensor object.

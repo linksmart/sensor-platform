@@ -24,7 +24,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  * @author Daniel Pyka
  *
  */
-public class CC2650 extends Sensor<CC2650lib> {
+public class CC2650 extends AbstractSensor<CC2650lib> {
 
   private static final Logger LOG = LoggerFactory.getLogger(CC2650.class);
 
@@ -36,11 +36,8 @@ public class CC2650 extends Sensor<CC2650lib> {
 
   private static final int ACCELERATION_RESOLUTION = 16;
 
-  private static final AddressType addressType = AddressType.PUBLIC;
-  private static final SecurityLevel securityLevel = SecurityLevel.LOW;
-
   public CC2650(SensorName name, String bdAddress, JSONObject settings) {
-    super(new CC2650lib(), name, bdAddress, addressType, securityLevel, settings);
+    super(new CC2650lib(), name, bdAddress, AddressType.PUBLIC, SecurityLevel.LOW, settings);
   }
 
   /**
@@ -328,7 +325,7 @@ public class CC2650 extends Sensor<CC2650lib> {
   }
 
   @Override
-  public void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
+  public void enableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     if (this.settings.has(IRTEMPERATURE)) {
       enableTemperatureNotification(streamToSensor, charWriteCmd, enableNotification, this.settings.getString(IRTEMPERATURE));
     }
@@ -348,7 +345,7 @@ public class CC2650 extends Sensor<CC2650lib> {
   }
 
   @Override
-  public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
+  public void disableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     if (this.settings.has(IRTEMPERATURE)) {
       disableTemperatureNotification(streamToSensor, charWriteCmd, disableNotification);
     }

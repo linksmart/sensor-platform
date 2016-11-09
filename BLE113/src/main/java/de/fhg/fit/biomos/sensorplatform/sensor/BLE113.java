@@ -22,11 +22,8 @@ public class BLE113 extends AbstractPulseOximeterSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(BLE113.class);
 
-  private static final AddressType addressType = AddressType.PUBLIC;
-  private static final SecurityLevel securityLevel = SecurityLevel.HIGH;
-
   public BLE113(SensorName name, String bdAddress, JSONObject settings) {
-    super(new BLE113lib(), name, bdAddress, addressType, securityLevel, settings);
+    super(new BLE113lib(), name, bdAddress, AddressType.PUBLIC, SecurityLevel.HIGH, settings);
   }
 
   /**
@@ -73,12 +70,12 @@ public class BLE113 extends AbstractPulseOximeterSensor {
   }
 
   @Override
-  public void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
+  public void enableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     enablePulseOximeterNotification(streamToSensor, charWriteCmd, enableNotification);
   }
 
   @Override
-  public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
+  public void disableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     disablePulseOximeterNotification(streamToSensor, charWriteCmd, disableNotification);
   }
 

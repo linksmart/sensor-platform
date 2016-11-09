@@ -26,7 +26,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  * @author Daniel Pyka
  *
  */
-public abstract class AbstractHeartRateSensor extends Sensor<HeartRateGattLibrary> implements HeartRateSensor {
+public abstract class AbstractHeartRateSensor extends AbstractSensor<HeartRateGattLibrary> implements HeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(AbstractHeartRateSensor.class);
 

@@ -14,7 +14,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
  * Abstraction for the physical sensor. Defines HOW specific functions of the sensor are activated/deactivated.
- * 
+ *
  * @author Daniel Pyka
  *
  */
@@ -22,11 +22,8 @@ public class TomTomHRM extends AbstractHeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(TomTomHRM.class);
 
-  private static final AddressType addressType = AddressType.STATIC;
-  private static final SecurityLevel securityLevel = SecurityLevel.LOW;
-
   public TomTomHRM(SensorName name, String bdAddress, JSONObject sensorConfiguration) {
-    super(new TomTomHRMlib(), name, bdAddress, addressType, securityLevel, sensorConfiguration);
+    super(new TomTomHRMlib(), name, bdAddress, AddressType.STATIC, SecurityLevel.LOW, sensorConfiguration);
   }
 
   /**
@@ -73,12 +70,12 @@ public class TomTomHRM extends AbstractHeartRateSensor {
   }
 
   @Override
-  public void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
+  public void enableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     enableHeartRateNotification(streamToSensor, charWriteCmd, enableNotification);
   }
 
   @Override
-  public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
+  public void disableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     disableHeartRateNotification(streamToSensor, charWriteCmd, disableNotification);
   }
 

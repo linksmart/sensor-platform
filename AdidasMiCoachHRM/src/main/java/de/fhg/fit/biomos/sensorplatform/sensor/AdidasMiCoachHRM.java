@@ -22,11 +22,8 @@ public class AdidasMiCoachHRM extends AbstractHeartRateSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(AdidasMiCoachHRMlib.class);
 
-  private static final AddressType addressType = AddressType.STATIC;
-  private static final SecurityLevel securityLevel = SecurityLevel.LOW;
-
   public AdidasMiCoachHRM(SensorName name, String bdAddress, JSONObject sensorConfiguration) {
-    super(new AdidasMiCoachHRMlib(), name, bdAddress, addressType, securityLevel, sensorConfiguration);
+    super(new AdidasMiCoachHRMlib(), name, bdAddress, AddressType.STATIC, SecurityLevel.LOW, sensorConfiguration);
   }
 
   /**
@@ -73,12 +70,12 @@ public class AdidasMiCoachHRM extends AbstractHeartRateSensor {
   }
 
   @Override
-  public void enableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
+  public void enableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String enableNotification) {
     enableHeartRateNotification(streamToSensor, charWriteCmd, enableNotification);
   }
 
   @Override
-  public void disableAllNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
+  public void disableDataNotification(BufferedWriter streamToSensor, String charWriteCmd, String disableNotification) {
     disableHeartRateNotification(streamToSensor, charWriteCmd, disableNotification);
   }
 

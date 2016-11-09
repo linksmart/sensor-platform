@@ -17,7 +17,7 @@ import com.google.inject.Injector;
 
 import de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig;
 import de.fhg.fit.biomos.sensorplatform.sensor.PolarH7;
-import de.fhg.fit.biomos.sensorplatform.sensor.Sensor;
+import de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3;
@@ -89,7 +89,7 @@ public class ControllerTest {
   public void testSensorWrapperFactory() {
     SensorWrapperFactory swFactory = injector.getInstance(SensorWrapperFactory.class);
     aswList = swFactory.createSensorWrapper(configuration, "TestFirstName", "TestLastName");
-    Sensor<?> sensor = aswList.get(0).getSensor();
+    AbstractSensor<?> sensor = aswList.get(0).getSensor();
     Gatttool gatttool = aswList.get(0).getGatttool();
 
     Assert.assertTrue(sensor instanceof PolarH7);

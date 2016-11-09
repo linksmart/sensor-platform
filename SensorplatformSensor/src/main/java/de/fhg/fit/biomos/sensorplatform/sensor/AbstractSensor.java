@@ -18,9 +18,9 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  * @author Daniel Pyka
  *
  */
-public abstract class Sensor<T extends GattLibrary> implements SensorCommands {
+public abstract class AbstractSensor<T extends GattLibrary> implements SensorCommands {
 
-  private static final Logger LOG = LoggerFactory.getLogger(Sensor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AbstractSensor.class);
 
   protected final T gattLibrary;
   protected final SensorName name;
@@ -29,7 +29,7 @@ public abstract class Sensor<T extends GattLibrary> implements SensorCommands {
   protected final SecurityLevel securityLevel;
   protected final JSONObject settings;
 
-  public Sensor(T gattLibrary, SensorName name, String bdAddress, AddressType addressType, SecurityLevel securityLevel, JSONObject settings) {
+  public AbstractSensor(T gattLibrary, SensorName name, String bdAddress, AddressType addressType, SecurityLevel securityLevel, JSONObject settings) {
     this.gattLibrary = gattLibrary;
     this.name = name;
     this.bdAddress = bdAddress;
