@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.restservices.ControllerService
-	c724 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.ControllerService" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./ControllerService.html">
+	c658 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.ControllerService" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./ControllerService.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> ControllerService </td></tr>
 		</table></td></tr>
@@ -18,7 +18,8 @@ digraph G {
 <tr><td align="left" balign="left">  </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + ControllerService(controller : Controller) </td></tr>
+<tr><td align="left" balign="left"> + ControllerService(controller : Controller, hwPlatform : HardwarePlatform, uploader : Uploader, userAgent : String) </td></tr>
+<tr><td align="left" balign="left"> + info() : Response </td></tr>
 <tr><td align="left" balign="left"> + start(request : JSONObject) : Response </td></tr>
 <tr><td align="left" balign="left"> + stop() : Response </td></tr>
 <tr><td align="left" balign="left"> + scan(scanDuration : String) : Response </td></tr>

@@ -1,18 +1,16 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./SensorWrapperFactory.html" title="de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory" alt="" coords="16,45,1175,191"/>
-<area shape="rect" id="node1" href="./SensorWrapperFactory.html" title="&lt;TABLE&gt;" alt="" coords="5,40,1185,196"/>
-<area shape="rect" id="node2_1" href="./SensorOverseer.html" title="de.fhg.fit.biomos.sensorplatform.control.SensorOverseer" alt="" coords="1221,71,1965,165"/>
-<area shape="rect" id="node2" href="./SensorOverseer.html" title="&lt;TABLE&gt;" alt="" coords="1210,66,1975,170"/>
-<area shape="rect" id="node3_2" href="./SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" alt="" coords="2010,63,2183,173"/>
-<area shape="rect" id="node3" href="./SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="1999,57,2194,179"/>
-<area shape="rect" id="node4_3" href="./PulseOximeterSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector" alt="" coords="1519,319,1843,464"/>
-<area shape="rect" id="node4" href="./PulseOximeterSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="1508,313,1853,469"/>
-<area shape="rect" id="node6_4" href="./HeartRateSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" alt="" coords="1889,310,2305,473"/>
-<area shape="rect" id="node6" href="./HeartRateSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="1878,305,2315,478"/>
-<area shape="rect" id="node8_5" href="./CC2650SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector" alt="" coords="2350,284,2678,499"/>
-<area shape="rect" id="node8" href="./CC2650SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="2339,279,2689,504"/>
-<area shape="rect" id="node5_6" href="./InternetConnectionManager.html" title="de.fhg.fit.biomos.sensorplatform.control.InternetConnectionManager" alt="" coords="2229,63,2778,173"/>
-<area shape="rect" id="node5" href="./InternetConnectionManager.html" title="&lt;TABLE&gt;" alt="" coords="2218,57,2789,179"/>
-<area shape="rect" id="node7_7" href="./Controller.html" title="de.fhg.fit.biomos.sensorplatform.control.Controller" alt="" coords="2824,11,4801,225"/>
-<area shape="rect" id="node7" href="./Controller.html" title="&lt;TABLE&gt;" alt="" coords="2813,5,4812,231"/>
+<area shape="rect" id="node1_0" href="./SensorWrapperFactory.html" title="de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory" alt="" coords="16,37,1175,182"/>
+<area shape="rect" id="node1" href="./SensorWrapperFactory.html" title="&lt;TABLE&gt;" alt="" coords="5,31,1185,187"/>
+<area shape="rect" id="node2_1" href="./SensorOverseer.html" title="de.fhg.fit.biomos.sensorplatform.control.SensorOverseer" alt="" coords="1221,63,1965,156"/>
+<area shape="rect" id="node2" href="./SensorOverseer.html" title="&lt;TABLE&gt;" alt="" coords="1210,57,1975,161"/>
+<area shape="rect" id="node3_2" href="./SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" alt="" coords="2010,54,2183,165"/>
+<area shape="rect" id="node3" href="./SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="1999,49,2194,170"/>
+<area shape="rect" id="node4_3" href="./PulseOximeterSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector" alt="" coords="1425,301,1749,447"/>
+<area shape="rect" id="node4" href="./PulseOximeterSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="1415,296,1760,452"/>
+<area shape="rect" id="node5_4" href="./HeartRateSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" alt="" coords="1795,284,2398,464"/>
+<area shape="rect" id="node5" href="./HeartRateSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="1785,279,2409,469"/>
+<area shape="rect" id="node7_5" href="./CC2650SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector" alt="" coords="2443,267,2771,481"/>
+<area shape="rect" id="node7" href="./CC2650SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="2433,261,2782,487"/>
+<area shape="rect" id="node6_6" href="./Controller.html" title="de.fhg.fit.biomos.sensorplatform.control.Controller" alt="" coords="2229,11,3983,208"/>
+<area shape="rect" id="node6" href="./Controller.html" title="&lt;TABLE&gt;" alt="" coords="2219,5,3993,213"/>
 </map>

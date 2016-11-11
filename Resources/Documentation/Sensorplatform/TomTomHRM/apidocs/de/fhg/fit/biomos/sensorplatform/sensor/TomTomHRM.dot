@@ -19,8 +19,8 @@ digraph G {
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + TomTomHRM(name : SensorName, bdAddress : String, sensorConfiguration : JSONObject) </td></tr>
-<tr><td align="left" balign="left"> + enableAllNotification(streamToSensor : BufferedWriter, charWriteCmd : String, enableNotification : String) </td></tr>
-<tr><td align="left" balign="left"> + disableAllNotification(streamToSensor : BufferedWriter, charWriteCmd : String, disableNotification : String) </td></tr>
+<tr><td align="left" balign="left"> + enableDataNotification(streamToSensor : BufferedWriter, charWriteCmd : String, enableNotification : String) </td></tr>
+<tr><td align="left" balign="left"> + disableDataNotification(streamToSensor : BufferedWriter, charWriteCmd : String, disableNotification : String) </td></tr>
 		</table></td></tr>
 		</table>>, URL="./TomTomHRM.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor

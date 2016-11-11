@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory
-	c2032 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./SensorWrapperFactory.html">
+	c1729 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./SensorWrapperFactory.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> SensorWrapperFactory </td></tr>
 		</table></td></tr>
@@ -22,7 +22,7 @@ digraph G {
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + SensorWrapperFactory(hrsCollector : HeartRateSampleCollector, cc2650Collector : CC2650SampleCollector, pulseCollector : PulseOximeterSampleCollector, databaseTimeStampFormat : String) </td></tr>
-<tr><td align="left" balign="left"> + createSensorWrapper(sensorConfiguration : JSONArray) : List&lt;AbstractSensorWrapper&lt;?&gt;&gt; </td></tr>
+<tr><td align="left" balign="left"> + createSensorWrapper(sensorConfiguration : JSONArray, firstname : String, lastname : String) : List&lt;AbstractSensorWrapper&lt;?&gt;&gt; </td></tr>
 		</table></td></tr>
 		</table>>, URL="./SensorWrapperFactory.html", fontname="arial", fontcolor="black", fontsize=10.0];
 }

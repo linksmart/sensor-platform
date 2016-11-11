@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./SensorplatformServletConfig.html" title="de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig" alt="" coords="16,197,345,291"/>
-<area shape="rect" id="node1" href="./SensorplatformServletConfig.html" title="&lt;TABLE&gt;" alt="" coords="5,192,356,296"/>
+<area shape="rect" id="node1_0" href="./SensorplatformServletConfig.html" title="de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig" alt="" coords="16,197,345,308"/>
+<area shape="rect" id="node1" href="./SensorplatformServletConfig.html" title="&lt;TABLE&gt;" alt="" coords="5,192,356,313"/>
 <area shape="rect" id="node2_1" href="http://java.sun.com/j2se/1.4.2/docs/api/com/google/inject/servlet/GuiceServletContextListener.html" title="com.google.inject.servlet.GuiceServletContextListener" alt="" coords="33,11,328,139"/>
 <area shape="rect" id="node2" href="http://java.sun.com/j2se/1.4.2/docs/api/com/google/inject/servlet/GuiceServletContextListener.html" title="&lt;TABLE&gt;" alt="" coords="23,5,339,144"/>
 </map>

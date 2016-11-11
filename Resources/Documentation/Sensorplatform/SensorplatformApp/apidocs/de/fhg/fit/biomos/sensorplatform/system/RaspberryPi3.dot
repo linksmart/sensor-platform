@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3
-	c1836 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./RaspberryPi3.html">
+	c1588 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./RaspberryPi3.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> RaspberryPi3 </td></tr>
 		</table></td></tr>
@@ -18,17 +18,22 @@ digraph G {
 <tr><td align="left" balign="left">  </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + RaspberryPi3() </td></tr>
+<tr><td align="left" balign="left"> + RaspberryPi3(internetCheckInterval : String, criticalValueRSSI : String, criticalValueRSCP : String, criticalValueECIO : String) </td></tr>
+<tr><td align="left" balign="left"> + run() </td></tr>
+<tr><td align="left" balign="left"> + isConnectedToMobileInternet() : boolean </td></tr>
+<tr><td align="left" balign="left"> + getOverallRSSIfromMobileInternet() : int </td></tr>
+<tr><td align="left" balign="left"> + getSignalQualityBean() : SignalQualityBean </td></tr>
+<tr><td align="left" balign="left"> + evaluateSignalQuality() </td></tr>
+<tr><td align="left" balign="left"> + isUploadPermitted() : boolean </td></tr>
 <tr><td align="left" balign="left"> + setLEDstateSTANDBY() </td></tr>
 <tr><td align="left" balign="left"> + setLEDstateRECORDING() </td></tr>
 <tr><td align="left" balign="left"> + setLEDstateERROR() </td></tr>
-<tr><td align="left" balign="left"> + getBluetoothController() : Hciconfig </td></tr>
-<tr><td align="left" balign="left"> + printInternetInterfaceInfo() : boolean </td></tr>
+<tr><td align="left" balign="left"> + getHcitool() : Hcitool </td></tr>
 <tr><td align="left" balign="left"> + connectToMobileInternet() </td></tr>
 		</table></td></tr>
 		</table>>, URL="./RaspberryPi3.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c1837 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HardwarePlatform.html">
+	c1590 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HardwarePlatform.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> HardwarePlatform </td></tr>
@@ -37,15 +42,19 @@ digraph G {
 <tr><td align="left" balign="left">  </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + isConnectedToMobileInternet() : boolean </font></td></tr>
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + getOverallRSSIfromMobileInternet() : int </font></td></tr>
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + getSignalQualityBean() : SignalQualityBean </font></td></tr>
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + evaluateSignalQuality() </font></td></tr>
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + isUploadPermitted() : boolean </font></td></tr>
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + connectToMobileInternet() </font></td></tr>
 <tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + setLEDstateSTANDBY() </font></td></tr>
 <tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + setLEDstateRECORDING() </font></td></tr>
 <tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + setLEDstateERROR() </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + getBluetoothController() : Hciconfig </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + printInternetInterfaceInfo() : boolean </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + connectToMobileInternet() </font></td></tr>
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + getHcitool() : Hcitool </font></td></tr>
 		</table></td></tr>
 		</table>>, URL="./HardwarePlatform.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3 implements de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c1837:p -> c1836:p [dir=back,arrowtail=empty,style=dashed];
+	c1590:p -> c1588:p [dir=back,arrowtail=empty,style=dashed];
 }
 

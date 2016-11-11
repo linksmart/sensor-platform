@@ -1,10 +1,10 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./Windows.html" title="de.fhg.fit.biomos.sensorplatform.system.Windows" alt="" coords="16,249,249,429"/>
-<area shape="rect" id="node1" href="./Windows.html" title="&lt;TABLE&gt;" alt="" coords="5,244,260,435"/>
-<area shape="rect" id="node2_1" href="./RaspberryPi3.html" title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" alt="" coords="295,249,528,429"/>
-<area shape="rect" id="node2" href="./RaspberryPi3.html" title="&lt;TABLE&gt;" alt="" coords="284,244,539,435"/>
-<area shape="rect" id="node3_2" href="./HardwarePlatform.html" title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" alt="" coords="291,11,531,191"/>
-<area shape="rect" id="node3" href="./HardwarePlatform.html" title="&lt;TABLE&gt;" alt="" coords="281,5,542,196"/>
-<area shape="rect" id="node4_3" href="./Cubieboard3.html" title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" alt="" coords="573,249,807,429"/>
-<area shape="rect" id="node4" href="./Cubieboard3.html" title="&lt;TABLE&gt;" alt="" coords="563,244,817,435"/>
+<area shape="rect" id="node1_0" href="./RaspberryPi3.html" title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" alt="" coords="16,471,772,737"/>
+<area shape="rect" id="node1" href="./RaspberryPi3.html" title="&lt;TABLE&gt;" alt="" coords="5,465,783,743"/>
+<area shape="rect" id="node2_1" href="./HardwarePlatform.html" title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" alt="" coords="536,163,817,412"/>
+<area shape="rect" id="node2" href="./HardwarePlatform.html" title="&lt;TABLE&gt;" alt="" coords="525,157,828,417"/>
+<area shape="rect" id="node3_2" href="./Cubieboard3.html" title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" alt="" coords="817,471,1101,737"/>
+<area shape="rect" id="node3" href="./Cubieboard3.html" title="&lt;TABLE&gt;" alt="" coords="807,465,1112,743"/>
+<area shape="rect" id="node4_3" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html" title="java.lang.Runnable" alt="" coords="635,11,718,104"/>
+<area shape="rect" id="node4" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html" title="&lt;TABLE&gt;" alt="" coords="625,5,729,109"/>
 </map>

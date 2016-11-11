@@ -27,6 +27,7 @@ digraph G {
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + BLE113lib() </td></tr>
 <tr><td align="left" balign="left"> + getHandleDeviceName() : String </td></tr>
+<tr><td align="left" balign="left"> + getHandleBatteryLevel() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandlePulseOximeterMeasurement() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandlePulseOximeterNotification() : String </td></tr>
 		</table></td></tr>

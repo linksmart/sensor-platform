@@ -19,8 +19,8 @@ digraph G {
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + CC2650(name : SensorName, bdAddress : String, settings : JSONObject) </td></tr>
-<tr><td align="left" balign="left"> + enableAllNotification(streamToSensor : BufferedWriter, charWriteCmd : String, enableNotification : String) </td></tr>
-<tr><td align="left" balign="left"> + disableAllNotification(streamToSensor : BufferedWriter, charWriteCmd : String, disableNotification : String) </td></tr>
+<tr><td align="left" balign="left"> + enableDataNotification(streamToSensor : BufferedWriter, charWriteCmd : String, enableNotification : String) </td></tr>
+<tr><td align="left" balign="left"> + disableDataNotification(streamToSensor : BufferedWriter, charWriteCmd : String, disableNotification : String) </td></tr>
 <tr><td align="left" balign="left"> + calculateTemperatureData(timestamp : String, handle : String, data : String) : CC2650TemperatureSample </td></tr>
 <tr><td align="left" balign="left"> + calculateHumidityData(timestamp : String, handle : String, data : String) : CC2650HumiditySample </td></tr>
 <tr><td align="left" balign="left"> + calculatePressureData(timestamp : String, handle : String, data : String) : CC2650PressureSample </td></tr>
@@ -28,12 +28,12 @@ digraph G {
 <tr><td align="left" balign="left"> + calculateMovementSample(timestamp : String, handle : String, data : String) : CC2650MovementSample </td></tr>
 		</table></td></tr>
 		</table>>, URL="./CC2650.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	//de.fhg.fit.biomos.sensorplatform.sensor.CC2650 extends de.fhg.fit.biomos.sensorplatform.sensor.Sensor<de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib>
+	//de.fhg.fit.biomos.sensorplatform.sensor.CC2650 extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib>
 	c41:p -> c39:p [dir=back,arrowtail=empty];
-	// de.fhg.fit.biomos.sensorplatform.sensor.Sensor<T extends de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary>
-	c41 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.Sensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/sensor/Sensor.html">
+	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<T extends de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary>
+	c41 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/sensor/AbstractSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"><font face="arial italic"> Sensor&lt;T extends GattLibrary&gt; </font></td></tr>
+<tr><td align="center" balign="center"><font face="arial italic"> AbstractSensor&lt;T extends GattLibrary&gt; </font></td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> # gattLibrary : T </td></tr>
@@ -44,14 +44,17 @@ digraph G {
 <tr><td align="left" balign="left"> # settings : JSONObject </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + Sensor(arg0 : T, arg1 : SensorName, arg2 : String, arg3 : AddressType, arg4 : SecurityLevel, arg5 : JSONObject) </td></tr>
+<tr><td align="left" balign="left"> + AbstractSensor(arg0 : T, arg1 : SensorName, arg2 : String, arg3 : AddressType, arg4 : SecurityLevel, arg5 : JSONObject) </td></tr>
+<tr><td align="left" balign="left"> + getGattLibrary() : T </td></tr>
 <tr><td align="left" balign="left"> + getName() : SensorName </td></tr>
 <tr><td align="left" balign="left"> + getBDaddress() : String </td></tr>
 <tr><td align="left" balign="left"> + getAddressType() : AddressType </td></tr>
 <tr><td align="left" balign="left"> + getSecurityLevel() : SecurityLevel </td></tr>
 <tr><td align="left" balign="left"> + getSettings() : JSONObject </td></tr>
+<tr><td align="left" balign="left"> + requestBatteryLevel(arg0 : BufferedWriter, arg1 : String) : String </td></tr>
+<tr><td align="left" balign="left"> + calculateBatteryLevel(arg0 : String) : int </td></tr>
 <tr><td align="left" balign="left"> + toString() : String </td></tr>
 		</table></td></tr>
-		</table>>, URL="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/sensor/Sensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
+		</table>>, URL="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/sensor/AbstractSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 }
 

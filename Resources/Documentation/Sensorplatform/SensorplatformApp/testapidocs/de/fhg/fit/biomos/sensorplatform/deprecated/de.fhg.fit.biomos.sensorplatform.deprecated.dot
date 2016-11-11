@@ -9,76 +9,54 @@ digraph G {
 	node [fontname="arial",fontsize=10,shape=plaintext];
 	nodesep=0.25;
 	ranksep=0.5;
-	// de.fhg.fit.biomos.sensorplatform.deprecated.TimeTest
-	c0 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.TimeTest" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./TimeTest.html">
+	// de.fhg.fit.biomos.sensorplatform.deprecated.HciconfigImpl
+	c9 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.HciconfigImpl" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HciconfigImpl.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> TimeTest </td></tr>
+<tr><td align="center" balign="center"> HciconfigImpl </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left">  </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + TimeTest() </td></tr>
+<tr><td align="left" balign="left"> + HciconfigImpl() </td></tr>
+<tr><td align="left" balign="left"> + getLocalBDaddress() : String </td></tr>
+<tr><td align="left" balign="left"> + up() </td></tr>
+<tr><td align="left" balign="left"> + down() </td></tr>
+		</table></td></tr>
+		</table>>, URL="./HciconfigImpl.html", fontname="arial", fontcolor="black", fontsize=10.0];
+	// de.fhg.fit.biomos.sensorplatform.deprecated.Hciconfig
+	c10 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.Hciconfig" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Hciconfig.html">
+		<tr><td><table border="0" cellspacing="0" cellpadding="1">
+<tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
+<tr><td align="center" balign="center"> Hciconfig </td></tr>
+		</table></td></tr>
+		<tr><td><table border="0" cellspacing="0" cellpadding="1">
+<tr><td align="left" balign="left">  </td></tr>
+		</table></td></tr>
+		<tr><td><table border="0" cellspacing="0" cellpadding="1">
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + getLocalBDaddress() : String </font></td></tr>
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + up() </font></td></tr>
+<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + down() </font></td></tr>
+		</table></td></tr>
+		</table>>, URL="./Hciconfig.html", fontname="arial", fontcolor="black", fontsize=10.0];
+	// de.fhg.fit.biomos.sensorplatform.deprecated.DBraw
+	c11 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.DBraw" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./DBraw.html">
+		<tr><td><table border="0" cellspacing="0" cellpadding="1">
+<tr><td align="center" balign="center"> DBraw </td></tr>
+		</table></td></tr>
+		<tr><td><table border="0" cellspacing="0" cellpadding="1">
+<tr><td align="left" balign="left">  </td></tr>
+		</table></td></tr>
+		<tr><td><table border="0" cellspacing="0" cellpadding="1">
+<tr><td align="left" balign="left"> + DBraw() </td></tr>
 <tr><td align="left" balign="left"> + main(args : String[]) </td></tr>
+<tr><td align="left" balign="left"> + test() </td></tr>
+<tr><td align="left" balign="left"> + test2() </td></tr>
+<tr><td align="left" balign="left"> + shutdown() </td></tr>
 		</table></td></tr>
-		</table>>, URL="./TimeTest.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	// de.fhg.fit.biomos.sensorplatform.deprecated.SecurityManager
-	c1 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.SecurityManager" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SecurityManager.html">
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> SecurityManager </td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left">  </td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + SecurityManager() </td></tr>
-<tr><td align="left" balign="left"> + loadStoredDevices() </td></tr>
-<tr><td align="left" balign="left"> + pairDevice(asw : AbstractSensorWrapper&lt;?&gt;) : AbstractSensorWrapper&lt;?&gt; </td></tr>
-		</table></td></tr>
-		</table>>, URL="./SecurityManager.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	// de.fhg.fit.biomos.sensorplatform.deprecated.GattPermissions
-	c2 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.GattPermissions" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GattPermissions.html">
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"><font face="arial italic"> GattPermissions </font></td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + GENERIC_PERMISSION_BROADCAST : String </td></tr>
-<tr><td align="left" balign="left"> + GENERIC_PERMISSION_READ : String </td></tr>
-<tr><td align="left" balign="left"> + GENERIC_PERMISSION_WRITE_WITHOUT_RESPONSE : String </td></tr>
-<tr><td align="left" balign="left"> + GENERIC_PERMISSION_WRITE : String </td></tr>
-<tr><td align="left" balign="left"> + GENERIC_PERMISSION_NOTIFY : String </td></tr>
-<tr><td align="left" balign="left"> + GENERIC_PERMISSION_INDICATE : String </td></tr>
-<tr><td align="left" balign="left"> + GENERIC_PERMISSION_AUTHENTICATED_SIGNED_WRITES : String </td></tr>
-<tr><td align="left" balign="left"> + GENERIC_PERMISSION_EXTENDED_PROPERTIES : String </td></tr>
-<tr><td align="left" balign="left"> + FAROS_PERMISSION_UKNOWN_1 : String </td></tr>
-<tr><td align="left" balign="left"> + FAROS_PERMISSION_UKNOWN_2 : String </td></tr>
-<tr><td align="left" balign="left"> + FAROS_PERMISSION_UKNOWN_3 : String </td></tr>
-<tr><td align="left" balign="left"> + FAROS_PERMISSION_UKNOWN_4 : String </td></tr>
-<tr><td align="left" balign="left"> + POLAR_PERMISSION_UKNOWN_1 : String </td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + GattPermissions() </td></tr>
-		</table></td></tr>
-		</table>>, URL="./GattPermissions.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	// de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothDevice
-	c3 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothDevice" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./BluetoothDevice.html">
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> BluetoothDevice </td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left">  </td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + BluetoothDevice(deviceName : String, bdAddress : String, addressType : AddressType, secLevel : SecurityLevel) </td></tr>
-<tr><td align="left" balign="left"> + getDeviceName() : String </td></tr>
-<tr><td align="left" balign="left"> + getBDAddress() : String </td></tr>
-<tr><td align="left" balign="left"> + getAddressType() : AddressType </td></tr>
-<tr><td align="left" balign="left"> + getSecLevel() : SecurityLevel </td></tr>
-<tr><td align="left" balign="left"> + toString() : String </td></tr>
-		</table></td></tr>
-		</table>>, URL="./BluetoothDevice.html", fontname="arial", fontcolor="black", fontsize=10.0];
+		</table>>, URL="./DBraw.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothctlImpl
-	c4 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothctlImpl" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./BluetoothctlImpl.html">
+	c12 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothctlImpl" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./BluetoothctlImpl.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> BluetoothctlImpl </td></tr>
 		</table></td></tr>
@@ -99,30 +77,8 @@ digraph G {
 <tr><td align="left" balign="left"> + exit() </td></tr>
 		</table></td></tr>
 		</table>>, URL="./BluetoothctlImpl.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	// de.fhg.fit.biomos.sensorplatform.deprecated.Bluetoothctl
-	c5 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.Bluetoothctl" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Bluetoothctl.html">
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
-<tr><td align="center" balign="center"> Bluetoothctl </td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left">  </td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + init() </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + getControllerBDaddress() : String </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + powerOn() </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + powerOff() </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + scanOn(timeout : int) </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + scanOff() </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + connect(bdAddress : String) </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + disconnect() </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + pair() </font></td></tr>
-<tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + remove(bdAddress : String) </font></td></tr>
-		</table></td></tr>
-		</table>>, URL="./Bluetoothctl.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothAgent
-	c6 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothAgent" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./BluetoothAgent.html">
+	c13 [label=<<table title="de.fhg.fit.biomos.sensorplatform.deprecated.BluetoothAgent" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./BluetoothAgent.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;enumeration&#187; </td></tr>
 <tr><td align="center" balign="center"> BluetoothAgent </td></tr>
@@ -140,5 +96,7 @@ digraph G {
 <tr><td align="left" balign="left"> OFF </td></tr>
 		</table></td></tr>
 		</table>>, URL="./BluetoothAgent.html", fontname="arial", fontcolor="black", fontsize=10.0];
+	//de.fhg.fit.biomos.sensorplatform.deprecated.HciconfigImpl implements de.fhg.fit.biomos.sensorplatform.deprecated.Hciconfig
+	c10:p -> c9:p [dir=back,arrowtail=empty,style=dashed];
 }
 

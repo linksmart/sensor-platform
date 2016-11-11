@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node1_0" href="../sensorwrapper/ObservableSensorNotificationData.html" title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.ObservableSensorNotificationData" alt="" coords="16,54,368,165"/>
-<area shape="rect" id="node1" href="../sensorwrapper/ObservableSensorNotificationData.html" title="&lt;TABLE&gt;" alt="" coords="5,49,379,170"/>
-<area shape="rect" id="node2_1" href="./VirtualPolarH7Mock.html" title="de.fhg.fit.biomos.sensorplatform.tools.VirtualPolarH7Mock" alt="" coords="118,267,698,481"/>
-<area shape="rect" id="node2" href="./VirtualPolarH7Mock.html" title="&lt;TABLE&gt;" alt="" coords="107,261,709,487"/>
-<area shape="rect" id="node3_2" href="./Gatttool.html" title="de.fhg.fit.biomos.sensorplatform.tools.Gatttool" alt="" coords="413,11,835,208"/>
-<area shape="rect" id="node3" href="./Gatttool.html" title="&lt;TABLE&gt;" alt="" coords="403,5,845,213"/>
-</map>

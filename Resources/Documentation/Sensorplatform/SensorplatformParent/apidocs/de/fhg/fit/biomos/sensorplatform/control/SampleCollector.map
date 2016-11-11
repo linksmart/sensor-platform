@@ -1,12 +1,12 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" alt="" coords="507,163,681,273"/>
-<area shape="rect" id="node1" href="./SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="497,157,691,279"/>
+<area shape="rect" id="node1_0" href="./SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" alt="" coords="601,163,774,273"/>
+<area shape="rect" id="node1" href="./SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="590,157,785,279"/>
 <area shape="rect" id="node2_1" href="./PulseOximeterSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector" alt="" coords="16,367,340,512"/>
 <area shape="rect" id="node2" href="./PulseOximeterSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="5,361,351,517"/>
-<area shape="rect" id="node3_2" href="./HeartRateSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" alt="" coords="386,358,802,521"/>
-<area shape="rect" id="node3" href="./HeartRateSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="375,353,813,526"/>
-<area shape="rect" id="node4_3" href="./CC2650SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector" alt="" coords="847,332,1175,547"/>
-<area shape="rect" id="node4" href="./CC2650SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="837,327,1186,552"/>
-<area shape="rect" id="node5_4" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html" title="java.lang.Runnable" alt="" coords="553,11,635,104"/>
-<area shape="rect" id="node5" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html" title="&lt;TABLE&gt;" alt="" coords="542,5,646,109"/>
+<area shape="rect" id="node3_2" href="./HeartRateSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" alt="" coords="386,349,989,529"/>
+<area shape="rect" id="node3" href="./HeartRateSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="375,344,999,535"/>
+<area shape="rect" id="node4_3" href="./CC2650SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector" alt="" coords="1034,332,1362,547"/>
+<area shape="rect" id="node4" href="./CC2650SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="1023,327,1373,552"/>
+<area shape="rect" id="node5_4" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html" title="java.lang.Runnable" alt="" coords="646,11,729,104"/>
+<area shape="rect" id="node5" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html" title="&lt;TABLE&gt;" alt="" coords="635,5,739,109"/>
 </map>

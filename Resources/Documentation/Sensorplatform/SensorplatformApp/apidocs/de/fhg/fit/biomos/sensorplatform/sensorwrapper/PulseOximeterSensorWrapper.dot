@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper
-	c1742 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./PulseOximeterSensorWrapper.html">
+	c1504 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./PulseOximeterSensorWrapper.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PulseOximeterSensorWrapper </td></tr>
 		</table></td></tr>
@@ -18,31 +18,37 @@ digraph G {
 <tr><td align="left" balign="left"> # pulseOximeterSampleCollector : PulseOximeterSampleCollector </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + PulseOximeterSensorWrapper(sensor : AbstractPulseOximeterSensor, timestampFormat : String, pulseOximeterSampleCollector : PulseOximeterSampleCollector) </td></tr>
-<tr><td align="left" balign="left"> + newNotificationData(observable : ObservableSensorNotificationData, handle : String, rawHexValues : String) </td></tr>
+<tr><td align="left" balign="left"> + PulseOximeterSensorWrapper(sensor : AbstractPulseOximeterSensor, timestampFormat : String, firstname : String, lastname : String, pulseOximeterSampleCollector : PulseOximeterSampleCollector) </td></tr>
+<tr><td align="left" balign="left"> + getSampleCollector() : SampleCollector </td></tr>
+<tr><td align="left" balign="left"> + newNotificationData(gatttool : Gatttool, handle : String, rawHexValues : String) </td></tr>
 		</table></td></tr>
 		</table>>, URL="./PulseOximeterSensorWrapper.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<T extends de.fhg.fit.biomos.sensorplatform.sensor.Sensor<?>>
-	c1746 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensorWrapper.html">
+	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<T extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<?>>
+	c1507 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensorWrapper.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"><font face="arial italic"> AbstractSensorWrapper&lt;T extends Sensor&lt;?&gt;&gt; </font></td></tr>
+<tr><td align="center" balign="center"><font face="arial italic"> AbstractSensorWrapper&lt;T extends AbstractSensor&lt;?&gt;&gt; </font></td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> # dtf : DateTimeFormatter </td></tr>
 <tr><td align="left" balign="left"> # gatttool : Gatttool </td></tr>
 <tr><td align="left" balign="left"> # sensor : T </td></tr>
+<tr><td align="left" balign="left"> # firstname : String </td></tr>
+<tr><td align="left" balign="left"> # lastname : String </td></tr>
 <tr><td align="left" balign="left"> # lastNotificationTimestamp : long </td></tr>
+<tr><td align="left" balign="left"> # requestedHandle : String </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + AbstractSensorWrapper(sensor : T, timestampFormat : String) </td></tr>
+<tr><td align="left" balign="left"> + AbstractSensorWrapper(sensor : T, timestampFormat : String, firstname : String, lastname : String) </td></tr>
 <tr><td align="left" balign="left"> + enableLogging() </td></tr>
 <tr><td align="left" balign="left"> + disableLogging() </td></tr>
 <tr><td align="left" balign="left"> + getSensor() : T </td></tr>
 <tr><td align="left" balign="left"> + getGatttool() : Gatttool </td></tr>
 <tr><td align="left" balign="left"> + getLastNotifactionTimestamp() : long </td></tr>
+<tr><td align="left" balign="left"> + getBatteryLevel() </td></tr>
+<tr><td align="left" balign="left"> + newCommandData(observable : Gatttool, rawHexValues : String) </td></tr>
 		</table></td></tr>
 		</table>>, URL="./AbstractSensorWrapper.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper extends de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor>
-	c1746:p -> c1742:p [dir=back,arrowtail=empty];
+	c1507:p -> c1504:p [dir=back,arrowtail=empty];
 }
 

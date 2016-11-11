@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.restservices.PulseOximeterService
-	c189 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.PulseOximeterService" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterService.html">
+	c172 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.PulseOximeterService" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterService.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PulseOximeterService </td></tr>
 		</table></td></tr>
@@ -23,21 +23,8 @@ digraph G {
 <tr><td align="left" balign="left"> + deleteAllPos() : Response </td></tr>
 		</table></td></tr>
 		</table>>, URL="./PulseOximeterService.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	// de.fhg.fit.biomos.sensorplatform.restservices.InfoService
-	c190 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.InfoService" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./InfoService.html">
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> InfoService </td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left">  </td></tr>
-		</table></td></tr>
-		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + InfoService(controller : Controller, inetman : InternetConnectionManager, uploader : Uploader, userAgent : String) </td></tr>
-<tr><td align="left" balign="left"> + info() : Response </td></tr>
-		</table></td></tr>
-		</table>>, URL="./InfoService.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService
-	c191 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateService.html">
+	c173 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateService.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> HeartRateService </td></tr>
 		</table></td></tr>
@@ -54,7 +41,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HeartRateService.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.restservices.ControllerService
-	c192 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.ControllerService" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./ControllerService.html">
+	c174 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.ControllerService" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./ControllerService.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> ControllerService </td></tr>
 		</table></td></tr>
@@ -62,14 +49,15 @@ digraph G {
 <tr><td align="left" balign="left">  </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + ControllerService(controller : Controller) </td></tr>
+<tr><td align="left" balign="left"> + ControllerService(controller : Controller, hwPlatform : HardwarePlatform, uploader : Uploader, userAgent : String) </td></tr>
+<tr><td align="left" balign="left"> + info() : Response </td></tr>
 <tr><td align="left" balign="left"> + start(request : JSONObject) : Response </td></tr>
 <tr><td align="left" balign="left"> + stop() : Response </td></tr>
 <tr><td align="left" balign="left"> + scan(scanDuration : String) : Response </td></tr>
 		</table></td></tr>
 		</table>>, URL="./ControllerService.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service
-	c193 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650Service.html">
+	c175 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650Service.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650Service </td></tr>
 		</table></td></tr>

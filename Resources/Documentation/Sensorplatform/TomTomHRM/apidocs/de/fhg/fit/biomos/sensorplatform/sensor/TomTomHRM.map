@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./TomTomHRM.html" title="de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM" alt="" coords="147,319,791,429"/>
-<area shape="rect" id="node1" href="./TomTomHRM.html" title="&lt;TABLE&gt;" alt="" coords="136,313,801,435"/>
+<area shape="rect" id="node1_0" href="./TomTomHRM.html" title="de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM" alt="" coords="141,319,797,429"/>
+<area shape="rect" id="node1" href="./TomTomHRM.html" title="&lt;TABLE&gt;" alt="" coords="130,313,807,435"/>
 <area shape="rect" id="node2_1" href="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/sensor/AbstractHeartRateSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" alt="" coords="16,11,921,260"/>
 <area shape="rect" id="node2" href="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/sensor/AbstractHeartRateSensor.html" title="&lt;TABLE&gt;" alt="" coords="5,5,932,265"/>
 </map>

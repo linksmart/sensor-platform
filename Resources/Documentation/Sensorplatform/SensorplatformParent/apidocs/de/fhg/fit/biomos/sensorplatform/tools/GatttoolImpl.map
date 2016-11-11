@@ -1,8 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="../sensorwrapper/ObservableSensorNotificationData.html" title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.ObservableSensorNotificationData" alt="" coords="16,54,368,165"/>
-<area shape="rect" id="node1" href="../sensorwrapper/ObservableSensorNotificationData.html" title="&lt;TABLE&gt;" alt="" coords="5,49,379,170"/>
-<area shape="rect" id="node2_1" href="./GatttoolImpl.html" title="de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl" alt="" coords="141,267,675,481"/>
-<area shape="rect" id="node2" href="./GatttoolImpl.html" title="&lt;TABLE&gt;" alt="" coords="130,261,686,487"/>
-<area shape="rect" id="node3_2" href="./Gatttool.html" title="de.fhg.fit.biomos.sensorplatform.tools.Gatttool" alt="" coords="413,11,835,208"/>
-<area shape="rect" id="node3" href="./Gatttool.html" title="&lt;TABLE&gt;" alt="" coords="403,5,845,213"/>
+<area shape="rect" id="node1_0" href="./GatttoolImpl.html" title="de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl" alt="" coords="16,301,551,811"/>
+<area shape="rect" id="node1" href="./GatttoolImpl.html" title="&lt;TABLE&gt;" alt="" coords="5,296,561,816"/>
+<area shape="rect" id="node2_1" href="./Gatttool.html" title="de.fhg.fit.biomos.sensorplatform.tools.Gatttool" alt="" coords="115,11,451,243"/>
+<area shape="rect" id="node2" href="./Gatttool.html" title="&lt;TABLE&gt;" alt="" coords="105,5,462,248"/>
 </map>

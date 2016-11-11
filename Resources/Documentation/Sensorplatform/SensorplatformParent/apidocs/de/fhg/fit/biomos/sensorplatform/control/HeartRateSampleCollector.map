@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" alt="" coords="137,11,311,121"/>
-<area shape="rect" id="node1" href="./SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="127,5,321,127"/>
-<area shape="rect" id="node2_1" href="./HeartRateSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" alt="" coords="16,180,432,343"/>
-<area shape="rect" id="node2" href="./HeartRateSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="5,175,443,348"/>
+<area shape="rect" id="node1_0" href="./SampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" alt="" coords="231,11,404,121"/>
+<area shape="rect" id="node1" href="./SampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="220,5,415,127"/>
+<area shape="rect" id="node2_1" href="./HeartRateSampleCollector.html" title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" alt="" coords="16,180,619,360"/>
+<area shape="rect" id="node2" href="./HeartRateSampleCollector.html" title="&lt;TABLE&gt;" alt="" coords="5,175,629,365"/>
 </map>

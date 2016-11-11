@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.control.Controller
-	c669 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.Controller" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Controller.html">
+	c608 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.Controller" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Controller.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> Controller </td></tr>
 		</table></td></tr>
@@ -18,21 +18,20 @@ digraph G {
 <tr><td align="left" balign="left">  </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + Controller(swFactory : SensorWrapperFactory, hwPlatform : HardwarePlatform, inetman : InternetConnectionManager, hrsCollector : HeartRateSampleCollector, pulseCollector : PulseOximeterSampleCollector, cc2650Collector : CC2650SampleCollector, timeoutConnect : String, timeoutNotification : String, recordingInfoFileName : String) </td></tr>
+<tr><td align="left" balign="left"> + Controller(swFactory : SensorWrapperFactory, hwPlatform : HardwarePlatform, hrsCollector : HeartRateSampleCollector, pulseCollector : PulseOximeterSampleCollector, cc2650Collector : CC2650SampleCollector, timeoutConnect : String, timeoutNotification : String, recordingInfoFileName : String) </td></tr>
 <tr><td align="left" balign="left"> + isRecording() : boolean </td></tr>
 <tr><td align="left" balign="left"> + interruptController() </td></tr>
-<tr><td align="left" balign="left"> + restartBluetoothController() </td></tr>
 <tr><td align="left" balign="left"> + scan(scanDuration : int) : List&lt;DetectedDevice&gt; </td></tr>
 <tr><td align="left" balign="left"> + initialise() </td></tr>
-<tr><td align="left" balign="left"> + startRecordingPeriod(uptimeMillis : long, sensorConfiguration : JSONArray, isNewConfiguration : boolean) : String </td></tr>
+<tr><td align="left" balign="left"> + startRecordingPeriod(uptimeMillis : long, firstname : String, lastname : String, sensorConfiguration : JSONArray, isNewConfiguration : boolean) : String </td></tr>
 <tr><td align="left" balign="left"> + run() </td></tr>
-<tr><td align="left" balign="left"> + manualHrsUpload(hrss : List&lt;HeartRateSample&gt;) </td></tr>
+<tr><td align="left" balign="left"> + manualHrsUpload(hrss : List&lt;HeartRateSample&gt;) : String </td></tr>
 		</table></td></tr>
 		</table>>, URL="./Controller.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.control.Controller implements java.lang.Runnable
-	c707:p -> c669:p [dir=back,arrowtail=empty,style=dashed];
+	c643:p -> c608:p [dir=back,arrowtail=empty,style=dashed];
 	// java.lang.Runnable
-	c707 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
+	c643 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Runnable </td></tr>

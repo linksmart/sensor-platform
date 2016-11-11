@@ -35,3 +35,9 @@ case ${cmd} in
 esac
 
 exit 0
+
+#Export script for sensorplatform
+#/home/pi/Sensorplatform/bin/*.jar
+#/home/pi/Sensorplatform/db/*.*
+#/home/pi/Sensorplatform/staticResources/*.*
+#/home/pi/Sensorplatform/run.sh

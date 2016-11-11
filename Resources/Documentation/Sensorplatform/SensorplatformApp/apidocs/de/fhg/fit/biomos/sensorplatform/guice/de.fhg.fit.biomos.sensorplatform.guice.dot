@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig
-	c52 [label=<<table title="de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorplatformServletConfig.html">
+	c47 [label=<<table title="de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorplatformServletConfig.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> SensorplatformServletConfig </td></tr>
 		</table></td></tr>
@@ -20,10 +20,11 @@ digraph G {
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + SensorplatformServletConfig(properties : Properties) </td></tr>
 <tr><td align="left" balign="left"> # getInjector() : Injector </td></tr>
+<tr><td align="left" balign="left"> + getCreatedInjector() : Injector </td></tr>
 		</table></td></tr>
 		</table>>, URL="./SensorplatformServletConfig.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.guice.SensorplatformGuiceModule
-	c53 [label=<<table title="de.fhg.fit.biomos.sensorplatform.guice.SensorplatformGuiceModule" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorplatformGuiceModule.html">
+	c48 [label=<<table title="de.fhg.fit.biomos.sensorplatform.guice.SensorplatformGuiceModule" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorplatformGuiceModule.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> SensorplatformGuiceModule </td></tr>
 		</table></td></tr>

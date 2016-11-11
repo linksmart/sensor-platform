@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./SensorCommands.html" title="de.fhg.fit.biomos.sensorplatform.sensor.SensorCommands" alt="" coords="132,11,784,121"/>
-<area shape="rect" id="node1" href="./SensorCommands.html" title="&lt;TABLE&gt;" alt="" coords="121,5,795,127"/>
-<area shape="rect" id="node2_1" href="./Sensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.Sensor" alt="" coords="16,180,900,447"/>
-<area shape="rect" id="node2" href="./Sensor.html" title="&lt;TABLE&gt;" alt="" coords="5,175,911,452"/>
+<area shape="rect" id="node1_0" href="./SensorCommands.html" title="de.fhg.fit.biomos.sensorplatform.sensor.SensorCommands" alt="" coords="150,11,814,156"/>
+<area shape="rect" id="node1" href="./SensorCommands.html" title="&lt;TABLE&gt;" alt="" coords="139,5,825,161"/>
+<area shape="rect" id="node2_1" href="./AbstractSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor" alt="" coords="16,215,948,533"/>
+<area shape="rect" id="node2" href="./AbstractSensor.html" title="&lt;TABLE&gt;" alt="" coords="5,209,959,539"/>
 </map>

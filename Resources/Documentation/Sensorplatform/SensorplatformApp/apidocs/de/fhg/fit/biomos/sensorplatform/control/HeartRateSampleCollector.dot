@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c1371 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SampleCollector.html">
+	c1208 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> SampleCollector </td></tr>
@@ -24,7 +24,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./SampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector
-	c1374 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./HeartRateSampleCollector.html">
+	c1210 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./HeartRateSampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> HeartRateSampleCollector </td></tr>
 		</table></td></tr>
@@ -32,15 +32,16 @@ digraph G {
 <tr><td align="left" balign="left">  </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + HeartRateSampleCollector(dbc : DBcontroller, uploader : Uploader) </td></tr>
+<tr><td align="left" balign="left"> + HeartRateSampleCollector(dbc : DBcontroller, hwPlatform : HardwarePlatform, uploader : Uploader) </td></tr>
 <tr><td align="left" balign="left"> + isUsed() : boolean </td></tr>
 <tr><td align="left" balign="left"> + setUsed(used : boolean) </td></tr>
+<tr><td align="left" balign="left"> + run() </td></tr>
 <tr><td align="left" balign="left"> + addToQueue(hrs : HeartRateSample) </td></tr>
 <tr><td align="left" balign="left"> + getNumberOfHrsInQueue() : int </td></tr>
-<tr><td align="left" balign="left"> + run() </td></tr>
+<tr><td align="left" balign="left"> + manualUpload() </td></tr>
 		</table></td></tr>
 		</table>>, URL="./HeartRateSampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector implements de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c1371:p -> c1374:p [dir=back,arrowtail=empty,style=dashed];
+	c1208:p -> c1210:p [dir=back,arrowtail=empty,style=dashed];
 }
 

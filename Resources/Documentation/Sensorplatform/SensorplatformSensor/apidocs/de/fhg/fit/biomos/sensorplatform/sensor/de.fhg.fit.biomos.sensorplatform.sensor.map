@@ -1,14 +1,14 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./SensorCommands.html" title="de.fhg.fit.biomos.sensorplatform.sensor.SensorCommands" alt="" coords="1055,11,1707,121"/>
-<area shape="rect" id="node1" href="./SensorCommands.html" title="&lt;TABLE&gt;" alt="" coords="1045,5,1718,127"/>
-<area shape="rect" id="node2_1" href="./Sensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.Sensor" alt="" coords="939,215,1823,481"/>
-<area shape="rect" id="node2" href="./Sensor.html" title="&lt;TABLE&gt;" alt="" coords="929,209,1834,487"/>
-<area shape="rect" id="node5_2" href="./AbstractPulseOximeterSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor" alt="" coords="16,575,1264,911"/>
-<area shape="rect" id="node5" href="./AbstractPulseOximeterSensor.html" title="&lt;TABLE&gt;" alt="" coords="5,569,1275,916"/>
-<area shape="rect" id="node6_3" href="./AbstractHeartRateSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" alt="" coords="1480,618,2712,867"/>
-<area shape="rect" id="node6" href="./AbstractHeartRateSensor.html" title="&lt;TABLE&gt;" alt="" coords="1469,613,2723,873"/>
-<area shape="rect" id="node3_4" href="./PulseOximeterSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.PulseOximeterSensor" alt="" coords="215,180,894,516"/>
-<area shape="rect" id="node3" href="./PulseOximeterSensor.html" title="&lt;TABLE&gt;" alt="" coords="205,175,905,521"/>
-<area shape="rect" id="node4_5" href="./HeartRateSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.HeartRateSensor" alt="" coords="1869,223,2493,473"/>
-<area shape="rect" id="node4" href="./HeartRateSensor.html" title="&lt;TABLE&gt;" alt="" coords="1859,218,2504,478"/>
+<area shape="rect" id="node1_0" href="./SensorCommands.html" title="de.fhg.fit.biomos.sensorplatform.sensor.SensorCommands" alt="" coords="1061,11,1725,156"/>
+<area shape="rect" id="node1" href="./SensorCommands.html" title="&lt;TABLE&gt;" alt="" coords="1051,5,1736,161"/>
+<area shape="rect" id="node4_1" href="./AbstractSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor" alt="" coords="927,223,1859,542"/>
+<area shape="rect" id="node4" href="./AbstractSensor.html" title="&lt;TABLE&gt;" alt="" coords="917,218,1870,547"/>
+<area shape="rect" id="node2_2" href="./PulseOximeterSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.PulseOximeterSensor" alt="" coords="203,215,882,551"/>
+<area shape="rect" id="node2" href="./PulseOximeterSensor.html" title="&lt;TABLE&gt;" alt="" coords="193,209,893,556"/>
+<area shape="rect" id="node5_3" href="./AbstractPulseOximeterSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor" alt="" coords="16,609,1264,945"/>
+<area shape="rect" id="node5" href="./AbstractPulseOximeterSensor.html" title="&lt;TABLE&gt;" alt="" coords="5,604,1275,951"/>
+<area shape="rect" id="node3_4" href="./HeartRateSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.HeartRateSensor" alt="" coords="1905,258,2529,507"/>
+<area shape="rect" id="node3" href="./HeartRateSensor.html" title="&lt;TABLE&gt;" alt="" coords="1895,253,2540,513"/>
+<area shape="rect" id="node6_5" href="./AbstractHeartRateSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" alt="" coords="1504,653,2736,902"/>
+<area shape="rect" id="node6" href="./AbstractHeartRateSensor.html" title="&lt;TABLE&gt;" alt="" coords="1493,647,2747,907"/>
 </map>

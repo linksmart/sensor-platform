@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample
-	c187 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./PulseOximeterSample.html">
+	c201 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./PulseOximeterSample.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PulseOximeterSample </td></tr>
 		</table></td></tr>
@@ -22,6 +22,10 @@ digraph G {
 <tr><td align="left" balign="left"> + PulseOximeterSample(timestamp : String, bdAddress : String) </td></tr>
 <tr><td align="left" balign="left"> + getId() : Long </td></tr>
 <tr><td align="left" balign="left"> + setId(id : Long) </td></tr>
+<tr><td align="left" balign="left"> + getFirstname() : String </td></tr>
+<tr><td align="left" balign="left"> + setFirstname(firstname : String) </td></tr>
+<tr><td align="left" balign="left"> + getLastname() : String </td></tr>
+<tr><td align="left" balign="left"> + setLastname(lastname : String) </td></tr>
 <tr><td align="left" balign="left"> + getTimestamp() : String </td></tr>
 <tr><td align="left" balign="left"> + setTimestamp(timestamp : String) </td></tr>
 <tr><td align="left" balign="left"> + getBDaddress() : String </td></tr>
@@ -34,9 +38,9 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./PulseOximeterSample.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample implements java.io.Serializable
-	c198:p -> c187:p [dir=back,arrowtail=empty,style=dashed];
+	c212:p -> c201:p [dir=back,arrowtail=empty,style=dashed];
 	// java.io.Serializable
-	c198 [label=<<table title="java.io.Serializable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/io/Serializable.html">
+	c212 [label=<<table title="java.io.Serializable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/io/Serializable.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Serializable </td></tr>

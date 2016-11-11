@@ -1,10 +1,10 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./Windows.html" title="de.fhg.fit.biomos.sensorplatform.system.Windows" alt="" coords="16,249,249,429"/>
-<area shape="rect" id="node1" href="./Windows.html" title="&lt;TABLE&gt;" alt="" coords="5,244,260,435"/>
-<area shape="rect" id="node2_1" href="./RaspberryPi3.html" title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" alt="" coords="295,249,528,429"/>
-<area shape="rect" id="node2" href="./RaspberryPi3.html" title="&lt;TABLE&gt;" alt="" coords="284,244,539,435"/>
-<area shape="rect" id="node3_2" href="./HardwarePlatform.html" title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" alt="" coords="291,11,531,191"/>
-<area shape="rect" id="node3" href="./HardwarePlatform.html" title="&lt;TABLE&gt;" alt="" coords="281,5,542,196"/>
-<area shape="rect" id="node4_3" href="./Cubieboard3.html" title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" alt="" coords="573,249,807,429"/>
-<area shape="rect" id="node4" href="./Cubieboard3.html" title="&lt;TABLE&gt;" alt="" coords="563,244,817,435"/>
+<area shape="rect" id="node1_0" href="./RaspberryPi3.html" title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" alt="" coords="16,405,772,672"/>
+<area shape="rect" id="node1" href="./RaspberryPi3.html" title="&lt;TABLE&gt;" alt="" coords="5,400,783,677"/>
+<area shape="rect" id="node2_1" href="./Huawei_E352S_5.html" title="de.fhg.fit.biomos.sensorplatform.system.Huawei_E352S_5" alt="" coords="863,11,1183,347"/>
+<area shape="rect" id="node2" href="./Huawei_E352S_5.html" title="&lt;TABLE&gt;" alt="" coords="853,5,1194,352"/>
+<area shape="rect" id="node3_2" href="./HardwarePlatform.html" title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" alt="" coords="536,54,817,303"/>
+<area shape="rect" id="node3" href="./HardwarePlatform.html" title="&lt;TABLE&gt;" alt="" coords="525,49,828,309"/>
+<area shape="rect" id="node4_3" href="./Cubieboard3.html" title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" alt="" coords="817,405,1101,672"/>
+<area shape="rect" id="node4" href="./Cubieboard3.html" title="&lt;TABLE&gt;" alt="" coords="807,400,1112,677"/>
 </map>

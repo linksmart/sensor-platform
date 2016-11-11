@@ -22,6 +22,10 @@ digraph G {
 <tr><td align="left" balign="left"> + CC2650PressureSample(timestamp : String, bdAddress : String) </td></tr>
 <tr><td align="left" balign="left"> + getId() : Long </td></tr>
 <tr><td align="left" balign="left"> + setId(id : Long) </td></tr>
+<tr><td align="left" balign="left"> + getFirstname() : String </td></tr>
+<tr><td align="left" balign="left"> + setFirstname(firstname : String) </td></tr>
+<tr><td align="left" balign="left"> + getLastname() : String </td></tr>
+<tr><td align="left" balign="left"> + setLastname(lastname : String) </td></tr>
 <tr><td align="left" balign="left"> + getTimestamp() : String </td></tr>
 <tr><td align="left" balign="left"> + setTimestamp(timestamp : String) </td></tr>
 <tr><td align="left" balign="left"> + getBdAddress() : String </td></tr>

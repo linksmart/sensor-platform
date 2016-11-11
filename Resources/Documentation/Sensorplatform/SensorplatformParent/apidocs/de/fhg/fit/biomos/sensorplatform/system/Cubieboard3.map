@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./HardwarePlatform.html" title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" alt="" coords="16,11,256,191"/>
-<area shape="rect" id="node1" href="./HardwarePlatform.html" title="&lt;TABLE&gt;" alt="" coords="5,5,267,196"/>
-<area shape="rect" id="node2_1" href="./Cubieboard3.html" title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" alt="" coords="19,249,253,429"/>
-<area shape="rect" id="node2" href="./Cubieboard3.html" title="&lt;TABLE&gt;" alt="" coords="9,244,263,435"/>
+<area shape="rect" id="node1_0" href="./HardwarePlatform.html" title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" alt="" coords="17,11,299,260"/>
+<area shape="rect" id="node1" href="./HardwarePlatform.html" title="&lt;TABLE&gt;" alt="" coords="7,5,309,265"/>
+<area shape="rect" id="node2_1" href="./Cubieboard3.html" title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" alt="" coords="16,319,300,585"/>
+<area shape="rect" id="node2" href="./Cubieboard3.html" title="&lt;TABLE&gt;" alt="" coords="5,313,311,591"/>
 </map>

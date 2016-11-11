@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./BLE113.html" title="de.fhg.fit.biomos.sensorplatform.sensor.BLE113" alt="" coords="175,405,819,516"/>
-<area shape="rect" id="node1" href="./BLE113.html" title="&lt;TABLE&gt;" alt="" coords="164,400,829,521"/>
+<area shape="rect" id="node1_0" href="./BLE113.html" title="de.fhg.fit.biomos.sensorplatform.sensor.BLE113" alt="" coords="169,405,825,516"/>
+<area shape="rect" id="node1" href="./BLE113.html" title="&lt;TABLE&gt;" alt="" coords="158,400,835,521"/>
 <area shape="rect" id="node2_1" href="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/sensor/AbstractPulseOximeterSensor.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor" alt="" coords="16,11,977,347"/>
 <area shape="rect" id="node2" href="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/sensor/AbstractPulseOximeterSensor.html" title="&lt;TABLE&gt;" alt="" coords="5,5,988,352"/>
 </map>
