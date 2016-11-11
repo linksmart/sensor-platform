@@ -1,6 +1,5 @@
 package de.fhg.fit.biomos.sensorplatform.system;
 
-import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
 
@@ -72,12 +71,8 @@ public class Cubieboard3 implements HardwarePlatform {
   }
 
   @Override
-  public Hciconfig getBluetoothController() {
-    return null;
-  }
-
-  @Override
   public Hcitool getHcitool() {
+    // TODO Auto-generated method stub
     return null;
   }
 

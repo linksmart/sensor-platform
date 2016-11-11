@@ -46,7 +46,7 @@
 		<description>Pulse Oximeter Service</description>
 		
 		<!-- 2A5E: org.bluetooth.characteristic.plx_spot_check_measurement -->
-		<!-- omitted for now, TODO what about indication? -->
+		<!-- omitted -->
 		
 		<!-- 2A5F: org.bluetooth.characteristic.plx_continuous_measurement -->
 		<characteristic uuid="2A5F" id="c_plx_continuous_measurement">

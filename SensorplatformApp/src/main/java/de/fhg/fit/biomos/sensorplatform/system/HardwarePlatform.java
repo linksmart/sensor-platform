@@ -1,6 +1,5 @@
 package de.fhg.fit.biomos.sensorplatform.system;
 
-import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
 
@@ -47,6 +46,11 @@ public interface HardwarePlatform extends Runnable {
   public boolean isUploadPermitted();
 
   /**
+   * Use some driver to start a daemon process which handles mobile internet connection.
+   */
+  public void connectToMobileInternet();
+
+  /**
    * Set a LED on the board to blink slowly.
    */
   public void setLEDstateSTANDBY();
@@ -62,22 +66,10 @@ public interface HardwarePlatform extends Runnable {
   public void setLEDstateERROR();
 
   /**
-   * Get the local Bluetooth controller.
-   *
-   * @return Hciconfig object for interacting with hciconfig console tool
-   */
-  public Hciconfig getBluetoothController();
-
-  /**
    * Get the hcitool command line tool.
    *
    * @return Hcitool object for interacting with hcitool console tool
    */
   public Hcitool getHcitool();
-
-  /**
-   * Use some driver to start a daemon process which handles mobile internet connection.
-   */
-  public void connectToMobileInternet();
 
 }

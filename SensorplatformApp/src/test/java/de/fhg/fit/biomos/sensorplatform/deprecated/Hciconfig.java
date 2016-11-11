@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.tools;
+package de.fhg.fit.biomos.sensorplatform.deprecated;
 
 /**
  * Control class for hciconfig command line tool from Bluez. This one is NOT interactive. Because of strange bugs on the Raspberry Pi 3, the sensorplatform must

@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import de.fhg.fit.biomos.sensorplatform.tools.Hciconfig;
-import de.fhg.fit.biomos.sensorplatform.tools.HciconfigImpl;
 import de.fhg.fit.biomos.sensorplatform.tools.Hcitool;
 import de.fhg.fit.biomos.sensorplatform.tools.HcitoolImpl;
 import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
@@ -48,7 +46,6 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final Pattern PRIMARY_DNS = Pattern.compile("primary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
   private static final Pattern SECONDARY_DNS = Pattern.compile("secondary\\s+DNS\\s+address\\s+(\\d+.\\d+.\\d+\\d+.\\d+)");
 
-  private final Hciconfig hciconfig;
   private final Hcitool hcitool;
 
   private final Huawei_E352S_5 surfstick;
@@ -87,7 +84,6 @@ public class RaspberryPi3 implements HardwarePlatform {
     this.criticalValueRSSI = Integer.parseInt(criticalValueRSSI);
     this.criticalValueRSCP = Integer.parseInt(criticalValueRSCP);
     this.criticalValueECIO = Integer.parseInt(criticalValueECIO);
-    this.hciconfig = new HciconfigImpl();
     this.hcitool = new HcitoolImpl();
     this.surfstick = new Huawei_E352S_5(this);
   }
@@ -219,11 +215,6 @@ public class RaspberryPi3 implements HardwarePlatform {
     } catch (FileNotFoundException e) {
       LOG.error("cannot write to board LED file (no sudo)", e);
     }
-  }
-
-  @Override
-  public Hciconfig getBluetoothController() {
-    return this.hciconfig;
   }
 
   @Override

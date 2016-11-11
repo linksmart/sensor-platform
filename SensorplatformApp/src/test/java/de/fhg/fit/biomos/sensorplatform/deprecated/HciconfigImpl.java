@@ -1,4 +1,4 @@
-package de.fhg.fit.biomos.sensorplatform.tools;
+package de.fhg.fit.biomos.sensorplatform.deprecated;
 
 import java.io.BufferedReader;
 import java.io.IOException;

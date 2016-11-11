@@ -73,6 +73,7 @@ public class HeartRateSampleCollector implements SampleCollector {
         long beforeFlush = System.currentTimeMillis();
         this.buffer = new ConcurrentLinkedQueue<HeartRateSample>(this.queue);
         LOG.info("queue is full ({})- buffering data, storing {} hrs in the database", this.queue.size(), this.buffer.size());
+        this.queue.clear();
         while (!this.buffer.isEmpty()) {
           storeSample(this.buffer.poll());
         }

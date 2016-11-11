@@ -102,26 +102,6 @@ public class Controller implements Runnable {
   }
 
   /**
-   * Restart the local Bluetooth controller to fix some nasty bugs. For the Raspberry Pi 3 this is mandatory, otherwise pairing and bonding is not working
-   * correctly.
-   */
-  public void restartBluetoothController() {
-    LOG.info("restart bluetooth controller");
-    this.hwPlatform.getBluetoothController().down();
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      LOG.error("sleep failed");
-    }
-    this.hwPlatform.getBluetoothController().up();
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      LOG.error("sleep failed");
-    }
-  }
-
-  /**
    * Scan for Bluetooth Low Energy devices.
    *
    * @param scanDuration
