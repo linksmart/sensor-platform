@@ -1,0 +1,170 @@
+Useful files and settings for the sensorplatform linux raspbian system
+
+Autostart systemd
+	/etc/init.d/sensorplatform start
+	/etc/init.d/sensorplatform stop
+	/etc/init.d/sensorplatform restart
+
+Netzwerk
+	sudo nano /etc/hostname (for static ip in fraunhofer fit network, resolved by hostname + mac address)
+	sudo nano /etc/wpa_supplicant/wpa_supplicant.conf 
+
+Overall settings
+	/boot/config.txt (FAT32 Partition)
+	https://www.raspberrypi.org/documentation/configuration/config-txt.md
+
+CPU Settings
+	sudo nano /boot/config.txt
+		arm_freq
+		arm_freq_min usw.
+	cd /sys/devices/system/cpu/cpu0/cpufreq
+	cat cpuinfo\_max\_freq
+	cat cpuinfo\_min\_freq
+	cat cpuinfo\_cur\_freq
+
+HDMI Ausgang
+	/opt/vc/bin/tvservice –o (off)
+	/opt/vc/bin/tvservice –p (on)
+
+Mobilfunk (wvdial & ppp, comgt)
+	sudo apt install wvdial comgt
+	sudo nano /etc/ppp/peers/wvdial 
+		defaultroute
+		replacedefaultroute
+
+Netzwerk Speedtest
+	wget -O speedtest-cli https://raw.github.com/sivel/speedtest-cli/master/speedtest\_cli.py
+	chmod +x speedtest-cli
+	./speedtest-cli
+
+BlueZ
+	gatttool
+	sudo bluetoothctl
+	sudo btmon (debugging)
+	/var/lib/bluetooth/<localbdaddress>/<remotebdaddress>/info (keys and some other information)
+
+Misc
+	nano /etc/sudoersroot (who can use sudo)
+	nano /etc/ssh/sshd\_config (who may connect via ssh)
+	PermitRootLogin without-password
+	PermitRootLogin yes
+	/etc/init.d/ssh restart
+
+Bluetooth/Wifi
+	/etc/modprobe.d/raspi-blacklist.conf
+		#wifi
+		blacklist brcmfmac
+		blacklist brcmutil
+		#bt
+		blacklist btbcm
+		blacklist hci_uart
+
+Fake HW-Clock (pre installed in Raspbian, only use if no real time clock module available)
+	apt-cache show fake-hwclock
+	/etc/init.d/fake-hwclock start
+	/etc/init.d/fake-hwclock stop
+
+Maven Commands:
+cd /SensorplatformParent
+	mvn clean install -P raspberrypi3 webhrs (install project)
+	mvn clean site site:stage (generate documentation)
+
+Gesamte Sensorkonfiguration
+
+[
+    {
+        "name": "PolarH7",
+        "bdaddress": "00:22:D0:AA:1F:B1",
+        "settings": {}
+    },
+    {
+        "name": "TomTomHRM",
+        "bdaddress": "F4:2C:87:24:12:09",
+        "settings": {}
+    },
+    {
+        "name": "AdidasHRM",
+        "bdaddress": "CB:A2:4A:FE:0F:DA",
+        "settings": {}
+    },
+    {
+        "name": "BLE113",
+        "bdaddress": "00:07:80:6A:F2:51",
+        "settings": {}
+    },
+    {
+        "name": "CC2650",
+        "bdaddress": "A0:E6:F8:B6:37:05",
+        "settings": {
+            "irtemperature": "1E",
+            "humidity": "0A",
+            "ambientlight": "0A",
+            "pressure": "0A",
+            "movement": "0A"
+        }
+    }
+]
+
+	
+----------------------------------------------------------------------------------------------
+
+
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+address 129.26.160.34
+netmask 255.255.248.0
+gateway 129.26.160.1
+dns-nameservers 129.26.165.177
+
+allow-hotplug wlan0
+iface wlan0 inet manual
+    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+allow-hotplug wlan1
+iface wlan1 inet manual
+    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+sensorplatform.fit.fraunhofer.de
+129.26.160.38
+
+dns1.fit.fraunhofer.de
+129.26.160.177
+
+change only /etc/dhcpcd.conf
+for static IP address
+
+# Custom static IP address for eth0.
+interface eth0
+static ip_address=129.26.160.38/21
+static routers=129.26.160.1
+static domain_name_servers=129.26.165.177
+
+/etc/network/interfaces
+keep as it is, no changes here for static ip
+
+use wpapassphrase to append network settings to wpa_supplicant.conf
+
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="1"
+    psk="2"
+}
+
+
+----------------------------------------------------------------------------------------------
+
+
+sudo useradd -m raspberry.tips -G sudo
+sudo passwd raspberry.tips
+sudo deluser -remove-home pi
+
+/etc/sudoersroot
+sudo usermod -aG sudo <username>
+groups <username>
+pi : pi adm dialout cdrom sudo audio video plugdev games users input netdev spi i2c gpio
+
