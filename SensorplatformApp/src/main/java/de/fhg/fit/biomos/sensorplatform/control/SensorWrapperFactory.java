@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM;
+import de.fhg.fit.biomos.sensorplatform.sensor.AdidasHRM;
 import de.fhg.fit.biomos.sensorplatform.sensor.BLE113;
 import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
 import de.fhg.fit.biomos.sensorplatform.sensor.PolarH7;
@@ -81,7 +81,7 @@ public class SensorWrapperFactory {
             sensorWrapperList.add(polarh7Wrapper);
             break;
           case AdidasHRM:
-            HeartRateSensorWrapper adidasHrmWrapper = new HeartRateSensorWrapper(new AdidasMiCoachHRM(name, bdAddress, settings), this.databaseTimeStampFormat,
+            HeartRateSensorWrapper adidasHrmWrapper = new HeartRateSensorWrapper(new AdidasHRM(name, bdAddress, settings), this.databaseTimeStampFormat,
                 firstname, lastname, this.hrsCollector);
             sensorWrapperList.add(adidasHrmWrapper);
             break;

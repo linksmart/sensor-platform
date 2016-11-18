@@ -1,0 +1,1 @@
+LogFileExtractor is a very simple tool which uses regular expressions to extract certain data from the sensorplatform log file.

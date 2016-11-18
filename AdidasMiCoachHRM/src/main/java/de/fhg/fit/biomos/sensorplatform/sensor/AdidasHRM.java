@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib;
+import de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib;
 import de.fhg.fit.biomos.sensorplatform.util.AddressType;
 import de.fhg.fit.biomos.sensorplatform.util.SecurityLevel;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
@@ -18,12 +18,12 @@ import de.fhg.fit.biomos.sensorplatform.util.SensorName;
  * @author Daniel Pyka
  *
  */
-public class AdidasMiCoachHRM extends AbstractHeartRateSensor {
+public class AdidasHRM extends AbstractHeartRateSensor {
 
-  private static final Logger LOG = LoggerFactory.getLogger(AdidasMiCoachHRMlib.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AdidasHRMlib.class);
 
-  public AdidasMiCoachHRM(SensorName name, String bdAddress, JSONObject sensorConfiguration) {
-    super(new AdidasMiCoachHRMlib(), name, bdAddress, AddressType.STATIC, SecurityLevel.LOW, sensorConfiguration);
+  public AdidasHRM(SensorName name, String bdAddress, JSONObject sensorConfiguration) {
+    super(new AdidasHRMlib(), name, bdAddress, AddressType.STATIC, SecurityLevel.LOW, sensorConfiguration);
   }
 
   /**

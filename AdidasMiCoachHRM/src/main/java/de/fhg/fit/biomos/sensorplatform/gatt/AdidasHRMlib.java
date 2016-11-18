@@ -8,7 +8,7 @@ package de.fhg.fit.biomos.sensorplatform.gatt;
  * @author Daniel Pyka
  *
  */
-public class AdidasMiCoachHRMlib implements HeartRateGattLibrary {
+public class AdidasHRMlib implements HeartRateGattLibrary {
 
   public static final String DEFAULT_BDADDRESS = "CB:A2:4A:FE:0F:DA";
 
@@ -24,7 +24,7 @@ public class AdidasMiCoachHRMlib implements HeartRateGattLibrary {
   public final String HANDLE_BODY_SENSOR_LOCATION = "0x001a";
   public final String HANDLE_BATTERY_LEVEL = "0x001d";
 
-  public AdidasMiCoachHRMlib() {
+  public AdidasHRMlib() {
   }
 
   @Override
