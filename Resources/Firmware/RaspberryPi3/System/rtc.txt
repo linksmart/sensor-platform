@@ -1,0 +1,24 @@
+date
+cat /proc/driver/rtc
+
+dmesg | grep rtc
+
+in /boot/config.txt
+dtoverlay=i2c-rtc,ds3231
+
+sudo apt purge fake-hwclock
+sudo update-rc.d -f ntp remove
+sudo update-rc.d ntp defaults
+
+# show
+hwclock -r
+# load from rtc
+hwclock -s
+# set rtc
+hwclock -w
+
+/etc/rc.local
+
+add entry before exit 0
+
+/sbin/hwclock -s

@@ -20,6 +20,7 @@ import de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service;
 import de.fhg.fit.biomos.sensorplatform.restservices.ControllerService;
 import de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService;
 import de.fhg.fit.biomos.sensorplatform.restservices.PulseOximeterService;
+import de.fhg.fit.biomos.sensorplatform.system.Cubieboard3;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3;
 import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
@@ -87,8 +88,9 @@ public class SensorplatformGuiceModule extends AbstractModule {
         bind(HardwarePlatform.class).to(RaspberryPi3.class);
         break;
       case "cubieboard3":
-        LOG.error("Cubieboard 3 not yet supported");
-        System.exit(-1);
+        LOG.info("target platform is {}", targetPlatform);
+        bind(Cubieboard3.class).in(Singleton.class);
+        bind(HardwarePlatform.class).to(Cubieboard3.class);
         break;
       default:
         LOG.error("unknown target platform {}", targetPlatform);
