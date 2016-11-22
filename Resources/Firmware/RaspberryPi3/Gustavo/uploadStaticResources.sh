@@ -1,7 +1,7 @@
 #!/bin/sh
 
 remoteloginname='administrator'
-remotehost='129.26.160.63'
+remotehost='SPF2.fit.fraunhofer.de'
 targetdirectory='/home/administrator/Sensorplatform'
 
 cd ../../../../SensorplatformApp
