@@ -1,8 +1,8 @@
 #! /bin/sh
 
-remoteloginname='administrator'
-remotehost='sensorplatform.fit.fraunhofer.de'
-targetdirectory='/home/administrator/Sensorplatform'
+remoteloginname=administrator
+remotehost=$2.fit.fraunhofer.de
+targetdirectory=/home/administrator/Sensorplatform
 
 case "$1" in
 	upload)
@@ -18,7 +18,7 @@ case "$1" in
 		$run
 		;;
 	*)
-	echo "(upload|download)"
+	echo "(upload|download) hostname"
 	;;
 esac
 

@@ -1,8 +1,8 @@
 #!/bin/sh
 
-remoteloginname='administrator'
-remotehost='sensorplatform.fit.fraunhofer.de'
-targetdirectory='/home/administrator/Sensorplatform'
+remoteloginname=administrator
+remotehost=$1.fit.fraunhofer.de
+targetdirectory=/home/administrator/Sensorplatform
 
 cd ../../../SensorplatformApp
 run="scp -r staticResources ${remoteloginname}@${remotehost}:${targetdirectory}"
