@@ -39,14 +39,14 @@ case $1 in
 		;;
 	"start")
 		echo "Stop any running sensorplatform application"
-		/etc/init.d/sensorplatform stop
+		/etc/init.d/sensorplatform stop > /dev/null
 		cd /home/${username}/Sensorplatform
 		echo "Start the sensorplatform application"
-		sudo $JAVA_HOME/bin/java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main
+		sudo /lib/jvm/jdk1.8.0_101/bin/java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main
 		;;
 	"startbackground")
 		echo "Stop any running sensorplatform application"
-		/etc/init.d/sensorplatform stop
+		/etc/init.d/sensorplatform stop > /dev/null
 		echo "Starting the sensorplattform application as background service"
 		/etc/init.d/sensorplatform start
 		;;
