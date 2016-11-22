@@ -14,7 +14,7 @@ case $1 in
 		sh Resources/Firmware/RaspberryPi3/Programs/install_surfstick_drivers.sh
 		echo "Please reboot the system NOW before going on with the installation guide!"
 		;;
-	"export"
+	"export")
 		# copy files
 		cp SensorplatformApp/staticResources ../../Sensorplatform
 		cp SensorplatformApp/db ../../Sensorplatform
