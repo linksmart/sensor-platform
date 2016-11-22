@@ -26,6 +26,11 @@ case $1 in
 		cp -r SensorplatformApp/staticResources ../../Sensorplatform
 		cp -r SensorplatformApp/db ../../Sensorplatform
 		cp SensorplatformApp/target/resources/* ../../Sensorplatform/bin
+		# make scp able to overwrite them when copied from windows for testing
+		echo "Setting permissions"
+		chmod -R 777 ../../Sensorplatform/bin
+		chmod -R 777 ../../Sensorplatform/db
+		chmod -R 777 ../../Sensorplatform/staticResources
 		# copy udev rule for surfstick
 		cp Resources/Firmware/RaspberryPi3/System/70-huawei_e352.rules /etc/udev/rules.d
 		# copy start script for remote debugger
@@ -39,14 +44,14 @@ case $1 in
 		;;
 	"start")
 		echo "Stop any running sensorplatform application"
-		/etc/init.d/sensorplatform stop > /dev/null
+		/etc/init.d/sensorplatform stop > /dev/null 2>&1
 		cd /home/${username}/Sensorplatform
 		echo "Start the sensorplatform application"
 		sudo /lib/jvm/jdk1.8.0_101/bin/java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main
 		;;
 	"startbackground")
 		echo "Stop any running sensorplatform application"
-		/etc/init.d/sensorplatform stop > /dev/null
+		/etc/init.d/sensorplatform stop > /dev/null 2>&1
 		echo "Starting the sensorplattform application as background service"
 		/etc/init.d/sensorplatform start
 		;;
