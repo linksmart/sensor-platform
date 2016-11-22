@@ -12,6 +12,7 @@ case $1 in
 		sh Resources/Firmware/RaspberryPi3/Programs/install_java_maven.sh
 		sh Resources/Firmware/RaspberryPi3/Programs/install_bluez.sh
 		sh Resources/Firmware/RaspberryPi3/Programs/install_surfstick_drivers.sh
+		sh -c "echo 'dtoverlay=i2c-rtc,ds3231\n' >> /boot/config.txt"
 		echo "Please reboot the system NOW before going on with the installation guide!"
 		;;
 	"export")
@@ -41,6 +42,17 @@ case $1 in
 		cp Resources/Firmware/RaspberryPi3/System/sensorplatform /etc/init.d
 		chmod +x /etc/init.d/sensorplatform
 		update-rc.d sensorplatform defaults
+		;;
+	"time")
+		echo "Configuring time and date"
+		echo "Remove fake-hwclock"
+		apt purge fake-hwclock
+		echo "Remove ntp from autostart"
+		update-rc.d -f ntp remove
+		hwclock
+		echo "Assuming the current time is set correctly by ntp"
+		echo "Using system time to set hardware clock"
+		hwclock -w
 		;;
 	"start")
 		echo "Stop any running sensorplatform application"

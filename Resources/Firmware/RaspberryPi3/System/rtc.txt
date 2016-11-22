@@ -11,7 +11,7 @@ sudo update-rc.d -f ntp remove
 sudo update-rc.d ntp defaults
 
 # show
-hwclock -r
+hwclock
 # load from rtc
 hwclock -s
 # set rtc
@@ -22,3 +22,4 @@ hwclock -w
 add entry before exit 0
 
 /sbin/hwclock -s
+
