@@ -79,7 +79,7 @@ Password: raspberry
 11.2 "cd Sensorplatform"
 
 12. Install tools and dependencies of the sensorplatform application
-12.1 "sudo sh sensorplatform.sh installdependencies"
+12.1 "sudo sh sensorplatform.sh dependencies"
 12.2 "sudo reboot"
 
 13. Log in as administrator again
@@ -96,10 +96,13 @@ Password: raspberry
 15. Now set up the linux specific configuration
 15.1 "sudo sh sensorplatform.sh export" 
 	On the next reboot the sensorplatform application will start automatically in the background.
-
+15.2 Make sure the sensorplattform is connected to network (cable) to get the current time from NTP. Configure time related functionality afterwards:
+	"sudo sh sensorplatform.sh time"
+	This will set the hardware time from system time and disable ntp afterwards. Also uninstalls the fake-hwclock package. On every boot the system time is set by the hardware time.
+	
 16. You may still want to use the sensorplatform.sh script to start the application for testing.
-	"sudo sh sensorplatform.sh restart" 
-	"sudo sh sensorplatform.sh restartbackground" 
+	"sudo sh sensorplatform.sh start" 
+	"sudo sh sensorplatform.sh startbackground" 
 
 The sensorplatform application will start automatically during boot. The webapplication is accessible from
 https://sensorplatform.fit.fraunhofer.de:8080
