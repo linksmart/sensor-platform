@@ -7,7 +7,6 @@ username=administrator
 case $1 in
 	"dependencies")
 		# install dependencies
-		mkdir -p /home/${username}/Sensorplatform/bin
 		mkdir /home/${username}/Downloads
 		sh Resources/Firmware/RaspberryPi3/Programs/install_java_maven.sh
 		sh Resources/Firmware/RaspberryPi3/Programs/install_bluez.sh
@@ -15,19 +14,24 @@ case $1 in
 		echo "Please reboot the system NOW before going on with the installation guide!"
 		;;
 	"export")
+		# create folders
+		mkdir -p /home/${username}/Sensorplatform/bin
+		mkdir /home/${username}/Sensorplatform/staticResources
+		mkdir /home/${username}/Sensorplatform/db
+		
 		# copy files
-		cp SensorplatformApp/staticResources ../../Sensorplatform
-		cp SensorplatformApp/db ../../Sensorplatform
+		cp SensorplatformApp/staticResources/* ../../Sensorplatform
+		cp SensorplatformApp/db/* ../../Sensorplatform
 		cp SensorplatformApp/target/resources/* ../../Sensorplatform/bin
 		
 		# copy udev rule for surfstick
 		cp Resources/Firmware/RaspberryPi3/System/70-huawei_e352.rules /etc/udev/rules.d
 		
 		# copy start script for remote debugger
-		cp Resources/Firmware/RaspberryPi3/System/70-huawei_e352.rules ../../Sensorplatform
+		cp Resources/Firmware/RaspberryPi3/System/debug.sh ../../Sensorplatform
 		
 		# setup systemd service for sensorplatform (autostart)
-		cp Resources/Firmware/RaspberyyPi3/System/sensorplatform /etc/init.d
+		cp Resources/Firmware/RaspberryPi3/System/sensorplatform /etc/init.d
 		chmod +x /etc/init.d/sensorplatform
 		update-rc.d /etc/init.d/sensorplatform defaults
 		;;
