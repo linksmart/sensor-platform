@@ -33,7 +33,7 @@ case $1 in
 		# setup systemd service for sensorplatform (autostart)
 		cp Resources/Firmware/RaspberryPi3/System/sensorplatform /etc/init.d
 		chmod +x /etc/init.d/sensorplatform
-		update-rc.d /etc/init.d/sensorplatform defaults
+		update-rc.d sensorplatform defaults
 		;;
 	"start")
 		echo "Stopping any running sensorplatform application"

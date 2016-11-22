@@ -105,4 +105,6 @@ The sensorplatform application will start automatically during boot. The webappl
 https://sensorplatform.fit.fraunhofer.de:8080
 https://129.26.160.38:8080 or another IP
 hostname (sensorplatform) might be different, depends on your system settings
-Attention: https not http and port 8080 not 80
+Attention: https not http and port 8080 not default 80
+
+Do not change version numbers from programs, user name or any other information unless you are fully aware of all implicit changes. Some of those information are hardcoded in multiple files.
