@@ -20,8 +20,8 @@ case $1 in
 		mkdir /home/${username}/Sensorplatform/db
 		
 		# copy files
-		cp SensorplatformApp/staticResources/* ../../Sensorplatform
-		cp SensorplatformApp/db/* ../../Sensorplatform
+		cp -r SensorplatformApp/staticResources ../../Sensorplatform
+		cp -r SensorplatformApp/db ../../Sensorplatform
 		cp SensorplatformApp/target/resources/* ../../Sensorplatform/bin
 		
 		# copy udev rule for surfstick
