@@ -99,6 +99,8 @@
         <module>../AdidasMiCoachHRM</module>
         <module>../BLE113</module>
         <module>../SensorplatformApp</module>
+		<module>../OxygenSensorLuminox</module>
+		
     </modules>
 
     <dependencyManagement>
@@ -131,6 +133,11 @@
             <dependency>
                 <groupId>de.fhg.fit.biomos</groupId>
                 <artifactId>BLE113</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+			<dependency>
+                <groupId>de.fhg.fit.biomos</groupId>
+                <artifactId>OxygenSensorLuminox</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

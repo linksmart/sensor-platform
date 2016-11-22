@@ -75,3 +75,14 @@ magnetismX FLOAT,
 magnetismY FLOAT,
 magnetismZ FLOAT
 )
+
+CREATE TABLE LuminoxSample(
+id BIGINT IDENTITY PRIMARY KEY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+timestamp VARCHAR(30) NOT NULL,
+device VARCHAR(17) NOT NULL,
+oxygen INTEGER NOT NULL,
+temperature INTEGER NOT NULL,
+pressure INTEGER NOT NULL
+)
