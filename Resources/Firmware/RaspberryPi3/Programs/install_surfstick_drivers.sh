@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt install -y wvdial
+apt install -y wvdial comgt
 
 rm /etc/wvdial.conf
 

@@ -1,43 +1,78 @@
 #!/bin/sh
 
-cmd=$1
-
 username=administrator
 
-case ${cmd} in
-	"install")
+# TODO add rtc
+
+case $1 in
+	"dependencies")
+		# install dependencies
+		mkdir /home/${username}/Downloads
+		echo "Install dependencies"
 		sh Resources/Firmware/RaspberryPi3/Programs/install_java_maven.sh
 		sh Resources/Firmware/RaspberryPi3/Programs/install_bluez.sh
-		sh Resources/Firmware/RaspberryPi3/Programs/install_wvdial.sh
-		
-		cd ../SensorplatformApp
-		cp -r db /home/${username}/Sensorplatform
-		cp -r staticResources /home/${username}/Sensorplatform
-		mkdir /home/${username}/Sensorplatform/bin
-		cd target/resources
-		cp *.jar /home/${username}/Sensorplatform/bin
-		cd ../../..
-		cp Resources/Firmware/RaspberyyPi3/System/run.sh /home/${username}/Sensorplatform
-		cp Resources/Firmware/RaspberyyPi3/System/debug.sh /home/${username}/Sensorplatform
-		
-		cp Resources/Firmware/RaspberyyPi3/System/sensorplatform /etc/init.d
-		update-rc.d /etc/init.d/sensorplatform defaults
+		sh Resources/Firmware/RaspberryPi3/Programs/install_surfstick_drivers.sh
+		sh -c "echo 'dtoverlay=i2c-rtc,ds3231\n' >> /boot/config.txt"
+		echo "Please reboot the system NOW before going on with the installation guide!"
 		;;
-	"run")
-		/etc/init.d/sensorplatform stop
+	"export")
+		# create folders
+		echo "Create folders"
+		mkdir -p /home/${username}/Sensorplatform/bin
+		mkdir /home/${username}/Sensorplatform/staticResources
+		mkdir /home/${username}/Sensorplatform/db
+		
+		# copy files
+		echo "Copy files"
+		cp -r SensorplatformApp/staticResources ../../Sensorplatform
+		cp -r SensorplatformApp/db ../../Sensorplatform
+		cp SensorplatformApp/target/resources/* ../../Sensorplatform/bin
+		# make scp able to overwrite them when copied from windows for testing
+		echo "Setting permissions"
+		chmod -R 777 ../../Sensorplatform/bin
+		chmod -R 777 ../../Sensorplatform/db
+		chmod -R 777 ../../Sensorplatform/staticResources
+		# copy udev rule for surfstick
+		cp Resources/Firmware/RaspberryPi3/System/70-huawei_e352.rules /etc/udev/rules.d
+		# copy start script for remote debugger
+		cp Resources/Firmware/RaspberryPi3/System/debug.sh ../../Sensorplatform
+		
+		echo "configure autostart"
+		# setup systemd service for sensorplatform (autostart)
+		cp Resources/Firmware/RaspberryPi3/System/sensorplatform /etc/init.d
+		chmod +x /etc/init.d/sensorplatform
+		update-rc.d sensorplatform defaults
+		;;
+	"time")
+		echo "Configuring time and date"
+		echo "Remove fake-hwclock"
+		apt purge fake-hwclock
+		echo "Remove ntp from autostart"
+		update-rc.d -f ntp remove
+		hwclock
+		echo "Assuming the current time is set correctly by ntp"
+		echo "Using system time to set hardware clock"
+		hwclock -w
+		;;
+	"start")
+		echo "Stop any running sensorplatform application"
+		/etc/init.d/sensorplatform stop > /dev/null 2>&1
 		cd /home/${username}/Sensorplatform
-		sh run.sh
+		echo "Start the sensorplatform application"
+		sudo /lib/jvm/jdk1.8.0_101/bin/java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main
+		;;
+	"startbackground")
+		echo "Stop any running sensorplatform application"
+		/etc/init.d/sensorplatform stop > /dev/null 2>&1
+		echo "Starting the sensorplattform application as background service"
+		/etc/init.d/sensorplatform start
 		;;
 	*)
-		echo "This is the Sensorplatform script for setting up the software and environment!"
-		echo "Usage (install|run)"
+		echo "This is the Sensorplatform script for working with the application. Always run this script with sudo!"
+		echo ""
+		echo "Usage (dependencies|export|start|startbackground)"
+		echo ""
 		;;
 esac
 
 exit 0
-
-#Export script for sensorplatform
-#/home/pi/Sensorplatform/bin/*.jar
-#/home/pi/Sensorplatform/db/*.*
-#/home/pi/Sensorplatform/staticResources/*.*
-#/home/pi/Sensorplatform/run.sh

@@ -1,10 +1,16 @@
-# Sensorplatform
+Sensorplatform
 
 Software for an extendible platform used for aggregating and transfering sensor data.
 
 Masterthesis, Computer Science, Daniel Pyka, 2016
 
-## Raspberry Pi 3 Installation Guide
+Raspberry Pi 3 Installation Guide
+
+Prerequisites:
+Windows or Linux
+IDE: eclipse or intellij
+either separate maven installation or inbuild from IDE
+Gitscm installation (from opsi Client Kiosk)
 
 1. Download the Raspbian Lite(!) Image from here:
 https://www.raspberrypi.org/downloads/raspbian/
@@ -36,8 +42,6 @@ Password: raspberry
 7. User account setup
 7.1 Login as pi, type in "sudo -i" for the root shell
 7.2 Add a new user administrator, add him to group sudo: "useradd -m administrator -G sudo" (do not choose another name)
-##### other groups required? pi has some more:
-##### adm dialout cdrom audio video plugdev games users input netdev spi i2c gpio
 7.3 Set a password for administrator "passwd administrator"
 7.4 Set a password for root "passwd root"
 7.5 Log out by typing "exit" and again "exit"
@@ -45,15 +49,10 @@ Password: raspberry
 7.7 Delete the default user pi "deluser -remove-home pi"
 7.8 Log out by typing "exit"
 7.9 Log in as administrator
-7.10 Move to administrator's home directory "cd /home/administrator" and create some folders
-	"mkdir Downloads"
-	"mkdir Repositories"
-	"mkdir Keytool"
-	"mkdir Sensorplatform"
-7.11 Allow administrator to use sudo without password check (password will be required ones)
+7.10 Allow administrator to use sudo without password check (password will be required ones)
 	"sudo sed -i -- 's/pi/administrator/g' /etc/sudoers"
 	Confirm with your password one time
-7.12 Do not allow root login via SSH
+7.11 Do not allow root login via SSH
 	"sudo sed -i -- 's/PermitRootLogin without-password/PermitRootLogin no/g' /etc/ssh/sshd_config"
 
 8. (optional) setup for network (Sensorplatform Fraunhofer FIT example configuration)
@@ -66,7 +65,6 @@ Password: raspberry
 8.3 wifi login credentials: wpa_passphrase "ssid" "pw" >> /etc/wpa_supplicant/wpa_supplicant.conf (replace ssid and pw with your actual data)
 	
 9. Update packages
-TODO sudo apt-mark hold bluez ???
 9.1 "sudo apt update"
 9.2 "sudo apt upgrade"
 9.3 Install git "sudo apt install git"
@@ -74,22 +72,42 @@ TODO sudo apt-mark hold bluez ???
 
 10. Log in as administrator again
 
-11. "cd /home/administrator/Repositories"
+11.	"mkdir /home/administrator/Repositories"
+11.1 "cd /home/administrator/Repositories"
 11.1 "git clone http://scm.fit.fraunhofer.de:8080/scm/git/Sensorplatform Sensorplatform"
-	Use some valid login credentials here
+	Use some valid login credentials here, if you do not have any, ask the IT helpdesk for it. You need at least reading access for the Sensorplatform repository!
 11.2 "cd Sensorplatform"
 
-12. Install the sensorplatform project
-12.1 "cd SensorplatformParent"
-12.2 "mvn clean install -P raspberrypi3,webhrs"
-	(raspberrypi3|cubieboard) (webhrs|telipro) see pom.xml for additional infos about profiles
+12. Install tools and dependencies of the sensorplatform application
+12.1 "sudo sh sensorplatform.sh dependencies"
+12.2 "sudo reboot"
 
-11.3 You will find a file sensorplatform.sh top-level, which will do the remaining installation
-	Run it with sudo "sudo sh sensorplatform.sh install"
+13. Log in as administrator again
 
+14. Install the sensorplatform application. The installation can be slightly modified by using maven profiles:
+	targetplatform: raspberrypi3 or cubieboard (cubieboard is not yet supported)
+	uploader: webhrs or telipro or may not be specified at all
+14.1 "cd /home/administrator/Repositories/Sensorplatform/SensorplatformParent"
+14.2 Run maven for installation with profiles.
+	Example1: "mvn clean install -P raspberrypi3,webhrs"
+	Example2: "mvn clean install -P raspberrypi3"
+	This may take a while especially if it is the first time.
 
-12. Reboot the sensorplatform "sudo reboot"
+15. Now set up the linux specific configuration
+15.1 "sudo sh sensorplatform.sh export" 
+	On the next reboot the sensorplatform application will start automatically in the background.
+15.2 Make sure the sensorplattform is connected to network (cable) to get the current time from NTP. Configure time related functionality afterwards:
+	"sudo sh sensorplatform.sh time"
+	This will set the hardware time from system time and disable ntp afterwards. Also uninstalls the fake-hwclock package. On every boot the system time is set by the hardware time.
+	
+16. You may still want to use the sensorplatform.sh script to start the application for testing.
+	"sudo sh sensorplatform.sh start" 
+	"sudo sh sensorplatform.sh startbackground" 
 
-The sensorplatform application will now start automatically at each boot. The webapplication is accessible from
+The sensorplatform application will start automatically during boot. The webapplication is accessible from
 https://sensorplatform.fit.fraunhofer.de:8080
 https://129.26.160.38:8080 or another IP
+hostname (sensorplatform) might be different, depends on your system settings
+Attention: https not http and port 8080 not default 80
+
+Do not change version numbers from programs, user name or any other information unless you are fully aware of all implicit changes. Some of those information are hardcoded in multiple files.
