@@ -21,7 +21,11 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
 
   private static final Logger log = LoggerFactory.getLogger(Luminox.class);
 
+  private static final String TEMPERATURE = "temperature";
+  private static final String PRESSURE = "pressure";
+  private static final String OXYGEN = "oxygen";
 
+  private static final int ACCELERATION_RESOLUTION = 16;
 
 
   public Luminox(SensorName name, String bdaddress, JSONObject settings) {
