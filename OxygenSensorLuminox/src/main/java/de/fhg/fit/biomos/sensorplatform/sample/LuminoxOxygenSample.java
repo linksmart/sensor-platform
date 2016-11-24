@@ -1,5 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.sample;
 
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,11 +10,15 @@ import java.io.Serializable;
  *
  * Created by garagon on 22.11.2016.
  */
-@Entity
-@Table(name = "LuminoxStatus")
-public class LuminoxSample implements Serializable {
 
+
+@Entity
+@Table(name = "LuminoxOxygenSensor")
+public class LuminoxOxygenSample {
     private static final long serialVersionUID = 6429269084094852998L;
+
+    private static final String UNIT_PERCENT_O2 = "%O2";
+    private static final String UNIT_PERCENT_ppO2 = "ppO2";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +32,17 @@ public class LuminoxSample implements Serializable {
     private String timestamp;
     @Column(name = "device")
     private String bdAddress;
-    @Column(name= "status")
-    private Float status;
+    @Column(name= "oxygenPercent")
+    private Float oxygenPercent;
+    @Column(name= "oxygenppO2")
+    private Float oxygenppO2;
 
-    public LuminoxSample() {
+
+    public LuminoxOxygenSample() {
         // default
     }
 
-    public LuminoxSample(String timestamp, String bdAddress) {
+    public LuminoxOxygenSample(String timestamp, String bdAddress) {
         this.timestamp = timestamp;
         this.bdAddress = bdAddress;
     }
@@ -79,9 +87,14 @@ public class LuminoxSample implements Serializable {
         this.bdAddress = bdAddress;
     }
 
-    public Float getOxygenConcentration(){ return this.status; }
+    public Float getOxygenConcentrationPercent(){ return this.oxygenPercent; }
 
-    public Float setOxygenConcentration(Float status) {return this.status = status;}
+    public Float setOxygenConcentrationPercent(Float oxygen) {return this.oxygenPercent = oxygen;}
+
+    public Float getOxygenConcentrationppO2(){ return this.oxygenppO2; }
+
+    public Float setOxygenConcentrationppO2(Float oxygen) {return this.oxygenppO2 = oxygen;}
+
 
 
 
@@ -89,20 +102,7 @@ public class LuminoxSample implements Serializable {
     @Override
     public String toString() {
         return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"firstname\":\"" + this.firstname + "\",\"lastname\":\"" + this.lastname
-                + "\",\"device\":\"" + this.bdAddress + "\",\"status\":{\"value\":" + this.status + "\"}";
+                + "\",\"device\":\"" + this.bdAddress + "\",\"oxygen concentration\":{\"value\":" + this.oxygenPercent + ",\"unit\":\"" + UNIT_PERCENT_O2 + "\"}}"
+                + "\",\"oxygen concentration\":{\"value\":" + this.oxygenppO2 + ",\"unit\":\"" + UNIT_PERCENT_ppO2 + "\"}}";
     }
-
- /*   public void startLuminox(){
-
-    }
-
-    public void stopLuminox(){
-
-    }
-
-    public void standByLuminox(){
-
-    }
-*/
 }
-

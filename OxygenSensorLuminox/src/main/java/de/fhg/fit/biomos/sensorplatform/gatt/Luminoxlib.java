@@ -31,8 +31,8 @@ public class Luminoxlib implements GattLibrary {
   public final String HANDLE_BATTERY_STATUS_VALUE = "0x0010";
   public final String HANDLE_BATTERY_STATUS_NOTIFICATION = "0x0011";
 
-  public final String HANDLE_OXYGEN_VALUE = "0x0014";
-  public final String HANDLE_OXYGEN_NOTIFICATION = "0x0015";
+  public final String HANDLE_LUMINOX_VALUE = "0x0014";
+  public final String HANDLE_LUMINOX_NOTIFICATION = "0x0015";
 
 
   //RS232 Command Set for Luminox
@@ -73,6 +73,14 @@ public class Luminoxlib implements GattLibrary {
   @Override
   public String getHandleBatteryLevel() {
     return this.HANDLE_BATTERY_STATUS_VALUE;
+  }
+
+  public String getHandleLuminoxMeasurement() {
+    return this.HANDLE_LUMINOX_VALUE;
+  }
+
+  public String getHandleLuminoxNotification() {
+    return this.HANDLE_LUMINOX_NOTIFICATION;
   }
 
 }

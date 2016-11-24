@@ -1,7 +1,7 @@
 package de.fhg.fit.biomos.sensorplatform.sample;
 
 import javax.persistence.*;
-import java.io.Serializable;
+
 
 /**
  * Entity class for oxygen, temperature and pressure samples
@@ -10,10 +10,12 @@ import java.io.Serializable;
  * Created by garagon on 22.11.2016.
  */
 @Entity
-@Table(name = "LuminoxStatus")
-public class LuminoxSample implements Serializable {
+@Table(name = "LuminoxTemperature")
+public class LuminoxTemperatureSample {
 
     private static final long serialVersionUID = 6429269084094852998L;
+
+    private static final String UNIT_DEGREES_CELSIUS = "°C";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +29,15 @@ public class LuminoxSample implements Serializable {
     private String timestamp;
     @Column(name = "device")
     private String bdAddress;
-    @Column(name= "status")
-    private Float status;
+    @Column(name = "temperature")
+    private Float temperature;
 
-    public LuminoxSample() {
+
+    public LuminoxTemperatureSample() {
         // default
     }
 
-    public LuminoxSample(String timestamp, String bdAddress) {
+    public LuminoxTemperatureSample(String timestamp, String bdAddress) {
         this.timestamp = timestamp;
         this.bdAddress = bdAddress;
     }
@@ -79,30 +82,18 @@ public class LuminoxSample implements Serializable {
         this.bdAddress = bdAddress;
     }
 
-    public Float getOxygenConcentration(){ return this.status; }
+    public Float getTemperature() {
+        return this.temperature;
+    }
 
-    public Float setOxygenConcentration(Float status) {return this.status = status;}
-
-
+    public void setTemperature(Float temperature) {
+        this.temperature = temperature;
+    }
 
 
     @Override
     public String toString() {
         return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"firstname\":\"" + this.firstname + "\",\"lastname\":\"" + this.lastname
-                + "\",\"device\":\"" + this.bdAddress + "\",\"status\":{\"value\":" + this.status + "\"}";
+                + "\",\"device\":\"" + this.bdAddress + "\",\"temperature\":{\"value\":" + this.temperature + ",\"unit\":\"" + UNIT_DEGREES_CELSIUS + "\"}";
     }
-
- /*   public void startLuminox(){
-
-    }
-
-    public void stopLuminox(){
-
-    }
-
-    public void standByLuminox(){
-
-    }
-*/
 }
-

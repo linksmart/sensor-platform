@@ -10,10 +10,12 @@ import java.io.Serializable;
  * Created by garagon on 22.11.2016.
  */
 @Entity
-@Table(name = "LuminoxStatus")
-public class LuminoxSample implements Serializable {
+@Table(name = "LuminoxAirPressure")
+public class LuminoxAirPressureSample {
 
     private static final long serialVersionUID = 6429269084094852998L;
+
+    private static final String UNIT_MILLIBAR = "mBar";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +29,14 @@ public class LuminoxSample implements Serializable {
     private String timestamp;
     @Column(name = "device")
     private String bdAddress;
-    @Column(name= "status")
-    private Float status;
+    @Column(name = "pressure")
+    private Float pressure;
 
-    public LuminoxSample() {
+    public LuminoxAirPressureSample() {
         // default
     }
 
-    public LuminoxSample(String timestamp, String bdAddress) {
+    public LuminoxAirPressureSample(String timestamp, String bdAddress) {
         this.timestamp = timestamp;
         this.bdAddress = bdAddress;
     }
@@ -79,30 +81,18 @@ public class LuminoxSample implements Serializable {
         this.bdAddress = bdAddress;
     }
 
-    public Float getOxygenConcentration(){ return this.status; }
+    public Float getPressure() {
+        return this.pressure;
+    }
 
-    public Float setOxygenConcentration(Float status) {return this.status = status;}
-
-
+    public void setPressure(Float pressure) {
+        this.pressure = pressure;
+    }
 
 
     @Override
     public String toString() {
         return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"firstname\":\"" + this.firstname + "\",\"lastname\":\"" + this.lastname
-                + "\",\"device\":\"" + this.bdAddress + "\",\"status\":{\"value\":" + this.status + "\"}";
+                + "\",\"device\":\"" + this.bdAddress + "\",\"pressure\":{\"value\":" + this.pressure + ",\"unit\":\"" + UNIT_MILLIBAR + "\"}";
     }
-
- /*   public void startLuminox(){
-
-    }
-
-    public void stopLuminox(){
-
-    }
-
-    public void standByLuminox(){
-
-    }
-*/
 }
-
