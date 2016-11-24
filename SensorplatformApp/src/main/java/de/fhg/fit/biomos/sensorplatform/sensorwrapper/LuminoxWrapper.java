@@ -17,8 +17,8 @@ public class LuminoxWrapper extends AbstractSensorWrapper<Luminox> {
 
     private final CC2650SampleCollector cc2650Collector;
 
-    public CC2650Wrapper(CC2650 cc2650, String timeStampFormat, String firstname, String lastname, CC2650SampleCollector cc2650Collector) {
-        super(cc2650, timeStampFormat, firstname, lastname);
+    public LuminoxWrapper(Luminox luminox, String timeStampFormat, String firstname, String lastname, CC2650SampleCollector cc2650Collector) {
+        super(luminox, timeStampFormat, firstname, lastname);
         this.cc2650Collector = cc2650Collector;
     }
 
@@ -29,6 +29,7 @@ public class LuminoxWrapper extends AbstractSensorWrapper<Luminox> {
 
     @Override
     public void newNotificationData(Gatttool gatttool, String handle, String rawHexValues) {
+        /*
         this.lastNotificationTimestamp = System.currentTimeMillis();
         String data = rawHexValues.replace(" ", "");
         CC2650TemperatureSample temperatureSample;
@@ -72,5 +73,6 @@ public class LuminoxWrapper extends AbstractSensorWrapper<Luminox> {
             return;
         }
         LOG.warn("unexpected handle address {} {}", handle, rawHexValues);
+        */
     }
 }
