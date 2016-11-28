@@ -28,6 +28,8 @@ public class LuminoxOxygenSample {
     private String firstname;
     @Column(name = "lastname")
     private String lastname;
+    @Column(name = "transmitted")
+    private Boolean transmitted;
     @Column(name = "timestamp")
     private String timestamp;
     @Column(name = "device")
@@ -42,9 +44,10 @@ public class LuminoxOxygenSample {
         // default
     }
 
-    public LuminoxOxygenSample(String timestamp, String bdAddress) {
-        this.timestamp = timestamp;
+    public LuminoxOxygenSample(String timeStamp, String bdAddress, boolean transmitted) {
+        this.timestamp = timeStamp;
         this.bdAddress = bdAddress;
+        this.transmitted = transmitted;
     }
 
     public Long getId() {
@@ -69,6 +72,14 @@ public class LuminoxOxygenSample {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public Boolean isTransmitted() {
+        return this.transmitted;
+    }
+
+    public void setTransmitted(boolean transmitted) {
+        this.transmitted = transmitted;
     }
 
     public String getTimestamp() {

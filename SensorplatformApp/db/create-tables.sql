@@ -76,13 +76,32 @@ magnetismY FLOAT,
 magnetismZ FLOAT
 )
 
-CREATE TABLE LuminoxSample(
+CREATE TABLE LuminoxOxygenSample(
 id BIGINT IDENTITY PRIMARY KEY,
 firstname VARCHAR(30) NOT NULL,
 lastname VARCHAR(30) NOT NULL,
+transmitted boolean NOT NULL,
 timestamp VARCHAR(30) NOT NULL,
 device VARCHAR(17) NOT NULL,
 oxygen INTEGER NOT NULL,
-temperature INTEGER NOT NULL,
+)
+
+CREATE TABLE LuminoxTemperatureSample(
+id BIGINT IDENTITY PRIMARY KEY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+transmitted boolean NOT NULL,
+timestamp VARCHAR(30) NOT NULL,
+device VARCHAR(17) NOT NULL,
+temperature INTEGER NOT NULL
+)
+
+CREATE TABLE LuminoxAirPressureSample(
+id BIGINT IDENTITY PRIMARY KEY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+transmitted boolean NOT NULL,
+timestamp VARCHAR(30) NOT NULL,
+device VARCHAR(17) NOT NULL,
 pressure INTEGER NOT NULL
 )

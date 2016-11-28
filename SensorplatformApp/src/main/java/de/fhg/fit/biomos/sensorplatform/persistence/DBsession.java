@@ -2,19 +2,12 @@ package de.fhg.fit.biomos.sensorplatform.persistence;
 
 import java.util.List;
 
+import de.fhg.fit.biomos.sensorplatform.sample.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample;
-import de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample;
-import de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample;
-import de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample;
-import de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample;
-import de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample;
-import de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample;
 
 /**
  * Exposes basic functions for database interaction. It is instantiated by the DBcontroller (factory). Use one DBsession for one database interaction and throw
@@ -128,6 +121,36 @@ public class DBsession {
    *          CC2650TemperatureSample
    */
   public void saveCC2650TemperatureSample(CC2650TemperatureSample sample) {
+    this.session.saveOrUpdate(sample);
+  }
+
+  /**
+   * Save a CC2650TemperatureSample to the database.
+   *
+   * @param sample
+   *          CC2650TemperatureSample
+   */
+  public void saveLuminoxTemperatureSample(LuminoxTemperatureSample sample) {
+    this.session.saveOrUpdate(sample);
+  }
+
+  /**
+   * Save a CC2650TemperatureSample to the database.
+   *
+   * @param sample
+   *          CC2650TemperatureSample
+   */
+  public void saveLuminoxOxygenSample(LuminoxOxygenSample sample) {
+    this.session.saveOrUpdate(sample);
+  }
+
+  /**
+   * Save a CC2650TemperatureSample to the database.
+   *
+   * @param sample
+   *          CC2650TemperatureSample
+   */
+  public void saveLuminoxAirPressureSample(LuminoxAirPressureSample sample) {
     this.session.saveOrUpdate(sample);
   }
 
@@ -259,5 +282,38 @@ public class DBsession {
   public List<CC2650MovementSample> getCC2650MovementSamples() {
     LOG.info("get all CC2650 movement samples");
     return this.session.createQuery("FROM CC2650MovementSample").getResultList();
+  }
+
+  /**
+   * Retrieve all LuminoxTemperatureSamples stored in the database.
+   *
+   * @return List of CC2650TemperatureSamples
+   */
+
+  public List<LuminoxTemperatureSample> getLuminoxTemperatureSamples() {
+    LOG.info("get all Luminox temperature samples");
+    return this.session.createQuery("FROM LuminoxTemperatureSample").getResultList();
+  }
+
+  /**
+   * Retrieve all LuminoxOxygenSamples stored in the database.
+   *
+   * @return List of CC2650TemperatureSamples
+   */
+
+  public List<LuminoxOxygenSample> getLuminoxOxygenSamples() {
+    LOG.info("get all Luminox oxygen samples");
+    return this.session.createQuery("FROM LuminoxOxygenSample").getResultList();
+  }
+
+  /**
+   * Retrieve all LuminoxAirPressureSamples stored in the database.
+   *
+   * @return List of CC2650TemperatureSamples
+   */
+
+  public List<LuminoxAirPressureSample> getLuminoxAirPressureSamples() {
+    LOG.info("get all Luminox temperature samples");
+    return this.session.createQuery("FROM LuminoxAirPressureSample").getResultList();
   }
 }

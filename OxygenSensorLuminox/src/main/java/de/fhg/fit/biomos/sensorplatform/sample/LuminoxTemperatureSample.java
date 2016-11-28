@@ -25,6 +25,8 @@ public class LuminoxTemperatureSample {
     private String firstname;
     @Column(name = "lastname")
     private String lastname;
+    @Column(name = "transmitted")
+    private Boolean transmitted;
     @Column(name = "timestamp")
     private String timestamp;
     @Column(name = "device")
@@ -37,9 +39,10 @@ public class LuminoxTemperatureSample {
         // default
     }
 
-    public LuminoxTemperatureSample(String timestamp, String bdAddress) {
-        this.timestamp = timestamp;
+    public LuminoxTemperatureSample(String timeStamp, String bdAddress, boolean transmitted) {
+        this.timestamp = timeStamp;
         this.bdAddress = bdAddress;
+        this.transmitted = transmitted;
     }
 
     public Long getId() {
@@ -64,6 +67,14 @@ public class LuminoxTemperatureSample {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public Boolean isTransmitted() {
+        return this.transmitted;
+    }
+
+    public void setTransmitted(boolean transmitted) {
+        this.transmitted = transmitted;
     }
 
     public String getTimestamp() {

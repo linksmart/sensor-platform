@@ -25,6 +25,8 @@ public class LuminoxAirPressureSample {
     private String firstname;
     @Column(name = "lastname")
     private String lastname;
+    @Column(name = "transmitted")
+    private Boolean transmitted;
     @Column(name = "timestamp")
     private String timestamp;
     @Column(name = "device")
@@ -36,9 +38,10 @@ public class LuminoxAirPressureSample {
         // default
     }
 
-    public LuminoxAirPressureSample(String timestamp, String bdAddress) {
-        this.timestamp = timestamp;
+    public LuminoxAirPressureSample(String timeStamp, String bdAddress, boolean transmitted) {
+        this.timestamp = timeStamp;
         this.bdAddress = bdAddress;
+        this.transmitted = transmitted;
     }
 
     public Long getId() {
@@ -63,6 +66,14 @@ public class LuminoxAirPressureSample {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public Boolean isTransmitted() {
+        return this.transmitted;
+    }
+
+    public void setTransmitted(boolean transmitted) {
+        this.transmitted = transmitted;
     }
 
     public String getTimestamp() {

@@ -164,7 +164,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
     if (!handle.equals(this.gattLibrary.HANDLE_LUMINOX_VALUE)) {
       return null;
     }
-    LuminoxTemperatureSample temperatureSample = new LuminoxTemperatureSample(timestamp, this.bdAddress);
+    LuminoxTemperatureSample temperatureSample = new LuminoxTemperatureSample(timestamp, this.bdAddress, false);
     temperatureSample.setTemperature(getTemperature(data));
     return temperatureSample;
   }
@@ -184,7 +184,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
     if (!handle.equals(this.gattLibrary.HANDLE_LUMINOX_VALUE)) {
       return null;
     }
-    LuminoxOxygenSample oxygenSample = new LuminoxOxygenSample(timestamp, this.bdAddress);
+    LuminoxOxygenSample oxygenSample = new LuminoxOxygenSample(timestamp, this.bdAddress, false);
     oxygenSample.setOxygenConcentrationPercent(getOxygenConcentrationPercentage(data));
     oxygenSample.setOxygenConcentrationppO2(getOxygenConcentrationppO2(data));
     return oxygenSample;
@@ -205,7 +205,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
     if (!handle.equals(this.gattLibrary.HANDLE_LUMINOX_VALUE)) {
       return null;
     }
-    LuminoxAirPressureSample airPressureSample = new LuminoxAirPressureSample(timestamp, this.bdAddress);
+    LuminoxAirPressureSample airPressureSample = new LuminoxAirPressureSample(timestamp, this.bdAddress, false);
     airPressureSample.setPressure(getAirPressure(data));
     return airPressureSample;
   }
