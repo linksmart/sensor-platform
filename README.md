@@ -89,9 +89,10 @@ Password: raspberry
 	uploader: webhrs or telipro or may not be specified at all
 14.1 "cd /home/administrator/Repositories/Sensorplatform/SensorplatformParent"
 14.2 Run maven for installation with profiles.
-	Example1: "mvn clean install -P raspberrypi3,webhrs"
-	Example2: "mvn clean install -P raspberrypi3"
+	Example1: "mvn clean install -Praspberrypi3,webhrs"
+	Example2: "mvn clean install -Praspberrypi3"
 	This may take a while especially if it is the first time.
+14.3 Return to top-level directory of the repository: "cd .."
 
 15. Now set up the linux specific configuration
 15.1 "sudo sh sensorplatform.sh export" 

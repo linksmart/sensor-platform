@@ -2,8 +2,6 @@
 
 username=administrator
 
-# TODO add rtc
-
 case $1 in
 	"dependencies")
 		# install dependencies
@@ -16,6 +14,17 @@ case $1 in
 		echo "Please reboot the system NOW before going on with the installation guide!"
 		;;
 	"export")
+		# delete old files
+		if [ -d /home/${username}/Sensorplatform ]
+		then
+			echo "Stop any running sensorplatform application"
+			/etc/init.d/sensorplatform stop > /dev/null 2>&1
+			echo "delete old files and folders"
+			rm -r /home/${username}/Sensorplatform
+		else
+			echo "no previous installation found"
+		fi
+	
 		# create folders
 		echo "Create folders"
 		mkdir -p /home/${username}/Sensorplatform/bin
@@ -67,10 +76,35 @@ case $1 in
 		echo "Starting the sensorplattform application as background service"
 		/etc/init.d/sensorplatform start
 		;;
+	"stop")
+		echo "Stop any running sensorplatform application"
+		/etc/init.d/sensorplatform stop > /dev/null 2>&1
+		;;
+	"reset")
+		# delete old files
+		if [ -d /home/${username}/Sensorplatform ]
+		then
+			echo "Stop any running sensorplatform application"
+			/etc/init.d/sensorplatform stop > /dev/null 2>&1
+			echo "delete old files and folders"
+			rm -r /home/${username}/Sensorplatform
+		else
+			echo "no previous installation found"
+		fi
+	
+		# create folders
+		echo "Create folders"
+		mkdir -p /home/${username}/Sensorplatform/bin
+		mkdir /home/${username}/Sensorplatform/staticResources
+		mkdir /home/${username}/Sensorplatform/db
+		chmod -R 777 ../../Sensorplatform/bin
+		chmod -R 777 ../../Sensorplatform/db
+		chmod -R 777 ../../Sensorplatform/staticResources
+		;;
 	*)
-		echo "This is the Sensorplatform script for working with the application. Always run this script with sudo!"
+		echo "This is the Sensorplatform script for working with the application. It is intended to be executed only on the sensorplatform linux system. Always run this script with sudo!"
 		echo ""
-		echo "Usage (dependencies|export|start|startbackground)"
+		echo "Valid commands: (dependencies|export|start|startbackground|stop|reset)"
 		echo ""
 		;;
 esac
