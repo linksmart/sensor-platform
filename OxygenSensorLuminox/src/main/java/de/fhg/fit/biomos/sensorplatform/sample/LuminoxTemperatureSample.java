@@ -103,8 +103,15 @@ public class LuminoxTemperatureSample {
 
 
     @Override
+
+
     public String toString() {
         return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"firstname\":\"" + this.firstname + "\",\"lastname\":\"" + this.lastname
                 + "\",\"device\":\"" + this.bdAddress + "\",\"temperature\":{\"value\":" + this.temperature + ",\"unit\":\"" + UNIT_DEGREES_CELSIUS + "\"}";
     }
+
+    public String toStringLinkSmart() {
+        return "{\"temperature\":"+this.temperature+",\"unit_temp\":\"" + UNIT_DEGREES_CELSIUS + "\"}";
+    }
+
 }

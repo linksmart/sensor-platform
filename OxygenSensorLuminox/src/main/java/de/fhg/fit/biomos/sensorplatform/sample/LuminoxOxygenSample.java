@@ -116,4 +116,8 @@ public class LuminoxOxygenSample {
                 + "\",\"device\":\"" + this.bdAddress + "\",\"oxygen concentration\":{\"value\":" + this.oxygenPercent + ",\"unit\":\"" + UNIT_PERCENT_O2 + "\"}}"
                 + "\",\"oxygen concentration\":{\"value\":" + this.oxygenppO2 + ",\"unit\":\"" + UNIT_PERCENT_ppO2 + "\"}}";
     }
+
+    public String toStringLinkSmart() {
+        return "{\"oxygen\":"+this.oxygenPercent+",\"unit_oxy\":\"" + UNIT_PERCENT_O2 + "\"}";
+    }
 }

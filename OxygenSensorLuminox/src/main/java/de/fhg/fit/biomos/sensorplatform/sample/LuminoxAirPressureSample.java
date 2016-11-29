@@ -106,4 +106,8 @@ public class LuminoxAirPressureSample {
         return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"firstname\":\"" + this.firstname + "\",\"lastname\":\"" + this.lastname
                 + "\",\"device\":\"" + this.bdAddress + "\",\"pressure\":{\"value\":" + this.pressure + ",\"unit\":\"" + UNIT_MILLIBAR + "\"}";
     }
+
+    public String toStringLinkSmart() {
+        return "{\"airPressure\":"+this.pressure+",\"unit_press\":\"" + UNIT_MILLIBAR + "\"}";
+    }
 }

@@ -52,11 +52,17 @@ public class LuminoxSampleCollector implements SampleCollector {
     public void run() {
         while (this.used) {
             if (!this.queueTemp.isEmpty()) {
-                storeSample(this.queueTemp.poll());
+                LuminoxTemperatureSample tempSample = this.queueTemp.poll();
+                System.out.println(tempSample.toStringLinkSmart());
+                storeSample(tempSample);
             } else if (!this.queueOxy.isEmpty()) {
-                storeSample(this.queueOxy.poll());
+                LuminoxOxygenSample oxySample = this.queueOxy.poll();
+                System.out.println(oxySample.toStringLinkSmart());
+                storeSample(oxySample);
             } else if (!this.queuePress.isEmpty()) {
-                storeSample(this.queuePress.poll());
+                LuminoxAirPressureSample pressureSample = this.queuePress.poll();
+                System.out.println(pressureSample.toStringLinkSmart());
+                storeSample(pressureSample);
             } else {
                 try {
                     Thread.sleep(SLEEP_TIME_MS);

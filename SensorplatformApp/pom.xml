@@ -108,6 +108,7 @@
             <groupId>de.fhg.fit.biomos</groupId>
             <artifactId>OxygenSensorLuminox</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>

@@ -79,6 +79,7 @@
         <hibernate.version>5.2.2.Final</hibernate.version>
         <commonsio.version>2.4</commonsio.version>
 
+
         <!-- web server running on the sensorplatform for configuration -->
         <webapp.port>8080</webapp.port>
         <webapp.username>sensorplatform</webapp.username>
