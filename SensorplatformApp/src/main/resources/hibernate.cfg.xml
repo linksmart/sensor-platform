@@ -25,6 +25,10 @@
         <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample"/>
         <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample"/>
         <mapping class="de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.LuminoxTemperatureSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.LuminoxOxygenSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.LuminoxAirPressureSample"/>
+
     </session-factory>
 </hibernate-configuration>
 

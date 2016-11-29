@@ -87,7 +87,7 @@ public class GatttoolImpl implements Gatttool {
     try {
       String line = null;
       while ((line = this.streamFromSensor.readLine()) != null) {
-        // System.out.println("!!! " + line); // extreme debugging
+        //System.out.println("!!! " + line); // extreme debugging
         switch (this.mode) {
           case COMMANDMODE:
             processCommandData(line);

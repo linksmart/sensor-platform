@@ -55,12 +55,14 @@ public class Controller implements Runnable {
   private final HeartRateSampleCollector hrsCollector;
   private final PulseOximeterSampleCollector pulseCollector;
   private final CC2650SampleCollector cc2650Collector;
+  private final LuminoxSampleCollector luminoxCollector;
 
   private SensorOverseer sensorOverseer;
 
   private Thread hrsCollectorThread;
   private Thread pulseCollectorThread;
   private Thread cc2650CollectorThread;
+  private Thread luminoxCollectorThread;
   private Thread controllerThread;
   private Thread sensorOverseerThread;
   private Thread hwPlatformThread;
@@ -71,13 +73,14 @@ public class Controller implements Runnable {
 
   @Inject
   public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, HeartRateSampleCollector hrsCollector,
-      PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector, @Named("timeout.sensor.connect") String timeoutConnect,
+      PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector, LuminoxSampleCollector luminoxCollector, @Named("timeout.sensor.connect") String timeoutConnect,
       @Named("timeout.sensor.notification") String timeoutNotification, @Named("recording.info.filename") String recordingInfoFileName) {
     this.swFactory = swFactory;
     this.hwPlatform = hwPlatform;
     this.hrsCollector = hrsCollector;
     this.pulseCollector = pulseCollector;
     this.cc2650Collector = cc2650Collector;
+    this.luminoxCollector=luminoxCollector;
     this.timeoutConnect = new Integer(timeoutConnect);
     this.timeoutNotification = new Integer(timeoutNotification);
     this.recordingInfo = new File(recordingInfoFileName);
@@ -295,6 +298,10 @@ public class Controller implements Runnable {
       this.cc2650CollectorThread = new Thread(this.cc2650Collector, "cc2650Collector");
       this.cc2650CollectorThread.start();
     }
+    if (this.luminoxCollector.isUsed()) {
+      this.luminoxCollectorThread = new Thread(this.luminoxCollector, "cc2650Collector");
+      this.luminoxCollectorThread.start();
+    }
     LOG.info("start controller thread");
     this.controllerThread = new Thread(this, "controller");
     this.controllerThread.start();
@@ -326,6 +333,10 @@ public class Controller implements Runnable {
     if (this.cc2650Collector.isUsed()) {
       this.cc2650Collector.setUsed(false);
       this.cc2650CollectorThread.interrupt();
+    }
+    if (this.luminoxCollector.isUsed()) {
+      this.luminoxCollector.setUsed(false);
+      this.luminoxCollectorThread.interrupt();
     }
     finish();
   }

@@ -7,6 +7,7 @@ import de.fhg.fit.biomos.sensorplatform.gatt.Luminoxlib;
 import de.fhg.fit.biomos.sensorplatform.sample.LuminoxAirPressureSample;
 import de.fhg.fit.biomos.sensorplatform.sample.LuminoxOxygenSample;
 import de.fhg.fit.biomos.sensorplatform.sample.LuminoxTemperatureSample;
+import de.fhg.fit.biomos.sensorplatform.util.FloatUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +101,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getOxygenConcentrationPercentage(String data) {
-    return Float.parseFloat(data.substring(26,31));
+    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(0,8),16));
     //return 1.0f * (short) Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
   }
 
@@ -112,7 +113,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getOxygenConcentrationppO2(String data) {
-    return Float.parseFloat(data.substring(2,7));
+    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(0,8),16));
   }
 
 
@@ -124,7 +125,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getTemperature(String data) {
-    return Float.parseFloat(data.substring(11,15));
+    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(8,16),16));
 }
 
   /**
@@ -135,7 +136,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getAirPressure(String data) {
-    return Float.parseFloat(data.substring(19,22));
+    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(16,24),16));
   }
 
   /**
@@ -146,7 +147,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getSensorStatus(String data) {
-    return Float.parseFloat(data.substring(35,38));
+    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(24,32),16));
   }
 
   /**
@@ -209,4 +210,5 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
     airPressureSample.setPressure(getAirPressure(data));
     return airPressureSample;
   }
+
 }

@@ -3,6 +3,8 @@ package de.fhg.fit.biomos.sensorplatform.control;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.fhg.fit.biomos.sensorplatform.sensor.*;
+import de.fhg.fit.biomos.sensorplatform.sensorwrapper.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -11,15 +13,6 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import de.fhg.fit.biomos.sensorplatform.sensor.AdidasHRM;
-import de.fhg.fit.biomos.sensorplatform.sensor.BLE113;
-import de.fhg.fit.biomos.sensorplatform.sensor.CC2650;
-import de.fhg.fit.biomos.sensorplatform.sensor.PolarH7;
-import de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM;
-import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
-import de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper;
-import de.fhg.fit.biomos.sensorplatform.sensorwrapper.HeartRateSensorWrapper;
-import de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 
 /**
@@ -41,15 +34,17 @@ public class SensorWrapperFactory {
   private final HeartRateSampleCollector hrsCollector;
   private final PulseOximeterSampleCollector pulseCollector;
   private final CC2650SampleCollector cc2650Collector;
+  private final LuminoxSampleCollector luminoxCollector;
 
   private final String databaseTimeStampFormat;
 
   @Inject
-  public SensorWrapperFactory(HeartRateSampleCollector hrsCollector, CC2650SampleCollector cc2650Collector, PulseOximeterSampleCollector pulseCollector,
+  public SensorWrapperFactory(HeartRateSampleCollector hrsCollector, CC2650SampleCollector cc2650Collector, PulseOximeterSampleCollector pulseCollector, LuminoxSampleCollector luminoxCollector,
       @Named("database.timestamp.format") String databaseTimeStampFormat) {
     this.hrsCollector = hrsCollector;
     this.cc2650Collector = cc2650Collector;
     this.pulseCollector = pulseCollector;
+    this.luminoxCollector=luminoxCollector;
     this.databaseTimeStampFormat = databaseTimeStampFormat;
   }
 
@@ -99,6 +94,10 @@ public class SensorWrapperFactory {
             PulseOximeterSensorWrapper ble113Wrapper = new PulseOximeterSensorWrapper(new BLE113(name, bdAddress, settings), this.databaseTimeStampFormat,
                 firstname, lastname, this.pulseCollector);
             sensorWrapperList.add(ble113Wrapper);
+            break;
+          case Luminox:
+            LuminoxWrapper luminoxWrapper=new LuminoxWrapper(new Luminox(name, bdAddress,settings), this.databaseTimeStampFormat, firstname, lastname, this.luminoxCollector);
+            sensorWrapperList.add(luminoxWrapper);
             break;
           default:
             LOG.error("unknown sensor name {}", name);

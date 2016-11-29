@@ -2,6 +2,7 @@ package de.fhg.fit.biomos.sensorplatform.guice;
 
 import java.util.Properties;
 
+import de.fhg.fit.biomos.sensorplatform.control.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,11 +11,6 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
 
-import de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector;
-import de.fhg.fit.biomos.sensorplatform.control.Controller;
-import de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector;
-import de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector;
-import de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
 import de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service;
 import de.fhg.fit.biomos.sensorplatform.restservices.ControllerService;
@@ -101,6 +97,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(HeartRateSampleCollector.class).in(Singleton.class);
     bind(PulseOximeterSampleCollector.class).in(Singleton.class);
     bind(CC2650SampleCollector.class).in(Singleton.class);
+    bind(LuminoxSampleCollector.class).in(Singleton.class);
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);
     bind(DBcontroller.class).in(Singleton.class);

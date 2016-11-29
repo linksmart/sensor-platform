@@ -5,6 +5,7 @@ import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
 import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
 import de.fhg.fit.biomos.sensorplatform.sample.*;
 import de.fhg.fit.biomos.sensorplatform.sensor.Luminox;
+import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,14 +55,17 @@ public class LuminoxSampleCollector implements SampleCollector {
             if (!this.queueTemp.isEmpty()) {
                 LuminoxTemperatureSample tempSample = this.queueTemp.poll();
                 System.out.println(tempSample.toStringLinkSmart());
+                //LOG.info(tempSample.toStringLinkSmart());
                 storeSample(tempSample);
             } else if (!this.queueOxy.isEmpty()) {
                 LuminoxOxygenSample oxySample = this.queueOxy.poll();
                 System.out.println(oxySample.toStringLinkSmart());
+                //LOG.info(oxySample.toStringLinkSmart());
                 storeSample(oxySample);
             } else if (!this.queuePress.isEmpty()) {
                 LuminoxAirPressureSample pressureSample = this.queuePress.poll();
                 System.out.println(pressureSample.toStringLinkSmart());
+                //LOG.info(pressureSample.toStringLinkSmart());
                 storeSample(pressureSample);
             } else {
                 try {

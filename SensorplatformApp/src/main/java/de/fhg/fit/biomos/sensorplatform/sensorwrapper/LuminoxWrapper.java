@@ -39,7 +39,6 @@ public class LuminoxWrapper extends AbstractSensorWrapper<Luminox> {
             temperatureSample.setLastname(this.lastname);
             // LOG.info(temperatureSample.toString());
             this.luminoxCollector.addToQueue(temperatureSample);
-            return;
         }
         LuminoxOxygenSample oxygenSample;
         if ((oxygenSample = this.sensor.calculateOxygenData(this.dtf.print(new DateTime()), handle, data)) != null) {
@@ -47,7 +46,6 @@ public class LuminoxWrapper extends AbstractSensorWrapper<Luminox> {
             oxygenSample.setLastname(this.lastname);
             // LOG.info(humiditySample.toString());
             this.luminoxCollector.addToQueue(oxygenSample);
-            return;
         }
         LuminoxAirPressureSample pressureSample;
         if ((pressureSample = this.sensor.calculateAirPressureData(this.dtf.print(new DateTime()), handle, data)) != null) {
@@ -55,10 +53,9 @@ public class LuminoxWrapper extends AbstractSensorWrapper<Luminox> {
             pressureSample.setLastname(this.lastname);
             // LOG.info(pressureSample.toString());
             this.luminoxCollector.addToQueue(pressureSample);
-            return;
         }
 
-        LOG.warn("unexpected handle address {} {}", handle, rawHexValues);
+        //LOG.warn("unexpected handle address {} {}", handle, rawHexValues);
 
     }
 }
