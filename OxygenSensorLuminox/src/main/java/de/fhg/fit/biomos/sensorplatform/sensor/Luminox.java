@@ -101,7 +101,8 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getOxygenConcentrationPercentage(String data) {
-    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(0,8),16));
+    return (int)Long.parseLong(data.substring(0,5).replace(".",""))*0.01f;
+    //return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(0,5),16));
     //return 1.0f * (short) Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
   }
 
@@ -113,7 +114,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getOxygenConcentrationppO2(String data) {
-    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(0,8),16));
+    return (int)Long.parseLong(data.substring(12,16).replace(".",""));
   }
 
 
@@ -125,7 +126,8 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getTemperature(String data) {
-    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(8,16),16));
+    //return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(8,16),16));
+    return (int)Long.parseLong(data.substring(7,11).replace(".",""))*0.01f;
 }
 
   /**
@@ -136,18 +138,19 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getAirPressure(String data) {
-    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(16,24),16));
+    //return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(16,24),16));
+    return (int)Long.parseLong(data.substring(12,16).replace(".",""));
   }
 
   /**
-   * Calculate the sensor status
+   * Calculate the sensos
    *
    * @param data
    *          hexadecimal values without whitespaces
    * @return oxygen concentration in percentage
    */
   private float getSensorStatus(String data) {
-    return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(24,32),16));
+    return (int)Long.parseLong(data.substring(12,16).replace(".",""));
   }
 
   /**
