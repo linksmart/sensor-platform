@@ -4,6 +4,46 @@ package de.fhg.fit.biomos.sensorplatform.util;
  * Created by garagon on 29.11.2016.
  */
 public class FloatUtils {
+
+    public static float valueTemp(String data) {
+        //return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(8,16),16));
+        return (int)Long.parseLong(data.substring(7,11).replace(".",""),16)*0.1f;
+        //return 23.4f;
+    }
+    public static float valueOxyg(String data) {
+        return (int)Long.parseLong(data.substring(0,5).replace(".",""),16)*0.01f;
+    }
+    public static float valuePress(String data) {
+        return (int)Long.parseLong(data.substring(12,16).replace(".",""),16)*1.0f;
+    }
+
+    public static String toHexString(byte[] ba) {
+        StringBuilder str = new StringBuilder();
+        for(int i = 0; i < ba.length; i++)
+            str.append(String.format("%x", ba[i]));
+        return str.toString();
+    }
+    public static String fromHexString(String hex) {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < hex.length(); i+=2) {
+            str.append((char)Integer.parseInt(hex.substring(i, i + 2), 16));
+        }
+        return str.toString();
+    }
+
+ /*   public static float valueTemp(int[] data) {
+        //return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(8,16),16));
+        return 0.1f;//(int)Long.parseLong(data.substring(7,11).replace(".",""))*0.1f;
+        //return 23.4f;
+    }
+    public static float valueOxyg(int[] data) {
+        return 0.1f;// (int)Long.parseLong(data.substring(0,5).replace(".",""))*0.01f;
+    }
+    public static float valuePress(int[] data) {
+        return 0.1f;// (int)Long.parseLong(data.substring(12,16).replace(".",""))*1.0f;
+    }
+
+*/
     private static int getExponent(int value)
     {
         if (value < 0)
@@ -56,5 +96,6 @@ public class FloatUtils {
             return (float) (((float) getMantissa(value)) * Math.pow(10, getExponent((int)value)));
         }
     }
+
 
 }

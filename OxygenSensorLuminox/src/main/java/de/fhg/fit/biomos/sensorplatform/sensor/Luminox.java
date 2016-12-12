@@ -101,7 +101,9 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getOxygenConcentrationPercentage(String data) {
-    return (int)Long.parseLong(data.substring(0,5).replace(".",""))*0.01f;
+    //return 20.60f;
+    return Integer.parseInt(FloatUtils.fromHexString(data).substring(0,5))*0.01f;
+
     //return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(0,5),16));
     //return 1.0f * (short) Integer.parseInt(data.substring(34, 36) + data.substring(32, 34), 16);
   }
@@ -114,7 +116,8 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    * @return oxygen concentration in percentage
    */
   private float getOxygenConcentrationppO2(String data) {
-    return (int)Long.parseLong(data.substring(12,16).replace(".",""));
+    return 20.8f;
+    //return (int)Long.parseLong(data.substring(12,16).replace(".",""))*0.01f;
   }
 
 
@@ -127,8 +130,9 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    */
   private float getTemperature(String data) {
     //return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(8,16),16));
-    return (int)Long.parseLong(data.substring(7,11).replace(".",""))*0.01f;
-}
+    return Integer.parseInt(FloatUtils.fromHexString(data).substring(6,9))*0.1f;
+    //return 23.4f;
+  }
 
   /**
    * Calculate the barometric pressure
@@ -139,7 +143,8 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    */
   private float getAirPressure(String data) {
     //return FloatUtils.parseSFLOATtoFloat((int)Long.parseLong(data.substring(16,24),16));
-    return (int)Long.parseLong(data.substring(12,16).replace(".",""));
+    return Integer.parseInt(FloatUtils.fromHexString(data).substring(10,14))*1f;
+    //return 1010f;
   }
 
   /**
