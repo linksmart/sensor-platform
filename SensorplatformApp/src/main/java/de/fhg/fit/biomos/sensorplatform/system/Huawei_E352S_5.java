@@ -68,6 +68,7 @@ public class Huawei_E352S_5 implements Runnable {
   }
 
   public void setupSerialPort() throws IOException, InterruptedException {
+    Thread.sleep(30000);
     LOG.info("setup serial port {}", FILE);
     Process p = Runtime.getRuntime().exec(COMGT_SERIAL);
     p.waitFor();

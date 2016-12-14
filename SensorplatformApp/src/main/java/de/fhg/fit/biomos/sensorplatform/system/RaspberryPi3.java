@@ -88,8 +88,7 @@ public class RaspberryPi3 implements HardwarePlatform {
     this.surfstick = new Huawei_E352S_5(this);
   }
 
-  @Override
-  public void run() {
+  private void setupSerialPort() {
     try {
       this.surfstick.setupSerialPort();
     } catch (IOException ioe) {
@@ -97,8 +96,11 @@ public class RaspberryPi3 implements HardwarePlatform {
     } catch (InterruptedException ie) {
       LOG.info("wait for comgt failed", ie);
     }
-    while (!Thread.currentThread().isInterrupted()) {
+  }
 
+  @Override
+  public void run() {
+    while (!Thread.currentThread().isInterrupted()) {
       if (this.surfstick.isAttached()) {
         if (hasMobileInternetConnection()) {
           this.mobileInternet = true;
@@ -111,6 +113,7 @@ public class RaspberryPi3 implements HardwarePlatform {
         } else {
           this.uploadPermitted = false;
           this.mobileInternet = false;
+          setupSerialPort();
           connectToMobileInternet();
           continue;
         }
