@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader
-	c2049 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./WebHrsUploader.html">
+	c2141 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./WebHrsUploader.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> WebHrsUploader </td></tr>
 		</table></td></tr>
@@ -25,7 +25,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./WebHrsUploader.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.web.Uploader
-	c2050 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.Uploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Uploader.html">
+	c2142 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.Uploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Uploader.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Uploader </td></tr>
@@ -40,6 +40,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Uploader.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader implements de.fhg.fit.biomos.sensorplatform.web.Uploader
-	c2050:p -> c2049:p [dir=back,arrowtail=empty,style=dashed];
+	c2142:p -> c2141:p [dir=back,arrowtail=empty,style=dashed];
 }
 

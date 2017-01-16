@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sensor.CC2650
-	c1610 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.CC2650" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./CC2650.html">
+	c1633 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.CC2650" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./CC2650.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650 </td></tr>
 		</table></td></tr>
@@ -29,7 +29,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<T extends de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary>
-	c1614 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensor.html">
+	c1637 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractSensor&lt;T extends GattLibrary&gt; </font></td></tr>
 		</table></td></tr>
@@ -55,6 +55,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sensor.CC2650 extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib>
-	c1614:p -> c1610:p [dir=back,arrowtail=empty];
+	c1637:p -> c1633:p [dir=back,arrowtail=empty];
 }
 

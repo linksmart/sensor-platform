@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils
-	c1358 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./HuaweiUtils.html">
+	c1392 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./HuaweiUtils.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> HuaweiUtils </td></tr>
 		</table></td></tr>
@@ -19,8 +19,11 @@ digraph G {
 <tr><td align="left" balign="left"> + SYSINFO_QUERY : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_MODE_0 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_MODE_3 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_MODE_4 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_MODE_5 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_MODE_6 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_MODE_7 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_MODE_15 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_0 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_1 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_2 : String </td></tr>
@@ -29,6 +32,10 @@ digraph G {
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_5 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_6 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_7 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_SUBMODE_8 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_SUBMODE_9 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_SUBMODE_17 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_SUBMODE_18 : String </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + HuaweiUtils() </td></tr>

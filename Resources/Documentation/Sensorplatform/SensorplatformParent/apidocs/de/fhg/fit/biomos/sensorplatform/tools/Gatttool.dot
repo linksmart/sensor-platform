@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl
-	c2969 [label=<<table title="de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GatttoolImpl.html">
+	c3012 [label=<<table title="de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GatttoolImpl.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> GatttoolImpl </td></tr>
 		</table></td></tr>
@@ -47,7 +47,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./GatttoolImpl.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.tools.Gatttool
-	c2970 [label=<<table title="de.fhg.fit.biomos.sensorplatform.tools.Gatttool" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Gatttool.html">
+	c3013 [label=<<table title="de.fhg.fit.biomos.sensorplatform.tools.Gatttool" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Gatttool.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Gatttool </td></tr>
@@ -68,11 +68,11 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Gatttool.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl implements de.fhg.fit.biomos.sensorplatform.tools.Gatttool
-	c2970:p -> c2969:p [dir=back,arrowtail=empty,style=dashed];
+	c3013:p -> c3012:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.tools.Gatttool implements java.lang.Runnable
-	c2977:p -> c2970:p [dir=back,arrowtail=empty,style=dashed];
+	c3020:p -> c3013:p [dir=back,arrowtail=empty,style=dashed];
 	// java.lang.Runnable
-	c2977 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
+	c3020 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Runnable </td></tr>

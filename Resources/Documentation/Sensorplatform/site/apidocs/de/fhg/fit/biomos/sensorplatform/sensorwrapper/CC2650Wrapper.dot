@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper
-	c2201 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./CC2650Wrapper.html">
+	c2233 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./CC2650Wrapper.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650Wrapper </td></tr>
 		</table></td></tr>
@@ -24,7 +24,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650Wrapper.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<T extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<?>>
-	c2202 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensorWrapper.html">
+	c2234 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensorWrapper.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractSensorWrapper&lt;T extends AbstractSensor&lt;?&gt;&gt; </font></td></tr>
 		</table></td></tr>
@@ -49,6 +49,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractSensorWrapper.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper extends de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<de.fhg.fit.biomos.sensorplatform.sensor.CC2650>
-	c2202:p -> c2201:p [dir=back,arrowtail=empty];
+	c2234:p -> c2233:p [dir=back,arrowtail=empty];
 }
 

@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib
-	c2221 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./CC2650lib.html">
+	c2253 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./CC2650lib.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650lib </td></tr>
 		</table></td></tr>
@@ -134,7 +134,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650lib.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary
-	c2224 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GattLibrary.html">
+	c2256 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GattLibrary.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> GattLibrary </td></tr>
@@ -172,6 +172,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./GattLibrary.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib implements de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary
-	c2224:p -> c2221:p [dir=back,arrowtail=empty,style=dashed];
+	c2256:p -> c2253:p [dir=back,arrowtail=empty,style=dashed];
 }
 

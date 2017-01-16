@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.web.Uploader
-	c1970 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.Uploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Uploader.html">
+	c2060 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.Uploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Uploader.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Uploader </td></tr>
@@ -25,7 +25,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Uploader.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader
-	c1971 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./TeLiProUploader.html">
+	c2061 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./TeLiProUploader.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> TeLiProUploader </td></tr>
 		</table></td></tr>
@@ -41,6 +41,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./TeLiProUploader.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader implements de.fhg.fit.biomos.sensorplatform.web.Uploader
-	c1970:p -> c1971:p [dir=back,arrowtail=empty,style=dashed];
+	c2060:p -> c2061:p [dir=back,arrowtail=empty,style=dashed];
 }
 

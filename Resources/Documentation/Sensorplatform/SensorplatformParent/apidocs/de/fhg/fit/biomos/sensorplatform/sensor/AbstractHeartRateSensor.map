@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./AdidasMiCoachHRM.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM" alt="" coords="16,696,672,807"/>
-<area shape="rect" id="node1" href="./AdidasMiCoachHRM.html" title="&lt;TABLE&gt;" alt="" coords="5,691,683,812"/>
+<area shape="rect" id="node1_0" href="./AdidasHRM.html" title="de.fhg.fit.biomos.sensorplatform.sensor.AdidasHRM" alt="" coords="16,696,672,807"/>
+<area shape="rect" id="node1" href="./AdidasHRM.html" title="&lt;TABLE&gt;" alt="" coords="5,691,683,812"/>
 <area shape="rect" id="node2_1" href="./TomTomHRM.html" title="de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM" alt="" coords="717,696,1373,807"/>
 <area shape="rect" id="node2" href="./TomTomHRM.html" title="&lt;TABLE&gt;" alt="" coords="707,691,1384,812"/>
 <area shape="rect" id="node3_2" href="./PolarH7.html" title="de.fhg.fit.biomos.sensorplatform.sensor.PolarH7" alt="" coords="1419,696,2069,807"/>

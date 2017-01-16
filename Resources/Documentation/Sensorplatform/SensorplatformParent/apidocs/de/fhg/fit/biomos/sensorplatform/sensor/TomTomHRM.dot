@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM
-	c5489 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./TomTomHRM.html">
+	c5638 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./TomTomHRM.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> TomTomHRM </td></tr>
 		</table></td></tr>
@@ -24,7 +24,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./TomTomHRM.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
-	c5497 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractHeartRateSensor.html">
+	c5646 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractHeartRateSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractHeartRateSensor </font></td></tr>
 		</table></td></tr>
@@ -46,6 +46,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractHeartRateSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
-	c5497:p -> c5489:p [dir=back,arrowtail=empty];
+	c5646:p -> c5638:p [dir=back,arrowtail=empty];
 }
 

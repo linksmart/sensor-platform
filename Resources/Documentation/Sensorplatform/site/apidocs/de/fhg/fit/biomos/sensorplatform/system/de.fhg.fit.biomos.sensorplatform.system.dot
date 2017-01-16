@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3
-	c745 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./RaspberryPi3.html">
+	c756 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./RaspberryPi3.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> RaspberryPi3 </td></tr>
 		</table></td></tr>
@@ -33,7 +33,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./RaspberryPi3.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.system.Huawei_E352S_5
-	c746 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Huawei_E352S_5" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Huawei_E352S_5.html">
+	c757 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Huawei_E352S_5" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Huawei_E352S_5.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> Huawei_E352S_5 </td></tr>
 		</table></td></tr>
@@ -60,7 +60,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Huawei_E352S_5.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c747 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HardwarePlatform.html">
+	c758 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HardwarePlatform.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> HardwarePlatform </td></tr>
@@ -82,7 +82,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HardwarePlatform.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.system.Cubieboard3
-	c748 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Cubieboard3.html">
+	c759 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Cubieboard3.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> Cubieboard3 </td></tr>
 		</table></td></tr>
@@ -105,8 +105,8 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Cubieboard3.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3 implements de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c747:p -> c745:p [dir=back,arrowtail=empty,style=dashed];
+	c758:p -> c756:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.system.Cubieboard3 implements de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c747:p -> c748:p [dir=back,arrowtail=empty,style=dashed];
+	c758:p -> c759:p [dir=back,arrowtail=empty,style=dashed];
 }
 

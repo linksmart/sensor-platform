@@ -9,21 +9,21 @@ digraph G {
 	node [fontname="arial",fontsize=10,shape=plaintext];
 	nodesep=0.25;
 	ranksep=0.5;
-	// de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM
-	c4 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasMiCoachHRM.html">
+	// de.fhg.fit.biomos.sensorplatform.sensor.AdidasHRM
+	c4 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AdidasHRM" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasHRM.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> AdidasMiCoachHRM </td></tr>
+<tr><td align="center" balign="center"> AdidasHRM </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left">  </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + AdidasMiCoachHRM(name : SensorName, bdAddress : String, sensorConfiguration : JSONObject) </td></tr>
+<tr><td align="left" balign="left"> + AdidasHRM(name : SensorName, bdAddress : String, sensorConfiguration : JSONObject) </td></tr>
 <tr><td align="left" balign="left"> + enableDataNotification(streamToSensor : BufferedWriter, charWriteCmd : String, enableNotification : String) </td></tr>
 <tr><td align="left" balign="left"> + disableDataNotification(streamToSensor : BufferedWriter, charWriteCmd : String, disableNotification : String) </td></tr>
 		</table></td></tr>
-		</table>>, URL="./AdidasMiCoachHRM.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	//de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
+		</table>>, URL="./AdidasHRM.html", fontname="arial", fontcolor="black", fontsize=10.0];
+	//de.fhg.fit.biomos.sensorplatform.sensor.AdidasHRM extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
 	c5:p -> c4:p [dir=back,arrowtail=empty];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
 	c5 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/sensor/AbstractHeartRateSensor.html">

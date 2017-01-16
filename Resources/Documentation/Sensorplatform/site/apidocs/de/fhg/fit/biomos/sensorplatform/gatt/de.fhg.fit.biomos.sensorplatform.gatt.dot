@@ -32,10 +32,10 @@ digraph G {
 <tr><td align="left" balign="left"> + getHandlePulseOximeterNotification() : String </td></tr>
 		</table></td></tr>
 		</table>>, URL="./BLE113lib.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	// de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib
-	c1 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasMiCoachHRMlib.html">
+	// de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib
+	c1 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasHRMlib.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> AdidasMiCoachHRMlib </td></tr>
+<tr><td align="center" balign="center"> AdidasHRMlib </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + DEFAULT_BDADDRESS : String </td></tr>
@@ -52,13 +52,13 @@ digraph G {
 <tr><td align="left" balign="left"> + HANDLE_BATTERY_LEVEL : String </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + AdidasMiCoachHRMlib() </td></tr>
+<tr><td align="left" balign="left"> + AdidasHRMlib() </td></tr>
 <tr><td align="left" balign="left"> + getHandleDeviceName() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandleBatteryLevel() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandleHeartRateMeasurement() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandleHeartRateNotification() : String </td></tr>
 		</table></td></tr>
-		</table>>, URL="./AdidasMiCoachHRMlib.html", fontname="arial", fontcolor="black", fontsize=10.0];
+		</table>>, URL="./AdidasHRMlib.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib
 	c2 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./TomTomHRMlib.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
@@ -306,7 +306,7 @@ digraph G {
 		</table>>, URL="./GattLibrary.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.gatt.BLE113lib implements de.fhg.fit.biomos.sensorplatform.gatt.PulseOximeterGattLibrary
 	c5:p -> c0:p [dir=back,arrowtail=empty,style=dashed];
-	//de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
+	//de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
 	c6:p -> c1:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
 	c6:p -> c2:p [dir=back,arrowtail=empty,style=dashed];

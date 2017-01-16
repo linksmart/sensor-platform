@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.gatt.BLE113lib
-	c4154 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.BLE113lib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./BLE113lib.html">
+	c4284 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.BLE113lib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./BLE113lib.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> BLE113lib </td></tr>
 		</table></td></tr>
@@ -33,7 +33,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./BLE113lib.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.gatt.PulseOximeterGattLibrary
-	c4159 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.PulseOximeterGattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./PulseOximeterGattLibrary.html">
+	c4289 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.PulseOximeterGattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./PulseOximeterGattLibrary.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> PulseOximeterGattLibrary </td></tr>
@@ -47,7 +47,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./PulseOximeterGattLibrary.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary
-	c4161 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GattLibrary.html">
+	c4291 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GattLibrary.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> GattLibrary </td></tr>
@@ -85,8 +85,8 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./GattLibrary.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.gatt.BLE113lib implements de.fhg.fit.biomos.sensorplatform.gatt.PulseOximeterGattLibrary
-	c4159:p -> c4154:p [dir=back,arrowtail=empty,style=dashed];
+	c4289:p -> c4284:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.gatt.PulseOximeterGattLibrary implements de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary
-	c4161:p -> c4159:p [dir=back,arrowtail=empty,style=dashed];
+	c4291:p -> c4289:p [dir=back,arrowtail=empty,style=dashed];
 }
 

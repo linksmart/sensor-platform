@@ -9,10 +9,10 @@ digraph G {
 	node [fontname="arial",fontsize=10,shape=plaintext];
 	nodesep=0.25;
 	ranksep=0.5;
-	// de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib
-	c3394 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasMiCoachHRMlib.html">
+	// de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib
+	c3443 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasHRMlib.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> AdidasMiCoachHRMlib </td></tr>
+<tr><td align="center" balign="center"> AdidasHRMlib </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + DEFAULT_BDADDRESS : String </td></tr>
@@ -29,15 +29,15 @@ digraph G {
 <tr><td align="left" balign="left"> + HANDLE_BATTERY_LEVEL : String </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + AdidasMiCoachHRMlib() </td></tr>
+<tr><td align="left" balign="left"> + AdidasHRMlib() </td></tr>
 <tr><td align="left" balign="left"> + getHandleDeviceName() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandleBatteryLevel() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandleHeartRateMeasurement() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandleHeartRateNotification() : String </td></tr>
 		</table></td></tr>
-		</table>>, URL="./AdidasMiCoachHRMlib.html", fontname="arial", fontcolor="black", fontsize=10.0];
+		</table>>, URL="./AdidasHRMlib.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib
-	c3395 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./TomTomHRMlib.html">
+	c3444 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./TomTomHRMlib.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> TomTomHRMlib </td></tr>
 		</table></td></tr>
@@ -54,7 +54,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./TomTomHRMlib.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib
-	c3396 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PolarH7lib.html">
+	c3445 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PolarH7lib.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PolarH7lib </td></tr>
 		</table></td></tr>
@@ -92,7 +92,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./PolarH7lib.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
-	c3399 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./HeartRateGattLibrary.html">
+	c3448 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./HeartRateGattLibrary.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> HeartRateGattLibrary </td></tr>
@@ -106,7 +106,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HeartRateGattLibrary.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary
-	c3400 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GattLibrary.html">
+	c3449 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GattLibrary.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> GattLibrary </td></tr>
@@ -143,13 +143,13 @@ digraph G {
 <tr><td align="left" balign="left"><font face="arial italic" point-size="10.0"> + getHandleBatteryLevel() : String </font></td></tr>
 		</table></td></tr>
 		</table>>, URL="./GattLibrary.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	//de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
-	c3399:p -> c3394:p [dir=back,arrowtail=empty,style=dashed];
+	//de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
+	c3448:p -> c3443:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
-	c3399:p -> c3395:p [dir=back,arrowtail=empty,style=dashed];
+	c3448:p -> c3444:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
-	c3399:p -> c3396:p [dir=back,arrowtail=empty,style=dashed];
+	c3448:p -> c3445:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary implements de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary
-	c3400:p -> c3399:p [dir=back,arrowtail=empty,style=dashed];
+	c3449:p -> c3448:p [dir=back,arrowtail=empty,style=dashed];
 }
 

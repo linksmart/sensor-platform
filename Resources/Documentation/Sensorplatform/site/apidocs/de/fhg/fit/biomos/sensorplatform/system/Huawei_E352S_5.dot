@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.system.Huawei_E352S_5
-	c3933 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Huawei_E352S_5" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Huawei_E352S_5.html">
+	c3990 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Huawei_E352S_5" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Huawei_E352S_5.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> Huawei_E352S_5 </td></tr>
 		</table></td></tr>
@@ -37,9 +37,9 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Huawei_E352S_5.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.system.Huawei_E352S_5 implements java.lang.Runnable
-	c3946:p -> c3933:p [dir=back,arrowtail=empty,style=dashed];
+	c4003:p -> c3990:p [dir=back,arrowtail=empty,style=dashed];
 	// java.lang.Runnable
-	c3946 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
+	c4003 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Runnable </td></tr>

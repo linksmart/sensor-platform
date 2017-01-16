@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory
-	c310 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorWrapperFactory.html">
+	c314 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorWrapperFactory.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> SensorWrapperFactory </td></tr>
 		</table></td></tr>
@@ -26,7 +26,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./SensorWrapperFactory.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.SensorOverseer
-	c311 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SensorOverseer" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorOverseer.html">
+	c315 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SensorOverseer" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorOverseer.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> SensorOverseer </td></tr>
 		</table></td></tr>
@@ -39,7 +39,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./SensorOverseer.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c312 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SampleCollector.html">
+	c316 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> SampleCollector </td></tr>
@@ -53,7 +53,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./SampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector
-	c313 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterSampleCollector.html">
+	c317 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterSampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PulseOximeterSampleCollector </td></tr>
 		</table></td></tr>
@@ -69,7 +69,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./PulseOximeterSampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector
-	c314 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSampleCollector.html">
+	c318 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> HeartRateSampleCollector </td></tr>
 		</table></td></tr>
@@ -87,7 +87,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HeartRateSampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.Controller
-	c315 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.Controller" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Controller.html">
+	c319 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.Controller" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Controller.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> Controller </td></tr>
 		</table></td></tr>
@@ -106,7 +106,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Controller.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector
-	c316 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650SampleCollector.html">
+	c320 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650SampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650SampleCollector </td></tr>
 		</table></td></tr>
@@ -126,10 +126,10 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650SampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector implements de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c312:p -> c313:p [dir=back,arrowtail=empty,style=dashed];
+	c316:p -> c317:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector implements de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c312:p -> c314:p [dir=back,arrowtail=empty,style=dashed];
+	c316:p -> c318:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector implements de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c312:p -> c316:p [dir=back,arrowtail=empty,style=dashed];
+	c316:p -> c320:p [dir=back,arrowtail=empty,style=dashed];
 }
 

@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.control.Controller
-	c2325 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.Controller" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Controller.html">
+	c2358 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.Controller" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Controller.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> Controller </td></tr>
 		</table></td></tr>
@@ -29,9 +29,9 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Controller.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.control.Controller implements java.lang.Runnable
-	c2355:p -> c2325:p [dir=back,arrowtail=empty,style=dashed];
+	c2389:p -> c2358:p [dir=back,arrowtail=empty,style=dashed];
 	// java.lang.Runnable
-	c2355 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
+	c2389 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Runnable </td></tr>

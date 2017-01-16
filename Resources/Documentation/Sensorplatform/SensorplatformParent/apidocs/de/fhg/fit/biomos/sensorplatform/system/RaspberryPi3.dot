@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3
-	c4624 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./RaspberryPi3.html">
+	c4761 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./RaspberryPi3.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> RaspberryPi3 </td></tr>
 		</table></td></tr>
@@ -33,7 +33,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./RaspberryPi3.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c4626 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HardwarePlatform.html">
+	c4763 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HardwarePlatform.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> HardwarePlatform </td></tr>
@@ -55,6 +55,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HardwarePlatform.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3 implements de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c4626:p -> c4624:p [dir=back,arrowtail=empty,style=dashed];
+	c4763:p -> c4761:p [dir=back,arrowtail=empty,style=dashed];
 }
 

@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3
-	c3240 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./RaspberryPi3.html">
+	c3287 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./RaspberryPi3.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> RaspberryPi3 </td></tr>
 		</table></td></tr>
@@ -33,7 +33,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./RaspberryPi3.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c3242 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./HardwarePlatform.html">
+	c3289 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./HardwarePlatform.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> HardwarePlatform </td></tr>
@@ -55,7 +55,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HardwarePlatform.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.system.Cubieboard3
-	c3243 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Cubieboard3.html">
+	c3290 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Cubieboard3.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> Cubieboard3 </td></tr>
 		</table></td></tr>
@@ -78,13 +78,13 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Cubieboard3.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3 implements de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c3242:p -> c3240:p [dir=back,arrowtail=empty,style=dashed];
+	c3289:p -> c3287:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform implements java.lang.Runnable
-	c3254:p -> c3242:p [dir=back,arrowtail=empty,style=dashed];
+	c3301:p -> c3289:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.system.Cubieboard3 implements de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c3242:p -> c3243:p [dir=back,arrowtail=empty,style=dashed];
+	c3289:p -> c3290:p [dir=back,arrowtail=empty,style=dashed];
 	// java.lang.Runnable
-	c3254 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
+	c3301 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Runnable </td></tr>

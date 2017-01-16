@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib
-	c5543 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./TomTomHRMlib.html">
+	c5693 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./TomTomHRMlib.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> TomTomHRMlib </td></tr>
 		</table></td></tr>
@@ -27,7 +27,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./TomTomHRMlib.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
-	c5547 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateGattLibrary.html">
+	c5697 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateGattLibrary.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> HeartRateGattLibrary </td></tr>
@@ -41,6 +41,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HeartRateGattLibrary.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
-	c5547:p -> c5543:p [dir=back,arrowtail=empty,style=dashed];
+	c5697:p -> c5693:p [dir=back,arrowtail=empty,style=dashed];
 }
 

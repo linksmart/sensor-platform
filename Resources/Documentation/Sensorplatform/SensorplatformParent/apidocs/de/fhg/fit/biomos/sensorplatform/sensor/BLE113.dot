@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sensor.BLE113
-	c1468 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.BLE113" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./BLE113.html">
+	c1489 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.BLE113" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./BLE113.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> BLE113 </td></tr>
 		</table></td></tr>
@@ -24,7 +24,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./BLE113.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor
-	c1477 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractPulseOximeterSensor.html">
+	c1498 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractPulseOximeterSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractPulseOximeterSensor </font></td></tr>
 		</table></td></tr>
@@ -51,6 +51,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractPulseOximeterSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sensor.BLE113 extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor
-	c1477:p -> c1468:p [dir=back,arrowtail=empty];
+	c1498:p -> c1489:p [dir=back,arrowtail=empty];
 }
 

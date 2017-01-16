@@ -24,6 +24,7 @@ digraph G {
 <tr><td align="left" balign="left"> TomTomHRM </td></tr>
 <tr><td align="left" balign="left"> AdidasHRM </td></tr>
 <tr><td align="left" balign="left"> BLE113 </td></tr>
+<tr><td align="left" balign="left"> Luminox </td></tr>
 		</table></td></tr>
 		</table>>, URL="./SensorName.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.util.SecurityLevel

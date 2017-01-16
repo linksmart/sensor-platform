@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean
-	c351 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SignalQualityBean.html">
+	c360 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SignalQualityBean.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> SignalQualityBean </td></tr>
 		</table></td></tr>
@@ -26,7 +26,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./SignalQualityBean.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils
-	c352 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HuaweiUtils.html">
+	c361 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HuaweiUtils.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> HuaweiUtils </td></tr>
 		</table></td></tr>
@@ -35,8 +35,11 @@ digraph G {
 <tr><td align="left" balign="left"> + SYSINFO_QUERY : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_MODE_0 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_MODE_3 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_MODE_4 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_MODE_5 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_MODE_6 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_MODE_7 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_MODE_15 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_0 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_1 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_2 : String </td></tr>
@@ -45,6 +48,10 @@ digraph G {
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_5 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_6 : String </td></tr>
 <tr><td align="left" balign="left"> + SYSTEM_SUBMODE_7 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_SUBMODE_8 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_SUBMODE_9 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_SUBMODE_17 : String </td></tr>
+<tr><td align="left" balign="left"> + SYSTEM_SUBMODE_18 : String </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + HuaweiUtils() </td></tr>
@@ -53,7 +60,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HuaweiUtils.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE
-	c353 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GSM_GPRS_EDGE.html">
+	c362 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GSM_GPRS_EDGE.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> GSM_GPRS_EDGE </td></tr>
 		</table></td></tr>
@@ -68,7 +75,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./GSM_GPRS_EDGE.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE.RSSI
-	c354 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE.RSSI" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GSM_GPRS_EDGE.RSSI.html">
+	c363 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE.RSSI" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./GSM_GPRS_EDGE.RSSI.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;enumeration&#187; </td></tr>
 <tr><td align="center" balign="center"> RSSI </td></tr>
@@ -86,7 +93,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./GSM_GPRS_EDGE.RSSI.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.util.DetectedDevice
-	c355 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.DetectedDevice" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./DetectedDevice.html">
+	c364 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.DetectedDevice" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./DetectedDevice.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> DetectedDevice </td></tr>
 		</table></td></tr>

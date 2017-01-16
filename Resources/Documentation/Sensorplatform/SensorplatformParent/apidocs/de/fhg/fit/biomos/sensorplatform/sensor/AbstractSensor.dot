@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sensor.CC2650
-	c1127 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.CC2650" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650.html">
+	c1143 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.CC2650" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650 </td></tr>
 		</table></td></tr>
@@ -29,7 +29,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.SensorCommands
-	c1128 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.SensorCommands" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorCommands.html">
+	c1144 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.SensorCommands" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorCommands.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> SensorCommands </td></tr>
@@ -45,7 +45,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./SensorCommands.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<T extends de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary>
-	c1131 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./AbstractSensor.html">
+	c1147 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./AbstractSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractSensor&lt;T extends GattLibrary&gt; </font></td></tr>
 		</table></td></tr>
@@ -71,7 +71,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor
-	c1132 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractPulseOximeterSensor.html">
+	c1148 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractPulseOximeterSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractPulseOximeterSensor </font></td></tr>
 		</table></td></tr>
@@ -98,7 +98,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractPulseOximeterSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
-	c1133 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractHeartRateSensor.html">
+	c1149 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractHeartRateSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractHeartRateSensor </font></td></tr>
 		</table></td></tr>
@@ -120,12 +120,12 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractHeartRateSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sensor.CC2650 extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<de.fhg.fit.biomos.sensorplatform.gatt.CC2650lib>
-	c1131:p -> c1127:p [dir=back,arrowtail=empty];
+	c1147:p -> c1143:p [dir=back,arrowtail=empty];
 	//de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<T extends de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary> implements de.fhg.fit.biomos.sensorplatform.sensor.SensorCommands
-	c1128:p -> c1131:p [dir=back,arrowtail=empty,style=dashed];
+	c1144:p -> c1147:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<de.fhg.fit.biomos.sensorplatform.gatt.PulseOximeterGattLibrary>
-	c1131:p -> c1132:p [dir=back,arrowtail=empty];
+	c1147:p -> c1148:p [dir=back,arrowtail=empty];
 	//de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary>
-	c1131:p -> c1133:p [dir=back,arrowtail=empty];
+	c1147:p -> c1149:p [dir=back,arrowtail=empty];
 }
 

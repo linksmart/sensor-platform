@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.guice.SensorplatformGuiceModule
-	c5165 [label=<<table title="de.fhg.fit.biomos.sensorplatform.guice.SensorplatformGuiceModule" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./SensorplatformGuiceModule.html">
+	c5309 [label=<<table title="de.fhg.fit.biomos.sensorplatform.guice.SensorplatformGuiceModule" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./SensorplatformGuiceModule.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> SensorplatformGuiceModule </td></tr>
 		</table></td></tr>
@@ -23,9 +23,9 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./SensorplatformGuiceModule.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.guice.SensorplatformGuiceModule extends com.google.inject.AbstractModule
-	c5193:p -> c5165:p [dir=back,arrowtail=empty];
+	c5338:p -> c5309:p [dir=back,arrowtail=empty];
 	// com.google.inject.AbstractModule
-	c5193 [label=<<table title="com.google.inject.AbstractModule" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/com/google/inject/AbstractModule.html">
+	c5338 [label=<<table title="com.google.inject.AbstractModule" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/com/google/inject/AbstractModule.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractModule </font></td></tr>
 		</table></td></tr>

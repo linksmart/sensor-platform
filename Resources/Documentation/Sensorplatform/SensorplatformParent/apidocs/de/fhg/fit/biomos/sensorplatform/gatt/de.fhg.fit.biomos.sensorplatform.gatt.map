@@ -1,8 +1,8 @@
 <map id="G" name="G">
 <area shape="rect" id="node1_0" href="./BLE113lib.html" title="de.fhg.fit.biomos.sensorplatform.gatt.BLE113lib" alt="" coords="490,2802,850,3069"/>
 <area shape="rect" id="node1" href="./BLE113lib.html" title="&lt;TABLE&gt;" alt="" coords="479,2797,861,3074"/>
-<area shape="rect" id="node2_1" href="./AdidasMiCoachHRMlib.html" title="de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib" alt="" coords="895,2767,1389,3103"/>
-<area shape="rect" id="node2" href="./AdidasMiCoachHRMlib.html" title="&lt;TABLE&gt;" alt="" coords="885,2762,1399,3109"/>
+<area shape="rect" id="node2_1" href="./AdidasHRMlib.html" title="de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib" alt="" coords="895,2767,1389,3103"/>
+<area shape="rect" id="node2" href="./AdidasHRMlib.html" title="&lt;TABLE&gt;" alt="" coords="885,2762,1399,3109"/>
 <area shape="rect" id="node3_2" href="./TomTomHRMlib.html" title="de.fhg.fit.biomos.sensorplatform.gatt.TomTomHRMlib" alt="" coords="1435,2854,1764,3017"/>
 <area shape="rect" id="node3" href="./TomTomHRMlib.html" title="&lt;TABLE&gt;" alt="" coords="1424,2849,1775,3022"/>
 <area shape="rect" id="node4_3" href="./PolarH7lib.html" title="de.fhg.fit.biomos.sensorplatform.gatt.PolarH7lib" alt="" coords="1810,2672,2303,3199"/>

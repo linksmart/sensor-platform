@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service
-	c2058 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./CC2650Service.html">
+	c2088 [label=<<table title="de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./CC2650Service.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650Service </td></tr>
 		</table></td></tr>

@@ -1,18 +1,18 @@
 <map id="G" name="G">
-<area shape="rect" id="node1_0" href="./SignalQualityBean.html" title="de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean" alt="" coords="16,106,272,251"/>
-<area shape="rect" id="node1" href="./SignalQualityBean.html" title="&lt;TABLE&gt;" alt="" coords="5,101,283,257"/>
-<area shape="rect" id="node2_1" href="./HuaweiUtils.html" title="de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils" alt="" coords="317,11,645,347"/>
-<area shape="rect" id="node2" href="./HuaweiUtils.html" title="&lt;TABLE&gt;" alt="" coords="307,5,656,352"/>
-<area shape="rect" id="node3_2" href="./GSM_GPRS_EDGE.html" title="de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE" alt="" coords="691,115,1047,243"/>
-<area shape="rect" id="node3" href="./GSM_GPRS_EDGE.html" title="&lt;TABLE&gt;" alt="" coords="681,109,1058,248"/>
-<area shape="rect" id="node4_3" href="./GSM_GPRS_EDGE.RSSI.html" title="de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE.RSSI" alt="" coords="1093,89,1197,269"/>
-<area shape="rect" id="node4" href="./GSM_GPRS_EDGE.RSSI.html" title="&lt;TABLE&gt;" alt="" coords="1083,83,1208,274"/>
-<area shape="rect" id="node5_4" href="./DetectedDevice.html" title="de.fhg.fit.biomos.sensorplatform.util.DetectedDevice" alt="" coords="1243,115,1567,243"/>
-<area shape="rect" id="node5" href="./DetectedDevice.html" title="&lt;TABLE&gt;" alt="" coords="1233,109,1578,248"/>
-<area shape="rect" id="node6_5" href="./SensorName.html" title="de.fhg.fit.biomos.sensorplatform.util.SensorName" alt="" coords="1613,97,1717,260"/>
-<area shape="rect" id="node6" href="./SensorName.html" title="&lt;TABLE&gt;" alt="" coords="1603,92,1728,265"/>
-<area shape="rect" id="node7_6" href="./SecurityLevel.html" title="de.fhg.fit.biomos.sensorplatform.util.SecurityLevel" alt="" coords="1763,115,1867,243"/>
-<area shape="rect" id="node7" href="./SecurityLevel.html" title="&lt;TABLE&gt;" alt="" coords="1752,109,1877,248"/>
-<area shape="rect" id="node8_7" href="./AddressType.html" title="de.fhg.fit.biomos.sensorplatform.util.AddressType" alt="" coords="1912,115,2016,243"/>
-<area shape="rect" id="node8" href="./AddressType.html" title="&lt;TABLE&gt;" alt="" coords="1901,109,2027,248"/>
+<area shape="rect" id="node1_0" href="./SignalQualityBean.html" title="de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean" alt="" coords="16,167,272,312"/>
+<area shape="rect" id="node1" href="./SignalQualityBean.html" title="&lt;TABLE&gt;" alt="" coords="5,161,283,317"/>
+<area shape="rect" id="node2_1" href="./HuaweiUtils.html" title="de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils" alt="" coords="317,11,645,468"/>
+<area shape="rect" id="node2" href="./HuaweiUtils.html" title="&lt;TABLE&gt;" alt="" coords="307,5,656,473"/>
+<area shape="rect" id="node3_2" href="./GSM_GPRS_EDGE.html" title="de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE" alt="" coords="691,175,1047,303"/>
+<area shape="rect" id="node3" href="./GSM_GPRS_EDGE.html" title="&lt;TABLE&gt;" alt="" coords="681,170,1058,309"/>
+<area shape="rect" id="node4_3" href="./GSM_GPRS_EDGE.RSSI.html" title="de.fhg.fit.biomos.sensorplatform.util.GSM_GPRS_EDGE.RSSI" alt="" coords="1093,149,1197,329"/>
+<area shape="rect" id="node4" href="./GSM_GPRS_EDGE.RSSI.html" title="&lt;TABLE&gt;" alt="" coords="1083,144,1208,335"/>
+<area shape="rect" id="node5_4" href="./DetectedDevice.html" title="de.fhg.fit.biomos.sensorplatform.util.DetectedDevice" alt="" coords="1243,175,1567,303"/>
+<area shape="rect" id="node5" href="./DetectedDevice.html" title="&lt;TABLE&gt;" alt="" coords="1233,170,1578,309"/>
+<area shape="rect" id="node6_5" href="./SensorName.html" title="de.fhg.fit.biomos.sensorplatform.util.SensorName" alt="" coords="1613,149,1717,329"/>
+<area shape="rect" id="node6" href="./SensorName.html" title="&lt;TABLE&gt;" alt="" coords="1603,144,1728,335"/>
+<area shape="rect" id="node7_6" href="./SecurityLevel.html" title="de.fhg.fit.biomos.sensorplatform.util.SecurityLevel" alt="" coords="1763,175,1867,303"/>
+<area shape="rect" id="node7" href="./SecurityLevel.html" title="&lt;TABLE&gt;" alt="" coords="1752,170,1877,309"/>
+<area shape="rect" id="node8_7" href="./AddressType.html" title="de.fhg.fit.biomos.sensorplatform.util.AddressType" alt="" coords="1912,175,2016,303"/>
+<area shape="rect" id="node8" href="./AddressType.html" title="&lt;TABLE&gt;" alt="" coords="1901,170,2027,309"/>
 </map>

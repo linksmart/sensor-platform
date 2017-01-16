@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample
-	c77 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650TemperatureSample.html">
+	c78 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650TemperatureSample.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650TemperatureSample </td></tr>
 		</table></td></tr>
@@ -38,7 +38,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650TemperatureSample.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample
-	c78 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650PressureSample.html">
+	c79 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650PressureSample.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650PressureSample </td></tr>
 		</table></td></tr>
@@ -66,7 +66,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650PressureSample.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample
-	c79 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650MovementSample.html">
+	c80 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650MovementSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650MovementSample.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650MovementSample </td></tr>
 		</table></td></tr>
@@ -108,7 +108,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650MovementSample.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample
-	c80 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650HumiditySample.html">
+	c81 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650HumiditySample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650HumiditySample.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650HumiditySample </td></tr>
 		</table></td></tr>
@@ -136,7 +136,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650HumiditySample.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample
-	c81 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650AmbientlightSample.html">
+	c82 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.CC2650AmbientlightSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650AmbientlightSample.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650AmbientlightSample </td></tr>
 		</table></td></tr>
@@ -162,7 +162,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650AmbientlightSample.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample
-	c82 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterSample.html">
+	c83 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterSample.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PulseOximeterSample </td></tr>
 		</table></td></tr>
@@ -190,7 +190,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./PulseOximeterSample.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample
-	c83 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSample.html">
+	c84 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sample.HeartRateSample" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSample.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> HeartRateSample </td></tr>
 		</table></td></tr>

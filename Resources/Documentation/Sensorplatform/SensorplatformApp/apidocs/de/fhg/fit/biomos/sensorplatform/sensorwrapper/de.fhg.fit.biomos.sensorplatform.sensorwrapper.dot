@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorWrapper<T extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<?>>
-	c216 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorWrapper.html">
+	c222 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./SensorWrapper.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> SensorWrapper&lt;T extends AbstractSensor&lt;?&gt;&gt; </td></tr>
@@ -31,7 +31,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./SensorWrapper.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper
-	c217 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterSensorWrapper.html">
+	c223 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterSensorWrapper.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PulseOximeterSensorWrapper </td></tr>
 		</table></td></tr>
@@ -45,7 +45,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./PulseOximeterSensorWrapper.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.HeartRateSensorWrapper
-	c218 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.HeartRateSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSensorWrapper.html">
+	c224 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.HeartRateSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSensorWrapper.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> HeartRateSensorWrapper </td></tr>
 		</table></td></tr>
@@ -59,7 +59,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HeartRateSensorWrapper.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper
-	c219 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650Wrapper.html">
+	c225 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650Wrapper.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650Wrapper </td></tr>
 		</table></td></tr>
@@ -73,7 +73,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650Wrapper.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<T extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<?>>
-	c220 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensorWrapper.html">
+	c226 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensorWrapper.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractSensorWrapper&lt;T extends AbstractSensor&lt;?&gt;&gt; </font></td></tr>
 		</table></td></tr>
@@ -98,12 +98,12 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractSensorWrapper.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sensorwrapper.PulseOximeterSensorWrapper extends de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<de.fhg.fit.biomos.sensorplatform.sensor.AbstractPulseOximeterSensor>
-	c220:p -> c217:p [dir=back,arrowtail=empty];
+	c226:p -> c223:p [dir=back,arrowtail=empty];
 	//de.fhg.fit.biomos.sensorplatform.sensorwrapper.HeartRateSensorWrapper extends de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor>
-	c220:p -> c218:p [dir=back,arrowtail=empty];
+	c226:p -> c224:p [dir=back,arrowtail=empty];
 	//de.fhg.fit.biomos.sensorplatform.sensorwrapper.CC2650Wrapper extends de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<de.fhg.fit.biomos.sensorplatform.sensor.CC2650>
-	c220:p -> c219:p [dir=back,arrowtail=empty];
+	c226:p -> c225:p [dir=back,arrowtail=empty];
 	//de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper<T extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<?>> implements de.fhg.fit.biomos.sensorplatform.sensorwrapper.SensorWrapper<T extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<?>>
-	c216:p -> c220:p [dir=back,arrowtail=empty,style=dashed];
+	c222:p -> c226:p [dir=back,arrowtail=empty,style=dashed];
 }
 

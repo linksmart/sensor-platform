@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl
-	c1072 [label=<<table title="de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./GatttoolImpl.html">
+	c1099 [label=<<table title="de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./GatttoolImpl.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> GatttoolImpl </td></tr>
 		</table></td></tr>
@@ -47,7 +47,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./GatttoolImpl.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.tools.Gatttool
-	c1073 [label=<<table title="de.fhg.fit.biomos.sensorplatform.tools.Gatttool" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Gatttool.html">
+	c1100 [label=<<table title="de.fhg.fit.biomos.sensorplatform.tools.Gatttool" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Gatttool.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Gatttool </td></tr>
@@ -68,6 +68,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Gatttool.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.tools.GatttoolImpl implements de.fhg.fit.biomos.sensorplatform.tools.Gatttool
-	c1073:p -> c1072:p [dir=back,arrowtail=empty,style=dashed];
+	c1100:p -> c1099:p [dir=back,arrowtail=empty,style=dashed];
 }
 

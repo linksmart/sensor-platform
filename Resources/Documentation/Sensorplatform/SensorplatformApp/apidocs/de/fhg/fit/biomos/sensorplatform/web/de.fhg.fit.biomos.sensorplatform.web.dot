@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader
-	c396 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./WebHrsUploader.html">
+	c406 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./WebHrsUploader.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> WebHrsUploader </td></tr>
 		</table></td></tr>
@@ -25,7 +25,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./WebHrsUploader.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.web.Uploader
-	c397 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.Uploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Uploader.html">
+	c407 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.Uploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./Uploader.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Uploader </td></tr>
@@ -40,7 +40,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Uploader.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader
-	c398 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./TeLiProUploader.html">
+	c408 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./TeLiProUploader.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> TeLiProUploader </td></tr>
 		</table></td></tr>
@@ -56,7 +56,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./TeLiProUploader.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.web.ServerStarter
-	c399 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.ServerStarter" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./ServerStarter.html">
+	c409 [label=<<table title="de.fhg.fit.biomos.sensorplatform.web.ServerStarter" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./ServerStarter.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> ServerStarter </td></tr>
 		</table></td></tr>
@@ -70,8 +70,8 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./ServerStarter.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader implements de.fhg.fit.biomos.sensorplatform.web.Uploader
-	c397:p -> c396:p [dir=back,arrowtail=empty,style=dashed];
+	c407:p -> c406:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader implements de.fhg.fit.biomos.sensorplatform.web.Uploader
-	c397:p -> c398:p [dir=back,arrowtail=empty,style=dashed];
+	c407:p -> c408:p [dir=back,arrowtail=empty,style=dashed];
 }
 

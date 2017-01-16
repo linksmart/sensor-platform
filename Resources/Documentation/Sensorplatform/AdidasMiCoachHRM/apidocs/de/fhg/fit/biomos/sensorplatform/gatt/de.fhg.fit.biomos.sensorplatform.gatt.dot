@@ -9,10 +9,10 @@ digraph G {
 	node [fontname="arial",fontsize=10,shape=plaintext];
 	nodesep=0.25;
 	ranksep=0.5;
-	// de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib
-	c0 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasMiCoachHRMlib.html">
+	// de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib
+	c0 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasHRMlib.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> AdidasMiCoachHRMlib </td></tr>
+<tr><td align="center" balign="center"> AdidasHRMlib </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left"> + DEFAULT_BDADDRESS : String </td></tr>
@@ -29,14 +29,14 @@ digraph G {
 <tr><td align="left" balign="left"> + HANDLE_BATTERY_LEVEL : String </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + AdidasMiCoachHRMlib() </td></tr>
+<tr><td align="left" balign="left"> + AdidasHRMlib() </td></tr>
 <tr><td align="left" balign="left"> + getHandleDeviceName() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandleBatteryLevel() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandleHeartRateMeasurement() : String </td></tr>
 <tr><td align="left" balign="left"> + getHandleHeartRateNotification() : String </td></tr>
 		</table></td></tr>
-		</table>>, URL="./AdidasMiCoachHRMlib.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	//de.fhg.fit.biomos.sensorplatform.gatt.AdidasMiCoachHRMlib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
+		</table>>, URL="./AdidasHRMlib.html", fontname="arial", fontcolor="black", fontsize=10.0];
+	//de.fhg.fit.biomos.sensorplatform.gatt.AdidasHRMlib implements de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
 	c2:p -> c0:p [dir=back,arrowtail=empty,style=dashed];
 	// de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary
 	c2 [label=<<table title="de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/de/fhg/fit/biomos/sensorplatform/gatt/HeartRateGattLibrary.html">

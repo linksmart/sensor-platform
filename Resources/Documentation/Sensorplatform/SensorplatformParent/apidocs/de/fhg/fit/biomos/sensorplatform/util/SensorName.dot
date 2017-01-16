@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.util.SensorName
-	c4877 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.SensorName" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./SensorName.html">
+	c5017 [label=<<table title="de.fhg.fit.biomos.sensorplatform.util.SensorName" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./SensorName.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;enumeration&#187; </td></tr>
 <tr><td align="center" balign="center"> SensorName </td></tr>
@@ -24,6 +24,7 @@ digraph G {
 <tr><td align="left" balign="left"> TomTomHRM </td></tr>
 <tr><td align="left" balign="left"> AdidasHRM </td></tr>
 <tr><td align="left" balign="left"> BLE113 </td></tr>
+<tr><td align="left" balign="left"> Luminox </td></tr>
 		</table></td></tr>
 		</table>>, URL="./SensorName.html", fontname="arial", fontcolor="black", fontsize=10.0];
 }

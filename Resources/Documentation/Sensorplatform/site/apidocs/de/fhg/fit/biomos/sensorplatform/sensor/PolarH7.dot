@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.sensor.PolarH7
-	c4034 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.PolarH7" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./PolarH7.html">
+	c4162 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.PolarH7" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./PolarH7.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PolarH7 </td></tr>
 		</table></td></tr>
@@ -24,7 +24,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./PolarH7.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
-	c4041 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractHeartRateSensor.html">
+	c4169 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractHeartRateSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractHeartRateSensor </font></td></tr>
 		</table></td></tr>
@@ -46,6 +46,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractHeartRateSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.sensor.PolarH7 extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
-	c4041:p -> c4034:p [dir=back,arrowtail=empty];
+	c4169:p -> c4162:p [dir=back,arrowtail=empty];
 }
 

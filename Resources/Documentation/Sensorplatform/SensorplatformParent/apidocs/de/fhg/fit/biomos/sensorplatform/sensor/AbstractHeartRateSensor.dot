@@ -9,22 +9,22 @@ digraph G {
 	node [fontname="arial",fontsize=10,shape=plaintext];
 	nodesep=0.25;
 	ranksep=0.5;
-	// de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM
-	c935 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasMiCoachHRM.html">
+	// de.fhg.fit.biomos.sensorplatform.sensor.AdidasHRM
+	c948 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AdidasHRM" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AdidasHRM.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="center" balign="center"> AdidasMiCoachHRM </td></tr>
+<tr><td align="center" balign="center"> AdidasHRM </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="left" balign="left">  </td></tr>
 		</table></td></tr>
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
-<tr><td align="left" balign="left"> + AdidasMiCoachHRM(name : SensorName, bdAddress : String, sensorConfiguration : JSONObject) </td></tr>
+<tr><td align="left" balign="left"> + AdidasHRM(name : SensorName, bdAddress : String, sensorConfiguration : JSONObject) </td></tr>
 <tr><td align="left" balign="left"> + enableDataNotification(streamToSensor : BufferedWriter, charWriteCmd : String, enableNotification : String) </td></tr>
 <tr><td align="left" balign="left"> + disableDataNotification(streamToSensor : BufferedWriter, charWriteCmd : String, disableNotification : String) </td></tr>
 		</table></td></tr>
-		</table>>, URL="./AdidasMiCoachHRM.html", fontname="arial", fontcolor="black", fontsize=10.0];
+		</table>>, URL="./AdidasHRM.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM
-	c937 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./TomTomHRM.html">
+	c950 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./TomTomHRM.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> TomTomHRM </td></tr>
 		</table></td></tr>
@@ -38,7 +38,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./TomTomHRM.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.PolarH7
-	c939 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.PolarH7" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PolarH7.html">
+	c952 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.PolarH7" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PolarH7.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PolarH7 </td></tr>
 		</table></td></tr>
@@ -52,7 +52,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./PolarH7.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.HeartRateSensor
-	c946 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.HeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSensor.html">
+	c959 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.HeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> HeartRateSensor </td></tr>
@@ -74,7 +74,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HeartRateSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<T extends de.fhg.fit.biomos.sensorplatform.gatt.GattLibrary>
-	c947 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensor.html">
+	c960 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./AbstractSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractSensor&lt;T extends GattLibrary&gt; </font></td></tr>
 		</table></td></tr>
@@ -100,7 +100,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./AbstractSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
-	c949 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./AbstractHeartRateSensor.html">
+	c962 [label=<<table title="de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./AbstractHeartRateSensor.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"><font face="arial italic"> AbstractHeartRateSensor </font></td></tr>
 		</table></td></tr>
@@ -121,15 +121,15 @@ digraph G {
 <tr><td align="left" balign="left"> + calculateHeartRateData(timestamp : String, handle : String, rawHexValues : String) : HeartRateSample </td></tr>
 		</table></td></tr>
 		</table>>, URL="./AbstractHeartRateSensor.html", fontname="arial", fontcolor="black", fontsize=10.0];
-	//de.fhg.fit.biomos.sensorplatform.sensor.AdidasMiCoachHRM extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
-	c949:p -> c935:p [dir=back,arrowtail=empty];
+	//de.fhg.fit.biomos.sensorplatform.sensor.AdidasHRM extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
+	c962:p -> c948:p [dir=back,arrowtail=empty];
 	//de.fhg.fit.biomos.sensorplatform.sensor.TomTomHRM extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
-	c949:p -> c937:p [dir=back,arrowtail=empty];
+	c962:p -> c950:p [dir=back,arrowtail=empty];
 	//de.fhg.fit.biomos.sensorplatform.sensor.PolarH7 extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor
-	c949:p -> c939:p [dir=back,arrowtail=empty];
+	c962:p -> c952:p [dir=back,arrowtail=empty];
 	//de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor extends de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor<de.fhg.fit.biomos.sensorplatform.gatt.HeartRateGattLibrary>
-	c947:p -> c949:p [dir=back,arrowtail=empty];
+	c960:p -> c962:p [dir=back,arrowtail=empty];
 	//de.fhg.fit.biomos.sensorplatform.sensor.AbstractHeartRateSensor implements de.fhg.fit.biomos.sensorplatform.sensor.HeartRateSensor
-	c946:p -> c949:p [dir=back,arrowtail=empty,style=dashed];
+	c959:p -> c962:p [dir=back,arrowtail=empty,style=dashed];
 }
 

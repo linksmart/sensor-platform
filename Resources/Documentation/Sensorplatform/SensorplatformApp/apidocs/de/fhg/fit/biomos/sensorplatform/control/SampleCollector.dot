@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c1609 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./SampleCollector.html">
+	c1690 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./SampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> SampleCollector </td></tr>
@@ -24,7 +24,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./SampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector
-	c1610 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterSampleCollector.html">
+	c1691 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./PulseOximeterSampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> PulseOximeterSampleCollector </td></tr>
 		</table></td></tr>
@@ -40,7 +40,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./PulseOximeterSampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector
-	c1611 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSampleCollector.html">
+	c1692 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HeartRateSampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> HeartRateSampleCollector </td></tr>
 		</table></td></tr>
@@ -58,7 +58,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HeartRateSampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector
-	c1613 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650SampleCollector.html">
+	c1694 [label=<<table title="de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./CC2650SampleCollector.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> CC2650SampleCollector </td></tr>
 		</table></td></tr>
@@ -78,15 +78,15 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./CC2650SampleCollector.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.control.SampleCollector implements java.lang.Runnable
-	c1647:p -> c1609:p [dir=back,arrowtail=empty,style=dashed];
+	c1729:p -> c1690:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.control.PulseOximeterSampleCollector implements de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c1609:p -> c1610:p [dir=back,arrowtail=empty,style=dashed];
+	c1690:p -> c1691:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.control.HeartRateSampleCollector implements de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c1609:p -> c1611:p [dir=back,arrowtail=empty,style=dashed];
+	c1690:p -> c1692:p [dir=back,arrowtail=empty,style=dashed];
 	//de.fhg.fit.biomos.sensorplatform.control.CC2650SampleCollector implements de.fhg.fit.biomos.sensorplatform.control.SampleCollector
-	c1609:p -> c1613:p [dir=back,arrowtail=empty,style=dashed];
+	c1690:p -> c1694:p [dir=back,arrowtail=empty,style=dashed];
 	// java.lang.Runnable
-	c1647 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
+	c1729 [label=<<table title="java.lang.Runnable" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Runnable.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> Runnable </td></tr>

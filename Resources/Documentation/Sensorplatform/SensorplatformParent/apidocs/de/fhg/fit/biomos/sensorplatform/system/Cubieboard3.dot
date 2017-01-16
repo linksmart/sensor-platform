@@ -10,7 +10,7 @@ digraph G {
 	nodesep=0.25;
 	ranksep=0.5;
 	// de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c2482 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HardwarePlatform.html">
+	c2518 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" href="./HardwarePlatform.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> &#171;interface&#187; </td></tr>
 <tr><td align="center" balign="center"> HardwarePlatform </td></tr>
@@ -32,7 +32,7 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./HardwarePlatform.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	// de.fhg.fit.biomos.sensorplatform.system.Cubieboard3
-	c2483 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Cubieboard3.html">
+	c2519 [label=<<table title="de.fhg.fit.biomos.sensorplatform.system.Cubieboard3" border="0" cellborder="1" cellspacing="0" cellpadding="2" port="p" bgcolor="lemonChiffon" href="./Cubieboard3.html">
 		<tr><td><table border="0" cellspacing="0" cellpadding="1">
 <tr><td align="center" balign="center"> Cubieboard3 </td></tr>
 		</table></td></tr>
@@ -55,6 +55,6 @@ digraph G {
 		</table></td></tr>
 		</table>>, URL="./Cubieboard3.html", fontname="arial", fontcolor="black", fontsize=10.0];
 	//de.fhg.fit.biomos.sensorplatform.system.Cubieboard3 implements de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform
-	c2482:p -> c2483:p [dir=back,arrowtail=empty,style=dashed];
+	c2518:p -> c2519:p [dir=back,arrowtail=empty,style=dashed];
 }
 
