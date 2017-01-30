@@ -2,15 +2,20 @@ Sensorplatform
 
 Software for an extendible platform used for aggregating and transfering sensor data.
 
-Masterthesis, Computer Science, Daniel Pyka, 2016
+Masterthesis, Computer Science, Daniel Pyka, 2016-2017
 
 Raspberry Pi 3 Installation Guide
 
 Prerequisites:
+Raspberry Pi 3 (mac address b8:27:eb:27:b4:27 + hostname sensorplatform is already registered for network access @Fraunhofer FIT)
+Huawei Telekom Surfstick E352S-5 (with active contract)
+Power supply
+Sensors
 Windows or Linux
 IDE: eclipse or intellij
-either separate maven installation or inbuild from IDE
+either separate maven installation available on command line or inbuild from the IDE
 Gitscm installation (from opsi Client Kiosk)
+At least read access http://scm.fit.fraunhofer.de:8080/scm/git/Sensorplatform
 
 1. Download the Raspbian Lite(!) Image from here:
 https://www.raspberrypi.org/downloads/raspbian/
@@ -80,7 +85,7 @@ Password: raspberry
 
 12. Install tools and dependencies of the sensorplatform application
 12.1 "sudo sh sensorplatform.sh dependencies"
-12.2 "sudo reboot"
+12.2 "sudo reboot" (important!)
 
 13. Log in as administrator again
 
@@ -95,20 +100,39 @@ Password: raspberry
 14.3 Return to top-level directory of the repository: "cd .."
 
 15. Now set up the linux specific configuration
-15.1 "sudo sh sensorplatform.sh export" 
-	On the next reboot the sensorplatform application will start automatically in the background.
+15.1 "sudo sh sensorplatform.sh export"
+	Binary files are copied to /home/administrator/export .
+	On the next reboot the sensorplatform application will start automatically as a background service (autostart with systemd).
 15.2 Make sure the sensorplattform is connected to network (cable) to get the current time from NTP. Configure time related functionality afterwards:
 	"sudo sh sensorplatform.sh time"
-	This will set the hardware time from system time and disable ntp afterwards. Also uninstalls the fake-hwclock package. On every boot the system time is set by the hardware time.
+	This will set the hardware time from system time (which was once set correctly by NTP) and disable NTP afterwards.
+	It also uninstalls the fake-hwclock package. On every boot the system time is set by the hardware time.
 	
 16. You may still want to use the sensorplatform.sh script to start the application for testing.
 	"sudo sh sensorplatform.sh start" 
-	"sudo sh sensorplatform.sh startbackground" 
+	"sudo sh sensorplatform.sh startbackground"
+16.1 To stop the sensorplatform application use the command
+	"sudo sh sensorplatform.sh stop"
 
 The sensorplatform application will start automatically during boot. The webapplication is accessible from
 https://sensorplatform.fit.fraunhofer.de:8080
 https://129.26.160.38:8080 or another IP
 hostname (sensorplatform) might be different, depends on your system settings
-Attention: https not http and port 8080 not default 80
+Attention: https not http and port 8080 not default port 80
 
-Do not change version numbers from programs, user name or any other information unless you are fully aware of all implicit changes. Some of those information are hardcoded in multiple files.
+-------------------------------------------------------------------------------------------------------------
+Working with the sensorplatform application:
+Assuming you made some changes in the code on your computer and you want to test them on the sensorplatform.
+1. Maven install the project on your PC
+2. Run db.sh, uploadApp.sh and uploadStaticResources.sh in the directory <Repository>/Resources/Firmware/RaspberryPi3/ in the Git SCM shell
+3. Choose parameters for command and hostname correctly, for example:
+	sh uploadApp.sh sensorplatform
+	sh uploadStaticResources.sh sensorplatform
+	sh db.sh upload sensorplatform
+	sh db.sh download sensorplatform
+
+You may still commit the changes on your PC and pull them on the sensorplatform.
+Afterwards you install the project with maven and export it with the sensorplatform.sh script.
+
+Do not change version numbers from programs, user name or any other information unless you are fully aware of all implicit changes.
+Some of these information are hardcoded in multiple installation files.

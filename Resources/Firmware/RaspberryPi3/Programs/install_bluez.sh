@@ -2,7 +2,7 @@
 
 # always run as sudo
 
-# newest version (19.07.2016)
+# newest version (29. Oktober 2016)
 version="5.43"
 url="http://www.kernel.org/pub/linux/bluetooth/bluez-${version}.tar.xz"
 

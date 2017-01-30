@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# newest version Java JDK 1.8.0_101 (19.07.2016)
+# newest version Java JDK 1.8.0_101 (19. July 2016)
 java_ver="8u101"
 java_version="jdk1.8.0_101"
 java_url="http://download.oracle.com/otn-pub/java/jdk/${java_ver}-b13/jdk-${java_ver}-linux-arm32-vfp-hflt.tar.gz"
-# newest version of maven is 3.3.9 (12.08.2016)
+# newest version of maven is 3.3.9 (12. August 2016)
 maven_version=3.3.9
 maven_url=http://mirror.synyx.de/apache/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz
 

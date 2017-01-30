@@ -45,7 +45,7 @@ BlueZ
 
 Misc
 	nano /etc/sudoersroot (who can use sudo)
-	nano /etc/ssh/sshd\_config (who may connect via ssh)
+	nano /etc/ssh/sshd_config (who may connect via ssh)
 	PermitRootLogin without-password
 	PermitRootLogin yes
 	/etc/init.d/ssh restart
@@ -63,13 +63,38 @@ Fake HW-Clock (pre installed in Raspbian, only use if no real time clock module 
 	apt-cache show fake-hwclock
 	/etc/init.d/fake-hwclock start
 	/etc/init.d/fake-hwclock stop
+	sudo apt purge fake-hwclock
 
-Maven Commands:
+Network time protocol (NTP)
+	sudo update-rc.d -f ntp remove
+	sudo update-rc.d ntp defaults
+
+Real time hardware clock
+
+	date
+	cat /proc/driver/rtc
+	dmesg | grep rtc
+
+	in /boot/config.txt
+	dtoverlay=i2c-rtc,ds3231
+
+	# show
+	hwclock
+	
+	# set system time from rtc
+	hwclock -s
+	
+	# set rtc time from system
+	hwclock -w
+
+	/sbin/hwclock -s
+
+Maven commands:
 cd /SensorplatformParent
-	mvn clean install -P raspberrypi3 webhrs (install project)
+	mvn clean install -P raspberrypi3,webhrs (install project)
 	mvn clean site site:stage (generate documentation)
 
-Gesamte Sensorkonfiguration
+Complete sensor configuration
 
 [
     {
