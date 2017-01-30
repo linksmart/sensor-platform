@@ -16,8 +16,8 @@ import org.junit.Test;
 import com.google.inject.Injector;
 
 import de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig;
-import de.fhg.fit.biomos.sensorplatform.sensor.PolarH7;
 import de.fhg.fit.biomos.sensorplatform.sensor.AbstractSensor;
+import de.fhg.fit.biomos.sensorplatform.sensor.PolarH7;
 import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3;
@@ -74,7 +74,7 @@ public class ControllerTest {
     configuration = new JSONArray();
     JSONObject sensor1 = new JSONObject();
     sensor1.put("name", "PolarH7");
-    sensor1.put("bdaddress", "11:22:33:44:55:66");
+    sensor1.put("bdaddress", "00:22:D0:AA:1F:B1");
     sensor1.put("settings", new JSONObject());
     configuration.put(sensor1);
   }
@@ -94,7 +94,7 @@ public class ControllerTest {
 
     Assert.assertTrue(sensor instanceof PolarH7);
     Assert.assertEquals(SensorName.PolarH7, sensor.getName());
-    Assert.assertEquals("11:22:33:44:55:66", sensor.getBDaddress());
+    Assert.assertEquals("00:22:D0:AA:1F:B1", sensor.getBDaddress());
     Assert.assertEquals(AddressType.PUBLIC, sensor.getAddressType());
     Assert.assertEquals(SecurityLevel.LOW, sensor.getSecurityLevel());
     Assert.assertEquals("{}", sensor.getSettings().toString());
