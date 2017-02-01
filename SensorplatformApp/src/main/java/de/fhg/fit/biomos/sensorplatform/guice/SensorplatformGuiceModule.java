@@ -3,6 +3,7 @@ package de.fhg.fit.biomos.sensorplatform.guice;
 import java.util.Properties;
 
 import de.fhg.fit.biomos.sensorplatform.control.*;
+import de.fhg.fit.biomos.sensorplatform.system.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +17,6 @@ import de.fhg.fit.biomos.sensorplatform.restservices.CC2650Service;
 import de.fhg.fit.biomos.sensorplatform.restservices.ControllerService;
 import de.fhg.fit.biomos.sensorplatform.restservices.HeartRateService;
 import de.fhg.fit.biomos.sensorplatform.restservices.PulseOximeterService;
-import de.fhg.fit.biomos.sensorplatform.system.Cubieboard3;
-import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
-import de.fhg.fit.biomos.sensorplatform.system.RaspberryPi3;
 import de.fhg.fit.biomos.sensorplatform.web.TeLiProUploader;
 import de.fhg.fit.biomos.sensorplatform.web.Uploader;
 import de.fhg.fit.biomos.sensorplatform.web.WebHrsUploader;
@@ -55,6 +53,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
 
     String webinterfaceName = this.properties.getProperty("webinterface.name");
     String targetPlatform = this.properties.getProperty("target.platform");
+    String surfstickDevice = this.properties.getProperty("surfstick.device");
 
     switch (webinterfaceName) {
       case "TeLiPro":
@@ -91,6 +90,22 @@ public class SensorplatformGuiceModule extends AbstractModule {
       default:
         LOG.error("unknown target platform {}", targetPlatform);
         System.exit(-1);
+        break;
+    }
+
+    switch (surfstickDevice) {
+      case "huaweie352s5":
+        LOG.info("surfstick device is {}", surfstickDevice);
+        bind(Huawei_E352S_5.class).in(Singleton.class);
+        bind(Surfstick.class).to(Huawei_E352S_5.class);
+        break;
+      case "surfstickcol":
+        LOG.info("surfstick device is {}", surfstickDevice);
+        bind(SurfstickCol.class).in(Singleton.class);
+        bind(Surfstick.class).to(SurfstickCol.class);
+        break;
+      default:
+        LOG.error("unknown surfstick device {}", surfstickDevice);
         break;
     }
 

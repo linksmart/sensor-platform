@@ -23,7 +23,7 @@ import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
  * @author Daniel Pyka
  *
  */
-public class Huawei_E352S_5 implements Runnable {
+public class Huawei_E352S_5 implements Surfstick {
 
   private static final Logger LOG = LoggerFactory.getLogger(Huawei_E352S_5.class);
 
@@ -40,7 +40,7 @@ public class Huawei_E352S_5 implements Runnable {
 
   private static final String COMGT_SERIAL = "comgt -d " + FILE + " sig";
 
-  private final HardwarePlatform hwPlatform;
+  private HardwarePlatform hwPlatform;
 
   private int overall_rssi = 0;
   private int overall_rssi_dBm = -113;
@@ -62,11 +62,16 @@ public class Huawei_E352S_5 implements Runnable {
 
   private boolean isRunning;
 
-  public Huawei_E352S_5(HardwarePlatform hwPlatform) {
-    this.hwPlatform = hwPlatform;
+  public Huawei_E352S_5() {
     this.isRunning = false;
   }
 
+  @Override
+  public void setHardwarePlatform(HardwarePlatform hwPlatform) {
+    this.hwPlatform = hwPlatform;
+  }
+
+  @Override
   public void setupSerialPort() throws IOException, InterruptedException {
     Thread.sleep(30000);
     LOG.info("setup serial port {}", FILE);
@@ -133,14 +138,17 @@ public class Huawei_E352S_5 implements Runnable {
     LOG.info("thread finished");
   }
 
+  @Override
   public int getOverallRSSI() {
     return this.overall_rssi_dBm;
   }
 
+  @Override
   public SignalQualityBean getSQB() {
     return this.sqb;
   }
 
+  @Override
   public void queryCSNR() {
     try {
       this.streamToTTYUSB2.write(HuaweiUtils.CSNR_QUERY);
@@ -152,6 +160,7 @@ public class Huawei_E352S_5 implements Runnable {
     }
   }
 
+  @Override
   public void querySYSINFO() {
     try {
       this.streamToTTYUSB2.write(HuaweiUtils.SYSINFO_QUERY);
@@ -163,38 +172,47 @@ public class Huawei_E352S_5 implements Runnable {
     }
   }
 
+  @Override
   public boolean isAttached() {
     return FILE.exists();
   }
 
+  @Override
   public boolean isRunning() {
     return this.isRunning;
   }
 
+  @Override
   public int getConnectionDuration() {
     return this.connectionDuration;
   }
 
+  @Override
   public float getMeasuredUploadSpeed_bps() {
     return this.measuredUploadSpeed_bps;
   }
 
+  @Override
   public float getMeasuredDownloadSpeed_bps() {
     return this.measuredDownloadSpeed_bps;
   }
 
+  @Override
   public long getTotalSentData() {
     return this.totalSentData;
   }
 
+  @Override
   public long getTotalReceivedData() {
     return this.totalReceivedData;
   }
 
+  @Override
   public int getMaxUploadSpeed_pbs() {
     return this.maxUploadSpeed_pbs;
   }
 
+  @Override
   public int getMaxDownloadSpeed_bbs() {
     return this.maxDownloadSpeed_bbs;
   }

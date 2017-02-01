@@ -48,7 +48,7 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   private final Hcitool hcitool;
 
-  private final Huawei_E352S_5 surfstick;
+  private final Surfstick surfstick;
   private Thread surfstickThread;
 
   private final Long internetCheckInterval;
@@ -76,7 +76,7 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   @Inject
-  public RaspberryPi3(@Named("surfstick.check.interval") String internetCheckInterval, @Named("critical.value.rssi") String criticalValueRSSI,
+  public RaspberryPi3(Surfstick surfstick, @Named("surfstick.check.interval") String internetCheckInterval, @Named("critical.value.rssi") String criticalValueRSSI,
       @Named("critical.value.rscp") String criticalValueRSCP, @Named("critical.value.ecio") String criticalValueECIO) {
     this.internetCheckInterval = new Long(internetCheckInterval) * 1000;
     this.mobileInternet = false;
@@ -85,7 +85,8 @@ public class RaspberryPi3 implements HardwarePlatform {
     this.criticalValueRSCP = Integer.parseInt(criticalValueRSCP);
     this.criticalValueECIO = Integer.parseInt(criticalValueECIO);
     this.hcitool = new HcitoolImpl();
-    this.surfstick = new Huawei_E352S_5(this);
+    this.surfstick = surfstick;
+    this.surfstick.setHardwarePlatform(this);
   }
 
   private void setupSerialPort() {

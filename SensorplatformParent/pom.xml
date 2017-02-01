@@ -56,6 +56,20 @@
             </properties>
         </profile>
 
+        <profile>
+            <id>huaweie352s5</id>
+            <properties>
+                <surfstick.device>huaweie352s5</surfstick.device>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>surfstickcol</id>
+            <properties>
+                <surfstick.device>surfstickcol</surfstick.device>
+            </properties>
+        </profile>
+
     </profiles>
 
     <properties>
