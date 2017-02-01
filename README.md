@@ -7,7 +7,7 @@ Masterthesis, Computer Science, Daniel Pyka, 2016-2017
 Raspberry Pi 3 Installation Guide
 
 Prerequisites:
-Raspberry Pi 3 (mac address b8:27:eb:27:b4:27 + hostname sensorplatform is already registered for network access @Fraunhofer FIT)
+Raspberry Pi 3
 Huawei Telekom Surfstick E352S-5 (with active contract)
 Power supply
 Sensors
@@ -17,11 +17,19 @@ either separate maven installation available on command line or inbuild from the
 Gitscm installation (from opsi Client Kiosk)
 At least read access http://scm.fit.fraunhofer.de:8080/scm/git/Sensorplatform
 
+Network access @Fraunhofer FIT
+There is no DHCP server in the Fraunhofer FIT network. Instead, static IP addresses are used for specific hostname and MAC adress.
+The following device + hostname is already registered and may be used for the sensorplatform:
+MAC: b8:27:eb:27:b4:27
+hostname: sensorplatform
+
+By using this configuration, you do not need any other network setup.
+
 1. Download the Raspbian Lite(!) Image from here:
 https://www.raspberrypi.org/downloads/raspbian/
 This is a more lightweight, HEADLESS version of raspbian.
 
-2. Extract the file and install the image file on a micro-SD card
+2. Extract the file and install the image on a micro-SD card
 You can use a program of your choice, e.g. https://sourceforge.net/projects/win32diskimager/
 
 3. Put the micro-SD card into the Raspberry Pi 3 (RPI3)
@@ -31,15 +39,15 @@ You can use a program of your choice, e.g. https://sourceforge.net/projects/win3
 5. Log in using the default credentials
 Username: pi
 Password: raspberry
-(Attention: The default keyboard layout is british, so y becomes z and vice versa)
+(Attention: The default keyboard layout is english, so y becomes z and vice versa)
 
 6. Enter "sudo raspi-config" (always without quotes) for some general settings
 6.1 Internationalisation Options >> Change Timezone >> Europe >> Berlin
 6.2 Internationalisation Options >> Change Keyboard Layout >> Generic 105-key (Intl) PC >> Other >> German >> German >> The default for the keyoard layout >> No compose key
 6.3 Internationalisation Options >> Change Wi-fi Country >> DE Germany
 6.4 Change User Password >> <your new password>
-6.5 Boot Options >> B1 Console
-6.6 Wait for Network at Boot >> No
+6.5 Boot Options >> B1 Desktop / CLI >> B1 Console
+6.6 Boot Options >> Wait for Network at Boot >> No
 6.7 Advanced Options >> Hostname
 6.8 Advanced Options >> Memory Split >> 16
 6.9 Finish >> Reboot >> Yes
@@ -56,19 +64,22 @@ Password: raspberry
 7.9 Log in as administrator
 7.10 Allow administrator to use sudo without password check (password will be required ones)
 	"sudo sed -i -- 's/pi/administrator/g' /etc/sudoers"
-	Confirm with your password one time
+	Confirm with your password once
 7.11 Do not allow root login via SSH
 	"sudo sed -i -- 's/PermitRootLogin without-password/PermitRootLogin no/g' /etc/ssh/sshd_config"
 
-8. (optional) setup for network (Sensorplatform Fraunhofer FIT example configuration)
-8.1 Setting the hostname is sufficient for connecting to the internet in the internal network of Fraunhofer FIT
-8.2 static ip:
+--------------------------------optional-----------------------------------------	
+
+8. network setup
+8.1 static ip:
 	echo "interface eth0" >> /etc/dhcpcd.conf (keep quotes in this section, replace eth0 with wlan0 in case of wifi)
 	echo "static ip_address=129.26.160.38/21" >> /etc/dhcpcd.conf (replace 129.26.160.38/21 with your settings, /21 is CIDR notation for net mask, equivalent to 255.255.248.0)
 	echo "static routers=129.26.160.1" >> /etc/dhcpcd.conf (replace 129.26.160.1 with your data)
 	echo "static domain_name_servers=129.26.165.177" >> /etc/dhcpcd.conf (replace 129.26.165.177 with your data)
-8.3 wifi login credentials: wpa_passphrase "ssid" "pw" >> /etc/wpa_supplicant/wpa_supplicant.conf (replace ssid and pw with your actual data)
-	
+8.2 wifi login credentials: wpa_passphrase "ssid" "pw" >> /etc/wpa_supplicant/wpa_supplicant.conf (replace ssid and pw with your actual data)
+
+---------------------------------------------------------------------------------
+
 9. Update packages
 9.1 "sudo apt update"
 9.2 "sudo apt upgrade"
