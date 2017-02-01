@@ -13,8 +13,8 @@
         <property name="show_sql">false</property>
 
         <property name="hibernate.c3p0.min_size">1</property>
-        <property name="hibernate.c3p0.max_size">20</property>
-        <property name="hibernate.c3p0.timeout">10</property>
+        <property name="hibernate.c3p0.max_size">1</property>
+        <property name="hibernate.c3p0.timeout">300</property><!-- timeout should be a value a little bit higher than the http timeout from uploading -->
         <property name="hibernate.c3p0.max_statements">0</property>
         <property name="hibernate.c3p0.idle_test_period">0</property>
 
@@ -25,6 +25,10 @@
         <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650PressureSample"/>
         <mapping class="de.fhg.fit.biomos.sensorplatform.sample.CC2650TemperatureSample"/>
         <mapping class="de.fhg.fit.biomos.sensorplatform.sample.PulseOximeterSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.LuminoxTemperatureSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.LuminoxOxygenSample"/>
+        <mapping class="de.fhg.fit.biomos.sensorplatform.sample.LuminoxAirPressureSample"/>
+
     </session-factory>
 </hibernate-configuration>
 
