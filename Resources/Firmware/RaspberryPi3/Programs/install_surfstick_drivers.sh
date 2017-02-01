@@ -16,7 +16,7 @@ cp /home/administrator/Repositories/Sensorplatform/Resources/Firmware/RaspberryP
 
 # use mobile internet connection for outgoing network traffic (uploading samples for example)
 # remove both lines in this file to revert this change and restart the connection
-sh -c "echo 'defaultroute\n' >> /etc/ppp/peers/wvdial"
-sh -c "echo 'replacedefaultroute\n' >> /etc/ppp/peers/wvdial"
+sh -c "echo 'defaultroute' >> /etc/ppp/peers/wvdial"
+sh -c "echo 'replacedefaultroute' >> /etc/ppp/peers/wvdial"
 
 exit 0

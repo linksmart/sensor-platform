@@ -53,7 +53,7 @@ case $1 in
 	"time")
 		echo "Configuring time and date"
 		echo "Remove fake-hwclock"
-		apt purge fake-hwclock
+		apt purge -y fake-hwclock
 		echo "Remove ntp from autostart"
 		update-rc.d -f ntp remove
 		hwclock

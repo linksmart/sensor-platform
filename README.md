@@ -61,12 +61,13 @@ Password: raspberry
 7.6 Log in as root
 7.7 Delete the default user pi "deluser -remove-home pi"
 7.8 Log out by typing "exit"
-7.9 Log in as administrator
+7.9 Log in as root
 7.10 Allow administrator to use sudo without password check (password will be required ones)
-	"sudo sed -i -- 's/pi/administrator/g' /etc/sudoers"
-	Confirm with your password once
+	echo "administrator ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/010_pi-nopasswd
 7.11 Do not allow root login via SSH
-	"sudo sed -i -- 's/PermitRootLogin without-password/PermitRootLogin no/g' /etc/ssh/sshd_config"
+	sed -i -- 's/PermitRootLogin without-password/PermitRootLogin no/g' /etc/ssh/sshd_config
+	exit
+7.12 Log in as administrator
 
 --------------------------------optional-----------------------------------------	
 
@@ -105,8 +106,8 @@ Password: raspberry
 	uploader: webhrs or telipro or may not be specified at all
 14.1 "cd /home/administrator/Repositories/Sensorplatform/SensorplatformParent"
 14.2 Run maven for installation with profiles.
-	Example1: "mvn clean install -Praspberrypi3,webhrs"
-	Example2: "mvn clean install -Praspberrypi3"
+	Example1: "mvn clean install -P raspberrypi3,webhrs"
+	Example2: "mvn clean install -P raspberrypi3"
 	This may take a while especially if it is the first time.
 14.3 Return to top-level directory of the repository: "cd .."
 
