@@ -218,7 +218,7 @@ public class Controller implements Runnable {
       for (Iterator<AbstractSensorWrapper<?>> iterator = this.swList.iterator(); iterator.hasNext();) {
         AbstractSensorWrapper<?> asw = iterator.next();
         boolean isConnected = asw.getGatttool().connectBlocking(this.timeoutConnect);
-        if (!isConnected) {
+        /*if (!isConnected) {
           LOG.info(asw.getSensor().toString() + " is not available");
           if (isNewConfiguration) {
             LOG.info("sensor has to be available at start - abort!");
@@ -229,6 +229,8 @@ public class Controller implements Runnable {
             allSensorsAvailable = false;
           }
         }
+        */
+
       }
       // getBatteryLevel();
       // try {

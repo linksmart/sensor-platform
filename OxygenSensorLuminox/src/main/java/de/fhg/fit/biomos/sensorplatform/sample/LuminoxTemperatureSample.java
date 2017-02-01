@@ -28,18 +28,20 @@ public class LuminoxTemperatureSample {
     @Column(name = "transmitted")
     private Boolean transmitted;
     @Column(name = "timestamp")
-    private String timestamp;
+    private Long timestamp;
     @Column(name = "device")
     private String bdAddress;
     @Column(name = "temperature")
     private Float temperature;
+
+    private String idExt;
 
 
     public LuminoxTemperatureSample() {
         // default
     }
 
-    public LuminoxTemperatureSample(String timeStamp, String bdAddress, boolean transmitted) {
+    public LuminoxTemperatureSample(Long timeStamp, String bdAddress, boolean transmitted) {
         this.timestamp = timeStamp;
         this.bdAddress = bdAddress;
         this.transmitted = transmitted;
@@ -52,6 +54,10 @@ public class LuminoxTemperatureSample {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getIdExt() {return this.idExt;}
+
+    public void setIdExt(String idExt){this.idExt=idExt;}
 
     public String getFirstname() {
         return this.firstname;
@@ -77,11 +83,11 @@ public class LuminoxTemperatureSample {
         this.transmitted = transmitted;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return this.timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -106,12 +112,18 @@ public class LuminoxTemperatureSample {
 
 
     public String toString() {
+
         return "{\"id\":" + this.id + ",\"timestamp\":\"" + this.timestamp + "\",\"firstname\":\"" + this.firstname + "\",\"lastname\":\"" + this.lastname
                 + "\",\"device\":\"" + this.bdAddress + "\",\"temperature\":{\"value\":" + this.temperature + ",\"unit\":\"" + UNIT_DEGREES_CELSIUS + "\"}";
     }
 
     public String toStringLinkSmart() {
-        return "{\"temperature\":"+this.temperature+",\"unit_temp\":\"" + UNIT_DEGREES_CELSIUS + "\"}";
+       // return "{\"id\":" + this.idExt+"_"+this.bdAddress + ",\"timestamp\":\"" + this.timestamp +",\"temperature\":"+this.temperature+",\"unit_temp\":\"" + UNIT_DEGREES_CELSIUS + "\"}";
+
+        return "{\"" + this.idExt+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"Cel\", \"t\": 0 },"+
+                "\"bn\": \""+this.bdAddress+"\","+
+                "\"bt\": \""+this.timestamp+"\","+
+                "\"ver\": 1 }";
     }
 
 }

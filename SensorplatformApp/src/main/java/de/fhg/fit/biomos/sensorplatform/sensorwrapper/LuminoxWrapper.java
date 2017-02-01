@@ -34,23 +34,26 @@ public class LuminoxWrapper extends AbstractSensorWrapper<Luminox> {
         this.lastNotificationTimestamp = System.currentTimeMillis();
         String data = rawHexValues.replace(" ", "");
         LuminoxTemperatureSample temperatureSample;
-        if ((temperatureSample = this.sensor.calculateTemperatureData(this.dtf.print(new DateTime()), handle, data)) != null) {
+        if ((temperatureSample = this.sensor.calculateTemperatureData(this.lastNotificationTimestamp, handle, data)) != null) {
             temperatureSample.setFirstname(this.firstname);
             temperatureSample.setLastname(this.lastname);
+            temperatureSample.setIdExt(this.sensor.getIdExt());
             // LOG.info(temperatureSample.toString());
             this.luminoxCollector.addToQueue(temperatureSample);
         }
         LuminoxOxygenSample oxygenSample;
-        if ((oxygenSample = this.sensor.calculateOxygenData(this.dtf.print(new DateTime()), handle, data)) != null) {
+        if ((oxygenSample = this.sensor.calculateOxygenData(this.lastNotificationTimestamp, handle, data)) != null) {
             oxygenSample.setFirstname(this.firstname);
             oxygenSample.setLastname(this.lastname);
+            oxygenSample.setIdExt(this.sensor.getIdExt());
             // LOG.info(humiditySample.toString());
             this.luminoxCollector.addToQueue(oxygenSample);
         }
         LuminoxAirPressureSample pressureSample;
-        if ((pressureSample = this.sensor.calculateAirPressureData(this.dtf.print(new DateTime()), handle, data)) != null) {
+        if ((pressureSample = this.sensor.calculateAirPressureData(this.lastNotificationTimestamp, handle, data)) != null) {
             pressureSample.setFirstname(this.firstname);
             pressureSample.setLastname(this.lastname);
+            pressureSample.setIdExt(this.sensor.getIdExt());
             // LOG.info(pressureSample.toString());
             this.luminoxCollector.addToQueue(pressureSample);
         }

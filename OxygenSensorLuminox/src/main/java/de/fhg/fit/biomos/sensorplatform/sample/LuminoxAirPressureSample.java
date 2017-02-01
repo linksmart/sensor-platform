@@ -28,17 +28,19 @@ public class LuminoxAirPressureSample {
     @Column(name = "transmitted")
     private Boolean transmitted;
     @Column(name = "timestamp")
-    private String timestamp;
+    private Long timestamp;
     @Column(name = "device")
     private String bdAddress;
     @Column(name = "pressure")
     private Float pressure;
 
+    private String idExt;
+
     public LuminoxAirPressureSample() {
         // default
     }
 
-    public LuminoxAirPressureSample(String timeStamp, String bdAddress, boolean transmitted) {
+    public LuminoxAirPressureSample(Long timeStamp, String bdAddress, boolean transmitted) {
         this.timestamp = timeStamp;
         this.bdAddress = bdAddress;
         this.transmitted = transmitted;
@@ -51,6 +53,10 @@ public class LuminoxAirPressureSample {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getIdExt() {return this.idExt;}
+
+    public void setIdExt(String idExt){this.idExt=idExt;}
 
     public String getFirstname() {
         return this.firstname;
@@ -76,11 +82,11 @@ public class LuminoxAirPressureSample {
         this.transmitted = transmitted;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return this.timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -108,6 +114,11 @@ public class LuminoxAirPressureSample {
     }
 
     public String toStringLinkSmart() {
-        return "{\"airPressure\":"+this.pressure+",\"unit_press\":\"" + UNIT_MILLIBAR + "\"}";
+        //return "{\"id\":"  + this.idExt+"_" + this.bdAddress + ",\"timestamp\":\"" + this.timestamp +",\"airPressure\":"+this.pressure+",\"unit_press\":\"" + UNIT_MILLIBAR + "\"}";
+        return "{\"" + this.idExt+"\":[{\"n\": \"air pressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": 0 },"+
+                "\"bn\": \""+this.bdAddress+"\","+
+                "\"bt\": \""+this.timestamp+"\","+
+                "\"ver\": 1 }";
+
     }
 }

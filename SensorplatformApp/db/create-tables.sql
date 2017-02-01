@@ -81,7 +81,7 @@ id BIGINT IDENTITY PRIMARY KEY,
 firstname VARCHAR(30) NOT NULL,
 lastname VARCHAR(30) NOT NULL,
 transmitted boolean NOT NULL,
-timestamp VARCHAR(30) NOT NULL,
+timestamp BIGINT NOT NULL,
 device VARCHAR(17) NOT NULL,
 oxygen INTEGER NOT NULL,
 )
@@ -91,7 +91,7 @@ id BIGINT IDENTITY PRIMARY KEY,
 firstname VARCHAR(30) NOT NULL,
 lastname VARCHAR(30) NOT NULL,
 transmitted boolean NOT NULL,
-timestamp VARCHAR(30) NOT NULL,
+timestamp BIGINT NOT NULL,
 device VARCHAR(17) NOT NULL,
 temperature INTEGER NOT NULL
 )
@@ -101,7 +101,7 @@ id BIGINT IDENTITY PRIMARY KEY,
 firstname VARCHAR(30) NOT NULL,
 lastname VARCHAR(30) NOT NULL,
 transmitted boolean NOT NULL,
-timestamp VARCHAR(30) NOT NULL,
+timestamp BIGINT NOT NULL,
 device VARCHAR(17) NOT NULL,
 pressure INTEGER NOT NULL
 )

@@ -29,12 +29,20 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
   private static final String TEMPERATURE = "temperature";
   private static final String PRESSURE = "pressure";
   private static final String OXYGEN = "oxygen";
+    private String idExt;
+    private float temperature;
+    private float oxygen;
+    private float pressure;
+    Long timestamp;
+    Long baseTime;
+
 
 
 
 
   public Luminox(SensorName name, String bdaddress, JSONObject settings) {
     super(new Luminoxlib(), name, bdaddress, AddressType.PUBLIC, SecurityLevel.LOW, settings);
+      idExt=this.settings.getString("id");
   }
 
 
@@ -93,6 +101,9 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
   }
 
 
+    public String getIdExt() {return this.idExt;}
+
+    public void setIdExt(String idExt){this.idExt=idExt;}
   /**
    * Calculate the oxygen concentration in percentage.
    *
@@ -169,7 +180,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    *          handle of the notification
    * @return CC2650TemperatureSample for further processing
    */
-  public LuminoxTemperatureSample calculateTemperatureData(String timestamp, String handle, String data) {
+  public LuminoxTemperatureSample calculateTemperatureData(Long timestamp, String handle, String data) {
     if (!handle.equals(this.gattLibrary.HANDLE_LUMINOX_VALUE)) {
       return null;
     }
@@ -189,7 +200,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    *          handle of the notification
    * @return CC2650TemperatureSample for further processing
    */
-  public LuminoxOxygenSample calculateOxygenData(String timestamp, String handle, String data) {
+  public LuminoxOxygenSample calculateOxygenData(Long timestamp, String handle, String data) {
     if (!handle.equals(this.gattLibrary.HANDLE_LUMINOX_VALUE)) {
       return null;
     }
@@ -210,7 +221,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
    *          handle of the notification
    * @return CC2650TemperatureSample for further processing
    */
-  public LuminoxAirPressureSample calculateAirPressureData(String timestamp, String handle, String data) {
+  public LuminoxAirPressureSample calculateAirPressureData(Long timestamp, String handle, String data) {
     if (!handle.equals(this.gattLibrary.HANDLE_LUMINOX_VALUE)) {
       return null;
     }
@@ -219,4 +230,19 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
     return airPressureSample;
   }
 
+
+ /* public String toString(LuminoxTemperatureSample temperatureSample){
+
+    //  return "{\"temperature prueba Gustavo\":"+temperatureSample.getTemperature();
+      return "{\"" + this.idExt+"\":[\n{\"n\": \"oxygen\", \"v\": "+this.oxygen+", \"u\": \"%\" },\n"+
+                                    "{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"Cel\" },\n"+
+                                    "{\"n\": \"air pressure\", \"v\": "+this.pressure+", \"u\": \"mBar\" },\n"+
+                                    "{\"n\": \"time\", \"v\": "+this.timestamp+", \"u\": \"s\" }],\n"+
+              "\"bn\": \""+this.bdAddress+"\",\n"+
+              "\"bt\": \""+this.baseTime+"\",\n"+
+              "\"ver\": 1";
+
+
+  }
+*/
 }

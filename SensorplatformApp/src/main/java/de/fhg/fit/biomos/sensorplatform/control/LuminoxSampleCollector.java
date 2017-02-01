@@ -54,6 +54,7 @@ public class LuminoxSampleCollector implements SampleCollector {
         while (this.used) {
             if (!this.queueTemp.isEmpty()) {
                 LuminoxTemperatureSample tempSample = this.queueTemp.poll();
+               // LuminoxSampleCollector temp1=new LuminoxSampleCollector();
                 System.out.println(tempSample.toStringLinkSmart());
                 //LOG.info(tempSample.toStringLinkSmart());
                 storeSample(tempSample);

@@ -31,7 +31,7 @@ public class LuminoxOxygenSample {
     @Column(name = "transmitted")
     private Boolean transmitted;
     @Column(name = "timestamp")
-    private String timestamp;
+    private Long timestamp;
     @Column(name = "device")
     private String bdAddress;
     @Column(name= "oxygenPercent")
@@ -39,12 +39,14 @@ public class LuminoxOxygenSample {
     @Column(name= "oxygenppO2")
     private Float oxygenppO2;
 
+    private String idExt;
+
 
     public LuminoxOxygenSample() {
         // default
     }
 
-    public LuminoxOxygenSample(String timeStamp, String bdAddress, boolean transmitted) {
+    public LuminoxOxygenSample(Long timeStamp, String bdAddress, boolean transmitted) {
         this.timestamp = timeStamp;
         this.bdAddress = bdAddress;
         this.transmitted = transmitted;
@@ -57,6 +59,10 @@ public class LuminoxOxygenSample {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getIdExt() {return this.idExt;}
+
+    public void setIdExt(String idExt){this.idExt=idExt;}
 
     public String getFirstname() {
         return this.firstname;
@@ -82,11 +88,11 @@ public class LuminoxOxygenSample {
         this.transmitted = transmitted;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return this.timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -118,6 +124,11 @@ public class LuminoxOxygenSample {
     }
 
     public String toStringLinkSmart() {
-        return "{\"oxygen\":"+this.oxygenPercent+",\"unit_oxy\":\"" + UNIT_PERCENT_O2 + "\"}";
+        //return "{\"id\":"  + this.idExt+"_"+ this.bdAddress + ",\"timestamp\":\"" + this.timestamp +",\"oxygen\":"+this.oxygenPercent+",\"unit_oxy\":\"" + UNIT_PERCENT_O2 + "\"}";
+        return "{\"" + this.idExt+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"%\", \"t\": 0 },"+
+                "\"bn\": \""+this.bdAddress+"\","+
+                "\"bt\": \""+this.timestamp+"\","+
+                "\"ver\": 1 }";
+
     }
 }
