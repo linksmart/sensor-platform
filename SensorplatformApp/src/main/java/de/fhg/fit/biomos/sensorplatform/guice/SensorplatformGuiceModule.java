@@ -106,6 +106,9 @@ public class SensorplatformGuiceModule extends AbstractModule {
         break;
       default:
         LOG.error("unknown surfstick device {}", surfstickDevice);
+        LOG.info("using default surfstick huaweie352s5");
+        bind(Huawei_E352S_5.class).in(Singleton.class);
+        bind(Surfstick.class).to(Huawei_E352S_5.class);
         break;
     }
 
