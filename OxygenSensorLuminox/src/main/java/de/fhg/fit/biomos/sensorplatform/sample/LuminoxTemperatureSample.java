@@ -120,7 +120,12 @@ public class LuminoxTemperatureSample {
     public String toStringLinkSmart() {
        // return "{\"id\":" + this.idExt+"_"+this.bdAddress + ",\"timestamp\":\"" + this.timestamp +",\"temperature\":"+this.temperature+",\"unit_temp\":\"" + UNIT_DEGREES_CELSIUS + "\"}";
 
-        return "{\"" + this.idExt+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"Cel\", \"t\": 0 },"+
+      /*  return "{\"" + this.idExt+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"Cel\", \"t\": 0 },"+
+                "\"bn\": \""+this.bdAddress+"\","+
+                "\"bt\": \""+this.timestamp+"\","+
+                "\"ver\": 1 }";
+                */
+        return "{\"" + "SPF2:  b8:27:eb:97:dd:1b"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"Cel\", \"t\": 0 },"+
                 "\"bn\": \""+this.bdAddress+"\","+
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";

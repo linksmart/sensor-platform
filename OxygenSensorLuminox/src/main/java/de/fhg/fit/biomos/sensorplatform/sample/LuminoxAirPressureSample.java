@@ -115,10 +115,15 @@ public class LuminoxAirPressureSample {
 
     public String toStringLinkSmart() {
         //return "{\"id\":"  + this.idExt+"_" + this.bdAddress + ",\"timestamp\":\"" + this.timestamp +",\"airPressure\":"+this.pressure+",\"unit_press\":\"" + UNIT_MILLIBAR + "\"}";
-        return "{\"" + this.idExt+"\":[{\"n\": \"air pressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": 0 },"+
+        /*return "{\"" + this.idExt+"\":[{\"n\": \"air pressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": 0 },"+
+                "\"bn\": \""+this.bdAddress+"\","+
+                "\"bt\": \""+this.timestamp+"\","+
+                "\"ver\": 1 }";*/
+        return "{\"" + "SPF2:  b8:27:eb:97:dd:1b"+"\":[{\"n\": \"air pressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": 0 },"+
                 "\"bn\": \""+this.bdAddress+"\","+
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";
+
 
     }
 }

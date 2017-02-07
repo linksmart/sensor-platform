@@ -125,10 +125,13 @@ public class LuminoxOxygenSample {
 
     public String toStringLinkSmart() {
         //return "{\"id\":"  + this.idExt+"_"+ this.bdAddress + ",\"timestamp\":\"" + this.timestamp +",\"oxygen\":"+this.oxygenPercent+",\"unit_oxy\":\"" + UNIT_PERCENT_O2 + "\"}";
-        return "{\"" + this.idExt+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"%\", \"t\": 0 },"+
+       /* return "{\"" + this.idExt+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"%\", \"t\": 0 },"+
+                "\"bn\": \""+this.bdAddress+"\","+
+                "\"bt\": \""+this.timestamp+"\","+
+                "\"ver\": 1 }";*/
+        return "{\"" + "SPF2:  b8:27:eb:97:dd:1b"+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"%\", \"t\": 0 },"+
                 "\"bn\": \""+this.bdAddress+"\","+
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";
-
     }
 }
