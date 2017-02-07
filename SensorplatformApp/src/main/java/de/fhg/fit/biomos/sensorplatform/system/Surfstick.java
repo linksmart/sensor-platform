@@ -1,44 +1,44 @@
 package de.fhg.fit.biomos.sensorplatform.system;
 
-import de.fhg.fit.biomos.sensorplatform.util.HuaweiUtils;
-import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
-
 import java.io.IOException;
+
+import de.fhg.fit.biomos.sensorplatform.util.SignalQualityBean;
 
 /**
  * Created by garagon on 15.12.2016.
  */
-public interface Surfstick extends Runnable{
+public interface Surfstick extends Runnable {
 
-    public void setHardwarePlatform(HardwarePlatform hwPlatform);
+  public void setHardwarePlatform(HardwarePlatform hwPlatform);
 
-    public void setupSerialPort() throws IOException, InterruptedException;
+  public String getConnectCommand();
 
-    public int getOverallRSSI();
+  public void setupSerialPort() throws IOException, InterruptedException;
 
-    public SignalQualityBean getSQB();
+  public int getOverallRSSI();
 
-    public void queryCSNR();
+  public SignalQualityBean getSQB();
 
-    public void querySYSINFO();
+  public void queryCSNR();
 
-    public boolean isAttached();
+  public void querySYSINFO();
 
-    public boolean isRunning();
+  public boolean isAttached();
 
-    public int getConnectionDuration();
+  public boolean isRunning();
 
-    public float getMeasuredUploadSpeed_bps();
+  public int getConnectionDuration();
 
-    public float getMeasuredDownloadSpeed_bps();
+  public float getMeasuredUploadSpeed_bps();
 
-    public long getTotalSentData();
+  public float getMeasuredDownloadSpeed_bps();
 
-    public long getTotalReceivedData();
+  public long getTotalSentData();
 
-    public int getMaxUploadSpeed_pbs();
+  public long getTotalReceivedData();
 
-    public int getMaxDownloadSpeed_bbs();
+  public int getMaxUploadSpeed_pbs();
 
+  public int getMaxDownloadSpeed_bbs();
 
 }

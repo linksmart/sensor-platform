@@ -36,7 +36,6 @@ public class RaspberryPi3 implements HardwarePlatform {
   private static final String LED0_DELAY_OFF = "/sys/class/leds/led0/delay_off";
   private static final String BLINK_INTERVAL = "1000";
 
-  private static final String WVDIAL = "wvdial";
   private static final String INTERFACE_MOBILE_INTERNET = "ppp0";
   // private static final String INTERFACE_CABLE = "eth0";
   // private static final String INTERFACE_WIFI = "wlan0";
@@ -76,8 +75,9 @@ public class RaspberryPi3 implements HardwarePlatform {
   }
 
   @Inject
-  public RaspberryPi3(Surfstick surfstick, @Named("surfstick.check.interval") String internetCheckInterval, @Named("critical.value.rssi") String criticalValueRSSI,
-      @Named("critical.value.rscp") String criticalValueRSCP, @Named("critical.value.ecio") String criticalValueECIO) {
+  public RaspberryPi3(Surfstick surfstick, @Named("surfstick.check.interval") String internetCheckInterval,
+      @Named("critical.value.rssi") String criticalValueRSSI, @Named("critical.value.rscp") String criticalValueRSCP,
+      @Named("critical.value.ecio") String criticalValueECIO) {
     this.internetCheckInterval = new Long(internetCheckInterval) * 1000;
     this.mobileInternet = false;
     this.uploadPermitted = false;
@@ -258,7 +258,7 @@ public class RaspberryPi3 implements HardwarePlatform {
   public void connectToMobileInternet() {
     LOG.info("Trying to connect to mobile internet using wvdial");
     try {
-      Process process = Runtime.getRuntime().exec(WVDIAL);
+      Process process = Runtime.getRuntime().exec(this.surfstick.getConnectCommand());
       BufferedReader output = new BufferedReader(new InputStreamReader(process.getErrorStream()));
       // wvdial always writes to error stream...
       String line = null;

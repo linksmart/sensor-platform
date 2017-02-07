@@ -10,6 +10,8 @@ import java.io.IOException;
 public class SurfstickCol implements Surfstick {
 
     private HardwarePlatform hwPlatform;
+    
+    private static final String SAKIS3G = "TODO";
 
     public SurfstickCol() {
     }
@@ -19,6 +21,11 @@ public class SurfstickCol implements Surfstick {
         this.hwPlatform = hwPlatform;
     }
 
+    @Override
+    public String getConnectCommand() {
+      return SAKIS3G;
+    }
+    
     @Override
     public void setupSerialPort() throws IOException, InterruptedException {
 

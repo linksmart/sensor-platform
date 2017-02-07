@@ -1,0 +1,7 @@
+How branch luminox differs from master branch:
+
+07.02.2017
+- Support multiple drivers (wvdial, sakis3g, ...) for surf sticks
+
+01.02.2017
+- Support for multiple surf sticks with maven profiles

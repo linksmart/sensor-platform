@@ -40,6 +40,8 @@ public class Huawei_E352S_5 implements Surfstick {
 
   private static final String COMGT_SERIAL = "comgt -d " + FILE + " sig";
 
+  private static final String WVDIAL = "wvdial";
+
   private HardwarePlatform hwPlatform;
 
   private int overall_rssi = 0;
@@ -69,6 +71,11 @@ public class Huawei_E352S_5 implements Surfstick {
   @Override
   public void setHardwarePlatform(HardwarePlatform hwPlatform) {
     this.hwPlatform = hwPlatform;
+  }
+
+  @Override
+  public String getConnectCommand() {
+    return WVDIAL;
   }
 
   @Override
