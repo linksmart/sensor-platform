@@ -2,7 +2,7 @@
 
 remoteloginname=administrator
 remotehost=$2.fit.fraunhofer.de
-targetdirectory=/home/administrator/Sensorplatform
+targetdirectory=/home/administrator/export
 
 case "$1" in
 	upload)
