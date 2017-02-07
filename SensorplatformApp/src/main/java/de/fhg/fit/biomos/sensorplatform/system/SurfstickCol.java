@@ -11,7 +11,7 @@ public class SurfstickCol implements Surfstick {
 
     private HardwarePlatform hwPlatform;
     
-    private static final String SAKIS3G = "TODO";
+    private static final String SAKIS3G = "sakis3g connect --console";
 
     public SurfstickCol() {
     }
