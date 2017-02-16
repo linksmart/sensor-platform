@@ -1,11 +1,13 @@
 package de.fhg.fit.biomos.sensorplatform.system;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -73,8 +75,8 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   @Inject
   public RaspberryPi3(Surfstick surfstick, @Named("surfstick.check.interval") String internetCheckInterval,
-                      @Named("critical.value.rssi") String criticalValueRSSI, @Named("critical.value.rscp") String criticalValueRSCP,
-                      @Named("critical.value.ecio") String criticalValueECIO) {
+      @Named("critical.value.rssi") String criticalValueRSSI, @Named("critical.value.rscp") String criticalValueRSCP,
+      @Named("critical.value.ecio") String criticalValueECIO) {
     this.internetCheckInterval = new Long(internetCheckInterval) * 1000;
     this.mobileInternet = false;
     this.uploadPermitted = false;
@@ -99,28 +101,23 @@ public class RaspberryPi3 implements HardwarePlatform {
   @Override
   public void run() {
     while (!Thread.currentThread().isInterrupted()) {
-      //if (this.surfstick.isAttached()) {
+      // if (this.surfstick.isAttached()) {
       if (hasMobileInternetConnection()) {
         this.mobileInternet = true;
-        /*  if (!this.surfstick.isRunning()) {   //weg
-            this.surfstickThread = new Thread(this.surfstick, "serialport");
-            this.surfstickThread.start();
-          } else {
-            this.surfstick.querySYSINFO();
-          }
-          */
+        /*
+         * if (!this.surfstick.isRunning()) { //weg this.surfstickThread = new Thread(this.surfstick, "serialport"); this.surfstickThread.start(); } else {
+         * this.surfstick.querySYSINFO(); }
+         */
       } else {
-        //this.uploadPermitted = false;
+        // this.uploadPermitted = false;
         this.mobileInternet = false;
-        //setupSerialPort();   //braucht man nicht
+        // setupSerialPort(); //braucht man nicht
         connectToMobileInternet();
         continue;
       }
-      /*} else {
-        this.uploadPermitted = false;
-        this.mobileInternet = false;
-        LOG.warn("surfstick not attached");
-      }*/
+      /*
+       * } else { this.uploadPermitted = false; this.mobileInternet = false; LOG.warn("surfstick not attached"); }
+       */
 
       try {
         Thread.sleep(this.internetCheckInterval);
@@ -150,12 +147,12 @@ public class RaspberryPi3 implements HardwarePlatform {
   public void evaluateSignalQuality() {
 
     if (this.surfstick.getSQB().getECIO() < this.criticalValueECIO || this.surfstick.getSQB().getRSCP() < this.criticalValueRSCP
-            || this.surfstick.getSQB().getRSSI() < this.criticalValueRSSI) {
+        || this.surfstick.getSQB().getRSSI() < this.criticalValueRSSI) {
       if (this.uploadPermitted) {
         LOG.info("----------");
         LOG.info("suspend upload");
         LOG.info("Reason: RSCP: {}dBm, Ec/Io: {}dB, RSSI: {}dBm", this.surfstick.getSQB().getRSCP(), this.surfstick.getSQB().getECIO(),
-                this.surfstick.getSQB().getRSSI());
+            this.surfstick.getSQB().getRSSI());
         LOG.info("----------");
         this.uploadPermitted = false;
       }
@@ -164,7 +161,7 @@ public class RaspberryPi3 implements HardwarePlatform {
         LOG.info("----------");
         LOG.info("permit upload");
         LOG.info("Reason: RSCP: {}dBm, Ec/Io: {}dB, RSSI: {}dBm", this.surfstick.getSQB().getRSCP(), this.surfstick.getSQB().getECIO(),
-                this.surfstick.getSQB().getRSSI());
+            this.surfstick.getSQB().getRSSI());
         LOG.info("----------");
         this.uploadPermitted = true;
       }
@@ -257,50 +254,43 @@ public class RaspberryPi3 implements HardwarePlatform {
     LOG.info("Trying to connect to mobile internet using sakis3g");
     try {
       // Process process = Runtime.getRuntime().exec(this.surfstick.getConnectCommand());
-      List<String> command = new ArrayList<>();
-      command.add("./sakis3g");
-      command.add("SIM_PIN\\=\"1983\"");
-      command.add("--sudo");
-      command.add("\"connect\"");
-      ProcessBuilder pb=new ProcessBuilder(command);
-      pb.directory(new File("/home/administrator/3g"));
-      //Process process = Runtime.getRuntime().exec("/home/administrator/3g/sakis3g"+" "+"SIM_PIN=\"1983\""+" "+"--sudo \"connect\"");
+      // List<String> command = new ArrayList<>();
+      // command.add("/home/administrator/3g/sakis3g");
+      // command.add("SIM_PIN=1983");
+      // command.add("--sudo");
+      // command.add("connect");
+      ProcessBuilder pb = this.surfstick.getMobileInternetPB();
+      // pb.directory(new File("/home/administrator/3g"));
+      // pb.command("/home/administrator/3g/sakis3g", "SIM_PIN=1983", "--sudo", "connect");
+      // Process process = Runtime.getRuntime().exec("/home/administrator/3g/sakis3g SIM_PIN=1983 --sudo connect");
       Process process = pb.start();
 
-      //BufferedReader output = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-      BufferedReader in=new BufferedReader(new InputStreamReader(process.getInputStream()));
+      // BufferedReader output = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+      BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
       // wvdial always writes to error stream...
       String line = null;
       while ((line = in.readLine()) != null) {
-        //System.out.println(line); // extreme debugging
-        //process = Runtime.getRuntime().exec(this.surfstick.getConnectCommand());
-        System.out.println(line);
+        // System.out.println(line); // extreme debugging
+        // process = Runtime.getRuntime().exec(this.surfstick.getConnectCommand());
+        LOG.info(line);
 
-        /*Matcher m1 = LOCAL_IP.matcher(line);
-        Matcher m2 = REMOTE_IP.matcher(line);
-        Matcher m3 = PRIMARY_DNS.matcher(line);
-        Matcher m4 = SECONDARY_DNS.matcher(line);
-        if (m1.find()) {
-          LOG.info("local ip is {}", m1.group(1));
-        } else if (m2.find()) {
-          LOG.info("remote ip is {}", m2.group(1));
-        } else if (m3.find()) {
-          LOG.info("primary DNS is {}", m3.group(1));
-        } else if (m4.find()) {
-          LOG.info("secondary DNS is {}", m4.group(1));
-          break;
-        }*/
+        /*
+         * Matcher m1 = LOCAL_IP.matcher(line); Matcher m2 = REMOTE_IP.matcher(line); Matcher m3 = PRIMARY_DNS.matcher(line); Matcher m4 =
+         * SECONDARY_DNS.matcher(line); if (m1.find()) { LOG.info("local ip is {}", m1.group(1)); } else if (m2.find()) { LOG.info("remote ip is {}",
+         * m2.group(1)); } else if (m3.find()) { LOG.info("primary DNS is {}", m3.group(1)); } else if (m4.find()) { LOG.info("secondary DNS is {}",
+         * m4.group(1)); break; }
+         */
       }
-      LOG.info(line);
+      // LOG.info(line);
       in.close();
-      process.destroy();
+      // process.destroy();
       process.waitFor();
-      LOG.info("sakis3g process terminated");
+      LOG.info("sakis3g exit value (0=OK): " + process.exitValue());
+      // LOG.info("sakis3g process terminated");
     } catch (IOException | InterruptedException e) {
-      LOG.error("getting local controller address failed", e);
+      LOG.error("cannot connect to mobile internet", e);
     }
   }
 
 }
-

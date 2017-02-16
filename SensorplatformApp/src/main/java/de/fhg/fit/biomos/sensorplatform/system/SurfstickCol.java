@@ -11,7 +11,7 @@ public class SurfstickCol implements Surfstick {
 
     private HardwarePlatform hwPlatform;
     
-    private static final String SAKIS3G = "/home/administrator/3g/sakis3g SIM\\_PIN=\"1983\" --sudo \"connect\"";
+    //private static final String SAKIS3G = "/home/administrator/3g/sakis3g SIM\\_PIN=\"1983\" --sudo \"connect\"";
 
     public SurfstickCol() {
     }
@@ -22,8 +22,8 @@ public class SurfstickCol implements Surfstick {
     }
 
     @Override
-    public String getConnectCommand() {
-      return SAKIS3G;
+    public ProcessBuilder getMobileInternetPB() {
+      return new ProcessBuilder("/home/administrator/3g/sakis3g", "SIM_PIN=1983", "--sudo", "connect");
     }
     
     @Override

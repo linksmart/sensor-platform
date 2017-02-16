@@ -74,8 +74,8 @@ public class Huawei_E352S_5 implements Surfstick {
   }
 
   @Override
-  public String getConnectCommand() {
-    return WVDIAL;
+  public ProcessBuilder getMobileInternetPB() {
+    return new ProcessBuilder(WVDIAL);
   }
 
   @Override

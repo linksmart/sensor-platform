@@ -11,7 +11,7 @@ public interface Surfstick extends Runnable {
 
   public void setHardwarePlatform(HardwarePlatform hwPlatform);
 
-  public String getConnectCommand();
+  public ProcessBuilder getMobileInternetPB();
 
   public void setupSerialPort() throws IOException, InterruptedException;
 
