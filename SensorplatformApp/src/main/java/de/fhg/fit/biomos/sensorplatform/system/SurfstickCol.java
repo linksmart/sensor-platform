@@ -11,7 +11,7 @@ public class SurfstickCol implements Surfstick {
 
     private HardwarePlatform hwPlatform;
     
-    private static final String SAKIS3G = "sakis3g connect --console";
+    private static final String SAKIS3G = "/home/administrator/3g/sakis3g SIM\\_PIN=\"1983\" --sudo \"connect\"";
 
     public SurfstickCol() {
     }
@@ -33,12 +33,12 @@ public class SurfstickCol implements Surfstick {
 
     @Override
     public int getOverallRSSI() {
-        return 0;
+        return -113;
     }
 
     @Override
     public SignalQualityBean getSQB() {
-        return null;
+        return new SignalQualityBean(-145,-32);
     }
 
     @Override

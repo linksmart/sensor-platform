@@ -36,7 +36,7 @@ public class Huawei_E352S_5 implements Surfstick {
   // ^SYSINFO:2,3,0,3,1,,3
   private static final Pattern SYSINFO = Pattern.compile("\\^SYSINFO:(\\d+),(\\d+),(\\d+),(\\d+),(\\d+),(\\d*),(\\d*)");
 
-  private static final File FILE = new File("/dev/ttyUSB2");
+  private static final File FILE = new File("/dev/ttyUSB2");   //sakis über 0
 
   private static final String COMGT_SERIAL = "comgt -d " + FILE + " sig";
 
