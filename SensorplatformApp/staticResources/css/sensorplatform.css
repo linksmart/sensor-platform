@@ -1,8 +1,11 @@
 @charset "UTF-8";
 
+#headField{
+	background-image: url(sky.jpg);
+}
 .container {
 	background-color: #009374;
-	height: 100vh;
+	height: 130vh;
 }
 
 textarea {
@@ -25,6 +28,31 @@ input:focus {
 #duration {
 	width: 50%
 }
+
+#configWLAN{
+	width:100%;
+}
+
+#configDongle{
+	width: 100%;
+}
+
+#divexampleDongle{
+	position: absolute;
+	top: 50%;
+	left: 90%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+}
+
+#divexampleWLAN{
+	position: absolute;
+	top: 50%;
+	left: 90%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+}
+
 
 .divinsidewell {
 	overflow: hidden

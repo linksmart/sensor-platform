@@ -1,18 +1,48 @@
 var exampleConfig = [{
-	"name" : "PolarH7",
-	"bdaddress" : "00:22:D0:AA:1F:B1",
-	"settings" : {}
-}, {
-	"name" : "CC2650",
-	"bdaddress" : "A0:E6:F8:B6:37:05",
+	"name" : "Luminox",
+	"bdaddress" : "00:07:80:C8:45:FC",
 	"settings" : {
-		"irtemperature" : "64",
-		"humidity" : "64",
-		"ambientlight" : "50",
-		"pressure" : "64",
-		"movement" : "64"
-	}
-}];
+        "id":"S01"
+    }
+}, {
+    "name" : "Luminox",
+    "bdaddress" : "00:07:80:C8:45:F4",
+    "settings" : {
+        "id":"S02"
+    }
+},
+    {
+        "name" : "Luminox",
+        "bdaddress" : "00:07:80:C8:45:FF",
+        "settings" : {
+            "id":"S03"
+        }
+    },
+    {
+        "name" : "Luminox",
+        "bdaddress" : "00:07:80:C8:45:F3",
+        "settings" : {
+            "id":"S04"
+        }
+    }];
+
+var exampleConfigWLAN = [{
+        "name" : "WLAN",
+        "settings" : {
+            "id":"S04",
+            "password":"your_password"
+        }
+    }];
+
+var exampleConfigDongle = [
+    {
+        "name" : "Dongle",
+        "settings" : {
+            "APN":"web.colombiamovil.com.co",
+            "PIN":"S04"
+        }
+    }];
+
 
 window.setInterval(function() {
 	var request = new XMLHttpRequest();
@@ -43,6 +73,13 @@ function writeExampleConfig() {
 	$("#uptime").val(600);
 	$("#firstname").val("Gustavo");
 	$("#lastname").val("Aragon");
+}
+
+function writeExampleConfigWLAN() {
+    $("#configWLAN").val(JSON.stringify(exampleConfigWLAN, undefined, 4));
+}
+function writeExampleConfigDongle() {
+    $("#configDongle").val(JSON.stringify(exampleConfigDongle, undefined, 4));
 }
 
 function startRecording() {
@@ -91,6 +128,59 @@ function stopRecording() {
 	};
 	request.open("GET", "controller/stop", true);
 	request.send();
+}
+
+
+function startRecordingWLAN() {
+
+    try {
+        var configuration = JSON.parse($("#configWLAN").val());
+    } catch (err) {
+        $("#modalmessage").text("Bad WLAN configuration JSON syntax!");
+        $('#message').modal('show');
+        return;
+    }
+    var requestentity = {
+        "configuration" : configuration
+    };
+
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState == 4 && request.status == 200) {
+            response = JSON.parse(request.responseText);
+            $("#modalmessage").text(response["result"]);
+            $('#message').modal('show');
+        }
+    };
+    request.open("POST", "controller/start", true);
+    request.setRequestHeader("Content-Type", "application/json;");
+    request.send(JSON.stringify(requestentity));
+}
+
+function startRecordingDongle() {
+
+    try {
+        var configuration = JSON.parse($("#configDongle").val());
+    } catch (err) {
+        $("#modalmessage").text("Bad WLAN configuration JSON syntax!");
+        $('#message').modal('show');
+        return;
+    }
+    var requestentity = {
+        "configuration" : configuration
+    };
+
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState == 4 && request.status == 200) {
+            response = JSON.parse(request.responseText);
+            $("#modalmessage").text(response["result"]);
+            $('#message').modal('show');
+        }
+    };
+    request.open("POST", "controller/start", true);
+    request.setRequestHeader("Content-Type", "application/json;");
+    request.send(JSON.stringify(requestentity));
 }
 
 function loadHrs() {

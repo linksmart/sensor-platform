@@ -1,5 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.restservices;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -46,7 +47,7 @@ public class ControllerService {
 
   @Inject
   public ControllerService(Controller controller, HardwarePlatform hwPlatform, @Nullable Uploader uploader,
-      @Named("http.useragent.boardname") String userAgent) {
+                           @Named("http.useragent.boardname") String userAgent) {
     this.controller = controller;
     this.hwPlatform = hwPlatform;
     this.sensorplatform = userAgent + " " + System.getProperty("os.name") + " " + System.getProperty("os.arch") + " " + System.getProperty("os.version");
@@ -95,11 +96,13 @@ public class ControllerService {
       JSONObject response = new JSONObject();
       response.put("result", result);
       return Response.ok(response).build();
+
     } catch (JSONException e) {
       LOG.error("bad json from sensorplatform webinterface", e.getMessage());
       return Response.serverError().build();
     }
   }
+
 
   @Path("/stop")
   @GET

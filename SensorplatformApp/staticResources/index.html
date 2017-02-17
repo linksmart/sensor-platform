@@ -32,10 +32,9 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <H1>Sensorplatform</H1>
-            <H4>Masterthesis Computer Science Daniel Pyka 2016</H4>
+    <div id="headField" class="container">
+        <div  class="col-xs-12 col-sm-12 col-md-12">
+            <H1 style="alignment: center">Food Tracking Monitoring Alpina</H1>
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -51,59 +50,101 @@
                     <div class="well well-sm">
                         <div class="divinsidewell">
 
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <textarea rows="21" id="configview"></textarea>
-                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 ">
+                                <div class="col-xs-6 col-sm-6 col-md-6" style="background-color: antiquewhite">
+                                    <label for="configview">Sensors Configuration</label>
+                                    <p>
+                                    <textarea rows="10" id="configview"></textarea>
+                                    </p>
+                                </div>
 
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="col-xs-12 col-sm-12 col-md-12">
+
+                                <div class="col-xs-3 col-sm-3 col-md-3">
                                     <p>
                                         <b>Sensors</b>
                                     </p>
-                                    <p>PolarH7 (00:22:D0:AA:1F:B1)</p>
-                                    <p>TomTomHRM (F4:2C:87:24:12:09)</p>
-                                    <p>AdidasHRM (CB:A2:4A:FE:0F:DA)</p>
-                                    <p>CC2650 (A0:E6:F8:B6:37:05)</p>
-                                    <p>BLE113 (00:07:80:6A:F2:51)</p>
+                                    <p>O2 Sensor 1 (00:07:80:C8:45:FC)</p>
+                                    <p>O2 Sensor 2 (00:07:80:C8:45:F4)</p>
+                                    <p>O2 Sensor 3 (00:07:80:C8:45:FF)</p>
+                                    <p>O2 Sensor 4 (00:07:80:C8:45:F3)</p>
+                                    <p>O2 Sensor 5 (00:07:80:6A:F2:51)</p>
                                     <p>
-                                        <b>Settings (only for CC2650)</b>
+                                        <b>Settings</b>
                                     </p>
-                                    <p>irtemperature/ humidity/ ambientlight/ pressure/ movement</p>
-                                    <p>(64 | 50 [hexadecimal] ^= 1Hz)</p>
+                                    <p>id</p>
                                 </div>
-                                <div class="col-xs-4 col-sm-4 col-md-4">
+                                <div class="col-xs-3 col-sm-3 col-md-3">
+
+                                    <p>
+                                        <b>Control</b>
+                                    </p>
+
+                                    <p><button type="button" class="btn btn-default" id="example" onclick="writeExampleConfig()">Example configuration</button></p>
                                     <p>
                                         <b>Uptime [s]</b>
                                     </p>
                                     <p>
                                         <input id="uptime" class="form-control"></input>
                                     </p>
-                                </div>
-                                <div class="col-xs-4 col-sm-4 col-md-4">
+
                                     <p>
                                         <b>First name</b>
                                     </p>
                                     <p>
                                         <input id="firstname" class="form-control"></input>
                                     </p>
-                                </div>
-                                <div class="col-xs-4 col-sm-4 col-md-4">
+
                                     <p>
                                         <b>Last name</b>
                                     </p>
                                     <p>
                                         <input id="lastname" class="form-control"></input>
                                     </p>
+
+                                    <p><button type="button" class="btn btn-default" onclick="startRecording()">Start</button>
+                                    <button type="button" class="btn btn-default" onclick="stopRecording()">Stop</button></p>
+
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <label for="configWLAN">WLAN Configuration</label>
                                     <p>
-                                        <b>Control</b>
+                                    <textarea rows="10" id="configWLAN"></textarea>
                                     </p>
+                                </div>
+
+                                <div class="col-xs-3 col-sm-3 col-md-3">
+
                                     <p>
-                                        <button type="button" class="btn btn-default" id="example" onclick="writeExampleConfig()">Example configuration</button>
-                                        <button type="button" class="btn btn-default" onclick="startRecording()">Start</button>
-                                        <button type="button" class="btn btn-default" onclick="stopRecording()">Stop</button>
+                                        <b>Settings</b>
                                     </p>
+                                    <p>id</p>
+                                    <p>password</p>
+                                </div>
+                                <div id="divexampleWLAN" class="col-xs-3 col-sm-3 col-md-3">
+                                    <p><button type="button" class="btn btn-default" id="exampleWLAN" onclick="writeExampleConfigWLAN()">Example configuration</button></p>
+                                    <p><button type="button" class="btn btn-default" onclick="startRecordingWLAN()">Send WLAN</button></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <p>
+                                    <label for="configDongle">Mobile Internet Configuration</label>
+                                    </p>
+                                    <textarea rows="10" id="configDongle"></textarea>
+                                </div>
+
+                                <div class="col-xs-3 col-sm-3 col-md-3">
+                                    <p>
+                                        <b>Settings</b>
+                                    </p>
+                                    <p>APN</p>
+                                    <p>PIN</p>
+                                </div>
+                                <div id="divexampleDongle" class="col-xs-3 col-sm-3 col-md-3" >
+                                    <p><button type="button" class="btn btn-default" id="exampleDongle" onclick="writeExampleConfigDongle()">Example configuration</button></p>
+                                    <p><button type="button" class="btn btn-default" onclick="startRecordingDongle()">Send Mobile Internet</button></p>
                                 </div>
                             </div>
 
