@@ -144,7 +144,7 @@ function startRecordingWLAN() {
         "configurationWlan" : configurationWlan
     };
 
-    request.open("POST", "cc2650/wlan",true);
+    request.open("POST", "controller/wlan",true);
     request.setRequestHeader("Content-Type", "application/json;");
     request.send(JSON.stringify(requestentityWlan));
 }
