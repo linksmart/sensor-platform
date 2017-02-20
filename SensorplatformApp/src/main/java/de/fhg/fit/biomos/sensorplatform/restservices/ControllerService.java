@@ -108,7 +108,7 @@ public class ControllerService {
   @Path("/wlan")
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
+
   public Response wlan(JSONObject request) {
     LOG.info("/controller/wlan called");
     try {

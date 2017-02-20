@@ -144,6 +144,7 @@ function startRecordingWLAN() {
         "configurationWlan" : configurationWlan
     };
 
+	var request = new XMLHttpRequest();
     request.open("POST", "controller/wlan",true);
     request.setRequestHeader("Content-Type", "application/json;");
     request.send(JSON.stringify(requestentityWlan));
