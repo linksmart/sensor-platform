@@ -134,27 +134,19 @@ function stopRecording() {
 function startRecordingWLAN() {
 
     try {
-        var configuration = JSON.parse($("#configWLAN").val());
+        var configurationWlan = JSON.parse($("#configWLAN").val());
     } catch (err) {
         $("#modalmessage").text("Bad WLAN configuration JSON syntax!");
         $('#message').modal('show');
         return;
     }
-    var requestentity = {
-        "configuration" : configuration
+    var requestentityWlan = {
+        "configurationWlan" : configurationWlan
     };
 
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-        if (request.readyState == 4 && request.status == 200) {
-            response = JSON.parse(request.responseText);
-            $("#modalmessage").text(response["result"]);
-            $('#message').modal('show');
-        }
-    };
-    request.open("POST", "controller/start", true);
+    request.open("POST", "cc2650/wlan",true);
     request.setRequestHeader("Content-Type", "application/json;");
-    request.send(JSON.stringify(requestentity));
+    request.send(JSON.stringify(requestentityWlan));
 }
 
 function startRecordingDongle() {
@@ -178,7 +170,7 @@ function startRecordingDongle() {
             $('#message').modal('show');
         }
     };
-    request.open("POST", "controller/start", true);
+    request.open("POST", "controller/dongle", true);
     request.setRequestHeader("Content-Type", "application/json;");
     request.send(JSON.stringify(requestentity));
 }
