@@ -11,6 +11,8 @@ case $1 in
 		sh Resources/Firmware/RaspberryPi3/Programs/install_bluez.sh
 		sh Resources/Firmware/RaspberryPi3/Programs/install_surfstick_drivers.sh
 		sh -c "echo 'dtoverlay=i2c-rtc,ds3231\n' >> /boot/config.txt"
+		cp Resources/Firmware/RaspberryPi3/System/wlanConfig.sh /home/${username}/wlanConfig.sh
+		chmod +x /home/${username}/wlanConfig.sh
 		echo "Please reboot the system NOW before going on with the installation guide!"
 		;;
 	"export")
