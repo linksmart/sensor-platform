@@ -50,7 +50,8 @@ Password: raspberry
 6.6 Boot Options >> Wait for Network at Boot >> No
 6.7 Advanced Options >> Hostname
 6.8 Advanced Options >> Memory Split >> 16
-6.9 Finish >> Reboot >> Yes
+6.9 Advanced Options >> SSH >> Yes
+6.10 Finish >> Reboot >> Yes
 
 7. User account setup
 7.1 Login as pi, type in "sudo -i" for the root shell
@@ -60,14 +61,12 @@ Password: raspberry
 7.5 Log out by typing "exit" and again "exit"
 7.6 Log in as root
 7.7 Delete the default user pi "deluser -remove-home pi"
-7.8 Log out by typing "exit"
-7.9 Log in as root
-7.10 Allow administrator to use sudo without password check (password will be required ones)
+7.8 Allow administrator to use sudo without password check (password will be required ones)
 	echo "administrator ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/010_pi-nopasswd
-7.11 Do not allow root login via SSH
+7.9 Do not allow root login via SSH
 	sed -i -- 's/PermitRootLogin without-password/PermitRootLogin no/g' /etc/ssh/sshd_config
 	exit
-7.12 Log in as administrator
+7.10 Log in as administrator
 
 --------------------------------optional-----------------------------------------	
 
