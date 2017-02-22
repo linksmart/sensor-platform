@@ -1,14 +1,14 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import de.fhg.fit.biomos.sensorplatform.util.SensorName;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +20,9 @@ import de.fhg.fit.biomos.sensorplatform.sensorwrapper.AbstractSensorWrapper;
 import de.fhg.fit.biomos.sensorplatform.system.HardwarePlatform;
 import de.fhg.fit.biomos.sensorplatform.tools.Gatttool;
 import de.fhg.fit.biomos.sensorplatform.util.DetectedDevice;
+
+import static de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory.BDADDRESS;
+import static de.fhg.fit.biomos.sensorplatform.control.SensorWrapperFactory.SETTINGS;
 
 /**
  * This class defines the general control flow of the sensorplatform.<br>
@@ -37,6 +40,10 @@ public class Controller implements Runnable {
   private static final String START_ALREADY_RUNNING = "A recording period is already running!";
   private static final String START_SENSOR_NOT_AVAILABLE = "A sensor is not available: ";
   private static final String START_NO_SENSORS_IN_CONFIGURATION = "There are no sensors in the configuration!";
+  private static final String START_SUCCESS_NEW_WLAN="New WLAN parameters were configured";
+  private static final String WLAN_PARAMETERS_NOT_CHANGED="WLAN configuration parameters were not changed";
+  private static final String START_SUCCESS_NEW_DONGLE="New mobile internet parameters were configured";
+  private static final String DONGLE_PARAMETERS_NOT_CHANGED="Mobile internet configuration was not changed";
 
   private static final String MANUAL_HRS_UPLOAD = "All not-transmitted heart rate samples uploaded.";
   private static final String MANUAL_HRS_NO_DATA = "No samples available which are not yet transmitted.";
@@ -255,6 +262,116 @@ public class Controller implements Runnable {
     }
   }
 
+
+  /**
+   * Start a new recording period. Multiple checks are done before doing so.
+   *
+   * @param wlanConfiguration
+   *          the sensor configuration for a Wlan configuration
+   * @param isNewParameters
+   *          a flag which defines if new parameters for Wlan were introduced
+   * @return String a message for the frontend
+   */
+  public String changeWlanParameters(JSONArray wlanConfiguration, boolean isNewParameters) {
+    if (isNewParameters) {
+        LOG.info("storing WLAN parameters to file");
+        //saveSensorplatformConfiguration(firstname, lastname, sensorConfiguration);
+    }
+      LOG.info("changing WLAN parameters");
+      //this.swList = this.swFactory.createSensorWrapper(wlanConfiguration);
+
+      try {
+        List<String> commands = new ArrayList<String>();
+        JSONObject sensorConfigEntry = wlanConfiguration.getJSONObject(0);
+        JSONObject settings = sensorConfigEntry.getJSONObject(SETTINGS);
+        //System.out.println("settings"+settings);
+        //commands.add("/bin/sh");
+        //commands.add("-c");
+        commands.add("wpa_passphrase");
+        commands.add("Gustavo.Aragon");
+        commands.add("fraunhoferfit");
+        commands.add(">");
+        commands.add("/etc/wpa_supplicant/wpa_supplicant.conf");
+
+        //FileInputStream
+        ProcessBuilder bf=new ProcessBuilder("/home/administrator/wlanConfig.sh",settings.getString("id"),settings.getString("password"));
+        //ProcessBuilder bf=new ProcessBuilder("/bin/sh", "-c","wpa_passphrase", "GustavoAragon", "fraunhoferfit",">","/etc/wpa_supplicant/wpa_supplicant.conf");
+       // ProcessBuilder bf=new ProcessBuilder(commands);
+        //LOG.info("Start: "+bf);
+        Process process = bf.start();
+        int errCode = process.waitFor();
+        System.out.println("Echo command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line = null;
+        while ((line = in.readLine()) != null) {
+          LOG.info(line);
+        }
+        in.close();
+        // process.destroy();
+       // process.waitFor();
+
+        //bf=this.getWLANRestarted();
+       /* bf=new ProcessBuilder("/bin/sh", "-c","ifdown","wlan0","&&","ifup","wlan0");
+        //LOG.info("Restart: "+bf);
+        process = bf.start();
+        errCode = process.waitFor();
+        System.out.println("Echo command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
+        BufferedReader in1 = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line1 = null;
+        while ((line1 = in1.readLine()) != null) {
+          LOG.info(line1);
+        }
+        in1.close();
+        // process.destroy();
+       // process.waitFor();
+*/
+
+        LOG.info("WLAN process gestartet");
+
+      } catch (Exception e) {
+        LOG.error("bad json fields - skip this WLAN configuration", e);
+      }
+
+
+
+
+    if(isNewParameters)
+    {
+      return START_SUCCESS_NEW_WLAN;
+    } else {
+      LOG.info("WLAN configuration parameters are not changed! Skipped!");
+      return WLAN_PARAMETERS_NOT_CHANGED;
+    }
+  }
+
+  /**
+   * Start a new recording period. Multiple checks are done before doing so.
+   *
+   * @param dongleConfiguration
+   *          the sensor configuration for a Wlan configuration
+   * @param isNewParameters
+   *          a flag which defines if new parameters for Wlan were introduced
+   * @return String a message for the frontend
+   */
+  public String changeDongleParameters(JSONArray dongleConfiguration, boolean isNewParameters) {
+    if (isNewParameters) {
+      LOG.info("storing Dongle parameters to file");
+      //saveSensorplatformConfiguration(firstname, lastname, sensorConfiguration);
+    }
+    LOG.info("changing Dongle parameters");
+    //this.swList = this.swFactory.createSensorWrapper(wlanConfiguration);
+
+
+
+    if(isNewParameters)
+    {
+      return START_SUCCESS_NEW_DONGLE;
+    } else {
+      LOG.info("WLAN configuration parameters are not changed! Skipped!");
+      return DONGLE_PARAMETERS_NOT_CHANGED;
+    }
+  }
+
   @SuppressWarnings("unused")
   private void getBatteryLevel() {
     LOG.info("get battery level");
@@ -263,6 +380,15 @@ public class Controller implements Runnable {
         asw.getBatteryLevel();
       }
     }
+  }
+
+
+  private ProcessBuilder getWLANConfig(String SSID, String password) {
+    return new ProcessBuilder("/bin/sh", "-c","wpa_passphrase", SSID, password,">","/etc/wpa_supplicant/wpa_supplicant.conf");
+  }
+
+  private ProcessBuilder getWLANRestarted() {
+    return new ProcessBuilder("/bin/sh", "-c","ifdown","wlan0","&&","ifup","wlan0");
   }
 
   /**

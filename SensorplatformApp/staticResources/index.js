@@ -145,6 +145,14 @@ function startRecordingWLAN() {
     };
 
 	var request = new XMLHttpRequest();
+	request.onreadystatechange = function() {
+		if (request.readyState == 4 && request.status == 200) {
+			response = JSON.parse(request.responseText);
+			$("#modalmessage").text(response["result"]);
+			$('#message').modal('show');
+		}
+	};
+
     request.open("POST", "controller/wlan",true);
     request.setRequestHeader("Content-Type", "application/json;");
     request.send(JSON.stringify(requestentityWlan));
@@ -153,14 +161,14 @@ function startRecordingWLAN() {
 function startRecordingDongle() {
 
     try {
-        var configuration = JSON.parse($("#configDongle").val());
+        var configurationDongle = JSON.parse($("#configDongle").val());
     } catch (err) {
         $("#modalmessage").text("Bad WLAN configuration JSON syntax!");
         $('#message').modal('show');
         return;
     }
-    var requestentity = {
-        "configuration" : configuration
+    var requestentityDongle = {
+        "configurationDongle" : configurationDongle
     };
 
     var request = new XMLHttpRequest();
@@ -173,7 +181,7 @@ function startRecordingDongle() {
     };
     request.open("POST", "controller/dongle", true);
     request.setRequestHeader("Content-Type", "application/json;");
-    request.send(JSON.stringify(requestentity));
+    request.send(JSON.stringify(requestentityDongle));
 }
 
 function loadHrs() {

@@ -112,20 +112,46 @@ public class ControllerService {
   public Response wlan(JSONObject request) {
     LOG.info("/controller/wlan called");
     try {
-
       // jetty uses only codehous json library
       // the rest of the application uses org.json library for cleaner code
-      org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configuration").toString());
+      org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configurationWlan").toString());
       System.out.println("Test 1 : "+requestConverted);
-      //String result = this.controller.startRecordingPeriod(uptime * 1000, firstname, lastname, requestConverted, true);
+      String result = this.controller.changeWlanParameters(requestConverted, true);
 
       JSONObject response = new JSONObject();
-      // response.put("result", result);
+      response.put("result", result);
 
       return Response.ok(response).build();
 
     } catch (JSONException e) {
       LOG.error("bad json from sensorplatform webinterface wlan", e.getMessage());
+      return Response.serverError().build();
+    }
+
+  }
+
+
+  @Path("/dongle")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+
+  public Response dongle(JSONObject request) {
+    LOG.info("/controller/dongle called");
+    try {
+
+      // jetty uses only codehous json library
+      // the rest of the application uses org.json library for cleaner code
+      org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configurationDongle").toString());
+      System.out.println("Test 1 : "+requestConverted);
+      String result = this.controller.changeDongleParameters(requestConverted, true);
+
+      JSONObject response = new JSONObject();
+      response.put("result", result);
+
+      return Response.ok(response).build();
+
+    } catch (JSONException e) {
+      LOG.error("bad json from sensorplatform webinterface dongle", e.getMessage());
       return Response.serverError().build();
     }
 
