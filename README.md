@@ -55,8 +55,8 @@ Password: raspberry
 7. User account setup
 7.1 Login as pi, type in "sudo -i" for the root shell
 7.2 Add a new user administrator, add him to group sudo: "useradd -m administrator -G sudo" (do not choose another name)
-7.3 Set a password for administrator "passwd administrator"
-7.4 Set a password for root "passwd root"
+7.3 Set a password for administrator "passwd administrator" (default is "fit" without "")
+7.4 Set a password for root "passwd root" (default is "fit" without "")
 7.5 Log out by typing "exit" and again "exit"
 7.6 Log in as root
 7.7 Delete the default user pi "deluser -remove-home pi"
@@ -111,7 +111,7 @@ Password: raspberry
 	This may take a while especially if it is the first time.
 14.3 Return to top-level directory of the repository: "cd .."
 
-15. Now set up the linux specific configuration
+15. Export the binary files of the sensorplatform application
 15.1 "sudo sh sensorplatform.sh export"
 	Binary files are copied to /home/administrator/export .
 	On the next reboot the sensorplatform application will start automatically as a background service (autostart with systemd).
@@ -129,8 +129,9 @@ Password: raspberry
 The sensorplatform application will start automatically during boot. The webapplication is accessible from
 https://sensorplatform.fit.fraunhofer.de:8080
 https://129.26.160.38:8080 or another IP
-hostname (sensorplatform) might be different, depends on your system settings
+hostname (sensorplatform) might be different, depending on your system settings
 Attention: https not http and port 8080 not default port 80
+ssh: administrator@sensorplatform.fit.fraunhofer.de
 
 -------------------------------------------------------------------------------------------------------------
 Working with the sensorplatform application:

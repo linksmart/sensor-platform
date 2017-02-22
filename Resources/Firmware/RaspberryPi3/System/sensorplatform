@@ -13,7 +13,7 @@
 case "$1" in
 	start)
 		/sbin/hwclock -s
-		/opt/vc/bin/tvservice -o 
+		#/opt/vc/bin/tvservice -o 
 		cd /home/administrator/Sensorplatform
         /lib/jvm/jdk1.8.0_101/bin/java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
         ;;
@@ -27,7 +27,7 @@ case "$1" in
 		killall wvdial
 		killall pppd
 		/sbin/hwclock -s
-		/opt/vc/bin/tvservice -o
+		#/opt/vc/bin/tvservice -o
 		cd /home/administrator/Sensorplatform
         /lib/jvm/jdk1.8.0_101/bin/java -cp "bin/*" de.fhg.fit.biomos.sensorplatform.main.Main >> sensorplatform.txt 2>&1 &
         ;;
