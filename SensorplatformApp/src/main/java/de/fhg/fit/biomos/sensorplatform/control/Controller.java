@@ -80,8 +80,8 @@ public class Controller implements Runnable {
 
   @Inject
   public Controller(SensorWrapperFactory swFactory, HardwarePlatform hwPlatform, HeartRateSampleCollector hrsCollector,
-      PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector, LuminoxSampleCollector luminoxCollector, @Named("timeout.sensor.connect") String timeoutConnect,
-      @Named("timeout.sensor.notification") String timeoutNotification, @Named("recording.info.filename") String recordingInfoFileName) {
+                    PulseOximeterSampleCollector pulseCollector, CC2650SampleCollector cc2650Collector, LuminoxSampleCollector luminoxCollector, @Named("timeout.sensor.connect") String timeoutConnect,
+                    @Named("timeout.sensor.notification") String timeoutNotification, @Named("recording.info.filename") String recordingInfoFileName) {
     this.swFactory = swFactory;
     this.hwPlatform = hwPlatform;
     this.hrsCollector = hrsCollector;
@@ -144,7 +144,7 @@ public class Controller implements Runnable {
         if (diff > 0) {
           LOG.info("a recording period was interrupted, which is not finished yet - resume");
           String result = startRecordingPeriod(diff, recProperties.getProperty(RECORDING_FIRSTNAME), recProperties.getProperty(RECORDING_LASTNAME),
-              new JSONArray(recProperties.getProperty(CONFIGURATION)), false);
+                  new JSONArray(recProperties.getProperty(CONFIGURATION)), false);
           LOG.info(result);
         } else {
           LOG.info("a recording period was interrupted but it is finished now - delete file");
@@ -274,66 +274,35 @@ public class Controller implements Runnable {
    */
   public String changeWlanParameters(JSONArray wlanConfiguration, boolean isNewParameters) {
     if (isNewParameters) {
-        LOG.info("storing WLAN parameters to file");
-        //saveSensorplatformConfiguration(firstname, lastname, sensorConfiguration);
+      LOG.info("storing WLAN parameters to file");
+      //saveSensorplatformConfiguration(firstname, lastname, sensorConfiguration);
     }
-      LOG.info("changing WLAN parameters");
-      //this.swList = this.swFactory.createSensorWrapper(wlanConfiguration);
+    LOG.info("changing WLAN parameters");
+    //this.swList = this.swFactory.createSensorWrapper(wlanConfiguration);
 
-      try {
-        List<String> commands = new ArrayList<String>();
-        JSONObject sensorConfigEntry = wlanConfiguration.getJSONObject(0);
-        JSONObject settings = sensorConfigEntry.getJSONObject(SETTINGS);
-        //System.out.println("settings"+settings);
-        //commands.add("/bin/sh");
-        //commands.add("-c");
-        commands.add("wpa_passphrase");
-        commands.add("Gustavo.Aragon");
-        commands.add("fraunhoferfit");
-        commands.add(">");
-        commands.add("/etc/wpa_supplicant/wpa_supplicant.conf");
+    try {
 
-        //FileInputStream
-        ProcessBuilder bf=new ProcessBuilder("/home/administrator/wlanConfig.sh",settings.getString("id"),settings.getString("password"));
-        //ProcessBuilder bf=new ProcessBuilder("/bin/sh", "-c","wpa_passphrase", "GustavoAragon", "fraunhoferfit",">","/etc/wpa_supplicant/wpa_supplicant.conf");
-       // ProcessBuilder bf=new ProcessBuilder(commands);
-        //LOG.info("Start: "+bf);
-        Process process = bf.start();
-        int errCode = process.waitFor();
-        System.out.println("Echo command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
-        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line = null;
-        while ((line = in.readLine()) != null) {
-          LOG.info(line);
-        }
-        in.close();
-        // process.destroy();
-       // process.waitFor();
+      JSONObject sensorConfigEntry = wlanConfiguration.getJSONObject(0);
+      JSONObject settings = sensorConfigEntry.getJSONObject(SETTINGS);
 
-        //bf=this.getWLANRestarted();
-       /* bf=new ProcessBuilder("/bin/sh", "-c","ifdown","wlan0","&&","ifup","wlan0");
-        //LOG.info("Restart: "+bf);
-        process = bf.start();
-        errCode = process.waitFor();
-        System.out.println("Echo command executed, any errors? " + (errCode == 0 ? "No" : "Yes"));
-        BufferedReader in1 = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line1 = null;
-        while ((line1 = in1.readLine()) != null) {
-          LOG.info(line1);
-        }
-        in1.close();
-        // process.destroy();
-       // process.waitFor();
-*/
 
-        LOG.info("WLAN process gestartet");
-
-      } catch (Exception e) {
-        LOG.error("bad json fields - skip this WLAN configuration", e);
+      //FileInputStream
+      ProcessBuilder bf=new ProcessBuilder("/home/administrator/wlanConfig.sh",settings.getString("id"),settings.getString("password"));
+      Process process = bf.start();
+      int errCode = process.waitFor();
+      LOG.info("Echo command executed, any errors?: " + errCode);
+      BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      String line = null;
+      while ((line = in.readLine()) != null) {
+        LOG.info(line);
       }
+      in.close();
 
+      LOG.info("WLAN process gestartet");
 
-
+    } catch (Exception e) {
+      LOG.error("bad json fields - skip this WLAN configuration", e);
+    }
 
     if(isNewParameters)
     {
@@ -355,19 +324,41 @@ public class Controller implements Runnable {
    */
   public String changeDongleParameters(JSONArray dongleConfiguration, boolean isNewParameters) {
     if (isNewParameters) {
-      LOG.info("storing Dongle parameters to file");
+      LOG.info("storing Dongles parameters to file");
       //saveSensorplatformConfiguration(firstname, lastname, sensorConfiguration);
     }
-    LOG.info("changing Dongle parameters");
+    LOG.info("changing mobile internet parameters");
     //this.swList = this.swFactory.createSensorWrapper(wlanConfiguration);
 
+    try {
 
+      JSONObject sensorConfigEntry = dongleConfiguration.getJSONObject(0);
+      JSONObject settings = sensorConfigEntry.getJSONObject(SETTINGS);
+
+
+      //FileInputStream
+      ProcessBuilder bf=new ProcessBuilder("/home/administrator/wlanConfig.sh",settings.getString("id"),settings.getString("password"));
+      Process process = bf.start();
+      int errCode = process.waitFor();
+      LOG.info("Echo command executed, any errors?: " + errCode);
+      BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      String line = null;
+      while ((line = in.readLine()) != null) {
+        LOG.info(line);
+      }
+      in.close();
+
+      LOG.info("Mobile internet process gestartet");
+
+    } catch (Exception e) {
+      LOG.error("bad json fields - skip this mobile internet configuration", e);
+    }
 
     if(isNewParameters)
     {
       return START_SUCCESS_NEW_DONGLE;
     } else {
-      LOG.info("WLAN configuration parameters are not changed! Skipped!");
+      LOG.info("Mobile internet configuration parameters are not changed! Skipped!");
       return DONGLE_PARAMETERS_NOT_CHANGED;
     }
   }
@@ -528,3 +519,4 @@ public class Controller implements Runnable {
     }
   }
 }
+
