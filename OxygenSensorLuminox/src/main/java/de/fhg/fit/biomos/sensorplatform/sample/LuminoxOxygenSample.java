@@ -128,10 +128,12 @@ public class LuminoxOxygenSample {
        /* return "{\"" + this.idExt+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"%\", \"t\": 0 },"+
                 "\"bn\": \""+this.bdAddress+"\","+
                 "\"bt\": \""+this.timestamp+"\","+
-                "\"ver\": 1 }";*/
-        return "{\"" + "SPF2:  b8:27:eb:97:dd:1b"+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"%\", \"t\": 0 },"+
-                "\"bn\": \""+this.bdAddress+"\","+
-                "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";
+        return "{\"" + "e"+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"%\", \"t\": 0, \"sv\":\"SPF2\"}],"+
+                "\"bn\": \""+this.bdAddress+"/\","+
+                "\"bt\": \""+this.timestamp+"\","+
+                "\"ver\": 1 }";*/
+        return "{\"" + "e"+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"mBar\", \"t\": "+this.timestamp+"}],"+
+                "\"bn\": \""+this.bdAddress+"/\"}";
     }
 }

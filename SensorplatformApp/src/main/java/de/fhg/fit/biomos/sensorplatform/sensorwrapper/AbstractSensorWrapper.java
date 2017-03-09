@@ -46,7 +46,7 @@ public abstract class AbstractSensorWrapper<T extends AbstractSensor<?>> impleme
    */
   public AbstractSensorWrapper(T sensor, String timestampFormat, String firstname, String lastname) {
     this.sensor = sensor;
-    this.gatttool = new GatttoolImpl(sensor.getBDaddress(), sensor.getAddressType(), sensor.getSecurityLevel());
+    this.gatttool = new GatttoolImpl(sensor.getBDaddress(), sensor.getAddressType(), sensor.getSecurityLevel(),sensor.getSettings());
     this.dtf = DateTimeFormat.forPattern(timestampFormat).withZone(DateTimeZone.UTC);
     this.firstname = firstname;
     this.lastname = lastname;

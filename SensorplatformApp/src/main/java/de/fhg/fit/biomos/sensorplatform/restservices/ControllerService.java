@@ -92,7 +92,7 @@ public class ControllerService {
       // jetty uses only codehous json library
       // the rest of the application uses org.json library for cleaner code
       org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configuration").toString());
-      System.out.println("Test 1 : "+requestConverted);
+      //System.out.println("Test 1 : "+requestConverted);
       String result = this.controller.startRecordingPeriod(uptime * 1000, firstname, lastname, requestConverted, true);
       JSONObject response = new JSONObject();
       response.put("result", result);
@@ -115,7 +115,7 @@ public class ControllerService {
       // jetty uses only codehous json library
       // the rest of the application uses org.json library for cleaner code
       org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configurationWlan").toString());
-      System.out.println("Test 1 : "+requestConverted);
+      //System.out.println("Test 1 : "+requestConverted);
       String result = this.controller.changeWlanParameters(requestConverted, true);
 
       JSONObject response = new JSONObject();
@@ -142,7 +142,7 @@ public class ControllerService {
       // jetty uses only codehous json library
       // the rest of the application uses org.json library for cleaner code
       org.json.JSONArray requestConverted = new org.json.JSONArray(request.getJSONArray("configurationDongle").toString());
-      System.out.println("Test 1 : "+requestConverted);
+      //System.out.println("Test 1 : "+requestConverted);
       String result = this.controller.changeDongleParameters(requestConverted, true);
 
       JSONObject response = new JSONObject();

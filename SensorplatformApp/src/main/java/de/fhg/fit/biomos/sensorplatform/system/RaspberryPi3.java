@@ -251,7 +251,7 @@ public class RaspberryPi3 implements HardwarePlatform {
 
   @Override
   public void connectToMobileInternet() {
-    LOG.info("Trying to connect to mobile internet using sakis3g");
+    //LOG.info("Trying to connect to mobile internet using sakis3g");
     try {
       // Process process = Runtime.getRuntime().exec(this.surfstick.getConnectCommand());
       // List<String> command = new ArrayList<>();
@@ -273,7 +273,7 @@ public class RaspberryPi3 implements HardwarePlatform {
       while ((line = in.readLine()) != null) {
         // System.out.println(line); // extreme debugging
         // process = Runtime.getRuntime().exec(this.surfstick.getConnectCommand());
-        LOG.info(line);
+       // LOG.info(line);
 
         /*
          * Matcher m1 = LOCAL_IP.matcher(line); Matcher m2 = REMOTE_IP.matcher(line); Matcher m3 = PRIMARY_DNS.matcher(line); Matcher m4 =
@@ -286,7 +286,7 @@ public class RaspberryPi3 implements HardwarePlatform {
       in.close();
       // process.destroy();
       process.waitFor();
-      LOG.info("sakis3g exit value (0=OK): " + process.exitValue());
+      //LOG.info("sakis3g exit value (0=OK): " + process.exitValue());
       // LOG.info("sakis3g process terminated");
     } catch (IOException | InterruptedException e) {
       LOG.error("cannot connect to mobile internet", e);

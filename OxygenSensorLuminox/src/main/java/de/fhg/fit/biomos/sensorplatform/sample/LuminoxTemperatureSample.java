@@ -124,11 +124,14 @@ public class LuminoxTemperatureSample {
                 "\"bn\": \""+this.bdAddress+"\","+
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";
-                */
-        return "{\"" + "SPF2:  b8:27:eb:97:dd:1b"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"Cel\", \"t\": 0 },"+
-                "\"bn\": \""+this.bdAddress+"\","+
+
+        return "{\"" + "e"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"Cel\", \"t\": 0 , \"sv\":\"SPF2\"}],"+
+                "\"bn\": \""+this.bdAddress+"/\","+
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";
+*/
+        return "{\"" + "e"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"mBar\", \"t\": "+this.timestamp+"}],"+
+                "\"bn\": \""+this.bdAddress+"/\"}";
     }
 
 }

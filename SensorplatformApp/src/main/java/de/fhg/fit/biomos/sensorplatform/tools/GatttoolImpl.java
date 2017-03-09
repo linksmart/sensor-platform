@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,16 +53,18 @@ public class GatttoolImpl implements Gatttool {
   private AbstractSensorWrapper<?> observer;
 
   private final String bdAddress;
+  private final String idSensor;
   private final AddressType addressType;
   private final SecurityLevel secLevel;
 
   private BufferedWriter streamToSensor = null;
   private BufferedReader streamFromSensor = null;
 
-  public GatttoolImpl(String bdAddress, AddressType addressType, SecurityLevel secLevel) {
+  public GatttoolImpl(String bdAddress, AddressType addressType, SecurityLevel secLevel, JSONObject settings) {
     this.bdAddress = bdAddress;
     this.addressType = addressType;
     this.secLevel = secLevel;
+    this.idSensor=settings.getString("id");
     this.state = State.DISCONNECTED;
     this.mode = Mode.COMMANDMODE;
     try {
@@ -113,6 +116,9 @@ public class GatttoolImpl implements Gatttool {
     } else if (line.contains("successful")) {
       this.state = State.CONNECTED;
       LOG.info("state is {}", this.state.name());
+      long currentTime = System.currentTimeMillis();
+      System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + this.bdAddress + "\", \"t\": " + currentTime + "}]," +
+              "\"bn\": \"SPF2/\"}");
     } else if (line.contains("refused") || line.contains("busy")) {
       this.state = State.DISCONNECTED;
       LOG.info("state is {}", this.state.name());

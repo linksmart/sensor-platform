@@ -44,7 +44,11 @@ public class SensorOverseer implements Runnable {
     this.noNotificationTriggerTime = noNotificationTriggerTime * 1000;
     this.swList = swList;
   }
-
+  private void toStringLinkSmart() {
+ /*   return "{\"" + "e" + "\":[{\"n\": \"oxygen\", \"v\": " + this.oxygenPercent + ", \"u\": \"mBar\", \"t\": " + this.timestamp + "}]," +
+            "\"bn\": \"" + this.bdAddress + "/}";
+            */
+  }
   /**
    * Background thread during recording.
    */
@@ -79,6 +83,8 @@ public class SensorOverseer implements Runnable {
             asw.enableLogging();
             iterator.remove();
             LOG.info("{} reconnected successfully", asw.getSensor());
+            System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + currentTime + "}]," +
+                  "\"bn\": \"SPF2/\"}");
             if (this.wrapperWithLostSensor.isEmpty()) {
               this.hwPlatform.setLEDstateRECORDING();
             }

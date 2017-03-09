@@ -119,10 +119,8 @@ public class LuminoxAirPressureSample {
                 "\"bn\": \""+this.bdAddress+"\","+
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";*/
-        return "{\"" + "SPF2:  b8:27:eb:97:dd:1b"+"\":[{\"n\": \"air pressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": 0 },"+
-                "\"bn\": \""+this.bdAddress+"\","+
-                "\"bt\": \""+this.timestamp+"\","+
-                "\"ver\": 1 }";
+        return "{\"" + "e"+"\":[{\"n\": \"airPressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": "+this.timestamp+"}],"+
+                "\"bn\": \""+this.bdAddress+"/\"}";
 
 
     }

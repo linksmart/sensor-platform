@@ -28,6 +28,7 @@ public abstract class AbstractSensor<T extends GattLibrary> implements SensorCom
   protected final AddressType addressType;
   protected final SecurityLevel securityLevel;
   protected final JSONObject settings;
+  protected final String idSensor;
 
   public AbstractSensor(T gattLibrary, SensorName name, String bdAddress, AddressType addressType, SecurityLevel securityLevel, JSONObject settings) {
     this.gattLibrary = gattLibrary;
@@ -36,6 +37,11 @@ public abstract class AbstractSensor<T extends GattLibrary> implements SensorCom
     this.addressType = addressType;
     this.securityLevel = securityLevel;
     this.settings = settings;
+    if(this.settings.has("id")) {
+          idSensor = this.settings.getString("id");
+    }else{
+      idSensor="01";
+    }
   }
 
   public T getGattLibrary() {
@@ -48,6 +54,11 @@ public abstract class AbstractSensor<T extends GattLibrary> implements SensorCom
 
   public String getBDaddress() {
     return this.bdAddress;
+  }
+
+
+  public String getIdSensor() {
+    return this.idSensor;
   }
 
   public AddressType getAddressType() {
