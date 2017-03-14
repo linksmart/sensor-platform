@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import java.util.Properties;
+
+import com.google.inject.name.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,8 +86,9 @@ public class SensorOverseer implements Runnable {
             asw.enableLogging();
             iterator.remove();
             LOG.info("{} reconnected successfully", asw.getSensor());
-            System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + currentTime + "}]," +
-                  "\"bn\": \"SPF2/\"}");
+            Properties name=new Properties();
+            System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + (long)(currentTime/1000) + "}]," +
+                  "\"bn\": \""+"SPF1"+"/\"}");
             if (this.wrapperWithLostSensor.isEmpty()) {
               this.hwPlatform.setLEDstateRECORDING();
             }

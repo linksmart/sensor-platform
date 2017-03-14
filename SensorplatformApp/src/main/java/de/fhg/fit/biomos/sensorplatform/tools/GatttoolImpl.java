@@ -5,9 +5,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.fhg.fit.biomos.sensorplatform.util.FloatUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,9 +118,10 @@ public class GatttoolImpl implements Gatttool {
     } else if (line.contains("successful")) {
       this.state = State.CONNECTED;
       LOG.info("state is {}", this.state.name());
-      long currentTime = System.currentTimeMillis();
-      System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + this.bdAddress + "\", \"t\": " + currentTime + "}]," +
-              "\"bn\": \"SPF2/\"}");
+      Properties name=new Properties();
+      long currentTime = System.currentTimeMillis()/1000;
+      System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + this.bdAddress + "\", \"t\": " + (long)currentTime + "}]," +
+              "\"bn\": \""+"SPF1"+"/\"}");
     } else if (line.contains("refused") || line.contains("busy")) {
       this.state = State.DISCONNECTED;
       LOG.info("state is {}", this.state.name());

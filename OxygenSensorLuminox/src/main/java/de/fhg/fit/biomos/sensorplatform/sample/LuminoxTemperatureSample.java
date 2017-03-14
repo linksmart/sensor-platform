@@ -130,7 +130,7 @@ public class LuminoxTemperatureSample {
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";
 */
-        return "{\"" + "e"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"mBar\", \"t\": "+this.timestamp+"}],"+
+        return "{\"" + "e"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"mBar\", \"t\": "+(long)(this.timestamp/1000)+"}],"+
                 "\"bn\": \""+this.bdAddress+"/\"}";
     }
 

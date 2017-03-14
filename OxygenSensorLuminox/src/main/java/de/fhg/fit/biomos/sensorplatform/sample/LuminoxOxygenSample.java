@@ -133,7 +133,7 @@ public class LuminoxOxygenSample {
                 "\"bn\": \""+this.bdAddress+"/\","+
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";*/
-        return "{\"" + "e"+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"mBar\", \"t\": "+this.timestamp+"}],"+
+        return "{\"" + "e"+"\":[{\"n\": \"oxygen\", \"v\": "+this.oxygenPercent+", \"u\": \"mBar\", \"t\": "+(long)(this.timestamp/1000)+"}],"+
                 "\"bn\": \""+this.bdAddress+"/\"}";
     }
 }

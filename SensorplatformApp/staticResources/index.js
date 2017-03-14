@@ -1,12 +1,12 @@
 var exampleConfig = [{
 	"name" : "Luminox",
-	"bdaddress" : "00:07:80:C8:45:FC",
+	"bdaddress" : "00:07:80:C8:46:03",
 	"settings" : {
         "id":"S01"
     }
 }, {
     "name" : "Luminox",
-    "bdaddress" : "00:07:80:C8:45:F4",
+    "bdaddress" : "00:07:80:C8:45:EE",
     "settings" : {
         "id":"S02"
     }
