@@ -62,7 +62,7 @@ public class ServerStarter {
    int port = Integer.parseInt(this.properties.getProperty("webapp.port"));
     this.server = new Server();
 
-   /* HttpConfiguration https = new HttpConfiguration();
+    HttpConfiguration https = new HttpConfiguration();
     https.addCustomizer(new SecureRequestCustomizer());
     SslContextFactory sslContextFactory = new SslContextFactory();
     sslContextFactory.setKeyStorePath(ClassLoader.getSystemResource(this.properties.getProperty("keystore.filename")).toExternalForm());
@@ -70,11 +70,11 @@ public class ServerStarter {
     sslContextFactory.setKeyManagerPassword(this.properties.getProperty("keystore.password"));
     ServerConnector sslConnector = new ServerConnector(this.server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
     sslConnector.setPort(port);
-*/
-    ServerConnector connector0=new ServerConnector(this.server);
-    connector0.setPort(port);
-    this.server.setConnectors(new ServerConnector[] { connector0 });
-  // this.server.setConnectors(new ServerConnector[] { sslConnector });
+
+   // ServerConnector connector0=new ServerConnector(this.server);
+   // connector0.setPort(port);
+   // this.server.setConnectors(new ServerConnector[] { connector0 });
+   this.server.setConnectors(new ServerConnector[] { sslConnector });
 
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
     context.setContextPath("/");
@@ -89,7 +89,7 @@ public class ServerStarter {
     resourceHandler.setMinMemoryMappedContentLength(-1);
     resourceHandler.setWelcomeFiles(new String[] { "index.html" });
 
-    /*HashLoginService hls = new HashLoginService();
+    HashLoginService hls = new HashLoginService();
     hls.putUser(this.properties.getProperty("webapp.username"), Credential.getCredential(this.properties.getProperty("webapp.password")),
         new String[] { "default" });
     hls.setName("Sensorplatform");
@@ -110,12 +110,12 @@ public class ServerStarter {
     csh.setLoginService(hls);
 
     this.server.addBean(hls);
-*/
+
     HandlerList handlers = new HandlerList();
     handlers.setHandlers(new Handler[] { resourceHandler, context });
-    this.server.setHandler(handlers);
-  // csh.setHandler(handlers);
-    //this.server.setHandler(csh);
+   // this.server.setHandler(handlers);
+   csh.setHandler(handlers);
+    this.server.setHandler(csh);
 
 
     try {

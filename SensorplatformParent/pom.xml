@@ -97,9 +97,9 @@
         <!-- web server running on the sensorplatform for configuration -->
         <webapp.port>8080</webapp.port>
         <webapp.username>sensorplatform</webapp.username>
-        <webapp.password>123456</webapp.password>
+        <webapp.password>w3pKes8b4LwDFMqS</webapp.password>
         <keystore.filename>keystore.jks</keystore.filename>
-        <keystore.password>123456</keystore.password>
+        <keystore.password>w3pKes8b4LwDFMqS</keystore.password>
         <!-- database running on the sensorplatform -->
         <database.path>db/sensorplatform</database.path>
         <database.username>sensorplatform</database.username>
