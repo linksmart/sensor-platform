@@ -13,16 +13,23 @@ var exampleConfig = [{
 },
     {
         "name" : "Luminox",
-        "bdaddress" : "00:07:80:C8:45:FF",
+        "bdaddress" : "00:07:80:C8:45:FA",
         "settings" : {
             "id":"S03"
         }
     },
+	{
+		"name" : "Luminox",
+		"bdaddress" : "00:07:80:C8:45:FD",
+		"settings" : {
+			"id":"S04"
+		}
+	},
     {
         "name" : "Luminox",
-        "bdaddress" : "00:07:80:C8:45:F3",
+        "bdaddress" : "00:07:80:C8:45:B1",
         "settings" : {
-            "id":"S04"
+            "id":"S05"
         }
     }];
 
@@ -70,7 +77,7 @@ window.setInterval(function() {
 
 function writeExampleConfig() {
 	$("#configview").val(JSON.stringify(exampleConfig, undefined, 4));
-	$("#uptime").val(600);
+	$("#uptime").val(1814400);
 	$("#firstname").val("Gustavo");
 	$("#lastname").val("Aragon");
 }
@@ -182,6 +189,24 @@ function startRecordingDongle() {
     request.open("POST", "controller/dongle", true);
     request.setRequestHeader("Content-Type", "application/json;");
     request.send(JSON.stringify(requestentityDongle));
+}
+
+function scan() {
+    var duration = $("#duration").val();
+
+    if (duration == ""){
+        $("#modalmessage").text("No scan duration specified!");
+        $('#message').modal('show');
+        return;
+    }
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState == 4 && request.status == 200) {
+            $("#detected").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
+        }
+    };
+    request.open("GET", "controller/scan?duration=" + duration, true);
+    request.send();
 }
 
 function loadHrs() {
@@ -311,14 +336,7 @@ function loadCC2650MovementSamples() {
 	request.send();
 }
 
-function scan() {
-	var duration = $("#duration").val();
-	var request = new XMLHttpRequest();
-	request.onreadystatechange = function() {
-		if (request.readyState == 4 && request.status == 200) {
-			$("#detected").val(JSON.stringify(JSON.parse(request.responseText), undefined, 4));
-		}
-	};
-	request.open("GET", "controller/scan?duration=" + duration, true);
-	request.send();
-}
+
+
+
+

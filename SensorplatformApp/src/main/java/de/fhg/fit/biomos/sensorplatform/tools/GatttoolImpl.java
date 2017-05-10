@@ -114,17 +114,19 @@ public class GatttoolImpl implements Gatttool {
     Matcher m = COMMAND_DATA.matcher(line);
     if (m.find()) {
       // TODO pattern not working
+      LOG.info("line contains unsuccessful");
       this.observer.newCommandData(this, m.group(1));
     } else if (line.contains("successful")) {
       this.state = State.CONNECTED;
-      LOG.info("state is {}", this.state.name());
+      LOG.info("state from {} is {}",this.bdAddress, this.state.name());
       Properties name=new Properties();
       long currentTime = System.currentTimeMillis()/1000;
-      System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + this.bdAddress + "\", \"t\": " + (long)currentTime + "}]," +
-              "\"bn\": \""+"SPF1"+"/\"}");
+      System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" +this.bdAddress + "\", \"t\": " + (long)currentTime + "}]," +
+              "\"bn\": \""+ "SPF2"+"/\"}");
+
     } else if (line.contains("refused") || line.contains("busy")) {
       this.state = State.DISCONNECTED;
-      LOG.info("state is {}", this.state.name());
+      LOG.info("state from {} is {}",this.bdAddress, this.state.name());
     }
   }
 
@@ -195,7 +197,7 @@ public class GatttoolImpl implements Gatttool {
       this.streamToSensor.newLine();
       this.streamToSensor.flush();
       this.state = State.RECONNECTING;
-      LOG.info("Attempting to reconnect to sensor for 40s");
+      //LOG.info("Attempting to reconnect to sensor for 40s");
     } catch (IOException e) {
       LOG.error("reconnect failed", e);
     }

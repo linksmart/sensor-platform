@@ -35,6 +35,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
     private float pressure;
     Long timestamp;
     Long baseTime;
+    private int reconnectionNumber;
 
 
 
@@ -43,6 +44,7 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
   public Luminox(SensorName name, String bdaddress, JSONObject settings) {
     super(new Luminoxlib(), name, bdaddress, AddressType.PUBLIC, SecurityLevel.LOW, settings);
       idExt=this.settings.getString("id");
+      reconnectionNumber=0;
   }
 
 
@@ -230,7 +232,13 @@ public class Luminox extends AbstractSensor<Luminoxlib> {
     return airPressureSample;
   }
 
+public int getReconnectionNumber(){
+  return reconnectionNumber;
+}
 
+public void setReconnectionNumber(int number){
+  reconnectionNumber=number;
+}
  /* public String toString(LuminoxTemperatureSample temperatureSample){
 
     //  return "{\"temperature prueba Gustavo\":"+temperatureSample.getTemperature();

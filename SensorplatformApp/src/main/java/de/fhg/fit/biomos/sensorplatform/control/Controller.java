@@ -337,7 +337,7 @@ public class Controller implements Runnable {
 
 
       //FileInputStream
-      ProcessBuilder bf=new ProcessBuilder("/home/administrator/wlanConfig.sh",settings.getString("id"),settings.getString("password"));
+      ProcessBuilder bf=new ProcessBuilder("/home/administrator/sakis3gConfig.sh",settings.getString("APN"),settings.getString("PIN"));
       Process process = bf.start();
       int errCode = process.waitFor();
       LOG.info("Echo command executed, any errors?: " + errCode);

@@ -131,7 +131,7 @@ public class LuminoxTemperatureSample {
                 "\"ver\": 1 }";
 */
         return "{\"" + "e"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"mBar\", \"t\": "+(long)(this.timestamp/1000)+"}],"+
-                "\"bn\": \""+this.bdAddress+"/\"}";
+                "\"bn\": \"urn:dev:mac:"+this.bdAddress+"/\"}";
     }
 
 }

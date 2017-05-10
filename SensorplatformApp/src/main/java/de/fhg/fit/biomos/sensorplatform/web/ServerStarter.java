@@ -1,18 +1,14 @@
 package de.fhg.fit.biomos.sensorplatform.web;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import org.eclipse.jetty.security.ConstraintMapping;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.SecureRequestCustomizer;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.session.HashSessionManager;
@@ -28,6 +24,10 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.servlet.GuiceFilter;
 
 import de.fhg.fit.biomos.sensorplatform.guice.SensorplatformServletConfig;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class configures and starts a Jetty webserver for the Sensorplatform application. The webserver uses http(s) basic authentication and a self-created
@@ -54,11 +54,15 @@ public class ServerStarter {
   /**
    * Configures and starts the webserver.
    */
+
+
+
   public void start() {
-    int port = Integer.parseInt(this.properties.getProperty("webapp.port"));
+
+   int port = Integer.parseInt(this.properties.getProperty("webapp.port"));
     this.server = new Server();
 
-    HttpConfiguration https = new HttpConfiguration();
+   /* HttpConfiguration https = new HttpConfiguration();
     https.addCustomizer(new SecureRequestCustomizer());
     SslContextFactory sslContextFactory = new SslContextFactory();
     sslContextFactory.setKeyStorePath(ClassLoader.getSystemResource(this.properties.getProperty("keystore.filename")).toExternalForm());
@@ -66,8 +70,11 @@ public class ServerStarter {
     sslContextFactory.setKeyManagerPassword(this.properties.getProperty("keystore.password"));
     ServerConnector sslConnector = new ServerConnector(this.server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
     sslConnector.setPort(port);
-
-    this.server.setConnectors(new ServerConnector[] { sslConnector });
+*/
+    ServerConnector connector0=new ServerConnector(this.server);
+    connector0.setPort(port);
+    this.server.setConnectors(new ServerConnector[] { connector0 });
+  // this.server.setConnectors(new ServerConnector[] { sslConnector });
 
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
     context.setContextPath("/");
@@ -82,7 +89,7 @@ public class ServerStarter {
     resourceHandler.setMinMemoryMappedContentLength(-1);
     resourceHandler.setWelcomeFiles(new String[] { "index.html" });
 
-    HashLoginService hls = new HashLoginService();
+    /*HashLoginService hls = new HashLoginService();
     hls.putUser(this.properties.getProperty("webapp.username"), Credential.getCredential(this.properties.getProperty("webapp.password")),
         new String[] { "default" });
     hls.setName("Sensorplatform");
@@ -103,11 +110,13 @@ public class ServerStarter {
     csh.setLoginService(hls);
 
     this.server.addBean(hls);
-
+*/
     HandlerList handlers = new HandlerList();
     handlers.setHandlers(new Handler[] { resourceHandler, context });
-    csh.setHandler(handlers);
-    this.server.setHandler(csh);
+    this.server.setHandler(handlers);
+  // csh.setHandler(handlers);
+    //this.server.setHandler(csh);
+
 
     try {
       this.server.start();
@@ -123,6 +132,7 @@ public class ServerStarter {
     } catch (Exception e) {
       LOG.error("cannot stop server", e);
     }
+
   }
 
 }

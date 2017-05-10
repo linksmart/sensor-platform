@@ -1,10 +1,6 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import java.util.Properties;
+import java.util.*;
 
 import com.google.inject.name.Named;
 import org.slf4j.Logger;
@@ -33,6 +29,8 @@ public class SensorOverseer implements Runnable {
 
   private final HardwarePlatform hwPlatform;
 
+  Hashtable a = new Hashtable();
+
   /**
    *
    * @param hwPlatform
@@ -46,6 +44,10 @@ public class SensorOverseer implements Runnable {
     this.hwPlatform = hwPlatform;
     this.noNotificationTriggerTime = noNotificationTriggerTime * 1000;
     this.swList = swList;
+    for (AbstractSensorWrapper<?> asw : this.swList) {
+      a.put(asw.getSensor().getBDaddress(), 0);
+    }
+
   }
   private void toStringLinkSmart() {
  /*   return "{\"" + "e" + "\":[{\"n\": \"oxygen\", \"v\": " + this.oxygenPercent + ", \"u\": \"mBar\", \"t\": " + this.timestamp + "}]," +
@@ -77,6 +79,8 @@ public class SensorOverseer implements Runnable {
         AbstractSensorWrapper<?> asw = iterator.next();
         switch (asw.getGatttool().getInternalState()) {
           case RECONNECTING:
+            //LOG.info("{} reconnecting", asw.getSensor().getBDaddress());
+            asw.getGatttool().reconnect();
             break;
           case DISCONNECTED:
             asw.getGatttool().reconnect();
@@ -88,7 +92,7 @@ public class SensorOverseer implements Runnable {
             LOG.info("{} reconnected successfully", asw.getSensor());
             Properties name=new Properties();
             System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + (long)(currentTime/1000) + "}]," +
-                  "\"bn\": \""+"SPF1"+"/\"}");
+                  "\"bn\": \""+"SPF2"+"/\"}");
             if (this.wrapperWithLostSensor.isEmpty()) {
               this.hwPlatform.setLEDstateRECORDING();
             }

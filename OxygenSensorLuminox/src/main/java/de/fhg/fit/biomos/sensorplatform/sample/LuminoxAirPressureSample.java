@@ -120,7 +120,7 @@ public class LuminoxAirPressureSample {
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";*/
         return "{\"" + "e"+"\":[{\"n\": \"airPressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": "+(long)(this.timestamp/1000)+"}],"+
-                "\"bn\": \""+this.bdAddress+"/\"}";
+                "\"bn\": \"urn:dev:mac:"+this.bdAddress+"/\"}";
 
 
     }

@@ -29,6 +29,7 @@ public abstract class AbstractSensor<T extends GattLibrary> implements SensorCom
   protected final SecurityLevel securityLevel;
   protected final JSONObject settings;
   protected final String idSensor;
+  private int recNumber;
 
   public AbstractSensor(T gattLibrary, SensorName name, String bdAddress, AddressType addressType, SecurityLevel securityLevel, JSONObject settings) {
     this.gattLibrary = gattLibrary;
@@ -71,6 +72,16 @@ public abstract class AbstractSensor<T extends GattLibrary> implements SensorCom
 
   public JSONObject getSettings() {
     return this.settings;
+  }
+
+
+  public int getReconnectionNumber(){
+    return recNumber;
+  }
+
+
+  public void setReconnectionNumber(int number){
+    recNumber=number;
   }
 
   @Override

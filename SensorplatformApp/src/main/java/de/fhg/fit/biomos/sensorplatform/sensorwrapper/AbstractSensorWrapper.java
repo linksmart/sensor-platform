@@ -33,6 +33,8 @@ public abstract class AbstractSensorWrapper<T extends AbstractSensor<?>> impleme
 
   protected String requestedHandle;
 
+  private int recNumber;
+
   /**
    *
    * @param sensor
@@ -53,6 +55,7 @@ public abstract class AbstractSensorWrapper<T extends AbstractSensor<?>> impleme
     this.lastNotificationTimestamp = 0;
     this.gatttool.setObserver(this);
     new Thread(this.gatttool, this.sensor.getName().name().toLowerCase()).start();
+    recNumber=0;
   }
 
   @Override
@@ -95,4 +98,13 @@ public abstract class AbstractSensorWrapper<T extends AbstractSensor<?>> impleme
     }
   }
 
+
+  public int getReconnectionNumber(){
+    return recNumber;
+  }
+
+
+  public void setReconnectionNumber(int number){
+    recNumber=number;
+  }
 }
