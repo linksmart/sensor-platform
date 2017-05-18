@@ -1,6 +1,9 @@
 package de.fhg.fit.biomos.sensorplatform.sensor;
 
 import de.fhg.fit.biomos.sensorplatform.util.FloatUtils;
+import de.fhg.fit.biomos.sensorplatform.util.TestSenML;
+
+import java.io.IOException;
 
 import static de.fhg.fit.biomos.sensorplatform.util.FloatUtils.fromHexString;
 
@@ -31,7 +34,7 @@ public class Main {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         float respTemp, respOxy, respPress, res1, res2, res3;
         String value="20.64%+24.1T1010P";
         String value1="0002000803%020306T01000100";
@@ -46,6 +49,10 @@ public class Main {
         respPress=FloatUtils.valuePress(value);
 
        // return ((short) Integer.parseInt(data.substring(18, 20) + data.substring(16, 18), 16)) * 1.0f / (32768 / ACCELERATION_RESOLUTION);
+        TestSenML protocol=new TestSenML();
+        float pressure=(float) 1000.1;
+
+        System.out.println("Lo que se va a enviar: "+protocol.toStringLinkSmart("BD:AC:30:40:50:60", pressure));
 
         prueba=value1.substring(0,10);
         prueba1=value1.substring(0,10);

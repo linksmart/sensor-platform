@@ -90,9 +90,9 @@ public class SensorOverseer implements Runnable {
             asw.enableLogging();
             iterator.remove();
             LOG.info("{} reconnected successfully", asw.getSensor());
-            Properties name=new Properties();
+            Properties properties=new Properties();
             System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + (long)(currentTime/1000) + "}]," +
-                  "\"bn\": \""+"SPF2"+"/\"}");
+                  "\"bn\": \""+properties.getProperty("target.name")+"/\"}");
             if (this.wrapperWithLostSensor.isEmpty()) {
               this.hwPlatform.setLEDstateRECORDING();
             }

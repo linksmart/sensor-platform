@@ -119,10 +119,10 @@ public class GatttoolImpl implements Gatttool {
     } else if (line.contains("successful")) {
       this.state = State.CONNECTED;
       LOG.info("state from {} is {}",this.bdAddress, this.state.name());
-      Properties name=new Properties();
+      Properties properties=new Properties();
       long currentTime = System.currentTimeMillis()/1000;
       System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" +this.bdAddress + "\", \"t\": " + (long)currentTime + "}]," +
-              "\"bn\": \""+ "SPF2"+"/\"}");
+              "\"bn\": \""+ properties.getProperty("target.name")+"/\"}");
 
     } else if (line.contains("refused") || line.contains("busy")) {
       this.state = State.DISCONNECTED;

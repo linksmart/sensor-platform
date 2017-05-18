@@ -1,7 +1,12 @@
 package de.fhg.fit.biomos.sensorplatform.sample;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.io.Serializable;
+
+import eu.linksmart.services.payloads.SenML.Event;
+import eu.linksmart.services.utils.serialization.DefaultSerializer;
+import eu.linksmart.services.utils.serialization.Serializer;
 
 /**
  * Entity class for oxygen, temperature and pressure samples
@@ -113,15 +118,34 @@ public class LuminoxAirPressureSample {
                 + "\",\"device\":\"" + this.bdAddress + "\",\"pressure\":{\"value\":" + this.pressure + ",\"unit\":\"" + UNIT_MILLIBAR + "\"}";
     }
 
-    public String toStringLinkSmart() {
+    public String toStringLinkSmart() throws IOException {
+
+        Serializer serializer = new DefaultSerializer();
+        Event event=new Event();
+
+        event.setBaseName("urn:dev:mac:"+this.bdAddress);
+        event.setBt((long) 0);
+        Event.Measurement measurement=new Event.Measurement();
+        measurement.setN("airPressure");
+        measurement.setV(this.pressure);
+        measurement.setU(UNIT_MILLIBAR);
+        measurement.setT((long)(this.timestamp/1000));
+        event.setE(measurement);
+
+        return serializer.toString(event);
+
+
         //return "{\"id\":"  + this.idExt+"_" + this.bdAddress + ",\"timestamp\":\"" + this.timestamp +",\"airPressure\":"+this.pressure+",\"unit_press\":\"" + UNIT_MILLIBAR + "\"}";
         /*return "{\"" + this.idExt+"\":[{\"n\": \"air pressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": 0 },"+
                 "\"bn\": \""+this.bdAddress+"\","+
                 "\"bt\": \""+this.timestamp+"\","+
                 "\"ver\": 1 }";*/
-        return "{\"" + "e"+"\":[{\"n\": \"airPressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": "+(long)(this.timestamp/1000)+"}],"+
-                "\"bn\": \"urn:dev:mac:"+this.bdAddress+"/\"}";
 
+
+       /* return "{\"" + "e"+"\":[{\"n\": \"airPressure\", \"v\": "+this.pressure+", \"u\": \"mBar\", \"t\": "+(long)(this.timestamp/1000)+"}],"+
+                "\"bn\": \"urn:dev:mac:"+this.bdAddress+"/\"}"; */
+
+        //return "";
 
     }
 }

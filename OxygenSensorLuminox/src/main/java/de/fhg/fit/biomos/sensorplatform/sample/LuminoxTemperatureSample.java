@@ -1,6 +1,11 @@
 package de.fhg.fit.biomos.sensorplatform.sample;
 
+import eu.linksmart.services.payloads.SenML.Event;
+import eu.linksmart.services.utils.serialization.DefaultSerializer;
+import eu.linksmart.services.utils.serialization.Serializer;
+
 import javax.persistence.*;
+import java.io.IOException;
 
 
 /**
@@ -117,21 +122,22 @@ public class LuminoxTemperatureSample {
                 + "\",\"device\":\"" + this.bdAddress + "\",\"temperature\":{\"value\":" + this.temperature + ",\"unit\":\"" + UNIT_DEGREES_CELSIUS + "\"}";
     }
 
-    public String toStringLinkSmart() {
-       // return "{\"id\":" + this.idExt+"_"+this.bdAddress + ",\"timestamp\":\"" + this.timestamp +",\"temperature\":"+this.temperature+",\"unit_temp\":\"" + UNIT_DEGREES_CELSIUS + "\"}";
+    public String toStringLinkSmart() throws IOException {
+        Serializer serializer = new DefaultSerializer();
+        Event event=new Event();
 
-      /*  return "{\"" + this.idExt+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"Cel\", \"t\": 0 },"+
-                "\"bn\": \""+this.bdAddress+"\","+
-                "\"bt\": \""+this.timestamp+"\","+
-                "\"ver\": 1 }";
+        event.setBaseName("urn:dev:mac:"+this.bdAddress);
+        event.setBt((long) 0);
+        Event.Measurement measurement=new Event.Measurement();
+        measurement.setN("temperature");
+        measurement.setV(this.temperature);
+        measurement.setU(UNIT_DEGREES_CELSIUS);
+        measurement.setT((long)(this.timestamp/1000));
+        event.setE(measurement);
 
-        return "{\"" + "e"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"Cel\", \"t\": 0 , \"sv\":\"SPF2\"}],"+
-                "\"bn\": \""+this.bdAddress+"/\","+
-                "\"bt\": \""+this.timestamp+"\","+
-                "\"ver\": 1 }";
-*/
-        return "{\"" + "e"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"mBar\", \"t\": "+(long)(this.timestamp/1000)+"}],"+
-                "\"bn\": \"urn:dev:mac:"+this.bdAddress+"/\"}";
+        return serializer.toString(event);
+      /*  return "{\"" + "e"+"\":[{\"n\": \"temperature\", \"v\": "+this.temperature+", \"u\": \"mBar\", \"t\": "+(long)(this.timestamp/1000)+"}],"+
+                "\"bn\": \"urn:dev:mac:"+this.bdAddress+"/\"}";*/
     }
 
 }

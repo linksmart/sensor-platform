@@ -21,6 +21,7 @@
             <properties>
                 <http.useragent.boardname>Sensorplatform RaspberryPi3</http.useragent.boardname>
                 <target.platform>raspberrypi3</target.platform>
+                <target.name>SPF4</target.name>
             </properties>
         </profile>
 
@@ -69,6 +70,8 @@
                 <surfstick.device>surfstickcol</surfstick.device>
             </properties>
         </profile>
+
+
 
     </profiles>
 
@@ -246,6 +249,11 @@
                 <artifactId>commons-io</artifactId>
                 <version>${commonsio.version}</version>
             </dependency>
+            <dependency>
+                <groupId>eu.linksmart.services.events</groupId>
+                <artifactId>payload</artifactId>
+                <version>1.4.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -255,6 +263,12 @@
             <url>${project.baseUri}</url>
         </site>
     </distributionManagement>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://linksmart.eu/repo/content/groups/public/</url>
+        </repository>
+    </repositories>
 
     <reporting>
         <plugins>

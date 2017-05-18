@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -55,17 +56,29 @@ public class LuminoxSampleCollector implements SampleCollector {
             if (!this.queueTemp.isEmpty()) {
                 LuminoxTemperatureSample tempSample = this.queueTemp.poll();
                // LuminoxSampleCollector temp1=new LuminoxSampleCollector();
-                System.out.println(tempSample.toStringLinkSmart());
+                try {
+                    System.out.println(tempSample.toStringLinkSmart());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 //LOG.info(tempSample.toStringLinkSmart());
                 storeSample(tempSample);
             } else if (!this.queueOxy.isEmpty()) {
                 LuminoxOxygenSample oxySample = this.queueOxy.poll();
-                System.out.println(oxySample.toStringLinkSmart());
+                try {
+                    System.out.println(oxySample.toStringLinkSmart());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 //LOG.info(oxySample.toStringLinkSmart());
                 storeSample(oxySample);
             } else if (!this.queuePress.isEmpty()) {
                 LuminoxAirPressureSample pressureSample = this.queuePress.poll();
-                System.out.println(pressureSample.toStringLinkSmart());
+                try {
+                    System.out.println(pressureSample.toStringLinkSmart());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 //LOG.info(pressureSample.toStringLinkSmart());
                 storeSample(pressureSample);
             } else {
