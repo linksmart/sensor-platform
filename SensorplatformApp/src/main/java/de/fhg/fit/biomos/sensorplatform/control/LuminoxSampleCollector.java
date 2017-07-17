@@ -48,7 +48,7 @@ public class LuminoxSampleCollector implements SampleCollector {
     }
 
     /**
-     * Regularly check if there are samples in queue. If so, save them in the database.
+     * Regularly check if there are samples in queue. If so, send them to linksmart through System.out.println
      */
     @Override
     public void run() {
