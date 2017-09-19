@@ -105,6 +105,10 @@
             <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
+            <groupId>eu.linksmart.services.events</groupId>
+            <artifactId>payload</artifactId>
+        </dependency>
+        <dependency>
             <groupId>de.fhg.fit.biomos</groupId>
             <artifactId>OxygenSensorLuminox</artifactId>
         </dependency>
