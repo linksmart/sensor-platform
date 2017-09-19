@@ -267,19 +267,8 @@
         <repository>
             <id>central</id>
             <url>https://linksmart.eu/repo/content/groups/public/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
         </repository>
     </repositories>
-
-    <pluginRepositories>
-    <pluginRepository>
-        <id>central</id>
-        <url>https://linksmart.eu/repo/content/groups/public/</url>
-        <releases><enabled>false</enabled></releases>
-    </pluginRepository>
-    </pluginRepositories>
 
     <reporting>
         <plugins>
