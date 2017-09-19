@@ -62,7 +62,7 @@ public class LuminoxSampleCollector implements SampleCollector {
                     e.printStackTrace();
                 }
                 //LOG.info(tempSample.toStringLinkSmart());
-                storeSample(tempSample);
+                //storeSample(tempSample);
             } else if (!this.queueOxy.isEmpty()) {
                 LuminoxOxygenSample oxySample = this.queueOxy.poll();
                 try {
@@ -71,7 +71,7 @@ public class LuminoxSampleCollector implements SampleCollector {
                     e.printStackTrace();
                 }
                 //LOG.info(oxySample.toStringLinkSmart());
-                storeSample(oxySample);
+                //storeSample(oxySample);
             } else if (!this.queuePress.isEmpty()) {
                 LuminoxAirPressureSample pressureSample = this.queuePress.poll();
                 try {
@@ -80,7 +80,7 @@ public class LuminoxSampleCollector implements SampleCollector {
                     e.printStackTrace();
                 }
                 //LOG.info(pressureSample.toStringLinkSmart());
-                storeSample(pressureSample);
+                //storeSample(pressureSample);
             } else {
                 try {
                     Thread.sleep(SLEEP_TIME_MS);
