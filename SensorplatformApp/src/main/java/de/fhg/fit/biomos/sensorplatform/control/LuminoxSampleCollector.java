@@ -1,8 +1,8 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
 import com.google.inject.Inject;
-import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
-import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
+//import de.fhg.fit.biomos.sensorplatform.persistence.DBcontroller;
+//import de.fhg.fit.biomos.sensorplatform.persistence.DBsession;
 import de.fhg.fit.biomos.sensorplatform.sample.*;
 import de.fhg.fit.biomos.sensorplatform.sensor.Luminox;
 import org.apache.commons.logging.Log;
@@ -21,7 +21,7 @@ public class LuminoxSampleCollector implements SampleCollector {
 
     private static final int SLEEP_TIME_MS = 300;
 
-    private final DBcontroller dbc;
+  // private final DBcontroller dbc;
 
     private final Queue<LuminoxTemperatureSample> queueTemp = new ConcurrentLinkedQueue<LuminoxTemperatureSample>();
     private final Queue<LuminoxOxygenSample> queueOxy = new ConcurrentLinkedQueue<LuminoxOxygenSample>();
@@ -32,8 +32,9 @@ public class LuminoxSampleCollector implements SampleCollector {
     private boolean used;
 
     @Inject
-    public LuminoxSampleCollector(DBcontroller dbc) {
-        this.dbc = dbc;
+    //public LuminoxSampleCollector(DBcontroller dbc) {
+    public LuminoxSampleCollector() {
+        //this.dbc = dbc;
         this.used = false;
     }
 
@@ -97,7 +98,7 @@ public class LuminoxSampleCollector implements SampleCollector {
      * Add a temperature sample to the queue for storing it in the database.
      *
      * @param sample
-     *          a CC2650TemperatureSample retrieved from the sensor
+     *          a LuminoxTemperatureSample retrieved from the sensor
      */
     public void addToQueue(LuminoxTemperatureSample sample) {
         this.queueTemp.add(sample);
@@ -107,7 +108,7 @@ public class LuminoxSampleCollector implements SampleCollector {
      * Add a humidity sample to the queue for storing it in the database.
      *
      * @param sample
-     *          a CC2650HumiditySample retrieved from the sensor
+     *          a LuminoxOxygenSample retrieved from the sensor
      */
     public void addToQueue(LuminoxOxygenSample sample) {
         this.queueOxy.add(sample);
@@ -117,7 +118,7 @@ public class LuminoxSampleCollector implements SampleCollector {
      * Add a pressure sample to the queue for storing it in the database.
      *
      * @param sample
-     *          a CC2650PressureSample retrieved from the sensor
+     *          a LuminoxAirPressureSample retrieved from the sensor
      */
     public void addToQueue(LuminoxAirPressureSample sample) {
         this.queuePress.add(sample);
@@ -128,41 +129,41 @@ public class LuminoxSampleCollector implements SampleCollector {
      * Save a temperature sample to the database.
      *
      * @param sample
-     *          a CC2650TemperatureSample from the queue
+     *          a LuminoxTemperatureSample from the queue
      */
-    private void storeSample(LuminoxTemperatureSample sample) {
+   /* private void storeSample(LuminoxTemperatureSample sample) {
         DBsession dbs = this.dbc.getSession();
         dbs.saveLuminoxTemperatureSample(sample);
         dbs.commit();
         dbs.close();
     }
-
+*/
     /**
      * Save a humidity sample to the database.
      *
      * @param sample
-     *          a CC2650HumiditySample from the queue
+     *          a LuminoxOxygenSample from the queue
      */
-    private void storeSample(LuminoxOxygenSample sample) {
+  /*  private void storeSample(LuminoxOxygenSample sample) {
         DBsession dbs = this.dbc.getSession();
         dbs.saveLuminoxOxygenSample(sample);
         dbs.commit();
         dbs.close();
     }
-
+*/
     /**
      * Save a pressure sample to the database.
      *
      * @param sample
-     *          a CC2650PressureSample from the queue
+     *          a LuminoxAirPressureSample from the queue
      */
-    private void storeSample(LuminoxAirPressureSample sample) {
+  /*  private void storeSample(LuminoxAirPressureSample sample) {
         DBsession dbs = this.dbc.getSession();
         dbs.saveLuminoxAirPressureSample(sample);
         dbs.commit();
         dbs.close();
     }
-
+*/
 
 
 }

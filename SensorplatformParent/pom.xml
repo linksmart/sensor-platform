@@ -12,7 +12,6 @@
 
     <!-- Profiles for board-specific settings and for different webinterfaces, for the future -->
     <profiles>
-
         <profile>
             <id>raspberrypi3</id>
             <activation>
@@ -320,23 +319,22 @@
 
     <developers>
         <developer>
-            <name>Daniel Pyka</name>
-            <email>daniel.pyka@fit.fraunhofer.de</email>
+            <name>Gustavo Aragon</name>
+            <email>gustavo.aragon@fit.fraunhofer.de</email>
             <organization>Fraunhofer FIT</organization>
             <organizationUrl>http://www.fit.fraunhofer.de</organizationUrl>
             <roles>
-                <role>Developer</role>
+                <role>Project manager</role>
             </roles>
         </developer>
     </developers>
     <contributors>
         <contributor>
-            <name>Gustavo Aragón</name>
-            <email>gustavo.alejandro.aragon.cabrera@fit.fraunhofer.de</email>
+            <name>Daniel Pyka</name>
             <organization>Fraunhofer FIT</organization>
             <organizationUrl>http://www.fit.fraunhofer.de</organizationUrl>
             <roles>
-                <role>Project manager</role>
+                <role>Developer</role>
             </roles>
         </contributor>
         <contributor>
