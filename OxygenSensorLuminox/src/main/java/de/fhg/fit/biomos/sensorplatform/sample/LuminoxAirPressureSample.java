@@ -126,7 +126,7 @@ public class LuminoxAirPressureSample {
         event.setBaseName("urn:dev:mac:"+this.bdAddress);
         event.setBt((long) 0);
         Event.Measurement measurement=new Event.Measurement();
-        measurement.setN("airPressure");
+        measurement.setN("/airPressure");
         measurement.setV(this.pressure);
         measurement.setU(UNIT_MILLIBAR);
         measurement.setT((long)(this.timestamp/1000));
