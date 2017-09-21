@@ -20,7 +20,7 @@
             <properties>
                 <http.useragent.boardname>Sensorplatform RaspberryPi3</http.useragent.boardname>
                 <target.platform>raspberrypi3</target.platform>
-                <target.name>SPF2</target.name>
+                <target.name>SPF1</target.name>
             </properties>
         </profile>
 
