@@ -108,7 +108,7 @@
         <database.password>123456</database.password>
 
         <!-- private variables passed through the command line-->
-        <target.name>targetName</target.name>
+        <target.name>${targetName}</target.name>
     </properties>
 
     <modules>
