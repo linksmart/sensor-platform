@@ -129,7 +129,7 @@ public class LuminoxTemperatureSample {
         event.setBaseName("urn:dev:mac:"+this.bdAddress);
         event.setBt((long) 0);
         Event.Measurement measurement=new Event.Measurement();
-        measurement.setN("temperature");
+        measurement.setN("/temperature");
         measurement.setV(this.temperature);
         measurement.setU(UNIT_DEGREES_CELSIUS);
         measurement.setT((long)(this.timestamp/1000));

@@ -135,7 +135,7 @@ public class LuminoxOxygenSample {
         event.setBaseName("urn:dev:mac:"+this.bdAddress);
         event.setBt((long) 0);
         Event.Measurement measurement=new Event.Measurement();
-        measurement.setN("oxygen");
+        measurement.setN("/oxygen");
         measurement.setV(this.oxygenPercent);
         measurement.setU(UNIT_PERCENT_O2);
         measurement.setT((long)(this.timestamp/1000));
