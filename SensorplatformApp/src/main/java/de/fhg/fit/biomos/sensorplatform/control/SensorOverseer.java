@@ -77,6 +77,7 @@ public class SensorOverseer implements Runnable {
 
       for (Iterator<AbstractSensorWrapper<?>> iterator = this.wrapperWithLostSensor.iterator(); iterator.hasNext();) {
         AbstractSensorWrapper<?> asw = iterator.next();
+        Properties properties=new Properties();
         switch (asw.getGatttool().getInternalState()) {
           case RECONNECTING:
             //LOG.info("{} reconnecting", asw.getSensor().getBDaddress());
@@ -84,13 +85,14 @@ public class SensorOverseer implements Runnable {
             break;
           case DISCONNECTED:
             asw.getGatttool().reconnect();
-            LOG.info("{} still not connected", asw.getSensor());
+
+            LOG.info("{} still not connected", asw.getSensor(), "name of SPF: ",properties.getProperty("target.name"));
             break;
           case CONNECTED:
             asw.enableLogging();
             iterator.remove();
             LOG.info("{} reconnected successfully", asw.getSensor());
-            Properties properties=new Properties();
+            //Properties properties=new Properties();
             System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + (long)(currentTime/1000) + "}]," +
                   "\"bn\": \""+properties.getProperty("target.name")+"/\"}");
             if (this.wrapperWithLostSensor.isEmpty()) {
