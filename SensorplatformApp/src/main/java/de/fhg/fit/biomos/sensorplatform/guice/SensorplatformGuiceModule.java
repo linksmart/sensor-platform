@@ -54,7 +54,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
     String webinterfaceName = this.properties.getProperty("webinterface.name");
     String targetPlatform = this.properties.getProperty("target.platform");
     String surfstickDevice = this.properties.getProperty("surfstick.device");
-
+    
     switch (webinterfaceName) {
       case "TeLiPro":
         LOG.info("webinterface is {}", webinterfaceName);
@@ -118,7 +118,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(LuminoxSampleCollector.class).in(Singleton.class);
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);
-   // bind(DBcontroller.class).in(Singleton.class);
+    bind(DBcontroller.class).in(Singleton.class);
     try {
       Names.bindProperties(binder(), this.properties);
     } catch (Exception e) {

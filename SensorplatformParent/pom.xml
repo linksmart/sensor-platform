@@ -20,7 +20,7 @@
             <properties>
                 <http.useragent.boardname>Sensorplatform RaspberryPi3</http.useragent.boardname>
                 <target.platform>raspberrypi3</target.platform>
-                <target.name>SPF3</target.name>
+                <!--target.name>SPF3</target.name-->
             </properties>
         </profile>
 
@@ -106,6 +106,9 @@
         <database.path>db/sensorplatform</database.path>
         <database.username>sensorplatform</database.username>
         <database.password>123456</database.password>
+
+        <!-- private variables passed through the command line-->
+        <target.name>targetName</target.name>
     </properties>
 
     <modules>
