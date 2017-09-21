@@ -118,7 +118,7 @@ public class SensorplatformGuiceModule extends AbstractModule {
     bind(LuminoxSampleCollector.class).in(Singleton.class);
     bind(SensorWrapperFactory.class).in(Singleton.class);
     bind(Controller.class).in(Singleton.class);
-    bind(DBcontroller.class).in(Singleton.class);
+   // bind(DBcontroller.class).in(Singleton.class);
     try {
       Names.bindProperties(binder(), this.properties);
     } catch (Exception e) {
