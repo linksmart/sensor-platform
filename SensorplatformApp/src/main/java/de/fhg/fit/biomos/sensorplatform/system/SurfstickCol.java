@@ -23,7 +23,7 @@ public class SurfstickCol implements Surfstick {
 
     @Override
     public ProcessBuilder getMobileInternetPB() {
-      return new ProcessBuilder("/home/administrator/3g/sakis3g", "SIM_PIN=1983", "--sudo", "connect");
+      return new ProcessBuilder("/home/administrator/SPF/3g/sakis3g", "SIM_PIN=1983", "--sudo", "connect");
     }
     
     @Override
