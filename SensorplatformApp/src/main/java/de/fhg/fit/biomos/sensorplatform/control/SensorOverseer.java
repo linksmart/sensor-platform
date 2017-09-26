@@ -100,10 +100,10 @@ public class SensorOverseer implements Runnable {
           case CONNECTED:
             asw.enableLogging();
             iterator.remove();
-            LOG.info("{} reconnected successfully", asw.getSensor());
+            LOG.info("{} connected successfully", asw.getSensor());
             //Properties properties=new Properties();
             System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + (long)(currentTime/1000) + "}]," +
-                  "\"bn\": \""+properties.getProperty("target.name")+"/\"}");
+                  "\"bn\": \""+this.properties.getProperty("target.name")+"/\"}");
             if (this.wrapperWithLostSensor.isEmpty()) {
               this.hwPlatform.setLEDstateRECORDING();
             }
