@@ -87,11 +87,8 @@ public class GatttoolImpl implements Gatttool {
       LOG.error("creating gatttool process failed", e);
     }
     try {
-      LOG.info("Getting properties in GatttoolImpl");
       this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFileName));
       this.targetName = this.properties.getProperty("target.name");
-      LOG.info("Property target.name {}", this.properties.getProperty("target.name"));
-      System.out.println("Property con println: "+this.targetName);
     }catch (IOException e) {
       LOG.error("cannot load properties");
     }
