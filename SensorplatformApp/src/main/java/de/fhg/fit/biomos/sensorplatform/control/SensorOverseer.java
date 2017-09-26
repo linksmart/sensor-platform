@@ -55,12 +55,17 @@ public class SensorOverseer implements Runnable {
     for (AbstractSensorWrapper<?> asw : this.swList) {
       a.put(asw.getSensor().getBDaddress(), 0);
     }
+
     try {
+      LOG.info("Getting properties in SensorOverseer");
       this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFileName));
-      this.targetName=this.properties.getProperty("target.name");
-    } catch (IOException e) {
-    LOG.error("cannot load properties in SensorOverseer");
-   }
+      this.targetName = this.properties.getProperty("target.name");
+      LOG.info("Property target.name {}", this.properties.getProperty("target.name"));
+      System.out.println("Property con println: "+this.targetName);
+    }catch (IOException e) {
+      LOG.error("cannot load properties");
+      System.exit(1);
+    }
   }
   private void toStringLinkSmart() {
  /*   return "{\"" + "e" + "\":[{\"n\": \"oxygen\", \"v\": " + this.oxygenPercent + ", \"u\": \"mBar\", \"t\": " + this.timestamp + "}]," +
