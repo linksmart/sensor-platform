@@ -33,6 +33,8 @@ public class SensorOverseer implements Runnable {
 
   private final Properties properties=new Properties();
 
+  private String targetName;
+
   private static final String propertiesFileName = "SensorplatformApp.properties";
 
   Hashtable a = new Hashtable();
@@ -55,6 +57,7 @@ public class SensorOverseer implements Runnable {
     }
     try {
       this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFileName));
+      this.targetName=this.properties.getProperty("target.name");
     } catch (IOException e) {
     LOG.error("cannot load properties in SensorOverseer");
    }
@@ -103,7 +106,7 @@ public class SensorOverseer implements Runnable {
             LOG.info("{} connected successfully", asw.getSensor());
             //Properties properties=new Properties();
             System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + (long)(currentTime/1000) + "}]," +
-                  "\"bn\": \""+this.properties.getProperty("target.name")+"/\"}");
+                  "\"bn\": \""+this.targetName+"/\"}");
             if (this.wrapperWithLostSensor.isEmpty()) {
               this.hwPlatform.setLEDstateRECORDING();
             }
