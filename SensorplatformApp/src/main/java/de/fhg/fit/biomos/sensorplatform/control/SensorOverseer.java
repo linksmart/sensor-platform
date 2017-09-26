@@ -1,6 +1,8 @@
 package de.fhg.fit.biomos.sensorplatform.control;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.Properties;
 
 import com.google.inject.name.Named;
 import org.slf4j.Logger;
@@ -29,6 +31,10 @@ public class SensorOverseer implements Runnable {
 
   private final HardwarePlatform hwPlatform;
 
+  private final Properties properties=new Properties();
+
+  private static final String propertiesFileName = "SensorplatformApp.properties";
+
   Hashtable a = new Hashtable();
 
   /**
@@ -40,14 +46,18 @@ public class SensorOverseer implements Runnable {
    * @param swList
    *          the AbstractSensorWrapper of the current recording period
    */
-  public SensorOverseer(HardwarePlatform hwPlatform, int noNotificationTriggerTime, List<AbstractSensorWrapper<?>> swList) {
+  public SensorOverseer(HardwarePlatform hwPlatform, int noNotificationTriggerTime, List<AbstractSensorWrapper<?>> swList){
     this.hwPlatform = hwPlatform;
     this.noNotificationTriggerTime = noNotificationTriggerTime * 1000;
     this.swList = swList;
     for (AbstractSensorWrapper<?> asw : this.swList) {
       a.put(asw.getSensor().getBDaddress(), 0);
     }
-
+    try {
+      this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFileName));
+    } catch (IOException e) {
+    LOG.error("cannot load properties in SensorOverseer");
+   }
   }
   private void toStringLinkSmart() {
  /*   return "{\"" + "e" + "\":[{\"n\": \"oxygen\", \"v\": " + this.oxygenPercent + ", \"u\": \"mBar\", \"t\": " + this.timestamp + "}]," +
@@ -77,7 +87,7 @@ public class SensorOverseer implements Runnable {
 
       for (Iterator<AbstractSensorWrapper<?>> iterator = this.wrapperWithLostSensor.iterator(); iterator.hasNext();) {
         AbstractSensorWrapper<?> asw = iterator.next();
-        Properties properties=new Properties();
+
         switch (asw.getGatttool().getInternalState()) {
           case RECONNECTING:
             //LOG.info("{} reconnecting", asw.getSensor().getBDaddress());
@@ -85,8 +95,7 @@ public class SensorOverseer implements Runnable {
             break;
           case DISCONNECTED:
             asw.getGatttool().reconnect();
-
-            LOG.info("{} still not connected", asw.getSensor(), "name of SPF: ",properties.getProperty("target.name"));
+            LOG.info("{} still not connected", asw.getSensor());
             break;
           case CONNECTED:
             asw.enableLogging();
