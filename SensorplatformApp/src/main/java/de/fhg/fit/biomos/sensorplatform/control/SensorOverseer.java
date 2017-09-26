@@ -31,12 +31,6 @@ public class SensorOverseer implements Runnable {
 
   private final HardwarePlatform hwPlatform;
 
-  private final Properties properties=new Properties();
-
-  private String targetName;
-
-  private static final String propertiesFileName = "SensorplatformApp.properties";
-
   Hashtable a = new Hashtable();
 
   /**
@@ -55,23 +49,8 @@ public class SensorOverseer implements Runnable {
     for (AbstractSensorWrapper<?> asw : this.swList) {
       a.put(asw.getSensor().getBDaddress(), 0);
     }
+  }
 
-    try {
-      LOG.info("Getting properties in SensorOverseer");
-      this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFileName));
-      this.targetName = this.properties.getProperty("target.name");
-      LOG.info("Property target.name {}", this.properties.getProperty("target.name"));
-      System.out.println("Property con println: "+this.targetName);
-    }catch (IOException e) {
-      LOG.error("cannot load properties");
-      System.exit(1);
-    }
-  }
-  private void toStringLinkSmart() {
- /*   return "{\"" + "e" + "\":[{\"n\": \"oxygen\", \"v\": " + this.oxygenPercent + ", \"u\": \"mBar\", \"t\": " + this.timestamp + "}]," +
-            "\"bn\": \"" + this.bdAddress + "/}";
-            */
-  }
   /**
    * Background thread during recording.
    */
@@ -110,8 +89,9 @@ public class SensorOverseer implements Runnable {
             iterator.remove();
             LOG.info("{} connected successfully", asw.getSensor());
             //Properties properties=new Properties();
-            System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + (long)(currentTime/1000) + "}]," +
-                  "\"bn\": \""+this.targetName+"/\"}");
+
+          //  System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" + asw.getSensor().getBDaddress() + "\", \"t\": " + (long)(currentTime/1000) + "}]," +
+          //        "\"bn\": \""+this.targetName+"/\"}");
             if (this.wrapperWithLostSensor.isEmpty()) {
               this.hwPlatform.setLEDstateRECORDING();
             }

@@ -59,6 +59,10 @@ public class GatttoolImpl implements Gatttool {
   private final AddressType addressType;
   private final SecurityLevel secLevel;
 
+  private final Properties properties=new Properties();
+  private String targetName;
+  private static final String propertiesFileName = "SensorplatformApp.properties";
+
   private BufferedWriter streamToSensor = null;
   private BufferedReader streamFromSensor = null;
 
@@ -81,6 +85,15 @@ public class GatttoolImpl implements Gatttool {
       LOG.info("security level set to {}", this.secLevel);
     } catch (IOException e) {
       LOG.error("creating gatttool process failed", e);
+    }
+    try {
+      LOG.info("Getting properties in GatttoolImpl");
+      this.properties.load(ClassLoader.getSystemResourceAsStream(propertiesFileName));
+      this.targetName = this.properties.getProperty("target.name");
+      LOG.info("Property target.name {}", this.properties.getProperty("target.name"));
+      System.out.println("Property con println: "+this.targetName);
+    }catch (IOException e) {
+      LOG.error("cannot load properties");
     }
   }
 
@@ -119,10 +132,9 @@ public class GatttoolImpl implements Gatttool {
     } else if (line.contains("successful")) {
       this.state = State.CONNECTED;
       LOG.info("state from {} is {}",this.bdAddress, this.state.name());
-      Properties properties=new Properties();
       long currentTime = System.currentTimeMillis()/1000;
       System.out.println("{\"" + "e" + "\":[{\"n\": \"sensorID\", \"sv\": \"" +this.bdAddress + "\", \"t\": " + (long)currentTime + "}]," +
-              "\"bn\": \""+ properties.getProperty("target.name")+"/\"}");
+              "\"bn\": \""+ this.targetName+"/\"}");
 
     } else if (line.contains("refused") || line.contains("busy")) {
       this.state = State.DISCONNECTED;
