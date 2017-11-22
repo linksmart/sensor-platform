@@ -140,8 +140,6 @@ public class Controller implements Runnable {
         recProperties.load(new FileInputStream(this.recordingInfo));
         LOG.info("recording properties loaded");
         long diff = new Long(recProperties.getProperty(RECORDING_END_TIME)) - System.currentTimeMillis();
-        long savedTime= new Long(recProperties.getProperty(RECORDING_END_TIME));
-        LOG.info("Saved time: "+savedTime+"  Current time: "+System.currentTimeMillis());
         LOG.info("time difference is: " + Long.toString(diff) + " milliseconds");
         if (diff > 0) {
           LOG.info("a recording period was interrupted, which is not finished yet - resume");
@@ -172,8 +170,6 @@ public class Controller implements Runnable {
   private void saveSensorplatformConfiguration(String firstname, String lastname, JSONArray sensorConfiguration) {
     long timestamp = System.currentTimeMillis();
     Properties recProperties = new Properties();
-    long suma=timestamp + this.uptimeMillis;
-    LOG.info("This is the time to be stored in a file: "+this.uptimeMillis+" and this is the addition: "+suma);
     recProperties.put(RECORDING_END_TIME, Long.toString(timestamp + this.uptimeMillis));
     recProperties.put(RECORDING_FIRSTNAME, firstname);
     recProperties.put(RECORDING_LASTNAME, lastname);
