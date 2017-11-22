@@ -172,6 +172,8 @@ public class Controller implements Runnable {
   private void saveSensorplatformConfiguration(String firstname, String lastname, JSONArray sensorConfiguration) {
     long timestamp = System.currentTimeMillis();
     Properties recProperties = new Properties();
+    long suma=timestamp + this.uptimeMillis;
+    LOG.info("This is the time to be stored in a file: "+this.uptimeMillis+" and this is the addition: "+suma);
     recProperties.put(RECORDING_END_TIME, Long.toString(timestamp + this.uptimeMillis));
     recProperties.put(RECORDING_FIRSTNAME, firstname);
     recProperties.put(RECORDING_LASTNAME, lastname);
