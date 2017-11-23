@@ -86,7 +86,7 @@ public class ControllerService {
   public Response start(JSONObject request) {
     LOG.info("Stop all threads and processes");
     this.controller.interruptController();
-
+    while(this.controller.isRecording()==true);
     LOG.info("/controller/start called");
     try {
       long uptime = request.getLong("uptime");
