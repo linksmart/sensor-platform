@@ -124,7 +124,7 @@ function startRecording() {
 	request.open("POST", "controller/start", true);
 	request.setRequestHeader("Content-Type", "application/json;");
 	request.send(JSON.stringify(requestentity));
-	$("#startButton").attr("disabled","disabled");
+
 }
 
 function stopRecording() {
