@@ -90,6 +90,11 @@ function writeExampleConfigDongle() {
 }
 
 function startRecording() {
+	$("#modalmessage").text("Start");
+	$('#message').modal('show');
+	var buttonId = this.id;
+	document.getElementById("buttonId").disabled = true; //OR
+	document.getElementById("buttonId").readOnly= true;
 	var uptime = $("#uptime").val();
 	var firstname = $("#firstname").val();
 	var lastname = $("#lastname").val();
@@ -127,6 +132,8 @@ function startRecording() {
 }
 
 function stopRecording() {
+	$("#modalmessage").text("Stop");
+	$('#message').modal('show');
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
