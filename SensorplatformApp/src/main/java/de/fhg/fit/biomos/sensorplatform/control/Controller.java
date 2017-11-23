@@ -408,18 +408,22 @@ public class Controller implements Runnable {
     if (this.hrsCollector.isUsed()) {
       this.hrsCollectorThread = new Thread(this.hrsCollector, "hrsCollector");
       this.hrsCollectorThread.start();
+      LOG.info("Thread for hrs collector started");
     }
     if (this.pulseCollector.isUsed()) {
       this.pulseCollectorThread = new Thread(this.pulseCollector, "posCollector");
       this.pulseCollectorThread.start();
+      LOG.info("Thread for pulse collector started");
     }
     if (this.cc2650Collector.isUsed()) {
       this.cc2650CollectorThread = new Thread(this.cc2650Collector, "cc2650Collector");
       this.cc2650CollectorThread.start();
+      LOG.info("Thread for cc2650 collector started");
     }
     if (this.luminoxCollector.isUsed()) {
-      this.luminoxCollectorThread = new Thread(this.luminoxCollector, "cc2650Collector");
+      this.luminoxCollectorThread = new Thread(this.luminoxCollector, "luminoxCollector");
       this.luminoxCollectorThread.start();
+      LOG.info("Thread for luminox collector started");
     }
     LOG.info("start controller thread");
     this.controllerThread = new Thread(this, "controller");
