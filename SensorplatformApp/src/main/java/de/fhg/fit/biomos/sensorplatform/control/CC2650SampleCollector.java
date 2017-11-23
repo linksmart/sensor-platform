@@ -75,7 +75,7 @@ public class CC2650SampleCollector implements SampleCollector {
         try {
           Thread.sleep(SLEEP_TIME_MS);
         } catch (InterruptedException e) {
-          LOG.info("interrupt received from Controller");
+          LOG.info("interrupt received from Controller CC2650");
           Thread.currentThread().interrupt();
         }
       }

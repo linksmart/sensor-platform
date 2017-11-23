@@ -476,7 +476,7 @@ public class Controller implements Runnable {
    * possible <b>bad</b> things!
    */
   private void shutdownGatttools() {
-    LOG.info("shutting down threads and processes gracefully");
+    LOG.info("shutting down gatttool threads and processes gracefully");
     for (AbstractSensorWrapper<?> asw : this.swList) {
       asw.disableLogging();
     }

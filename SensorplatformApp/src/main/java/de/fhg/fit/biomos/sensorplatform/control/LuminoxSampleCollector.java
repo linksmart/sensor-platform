@@ -86,7 +86,7 @@ public class LuminoxSampleCollector implements SampleCollector {
                 try {
                     Thread.sleep(SLEEP_TIME_MS);
                 } catch (InterruptedException e) {
-                    LOG.info("interrupt received from Controller");
+                    LOG.info("interrupt received from Controller Luminox");
                     Thread.currentThread().interrupt();
                 }
             }
