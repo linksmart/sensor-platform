@@ -84,6 +84,9 @@ public class ControllerService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public Response start(JSONObject request) {
+    LOG.info("Stop all threads and processes");
+    this.controller.interruptController();
+
     LOG.info("/controller/start called");
     try {
       long uptime = request.getLong("uptime");
