@@ -91,8 +91,7 @@ function writeExampleConfigDongle() {
 
 function startRecording() {
 	var buttonId = this.id;
-	document.getElementById("buttonId").disabled = true; //OR
-	document.getElementById("buttonId").readOnly= true;
+	buttonId.attr("disabled","disabled");
 	var uptime = $("#uptime").val();
 	var firstname = $("#firstname").val();
 	var lastname = $("#lastname").val();
