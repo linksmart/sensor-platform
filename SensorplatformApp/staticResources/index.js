@@ -90,8 +90,6 @@ function writeExampleConfigDongle() {
 }
 
 function startRecording() {
-	var buttonId = this.id;
-	buttonId.attr("disabled","disabled");
 	var uptime = $("#uptime").val();
 	var firstname = $("#firstname").val();
 	var lastname = $("#lastname").val();
@@ -126,11 +124,10 @@ function startRecording() {
 	request.open("POST", "controller/start", true);
 	request.setRequestHeader("Content-Type", "application/json;");
 	request.send(JSON.stringify(requestentity));
+	$("#startButton").attr("disabled","disabled");
 }
 
 function stopRecording() {
-	$("#modalmessage").text("Stop");
-	$('#message').modal('show');
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
@@ -139,6 +136,8 @@ function stopRecording() {
 	};
 	request.open("GET", "controller/stop", true);
 	request.send();
+	$("#modalmessage").text("Stop");
+	$('#message').modal('show');
 }
 
 
