@@ -254,7 +254,7 @@
             <dependency>
                 <groupId>eu.linksmart.services.events</groupId>
                 <artifactId>payload</artifactId>
-                <version>1.5.2</version>
+                <version>1.7.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -268,7 +268,7 @@
     <repositories>
         <repository>
             <id>central</id>
-            <url>https://linksmart.eu/repo/content/groups/public/</url>
+            <url>https://nexus.linksmart.eu/repository/public</url>
         </repository>
     </repositories>
 

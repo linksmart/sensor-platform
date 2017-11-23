@@ -107,7 +107,7 @@
         <dependency>
             <groupId>eu.linksmart.services.events</groupId>
             <artifactId>payload</artifactId>
-            <version>1.5.2</version>
+            <version>1.7.0</version>
         </dependency>
         <dependency>
             <groupId>de.fhg.fit.biomos</groupId>

@@ -90,8 +90,6 @@ function writeExampleConfigDongle() {
 }
 
 function startRecording() {
-	$("#modalmessage").text("Start");
-	$('#message').modal('show');
 	var buttonId = this.id;
 	document.getElementById("buttonId").disabled = true; //OR
 	document.getElementById("buttonId").readOnly= true;
