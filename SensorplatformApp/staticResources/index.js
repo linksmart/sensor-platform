@@ -94,9 +94,14 @@ function startRecording() {
 	var firstname = $("#firstname").val();
 	var lastname = $("#lastname").val();
 	var uptime = $("#uptime").val();
+	//$("#startButton").disable=true;
+	$("#startButton").attr("disabled","disabled");
+	$("#stopButton").attr("disabled","disabled");
 	if (uptime == ""){
 		$("#modalmessage").text("No uptime specified!");
 		$('#message').modal('show');
+		$("#startButton").removeAttr('disabled');
+		$("#stopButton").removeAttr('disabled');
 		return;
 	}
 	try {
@@ -104,6 +109,8 @@ function startRecording() {
 	} catch (err) {
 		$("#modalmessage").text("Bad sensor configuration JSON syntax!");
 		$('#message').modal('show');
+		$("#startButton").removeAttr('disabled');
+		$("#stopButton").removeAttr('disabled');
 		return;
 	}
 	var requestentity = {
@@ -119,12 +126,14 @@ function startRecording() {
 			response = JSON.parse(request.responseText);
 			$("#modalmessage").text(response["result"]);
 			$('#message').modal('show');
+			$("#startButton").removeAttr('disabled');
+			$("#stopButton").removeAttr('disabled');
 		}
 	};
 	request.open("POST", "controller/start", true);
 	request.setRequestHeader("Content-Type", "application/json;");
 	request.send(JSON.stringify(requestentity));
-	$("#startButton").attr("disabled","disabled");
+	//$("#startButton").removeAttr('disabled')
 }
 
 function stopRecording() {
